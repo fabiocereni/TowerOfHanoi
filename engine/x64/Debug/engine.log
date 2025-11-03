@@ -1,1 +1,36 @@
-﻿  engine.vcxproj -> C:\Mac\Home\Documents\supsi\terzo_anno\grafica\lab\cg_codeBaseline\x64\Debug\engine.dll
+﻿  camera.cpp
+  engine.cpp
+  mesh.cpp
+  node.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,32): error C2259: 'Eng::Node': cannot instantiate abstract class
+  (compiling source file 'node.cpp')
+      C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.h(11,18):
+      see declaration of 'Eng::Node'
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,32):
+      due to following members:
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,32):
+      'void Eng::Node::render(void)': is abstract
+      C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.h(26,20):
+      see declaration of 'Eng::Node::render'
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,32):
+      the template instantiation context (the oldest one first) is
+          C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.cpp(75,22):
+          see reference to function template instantiation 'std::unique_ptr<Eng::Node,std::default_delete<Eng::Node>> std::make_unique<Eng::Node,_Ty&,0>(_Ty &)' being compiled
+          with
+          [
+              _Ty=Eng::Node
+          ]
+  
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,35): error C2259: 'Eng::Node': cannot instantiate abstract class
+  (compiling source file 'node.cpp')
+      C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.h(11,18):
+      see declaration of 'Eng::Node'
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,35):
+      due to following members:
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,35):
+      'void Eng::Node::render(void)': is abstract
+      C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.h(26,20):
+      see declaration of 'Eng::Node::render'
+  
+  object.cpp
+  Generating Code...

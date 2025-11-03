@@ -1,2 +1,34 @@
 ﻿  main.cpp
-  client.vcxproj -> C:\Mac\Home\Documents\supsi\terzo_anno\grafica\lab\cg_codeBaseline\x64\Debug\client.exe
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(31,10): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(31,10): error C2079: 'visibility' uses undefined class 'Eng::__attribute__'
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(31,10): error C2059: syntax error: ')'
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(31,18): error C2146: syntax error: missing ';' before identifier 'Base'
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(31,18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(31,23): error C2146: syntax error: missing ';' before identifier 'final'
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(32,4): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(32,4): error C2447: '{': missing function header (old-style formal list?)
+  (compiling source file 'main.cpp')
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\client\main.cpp(10,15): error C2065: 'eng': undeclared identifier
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\client\main.cpp(10,26): error C3083: 'Base': the symbol to the left of a '::' must be a type
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\client\main.cpp(10,32): error C2039: 'getInstance': is not a member of 'Eng'
+      C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\engine.h(27,11):
+      see declaration of 'Eng'
+  
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\client\main.cpp(10,32): error C3861: 'getInstance': identifier not found
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\client\main.cpp(11,4): error C2065: 'eng': undeclared identifier
+C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\client\main.cpp(14,4): error C2065: 'eng': undeclared identifier
