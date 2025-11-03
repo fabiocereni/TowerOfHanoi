@@ -50,12 +50,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Mac\Home\Documents\supsi\terzo_anno\grafica\lab\cg_codeBaseline\dependencies;..\engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\dependencies\freeglut\include;C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\dependencies\glm\include;..\engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -68,14 +68,14 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Mac\Home\Documents\supsi\terzo_anno\grafica\lab\cg_codeBaseline\dependencies;..\engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\dependencies\freeglut\include;C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\dependencies\glm\include;..\engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

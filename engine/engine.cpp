@@ -1,55 +1,16 @@
-/**
- * @file		engine.cpp
- * @brief	Graphics engine main file
- *
- * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch] << change this to your group members
- */
+#include "engine.h"
+#include <iostream>   
+#include <source_location>
 
-
-
-//////////////
-// #INCLUDE //
-//////////////
-
-   // Main include:
-   #include "engine.h"
-   
-   // C/C++:
-   #include <iostream>   
-   #include <source_location>
-
-
-
-/////////////////////////
-// RESERVED STRUCTURES //
-/////////////////////////
-
-/**
- * @brief Base class reserved structure (using PIMPL/Bridge design pattern https://en.wikipedia.org/wiki/Opaque_pointer).
- */
 struct Eng::Base::Reserved
 {
    // Flags:
    bool initFlag;
    
-
-   /**
-    * Constructor.
-    */
    Reserved() : initFlag{ false } 
    {}
 };
 
-
-
-////////////////////////
-// BODY OF CLASS Base //
-////////////////////////
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Constructor.
- */
 ENG_API Eng::Base::Base() : reserved(std::make_unique<Eng::Base::Reserved>())
 {  
 #ifdef _DEBUG   
@@ -57,11 +18,6 @@ ENG_API Eng::Base::Base() : reserved(std::make_unique<Eng::Base::Reserved>())
 #endif
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Destructor.
- */
 ENG_API Eng::Base::~Base()
 {
 #ifdef _DEBUG
@@ -69,24 +25,12 @@ ENG_API Eng::Base::~Base()
 #endif
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Gets a reference to the (unique) singleton instance.
- * @return reference to singleton instance
- */
 Eng::Base ENG_API &Eng::Base::getInstance()
 {
    static Base instance;
    return instance;
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Init internal components. 
- * @return TF
- */
 bool ENG_API Eng::Base::init()
 {
    // Already initialized?
@@ -104,12 +48,6 @@ bool ENG_API Eng::Base::init()
    return true;
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Free internal components.
- * @return TF
- */
 bool ENG_API Eng::Base::free()
 {
    // Not initialized?
