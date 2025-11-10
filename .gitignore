@@ -1,0 +1,5 @@
+.idea/
+client/bin/
+client/obj/
+engine/bin/
+engine/obj
