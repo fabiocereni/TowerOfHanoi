@@ -1,12 +1,15 @@
-.idea/
+# Cartella di Visual Studio
+.vs/
+
+# Cartelle di build del client
 client/bin/
 client/obj/
-client/x64
+client/x64/
 
+# Cartelle di build dell'engine
 engine/bin/
-engine/obj
-engine/x64
+engine/obj/
+engine/x64/
 
-x64/Debug
-
-.vs/*
+# Cartella di output principale (Debug/Release)
+x64/
