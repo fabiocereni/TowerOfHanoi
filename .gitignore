@@ -3,3 +3,6 @@ client/bin/
 client/obj/
 engine/bin/
 engine/obj
+.vs
+client/x64
+engine/x64
