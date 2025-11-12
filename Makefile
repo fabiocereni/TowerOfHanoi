@@ -1,10 +1,5 @@
 MAKE = make
 
-MAKE = make
-DEPS_DIR = $(CURDIR)/dependencies
-
-export DEPS_DIR
-
 all: build_engine build_client
 
 build_engine: 

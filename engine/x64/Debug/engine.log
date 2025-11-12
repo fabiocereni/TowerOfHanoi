@@ -1,7 +1,5 @@
-﻿  camera.cpp
-  engine.cpp
-  mesh.cpp
-  node.cpp
+﻿  node.cpp
+  object.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,32): error C2259: 'Eng::Node': cannot instantiate abstract class
   (compiling source file 'node.cpp')
       C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.h(11,18):
@@ -32,5 +30,4 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.3520
       C:\Mac\Home\Documents\supsi\terzo_anno\grafica\Gruppo_03\engine\node.h(26,20):
       see declaration of 'Eng::Node::render'
   
-  object.cpp
   Generating Code...
