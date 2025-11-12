@@ -13,3 +13,6 @@ engine/x64/
 
 # Cartella di output principale (Debug/Release)
 x64/
+
+.DS_Store
+
