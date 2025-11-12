@@ -1,5 +1,12 @@
 .idea/
 client/bin/
 client/obj/
+client/x64
+
 engine/bin/
 engine/obj
+engine/x64
+
+x64/Debug
+
+.vs
