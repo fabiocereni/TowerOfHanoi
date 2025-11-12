@@ -3,8 +3,7 @@
 
 #include <glm/glm.hpp>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 
    // Init engine:
    Eng::Base &eng = Eng::Base::getInstance();
