@@ -34,8 +34,7 @@
               "RelativeToolTip": "engine\\object.h",
               "ViewState": "AgIAAAcAAAAAAAAAAAAAABoAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-11-03T09:51:45.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-03T09:51:45.163Z"
             },
             {
               "$type": "Document",
@@ -43,8 +42,8 @@
               "Title": "engine.h",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\supsi\\terzo_anno\\grafica\\Gruppo_03\\engine\\engine.h",
               "RelativeDocumentMoniker": "engine\\engine.h",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\supsi\\terzo_anno\\grafica\\Gruppo_03\\engine\\engine.h*",
-              "RelativeToolTip": "engine\\engine.h*",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\supsi\\terzo_anno\\grafica\\Gruppo_03\\engine\\engine.h",
+              "RelativeToolTip": "engine\\engine.h",
               "ViewState": "AgIAABAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-11-03T09:49:44.856Z",
@@ -60,8 +59,7 @@
               "RelativeToolTip": "engine\\node.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-11-03T09:46:54.621Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-03T09:46:54.621Z"
             }
           ]
         }
