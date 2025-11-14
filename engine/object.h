@@ -3,25 +3,25 @@
 #include <string>
 
 namespace Eng {
-
    class ENG_API Object {
-   protected:
-      unsigned long id;
-      std::string name;
 
    public:
-      Object();
-      virtual ~Object();
+      Object() noexcept;
+      virtual ~Object() noexcept;
       Object(const Object& other);
       Object(Object&& other) noexcept;
       Object& operator=(const Object& other);
       Object& operator=(Object&& other) noexcept;
 
-      virtual void render() = 0; // importante per override in Node
+      virtual void render() = 0;
 
-      void setName(const std::string& n);
-      std::string getName() const;
-      unsigned long getId() const;
+      void setName(const std::string& n) noexcept;
+      std::string getName() const noexcept;
+      unsigned long getId() const noexcept;
+      void setId(unsigned int id) noexcept;
+
+   protected:
+      unsigned long id_;
+      std::string name_;
    };
-
-} // namespace Eng
+}
