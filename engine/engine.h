@@ -47,7 +47,7 @@ namespace Eng {
       private:
          // Reserved:
          struct Reserved;
-         std::unique_ptr<Reserved> reserved;
+         std::unique_ptr<Reserved> reserved_;
 
          Base();
    };

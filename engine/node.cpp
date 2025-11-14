@@ -5,43 +5,43 @@
 using namespace Eng;
 
 ENG_API Node::Node()
-: matrix(1.0f), parent(nullptr), children() {
-    #ifdef _DEBUG
-    std::cout << "[+] " << std::source_location::current().function_name() << " invoked\n";
-    #endif
+   : matrix(1.0f), parent(nullptr), children() {
+#ifdef _DEBUG
+   std::cout << "[+] " << std::source_location::current().function_name() << " invoked\n";
+#endif
 }
 
 ENG_API Node::~Node() {
-    #ifdef _DEBUG
-    std::cout << "[-] " << std::source_location::current().function_name() << " invoked\n";
-    #endif
+#ifdef _DEBUG
+   std::cout << "[-] " << std::source_location::current().function_name() << " invoked\n";
+#endif
 }
 
 ENG_API Node::Node(const Node& other)
-: Object(other), matrix(other.matrix) {
+   : Object(other), matrix(other.matrix) {
 }
 
 ENG_API Node::Node(Node&& other) noexcept
-: Object(std::move(other)), matrix(other.matrix),
-parent(std::move(other.parent)), children(std::move(other.children)) {
+   : Object(std::move(other)), matrix(other.matrix),
+   parent(std::move(other.parent)), children(std::move(other.children)) {
 }
 
 ENG_API Node& Node::operator=(const Node& other) {
-    if (this != &other) {
-        Object::operator=(other);
-        matrix = other.matrix;
-    }
-    return *this;
+   if (this != &other) {
+      Object::operator=(other);
+      matrix = other.matrix;
+   }
+   return *this;
 }
 
 ENG_API Node& Node::operator=(Node&& other) noexcept {
-    if (this != &other) {
-        Object::operator=(std::move(other));
-        matrix = other.matrix;
-        parent = std::move(other.parent);
-        children = std::move(other.children);
-    }
-    return *this;
+   if (this != &other) {
+      Object::operator=(std::move(other));
+      matrix = other.matrix;
+      parent = std::move(other.parent);
+      children = std::move(other.children);
+   }
+   return *this;
 }
 
 ENG_API glm::mat4 Node::getMatrix() const { return matrix; }
@@ -55,31 +55,31 @@ ENG_API void Node::setParent(std::shared_ptr<Node> p) { parent = std::move(p); }
 ENG_API std::vector<std::shared_ptr<Node>>& Node::getChildren() { return children; }
 
 ENG_API void Node::addChildren(std::shared_ptr<Node> child) {
-    children.push_back(std::move(child));
+   children.push_back(std::move(child));
 }
 
 ENG_API std::shared_ptr<Node> Node::removeChildren(const std::string& name_) {
-    for (auto it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getName() == name_) {
-            auto removed = std::move(*it);
-            children.erase(it);
-            return removed;
-        }
-    }
-    return nullptr;
+   for (auto it = children.begin(); it != children.end(); ++it) {
+      if ((*it)->getName() == name_) {
+         auto removed = std::move(*it);
+         children.erase(it);
+         return removed;
+      }
+   }
+   return nullptr;
 }
 
 ENG_API std::shared_ptr<Node> Node::returnChild(const std::string& name_) {
-    for (auto& c : children) {
-        if (c->getName() == name_) {
-            return c;
-        }
-    }
-    return nullptr;
+   for (auto& c : children) {
+      if (c->getName() == name_) {
+         return c;
+      }
+   }
+   return nullptr;
 }
 
 ENG_API glm::mat4 Node::getWorldMatrix() const {
-    if (parent)
-        return parent->getWorldMatrix() * matrix;
-    return matrix;
+   if (parent)
+      return parent->getWorldMatrix() * matrix;
+   return matrix;
 }

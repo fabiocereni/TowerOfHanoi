@@ -5,22 +5,21 @@
 namespace Eng {
 
    class ENG_API Camera : public Node {
-   protected:
-      glm::mat4 projectionMatrix;
-
    public:
-      Camera();
-      virtual ~Camera();
+      Camera() noexcept;
+      virtual ~Camera() noexcept;
       Camera(const Camera& other);
       Camera(Camera&& other) noexcept;
       Camera& operator=(const Camera& other);
       Camera& operator=(Camera&& other) noexcept;
 
-      virtual void render() override;
+      virtual void render() = 0;
 
-      void setProjectionMatrix(const glm::mat4& matrix);
-      glm::mat4 getProjectionMatrix() const;
-      glm::mat4 computeCameraInverse() const;
+      void setProjectionMatrix(const glm::mat4& matrix) noexcept;
+      glm::mat4 getProjectionMatrix() const noexcept;
+      glm::mat4 computeCameraInverse() const noexcept;
+
+   protected:
+      glm::mat4 projectionMatrix_;
    };
-
 }
