@@ -2,11 +2,11 @@ variables:
   BUILD_TYPE: "Release"
   ENGINE_DIR: "$CI_PROJECT_DIR/engine"
   CLIENT_DIR: "$CI_PROJECT_DIR/client"
+  DEP_DIR: "$CI_PROJECT_DIR/dependencies"
 
 stages:
   - engine
   - client
-
 
 cache:
   key: "make-$CI_COMMIT_REF_SLUG"
@@ -38,7 +38,7 @@ client:
     - cd $CLIENT_DIR
   script:
     - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
+    - make all BUILD_TYPE=$BUILD_TYPE DEP_INCLUDE="-I$DEP_DIR/glm/include -I$DEP_DIR/freeglut/include"
   after_script:
     - cd $CI_PROJECT_DIR
   artifacts:
