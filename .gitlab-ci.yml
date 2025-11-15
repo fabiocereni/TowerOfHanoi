@@ -27,6 +27,7 @@ engine:
   artifacts:
     paths:
       - engine/bin/
+      - $DEP_DIR/
     expire_in: 1 hour
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
@@ -34,11 +35,13 @@ engine:
 client:
   stage: client
   image: gcc:12
+  dependencies:
+    - engine
   before_script:
     - cd $CLIENT_DIR
   script:
     - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE DEP_INCLUDE="-I$DEP_DIR/glm/include -I$DEP_DIR/freeglut/include"
+    - make all BUILD_TYPE=$BUILD_TYPE
   after_script:
     - cd $CI_PROJECT_DIR
   artifacts:
