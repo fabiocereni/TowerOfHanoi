@@ -1,0 +1,49 @@
+variables:
+  BUILD_TYPE: "Release"
+  ENGINE_DIR: "$CI_PROJECT_DIR/engine"
+  CLIENT_DIR: "$CI_PROJECT_DIR/client"
+
+stages:
+  - engine
+  - client
+
+
+cache:
+  key: "make-$CI_COMMIT_REF_SLUG"
+  paths:
+    - engine/build/
+    - client/build/
+
+engine:
+  stage: engine
+  image: gcc:12
+  before_script:
+    - cd $ENGINE_DIR
+  script:
+    - make clean
+    - make all BUILD_TYPE=$BUILD_TYPE
+  after_script:
+    - cd $CI_PROJECT_DIR
+  artifacts:
+    paths:
+      - engine/bin/
+    expire_in: 1 hour
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
+
+client:
+  stage: client
+  image: gcc:12
+  before_script:
+    - cd $CLIENT_DIR
+  script:
+    - make clean
+    - make all BUILD_TYPE=$BUILD_TYPE
+  after_script:
+    - cd $CI_PROJECT_DIR
+  artifacts:
+    paths:
+      - client/bin/
+    expire_in: 1 hour
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
