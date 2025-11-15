@@ -1,36 +1,38 @@
 #pragma once
 #include "camera.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Eng {
     class ENG_API Orthographic_Camera final : public Camera {
 
     public:
-        Orthographic_Camera() noexcept;
-        Orthographic_Camera(float left, float right,
-                            float top, float bottom,
-                            float nearPlane, float farPlane) noexcept;
-        virtual ~Orthographic_Camera() noexcept;
+        Orthographic_Camera() noexcept = default;
+        Orthographic_Camera(float left,float right,float top, float bottom,float nearPlane,float farPlane) noexcept;
 
-        Orthographic_Camera(const Orthographic_Camera& other);
-        Orthographic_Camera(Orthographic_Camera&& other) noexcept;
-        Orthographic_Camera& operator=(const Orthographic_Camera& other);
-        Orthographic_Camera& operator=(Orthographic_Camera&& other) noexcept;
+        virtual ~Orthographic_Camera() noexcept = default;
+
+        Orthographic_Camera(const Orthographic_Camera& other) = default;
+        Orthographic_Camera(Orthographic_Camera&& other) noexcept = default;
+        Orthographic_Camera& operator=(const Orthographic_Camera& other) = default;
+        Orthographic_Camera& operator=(Orthographic_Camera&& other) noexcept = default;
 
         void render() override;
 
-        float getLeft() const noexcept;
-        float getRight() const noexcept;
-        float getTop() const noexcept;
-        float getBottom() const noexcept;
-        float getFarPlane() const noexcept;
-        float getNearPlane() const noexcept;
+        [[nodiscard]] float getLeft() const noexcept;
+        [[nodiscard]] float getRight() const noexcept;
+        [[nodiscard]] float getTop() const noexcept;
+        [[nodiscard]] float getBottom() const noexcept;
+        [[nodiscard]] float getFarPlane() const noexcept;
+        [[nodiscard]] float getNearPlane() const noexcept;
 
-        void setLeft(float value) noexcept;
-        void setRight(float value) noexcept;
-        void setTop(float value) noexcept;
-        void setBottom(float value) noexcept;
-        void setFarPlane(float value) noexcept;
-        void setNearPlane(float value) noexcept;
+
+
+        void setLeft(float left) noexcept;
+        void setRight(float right) noexcept;
+        void setTop(float top) noexcept;
+        void setBottom(float bottom) noexcept;
+        void setFarPlane(float farPlane) noexcept;
+        void setNearPlane(float nearPlane) noexcept;
 
     protected:
         float left_;

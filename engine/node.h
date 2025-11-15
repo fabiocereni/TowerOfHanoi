@@ -11,15 +11,15 @@ namespace Eng {
 
    public:
       Node() noexcept;
-      virtual ~Node() noexcept;
-      Node(const Node& other);
-      Node(Node&& other) noexcept;
-      Node& operator=(const Node& other);
-      Node& operator=(Node&& other) noexcept;
+      ~Node() noexcept override = default;
+      Node(const Node& other) = default;
+      Node(Node&& other) noexcept = default;
+      Node& operator=(const Node& other) = default;
+      Node& operator=(Node&& other) noexcept = default;
 
-      virtual void render() = 0;
+      void render() override = 0;
 
-      glm::mat4 getMatrix() const noexcept;
+      [[nodiscard]] glm::mat4 getMatrix() const noexcept;
       void setMatrix(const glm::mat4& matrix) noexcept;
 
       std::shared_ptr<Node>& getParent() noexcept;
@@ -28,9 +28,9 @@ namespace Eng {
       std::vector<std::shared_ptr<Node>>& getChildren() noexcept;
       void addChildren(std::shared_ptr<Node> child) noexcept;
       std::shared_ptr<Node> removeChildren(const std::string& name);
-      std::shared_ptr<Node> returnChild(const std::string& name) const;
-      std::shared_ptr<Node> returnChild(const int& id) const;
-      glm::mat4 getWorldMatrix() const noexcept;
+      [[nodiscard]] std::shared_ptr<Node> returnChild(const std::string& name) const;
+      [[nodiscard]] std::shared_ptr<Node> returnChild(const unsigned long& id) const;
+      [[nodiscard]] glm::mat4 getWorldMatrix() const noexcept;
 
    protected:
       glm::mat4 matrix_;

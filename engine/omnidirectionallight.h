@@ -1,5 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
+
+#include "light.h"
 #include "node.h"
 
 enum class attenuation_mode_enum {
@@ -9,29 +11,31 @@ enum class attenuation_mode_enum {
 };
 
 namespace Eng {
-   class ENG_API OmnidirectionalLight {
+   class ENG_API OmnidirectionalLight final : public Light {
 
    public:
-      OmnidirectionalLight() noexcept;
+      OmnidirectionalLight() noexcept = default;
       OmnidirectionalLight(const std::shared_ptr<Node>& node,
                const glm::mat4& worldMatrix,
                const glm::vec4& position,
                attenuation_mode_enum attenuationMode,
                float attenuationValue);
 
-      virtual ~OmnidirectionalLight() noexcept;
+      ~OmnidirectionalLight() noexcept override = default;
 
-      OmnidirectionalLight(const OmnidirectionalLight& other);
-      OmnidirectionalLight(OmnidirectionalLight&& other) noexcept;
+      OmnidirectionalLight(const OmnidirectionalLight& other) = default;
+      OmnidirectionalLight(OmnidirectionalLight&& other) noexcept = default;
 
-      OmnidirectionalLight& operator=(const OmnidirectionalLight& other);
-      OmnidirectionalLight& operator=(OmnidirectionalLight&& other) noexcept;
+      OmnidirectionalLight& operator=(const OmnidirectionalLight& other) = default;
+      OmnidirectionalLight& operator=(OmnidirectionalLight&& other) noexcept = default;
 
-      std::shared_ptr<Node> getNodePtr() const noexcept;
-      glm::mat4 getNodeWorldMatrix() const noexcept;
-      glm::vec4 getPosition() const noexcept;
-      attenuation_mode_enum getAttenuationMode() const noexcept;
-      float getAttenuationValue() const noexcept;
+      void render() override;
+
+      [[nodiscard]] std::shared_ptr<Node> getNodePtr() const noexcept;
+      [[nodiscard]] glm::mat4 getNodeWorldMatrix() const noexcept;
+      [[nodiscard]] glm::vec4 getPosition() const noexcept;
+      [[nodiscard]] attenuation_mode_enum getAttenuationMode() const noexcept;
+      [[nodiscard]] float getAttenuationValue() const noexcept;
 
       void setNodePtr(const std::shared_ptr<Node>& node) noexcept;
       void setNodeWorldMatrix(const glm::mat4& worldMatrix) noexcept;

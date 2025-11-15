@@ -41,8 +41,8 @@ namespace Eng {
          static Base &getInstance();
 
          // Init/free:
-         bool init();
-         bool free();   
+         bool init() const;
+         bool free() const;
 
       private:
          // Reserved:

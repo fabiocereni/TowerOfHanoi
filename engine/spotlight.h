@@ -11,27 +11,29 @@ namespace Eng {
       Quadratic
    };
 
-   class ENG_API Spotlight : public Light {
+   class ENG_API Spotlight final : public Light {
 
    public:
-      Spotlight() noexcept;
+      Spotlight() noexcept = default;
       Spotlight(const glm::vec3& direction,
                 float cutoff,
                 AttenuationMode attenuationMode,
                 float attenuationValue) noexcept;
 
-      Spotlight(const Spotlight& other);
-      Spotlight(Spotlight&& other) noexcept;
+      Spotlight(const Spotlight& other) = default;
+      Spotlight(Spotlight&& other) noexcept = default;
 
-      Spotlight& operator=(const Spotlight& other);
-      Spotlight& operator=(Spotlight&& other) noexcept;
+      Spotlight& operator=(const Spotlight& other) = default;
+      Spotlight& operator=(Spotlight&& other) noexcept = default;
 
-      virtual ~Spotlight() noexcept;
+      void render() override;
 
-      glm::vec3 getDirection() const noexcept;
-      float getCutoff() const noexcept;
-      AttenuationMode getAttenuationMode() const noexcept;
-      float getAttenuationValue() const noexcept;
+      ~Spotlight() noexcept override;
+
+      [[nodiscard]] glm::vec3 getDirection() const noexcept;
+      [[nodiscard]] float getCutoff() const noexcept;
+      [[nodiscard]] AttenuationMode getAttenuationMode() const noexcept;
+      [[nodiscard]] float getAttenuationValue() const noexcept;
 
       void setDirection(const glm::vec3& dir) noexcept;
       void setCutoff(float cutoff) noexcept;

@@ -4,27 +4,32 @@
 #include "texture.h"
 
 namespace Eng {
-   class Material {
+   class Material final : public Object {
 
    public:
-      Material() noexcept;
-      Material(const glm::vec4& em, const glm::vec4& am, const glm::vec4& di,
-               const glm::vec4& sp, float sh, const Texture& tex);
+      Material() noexcept = default;
+      Material(const glm::vec4& emission,
+               const glm::vec4& ambient,
+               const glm::vec4& diffuse,
+               const glm::vec4& specular,
+               float shininess, Texture texture);
 
-      virtual ~Material() noexcept;
+      ~Material() noexcept override = default;
 
-      Material(const Material& other);
-      Material(Material&& other) noexcept;
+      Material(const Material& other) = default;
+      Material(Material&& other) noexcept = default;
 
-      Material& operator=(const Material& other);
-      Material& operator=(Material&& other) noexcept;
+      Material& operator=(const Material& other) = default;
+      Material& operator=(Material&& other) noexcept = default;
 
-      glm::vec4 getEmission() const noexcept;
-      glm::vec4 getAmbient() const noexcept;
-      glm::vec4 getDiffuse() const noexcept;
-      glm::vec4 getSpecular() const noexcept;
-      float getShininess() const noexcept;
-      Texture getTexture() const noexcept;
+      void render() override;
+
+      [[nodiscard]] glm::vec4 getEmission() const noexcept;
+      [[nodiscard]] glm::vec4 getAmbient() const noexcept;
+      [[nodiscard]] glm::vec4 getDiffuse() const noexcept;
+      [[nodiscard]] glm::vec4 getSpecular() const noexcept;
+      [[nodiscard]] float getShininess() const noexcept;
+      [[nodiscard]] Texture getTexture() const noexcept;
 
       void setEmission(const glm::vec4& emission) noexcept;
       void setAmbient(const glm::vec4& ambient) noexcept;

@@ -11,7 +11,7 @@ struct Eng::Base::Reserved
    {}
 };
 
-ENG_API Eng::Base::Base() : reserved(std::make_unique<Eng::Base::Reserved>())
+ENG_API Eng::Base::Base() : reserved_(std::make_unique<Eng::Base::Reserved>())
 {  
 #ifdef _DEBUG   
    std::cout << "[+] " << std::source_location::current().function_name() << " invoked" << std::endl;
@@ -25,16 +25,15 @@ ENG_API Eng::Base::~Base()
 #endif
 }
 
-Eng::Base ENG_API &Eng::Base::getInstance()
+ENG_API Eng::Base& Eng::Base::getInstance()
 {
    static Base instance;
    return instance;
 }
 
-bool ENG_API Eng::Base::init()
-{
+ENG_API bool Eng::Base::init() const {
    // Already initialized?
-   if (reserved->initFlag)
+   if (reserved_->initFlag)
    {
       std::cout << "ERROR: engine already initialized" << std::endl;
       return false;
@@ -44,14 +43,13 @@ bool ENG_API Eng::Base::init()
    
    // Done:
    std::cout << "[>] " << LIB_NAME << " initialized" << std::endl;
-   reserved->initFlag = true;
+   reserved_->initFlag = true;
    return true;
 }
 
-bool ENG_API Eng::Base::free()
-{
+ENG_API bool Eng::Base::free() const {
    // Not initialized?
-   if (!reserved->initFlag)
+   if (!reserved_->initFlag)
    {
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
@@ -61,6 +59,6 @@ bool ENG_API Eng::Base::free()
 
    // Done:
    std::cout << "[<] " << LIB_NAME << " deinitialized" << std::endl;
-   reserved->initFlag = false;
+   reserved_->initFlag = false;
    return true;
 }

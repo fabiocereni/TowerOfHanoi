@@ -1,28 +1,29 @@
 #pragma once
 #include <list>
-
 #include "object.h"
 #include "instance.h"
+#include <algorithm>
 
 namespace Eng {
    class ENG_API List : public Object {
 
    public:
-      List() noexcept;
-      List(const List& other);
+      List() noexcept = default;
+      List(const List& other) = default;
 
-      virtual ~List() noexcept;
+      ~List() noexcept override = default;
 
-      List(List&& other) noexcept;
+      List(List&& other) noexcept = default;
 
-      List& operator=(const List& other);
-      List& operator=(List&& other) noexcept;
+      List& operator=(const List& other) = default;
+      List& operator=(List&& other) noexcept = default;
 
-      std::list<Instance> getRenderList() const noexcept;
+      [[nodiscard]] std::list<Instance> getRenderList() const noexcept;
       void setRenderList(const std::list<Instance>& renderList) noexcept;
 
-      void addToRenderList(const Instance& instance) noexcept;
-      void removeFromRenderList(Instance& instance) noexcept;
+      void addOnTopToRenderList(const Instance& instance) noexcept;
+      void addOnBottomToRenderList(const Instance& instance) noexcept;
+      bool removeFromRenderList(const Instance &instance) noexcept;
 
    protected:
       std::list<Instance> instances_;

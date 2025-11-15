@@ -7,18 +7,18 @@ namespace Eng {
 
    public:
       Object() noexcept;
-      virtual ~Object() noexcept;
-      Object(const Object& other);
-      Object(Object&& other) noexcept;
-      Object& operator=(const Object& other);
-      Object& operator=(Object&& other) noexcept;
+      virtual ~Object() noexcept = default;
+      Object(const Object& other) = default;
+      Object(Object&& other)  noexcept = default;
+      Object& operator=(const Object& other) = default;
+      Object& operator=(Object&& other) noexcept = default;
 
       virtual void render() = 0;
 
-      void setName(const std::string& n) noexcept;
-      std::string getName() const noexcept;
-      unsigned long getId() const noexcept;
-      void setId(unsigned int id) noexcept;
+      void setName(const std::string& name) noexcept;
+      [[nodiscard]] std::string getName() const noexcept;
+      [[nodiscard]] unsigned long getId() const noexcept;
+      void setId(unsigned long id) noexcept;
 
    protected:
       unsigned long id_;

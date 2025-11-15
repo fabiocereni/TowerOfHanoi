@@ -5,12 +5,12 @@ namespace Eng {
    class ENG_API Texture final : public Object {
 
    public:
-      Texture() noexcept;
-      virtual ~Texture() noexcept;
-      Texture(const Texture& other);
-      Texture(Texture&& other) noexcept;
-      Texture& operator=(const Texture& other);
-      Texture& operator=(Texture&& other) noexcept;
+      Texture() noexcept = default;
+      ~Texture() noexcept override = default;
+      Texture(const Texture& other) = default;
+      Texture(Texture&& other) noexcept = default;
+      Texture& operator=(const Texture& other) = default;
+      Texture& operator=(Texture&& other) noexcept = default;
 
       void render() override;
 
