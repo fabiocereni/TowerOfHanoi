@@ -7,17 +7,17 @@ namespace Eng {
    class ENG_API Camera : public Node {
    public:
       Camera() noexcept;
-      virtual ~Camera() noexcept;
-      Camera(const Camera& other);
-      Camera(Camera&& other) noexcept;
-      Camera& operator=(const Camera& other);
-      Camera& operator=(Camera&& other) noexcept;
+      ~Camera() noexcept override = default;
+      Camera(const Camera& other) = default;
+      Camera(Camera&& other) noexcept = default;
+      Camera& operator=(const Camera& other) = default;
+      Camera& operator=(Camera&& other) noexcept = default;
 
-      virtual void render() = 0;
+      void render() override = 0;
 
       void setProjectionMatrix(const glm::mat4& matrix) noexcept;
-      glm::mat4 getProjectionMatrix() const noexcept;
-      glm::mat4 computeCameraInverse() const noexcept;
+      [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept;
+      [[nodiscard]] glm::mat4 computeCameraInverse() const noexcept;
 
    protected:
       glm::mat4 projectionMatrix_;
