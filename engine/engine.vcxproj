@@ -81,18 +81,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="directionallight.cpp" />
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="instance.cpp" />
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="list.cpp" />
+    <ClCompile Include="material.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="node.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="omnidirectionallight.cpp" />
+    <ClCompile Include="orthographic_camera.cpp" />
+    <ClCompile Include="perspective_camera.cpp" />
+    <ClCompile Include="spotlight.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="directionallight.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="instance.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="list.h" />
+    <ClInclude Include="material.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="node.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="omnidirectionallight.h" />
+    <ClInclude Include="orthographic_camera.h" />
+    <ClInclude Include="perspective_camera.h" />
+    <ClInclude Include="spotlight.h" />
+    <ClInclude Include="texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="engine.cbp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
