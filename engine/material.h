@@ -6,6 +6,7 @@
 namespace Eng {
    class Material final : public Object {
 
+
    public:
       Material() noexcept = default;
       Material(const glm::vec4& emission,
