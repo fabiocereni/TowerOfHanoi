@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "node.h"
+#include "material.h"
+
 
 namespace Eng {
    class ENG_API Mesh final : public Node {
@@ -15,7 +17,14 @@ namespace Eng {
 
       void render() override;
 
+      [[nodiscard]] std::shared_ptr<Material> getMaterial() const noexcept;
+      [[nodiscard]] std::vector<glm::vec3> getVertexes() const noexcept;
+
+      void setMaterial(const std::shared_ptr<Material>& material) noexcept;
+      void setVertexes(const std::vector<glm::vec3>& vertexes) noexcept;
+
    protected:
       std::vector<glm::vec3> vertexes_;
+      std::shared_ptr<Material> material_;
    };
 }
