@@ -2,7 +2,7 @@ variables:
   BUILD_TYPE: "Release"
   ENGINE_DIR: "$CI_PROJECT_DIR/engine"
   CLIENT_DIR: "$CI_PROJECT_DIR/client"
-  DEP_DIR: "dependencies"   # cartella nella ROOT del progetto
+  DEP_DIR: "$CI_PROJECT_DIR/dependencies"   # cartella nella ROOT del progetto
 
 stages:
   - engine
