@@ -4,7 +4,7 @@
 
 using namespace Eng;
 
-Material::Material(const glm::vec4& emission,
+ENG_API Material::Material(const glm::vec4& emission,
                            const glm::vec4& ambient,
                            const glm::vec4& diffuse,
                            const glm::vec4& specular,
@@ -14,52 +14,52 @@ Material::Material(const glm::vec4& emission,
 
 
 
-glm::vec4 Material::getAmbient() const noexcept {
+ENG_API glm::vec4 Material::getAmbient() const noexcept {
    return ambient_;
 }
 
-glm::vec4 Material::getDiffuse() const noexcept {
+ENG_API glm::vec4 Material::getDiffuse() const noexcept {
    return diffuse_;
 }
 
-glm::vec4 Material::getEmission() const noexcept {
+ENG_API glm::vec4 Material::getEmission() const noexcept {
    return emission_;
 }
 
-float Material::getShininess() const noexcept {
+ENG_API float Material::getShininess() const noexcept {
    return shininess_;
 }
 
-glm::vec4 Material::getSpecular() const noexcept {
+ENG_API glm::vec4 Material::getSpecular() const noexcept {
    return specular_;
 }
 
-Texture Material::getTexture() const noexcept {
+ENG_API Texture Material::getTexture() const noexcept {
    return texture_;
 }
 
-void Material::setAmbient(const glm::vec4 &ambient) noexcept {
+ENG_API void Material::setAmbient(const glm::vec4 &ambient) noexcept {
    ambient_ = ambient;
 }
 
-void Material::setDiffuse(const glm::vec4 &diffuse) noexcept {
+ENG_API void Material::setDiffuse(const glm::vec4 &diffuse) noexcept {
    diffuse_ = diffuse;
 }
 
-void Material::setEmission(const glm::vec4 &emission) noexcept {
+ENG_API void Material::setEmission(const glm::vec4 &emission) noexcept {
    emission_ = emission;
 }
 
-void Material::setShininess(float shininess) noexcept {
+ENG_API void Material::setShininess(float shininess) noexcept {
    shininess_ = shininess;
 }
 
-void Material::setSpecular(const glm::vec4 &specular) noexcept {
+ENG_API void Material::setSpecular(const glm::vec4 &specular) noexcept {
    specular_ = specular;
 }
 
-void Material::setTexture(const Texture &texture) noexcept {
+ENG_API void Material::setTexture(const Texture &texture) noexcept {
    texture_ = texture;
 }
 
-void Material::render() {}
+ENG_API void Material::render() {}
