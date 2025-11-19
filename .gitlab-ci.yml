@@ -47,6 +47,7 @@ client:
   artifacts:
     paths:
       - client/bin/
+      - dependencies/
     expire_in: 1 hour
 
   rules:
