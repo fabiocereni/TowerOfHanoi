@@ -4,7 +4,7 @@
 #include "texture.h"
 
 namespace Eng {
-   class Material final : public Object {
+   class ENG_API Material final : public Object {
 
 
    public:

@@ -23,7 +23,6 @@
 #endif
 
 
-
 namespace Eng {
 
    // You can subinclude here other headers of your engine...
@@ -53,4 +52,3 @@ namespace Eng {
    };
 
 };
-
