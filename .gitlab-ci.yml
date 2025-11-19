@@ -2,7 +2,7 @@ variables:
   BUILD_TYPE: "Release"
   ENGINE_DIR: "$CI_PROJECT_DIR/engine"
   CLIENT_DIR: "$CI_PROJECT_DIR/client"
-  DEP_DIR: "dependencies"        # <<< IMPORTANTE: percorso RELATIVO!
+  DEP_DIR: "dependencies"   # cartella nella ROOT del progetto
 
 stages:
   - engine
@@ -18,17 +18,15 @@ engine:
   stage: engine
   image: gcc:12
 
-  before_script:
-    - cd $ENGINE_DIR
-
   script:
+    - cd engine
     - make clean
     - make all BUILD_TYPE=$BUILD_TYPE
 
   artifacts:
     paths:
       - engine/bin/
-      - $DEP_DIR/               # <<< ora verrà incluso correttamente
+      - dependencies/        # <<< ORA prende la cartella GIUSTA, quella in root
     expire_in: 1 hour
 
   rules:
@@ -38,14 +36,11 @@ client:
   stage: client
   image: gcc:12
   dependencies:
-    - engine                    # <<< recupera gli artifacts
-
-  before_script:
-    - cd $CLIENT_DIR
-    # Copia le dipendenze arrivate dagli artifacts
-    - cp -r ../$DEP_DIR ../engine/
+    - engine
 
   script:
+    - cd client
+    - cp -r ../dependencies ../engine/       # <<< ora esiste davvero
     - make clean
     - make all BUILD_TYPE=$BUILD_TYPE
 
