@@ -3,7 +3,7 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = -I../engine/include -I../dependencies
+INC = -I../engine -I../dependencies
 CFLAGS = -Wall -std=c++20 -fexceptions
 RCFLAGS =
 RESINC =
