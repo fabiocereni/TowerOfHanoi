@@ -37,10 +37,10 @@ client:
   image: gcc:12
   dependencies:
     - engine
+    - engine
 
   script:
-    - cd client
-    - cp -r ../dependencies ../engine/       # <<< ora esiste davvero
+    - cd client      # <<< ora esiste davvero
     - make clean
     - make all BUILD_TYPE=$BUILD_TYPE
 
