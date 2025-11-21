@@ -1,7 +1,6 @@
 #include "engine.h"
 #include <iostream>
 
-#include <glm/glm.hpp>
 
 int main(int argc, char *argv[]) {
 
