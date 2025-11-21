@@ -25,7 +25,7 @@ namespace Eng {
       std::shared_ptr<Node>& getParent() noexcept;
       void setParent(std::shared_ptr<Node> parent) noexcept;
 
-      std::vector<std::shared_ptr<Node>>& getChildren() noexcept;
+      std::vector<std::shared_ptr<Node>>& getChildrens() noexcept;
       void addChildren(std::shared_ptr<Node> child) noexcept;
       std::shared_ptr<Node> removeChildren(const std::string& name);
       [[nodiscard]] std::shared_ptr<Node> returnChild(const std::string& name) const;
@@ -35,6 +35,6 @@ namespace Eng {
    protected:
       glm::mat4 matrix_;
       std::shared_ptr<Node> parent_;
-      std::vector<std::shared_ptr<Node>> children_;
+      std::vector<std::shared_ptr<Node>> childrens_;
    };
 }

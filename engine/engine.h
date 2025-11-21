@@ -1,6 +1,27 @@
+/**
+* @file		engine.h
+ * @brief	Graphics engine main include file
+ *
+ * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch] << change this to your group members
+ */
 #pragma once
-#include <memory> 
 
+
+
+//////////////
+// #INCLUDE //
+//////////////
+
+   // C/C++:
+   #include <memory>
+
+
+
+/////////////
+// VERSION //
+/////////////
+
+   // Generic info:
 #ifdef _DEBUG
    #define LIB_NAME      "My Graphics Engine v0.1a (debug)"   ///< Library credits
 #else
@@ -15,40 +36,71 @@
       #define ENG_API __declspec(dllexport)
    #else
       #define ENG_API __declspec(dllimport)
-   #endif      
-// CONTROLLARE!!!
-#pragma warning(disable : 4251)
-#else
-#define ENG_API __attribute__((visibility("default")))
+   #endif
+
+   // Get rid of annoying warnings:
+   #pragma warning(disable : 4251)
+#else // Under linux
+   #define ENG_API
 #endif
 
 
+
+///////////////
+// NAMESPACE //
+///////////////
+
 namespace Eng {
+
+
+
+   //////////////
+   // #INCLUDE //
+   //////////////
 
    // You can subinclude here other headers of your engine...
 
+
+
+   ///////////////////////
+   // MAIN ENGINE CLASS //
+   ///////////////////////
+
+   /**
+    * @brief Base engine main class. This class is a singleton.
+    */
    class ENG_API Base final
    {
-      public:
-         Base(Base const &) = delete;
-         ~Base();
+      //////////
+   public: //
+      //////////
 
-         // Operators:
-         void operator=(Base const &) = delete;
+      // Const/dest:
+      Base(Base const &) = delete;
+      ~Base();
 
-         // Singleton:
-         static Base &getInstance();
+      // Operators:
+      void operator=(Base const &) = delete;
 
-         // Init/free:
-         bool init() const;
-         bool free() const;
+      // Singleton:
+      static Base &getInstance();
 
-      private:
-         // Reserved:
-         struct Reserved;
-         std::unique_ptr<Reserved> reserved_;
+      // Init/free:
+      bool init() const;
+      bool free() const;
 
-         Base();
+
+      ///////////
+   private: //
+      ///////////
+
+      // Reserved:
+      struct Reserved;
+      std::unique_ptr<Reserved> reserved_;
+
+      // Const/dest:
+      Base();
    };
 
-};
+}; // end of namespace Eng::
+
