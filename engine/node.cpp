@@ -28,19 +28,19 @@ ENG_API void Node::setParent(std::shared_ptr<Node> p) noexcept {
    parent_ = std::move(p);
 }
 
-ENG_API std::vector<std::shared_ptr<Node>>& Node::getChildren() noexcept {
-   return children_;
+ENG_API std::vector<std::shared_ptr<Node>>& Node::getChildrens() noexcept {
+   return childrens_;
 }
 
 ENG_API void Node::addChildren(std::shared_ptr<Node> child) noexcept {
-   children_.push_back(std::move(child));
+   childrens_.push_back(std::move(child));
 }
 
 ENG_API std::shared_ptr<Node> Node::removeChildren(const std::string& name) {
-   for (auto it = children_.begin(); it != children_.end(); ++it) {
+   for (auto it = childrens_.begin(); it != childrens_.end(); ++it) {
       if ((*it)->getName() == name) {
          auto removed = std::move(*it);
-         children_.erase(it);
+         childrens_.erase(it);
          return removed;
       }
    }
@@ -48,7 +48,7 @@ ENG_API std::shared_ptr<Node> Node::removeChildren(const std::string& name) {
 }
 
 ENG_API std::shared_ptr<Node> Node::returnChild(const std::string& name) const {
-   for (auto& c : children_) {
+   for (auto& c : childrens_) {
       if (c->getName() == name) {
          return c;
       }
@@ -63,7 +63,7 @@ ENG_API glm::mat4 Node::getWorldMatrix() const noexcept {
 }
 
 ENG_API std::shared_ptr<Node> Node::returnChild(const unsigned long& id) const {
-   for (const auto& c : children_) {
+   for (const auto& c : childrens_) {
       if (c->getId() == id)
          return c;
    }

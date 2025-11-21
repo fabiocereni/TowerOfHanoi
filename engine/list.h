@@ -5,7 +5,7 @@
 #include <algorithm>
 
 namespace Eng {
-   class ENG_API List : public Object {
+   class ENG_API List final : public Object {
 
    public:
       List() noexcept = default;
@@ -24,6 +24,12 @@ namespace Eng {
       void addOnTopToRenderList(const Instance& instance) noexcept;
       void addOnBottomToRenderList(const Instance& instance) noexcept;
       bool removeFromRenderList(const Instance &instance) noexcept;
+
+      void pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix);
+      void render() override;
+
+      //da chiedere
+      void render(const glm::mat4 &C);
 
    protected:
       std::list<Instance> instances_;
