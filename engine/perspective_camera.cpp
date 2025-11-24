@@ -48,6 +48,6 @@ ENG_API void Perspective_Camera::setFov(const float fov) noexcept {
 
 
 
-ENG_API void Perspective_Camera::render() {
+ENG_API void Perspective_Camera::render(const glm::mat4 &C) {
 
 }

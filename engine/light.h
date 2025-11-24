@@ -22,7 +22,7 @@ namespace Eng {
       Light& operator=(const Light& other) = default;
       Light& operator=(Light&& other) noexcept = default;
 
-      void render() override;
+      void render(const glm::mat4 &C) override;
 
       [[nodiscard]] bool getSmoothShading() const noexcept;
       [[nodiscard]] int getLightNumber() const noexcept;

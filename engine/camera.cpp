@@ -6,15 +6,9 @@ using namespace Eng;
 
 ENG_API Camera::Camera() noexcept
                : projectionMatrix_(1.0f) {
-#ifdef _DEBUG
-   std::cout << "[+] " << std::source_location::current().function_name() << " invoked\n";
-#endif
 }
 
-ENG_API void Camera::render() {
-#ifdef _DEBUG
-   std::cout << "[Camera::render] Rendering camera '" << name_ << "'\n";
-#endif
+ENG_API void Camera::render(const glm::mat4 &C) {
 }
 
 ENG_API void Camera::setProjectionMatrix(const glm::mat4& matrix) noexcept {

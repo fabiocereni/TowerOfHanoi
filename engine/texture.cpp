@@ -2,4 +2,4 @@
 
 using namespace Eng;
 
-ENG_API void Texture::render() {}
+ENG_API void Texture::render(const glm::mat4 &C) {}

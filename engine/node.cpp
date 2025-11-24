@@ -6,9 +6,6 @@ using namespace Eng;
 
 ENG_API Node::Node() noexcept
             : matrix_(1.0f), parent_(nullptr) {
-#ifdef _DEBUG
-   std::cout << "[+] " << std::source_location::current().function_name() << " invoked\n";
-#endif
 }
 
 
@@ -69,3 +66,9 @@ ENG_API std::shared_ptr<Node> Node::returnChild(const unsigned long& id) const {
    }
    return nullptr;
 }
+
+
+ENG_API void Node::render(const glm::mat4 &C) {
+
+}
+

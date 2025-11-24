@@ -15,7 +15,7 @@ namespace Eng {
       Mesh& operator=(const Mesh& other) = default;
       Mesh& operator=(Mesh&& other) noexcept = default;
 
-      void render() override;
+      void render(const glm::mat4 &C) override;
 
       [[nodiscard]] std::shared_ptr<Material> getMaterial() const noexcept;
       [[nodiscard]] std::vector<glm::vec3> getVertexes() const noexcept;

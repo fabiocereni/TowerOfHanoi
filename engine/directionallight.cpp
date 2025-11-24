@@ -31,4 +31,4 @@ ENG_API void DirectionalLight::setPosition(const glm::vec4& position) noexcept {
     position_ = position;
 }
 
-ENG_API void DirectionalLight::render() {}
+ENG_API void DirectionalLight::render(const glm::mat4 &C) {}
