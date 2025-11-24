@@ -26,6 +26,7 @@
    #define ENG_API
 #endif
 
+#include "camera.h"
 
 
 ///////////////
@@ -68,11 +69,12 @@ namespace Eng {
       static Base &getInstance();
 
       // Init/free:
-      bool init() ;
+      bool init(int argc, char **argv) ;
       bool free() const;
 
       void setWindowId(int windowId)  noexcept;
       [[nodiscard]] int getWindowId() const noexcept;
+
 
 
 

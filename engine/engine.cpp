@@ -43,7 +43,7 @@ ENG_API void Eng::Base::setWindowId(const int windowId) noexcept {
 
 
 // const rimosso a causa del setWindowID
-ENG_API bool Eng::Base::init()  {
+ENG_API bool Eng::Base::init(int argc, char **argv)  {
    // Already initialized?
    if (reserved_->initFlag)
    {
@@ -60,8 +60,6 @@ ENG_API bool Eng::Base::init()  {
 
    // FreeGLUT can parse command-line params
    // se passo il valore diretto il programma crusha
-   int argc = 0;
-   char* argv[] = { nullptr };
    glutInit(&argc, argv);
 
    // Set some optional flags:
@@ -85,6 +83,8 @@ ENG_API bool Eng::Base::init()  {
    reserved_->initFlag = true;
    return true;
 }
+
+
 
 ENG_API bool Eng::Base::free() const {
    // Not initialized?
