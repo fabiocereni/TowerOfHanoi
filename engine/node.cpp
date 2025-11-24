@@ -68,6 +68,10 @@ ENG_API std::shared_ptr<Node> Node::returnChild(const unsigned long& id) const {
 }
 
 
+ENG_API std::shared_ptr<Camera> Node::find(std::string& str) const noexcept {
+   return nullptr;
+}
+
 ENG_API void Node::render(const glm::mat4 &C, glm::mat4 M) {
 
 }

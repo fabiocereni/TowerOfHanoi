@@ -32,6 +32,8 @@ namespace Eng {
       [[nodiscard]] std::shared_ptr<Node> returnChild(const unsigned long& id) const;
       [[nodiscard]] glm::mat4 getWorldMatrix() const noexcept;
 
+      std::shared_ptr<Camera> find(std::string& str) const noexcept;
+
    protected:
       glm::mat4 matrix_;
       std::shared_ptr<Node> parent_;
