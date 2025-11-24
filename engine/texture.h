@@ -12,7 +12,7 @@ namespace Eng {
       Texture& operator=(const Texture& other) = default;
       Texture& operator=(Texture&& other) noexcept = default;
 
-      void render(const glm::mat4 &C) override;
+      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
 
    protected:
       // da definire

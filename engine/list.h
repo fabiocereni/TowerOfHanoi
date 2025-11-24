@@ -27,7 +27,7 @@ namespace Eng {
 
       void pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix);
 
-      void render(const glm::mat4 &C);
+      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) const;
 
    protected:
       std::list<Instance> instances_;

@@ -53,4 +53,4 @@ ENG_API void OmnidirectionalLight::setAttenuationValue(float value) noexcept {
    attenuation_value_ = value;
 }
 
-ENG_API void OmnidirectionalLight::render(const glm::mat4 &C) {}
+ENG_API void OmnidirectionalLight::render(const glm::mat4 &C, glm::mat4 M) {}

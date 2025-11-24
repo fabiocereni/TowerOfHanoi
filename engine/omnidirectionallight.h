@@ -29,7 +29,7 @@ namespace Eng {
       OmnidirectionalLight& operator=(const OmnidirectionalLight& other) = default;
       OmnidirectionalLight& operator=(OmnidirectionalLight&& other) noexcept = default;
 
-      void render(const glm::mat4 &C) override;
+      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
 
       [[nodiscard]] std::shared_ptr<Node> getNodePtr() const noexcept;
       [[nodiscard]] glm::mat4 getNodeWorldMatrix() const noexcept;

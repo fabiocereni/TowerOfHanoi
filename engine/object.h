@@ -14,7 +14,7 @@ namespace Eng {
       Object& operator=(const Object& other) = default;
       Object& operator=(Object&& other) noexcept = default;
 
-      virtual void render(const glm::mat4 &C) = 0;
+      virtual void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) = 0;
 
       void setName(const std::string& name) noexcept;
       [[nodiscard]] std::string getName() const noexcept;

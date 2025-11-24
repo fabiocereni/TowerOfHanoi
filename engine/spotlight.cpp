@@ -42,4 +42,4 @@ ENG_API void Spotlight::setAttenuationValue(const float value) noexcept {
    attenuationValue_ = value;
 }
 
-ENG_API void Spotlight::render(const glm::mat4 &C) {}
+ENG_API void Spotlight::render(const glm::mat4 &C, glm::mat4 M) {}
