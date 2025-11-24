@@ -68,17 +68,23 @@ namespace Eng {
       static Base &getInstance();
 
       // Init/free:
-      bool init() const;
+      bool init() ;
       bool free() const;
+
+      void setWindowId(int windowId)  noexcept;
+      [[nodiscard]] int getWindowId() const noexcept;
+
 
 
       ///////////
    private: //
       ///////////
+      int windowId_;
 
       // Reserved:
       struct Reserved;
       std::unique_ptr<Reserved> reserved_;
+
 
       // Const/dest:
       Base();

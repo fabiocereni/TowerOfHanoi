@@ -61,6 +61,6 @@ ENG_API void Orthographic_Camera::setRight(const float right) noexcept {
 }
 
 
-ENG_API void Orthographic_Camera::render(const glm::mat4 &C) {
+ENG_API void Orthographic_Camera::render(const glm::mat4 &C, glm::mat4 M) {
 
 }

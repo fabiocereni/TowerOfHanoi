@@ -8,7 +8,7 @@ ENG_API Camera::Camera() noexcept
                : projectionMatrix_(1.0f) {
 }
 
-ENG_API void Camera::render(const glm::mat4 &C) {
+ENG_API void Camera::render(const glm::mat4 &C, glm::mat4 M) {
 }
 
 ENG_API void Camera::setProjectionMatrix(const glm::mat4& matrix) noexcept {

@@ -13,7 +13,7 @@ namespace Eng {
       Camera& operator=(const Camera& other) = default;
       Camera& operator=(Camera&& other) noexcept = default;
 
-      void render(const glm::mat4 &C) override = 0;
+      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override = 0;
 
       void setProjectionMatrix(const glm::mat4& matrix) noexcept;
       [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept;

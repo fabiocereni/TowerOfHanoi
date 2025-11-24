@@ -68,7 +68,7 @@ ENG_API std::shared_ptr<Node> Node::returnChild(const unsigned long& id) const {
 }
 
 
-ENG_API void Node::render(const glm::mat4 &C) {
+ENG_API void Node::render(const glm::mat4 &C, glm::mat4 M) {
 
 }
 

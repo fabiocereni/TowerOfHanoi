@@ -67,4 +67,4 @@ ENG_API void Light::setAmbientEnabled(const bool enabled) noexcept {
    ambientEnabled_ = enabled;
 }
 
-ENG_API void Light::render(const glm::mat4 &C) {}
+ENG_API void Light::render(const glm::mat4 &C, glm::mat4 M) {}

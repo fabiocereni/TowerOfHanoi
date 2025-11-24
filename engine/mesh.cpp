@@ -25,5 +25,5 @@ ENG_API void Mesh::setVertexes(const std::vector<glm::vec3>& vertexes) noexcept 
 void setMaterial() noexcept;
 void setVertexes() noexcept;
 
-ENG_API void Mesh::render(const glm::mat4 &C) {
+ENG_API void Mesh::render(const glm::mat4 &C, glm::mat4 M) {
 }
