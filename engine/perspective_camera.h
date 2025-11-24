@@ -14,7 +14,7 @@ namespace Eng {
         Perspective_Camera& operator=(const Perspective_Camera& other) = default;
         Perspective_Camera& operator=(Perspective_Camera&& other) noexcept = default;
 
-        void render() override;
+        void render(const glm::mat4 &C) override;
 
         void setFov(float fov) noexcept;
         void setAspectRatio(float aspectRatio) noexcept;

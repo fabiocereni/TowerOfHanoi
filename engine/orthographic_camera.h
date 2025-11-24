@@ -16,7 +16,7 @@ namespace Eng {
         Orthographic_Camera& operator=(const Orthographic_Camera& other) = default;
         Orthographic_Camera& operator=(Orthographic_Camera&& other) noexcept = default;
 
-        void render() override;
+        void render(const glm::mat4 &C) override;
 
         [[nodiscard]] float getLeft() const noexcept;
         [[nodiscard]] float getRight() const noexcept;

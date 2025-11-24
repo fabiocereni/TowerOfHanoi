@@ -2,6 +2,7 @@
 #include <iostream>
 #include <source_location>
 
+
 using namespace Eng;
 
 ENG_API Object::Object() noexcept
@@ -27,4 +28,4 @@ ENG_API void Object::setId(const unsigned long id) noexcept {
    id_ = id;
 }
 
-ENG_API void Object::render() {}
+ENG_API void Object::render(const glm::mat4 &C) {}

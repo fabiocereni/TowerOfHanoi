@@ -44,7 +44,7 @@ ENG_API void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix 
 
 }
 
-//da chiedere
+
 ENG_API void List::render(const glm::mat4 &C) {
 
    // Render each instance by passing its modelview as param:
@@ -52,8 +52,4 @@ ENG_API void List::render(const glm::mat4 &C) {
       glm::mat4 modelview = C * instance.getNodeWorldMatrix();
       instance.getNodePtr()->render(modelview);
    }
-}
-
-ENG_API void List::render() {
-
 }

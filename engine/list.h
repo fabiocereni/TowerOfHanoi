@@ -26,9 +26,7 @@ namespace Eng {
       bool removeFromRenderList(const Instance &instance) noexcept;
 
       void pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix);
-      void render() override;
 
-      //da chiedere
       void render(const glm::mat4 &C);
 
    protected:

@@ -1,6 +1,7 @@
 #pragma once
 #include "engine.h"
 #include <string>
+#include "glm/glm.hpp"
 
 namespace Eng {
    class ENG_API Object {
@@ -13,7 +14,7 @@ namespace Eng {
       Object& operator=(const Object& other) = default;
       Object& operator=(Object&& other) noexcept = default;
 
-      virtual void render() = 0;
+      virtual void render(const glm::mat4 &C) = 0;
 
       void setName(const std::string& name) noexcept;
       [[nodiscard]] std::string getName() const noexcept;

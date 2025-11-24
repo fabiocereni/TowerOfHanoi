@@ -26,7 +26,7 @@ namespace Eng {
       Spotlight& operator=(const Spotlight& other) = default;
       Spotlight& operator=(Spotlight&& other) noexcept = default;
 
-      void render() override;
+      void render(const glm::mat4 &C) override;
 
       ~Spotlight() noexcept override;
 

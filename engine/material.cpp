@@ -62,4 +62,4 @@ ENG_API void Material::setTexture(const Texture &texture) noexcept {
    texture_ = texture;
 }
 
-ENG_API void Material::render() {}
+ENG_API void Material::render(const glm::mat4 &C) {}
