@@ -9,30 +9,33 @@ namespace Eng {
         Orthographic_Camera() noexcept = default;
         Orthographic_Camera(float left,float right,float top, float bottom,float nearPlane,float farPlane) noexcept;
 
-        virtual ~Orthographic_Camera() noexcept = default;
+        ~Orthographic_Camera() noexcept = default;
 
-        Orthographic_Camera(const Orthographic_Camera& other) = default;
+        Orthographic_Camera(const Orthographic_Camera& other) = delete;
         Orthographic_Camera(Orthographic_Camera&& other) noexcept = default;
-        Orthographic_Camera& operator=(const Orthographic_Camera& other) = default;
+        Orthographic_Camera& operator=(const Orthographic_Camera& other) = delete;
         Orthographic_Camera& operator=(Orthographic_Camera&& other) noexcept = default;
 
-        void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
 
-        [[nodiscard]] float getLeft() const noexcept;
-        [[nodiscard]] float getRight() const noexcept;
-        [[nodiscard]] float getTop() const noexcept;
-        [[nodiscard]] float getBottom() const noexcept;
-        [[nodiscard]] float getFarPlane() const noexcept;
-        [[nodiscard]] float getNearPlane() const noexcept;
-
+        [[nodiscard]] float getLeft() const noexcept {return left_;};
+        [[nodiscard]] float getRight() const noexcept {return right_;};
+        [[nodiscard]] float getTop() const noexcept {return top_;};
+        [[nodiscard]] float getBottom() const noexcept {return bottom_;};
+        [[nodiscard]] float getFarPlane() const noexcept {return farPlane_;};
+        [[nodiscard]] float getNearPlane() const noexcept {return nearPlane_;};
 
 
-        void setLeft(float left) noexcept;
-        void setRight(float right) noexcept;
-        void setTop(float top) noexcept;
-        void setBottom(float bottom) noexcept;
-        void setFarPlane(float farPlane) noexcept;
-        void setNearPlane(float nearPlane) noexcept;
+        void setLeft(const float left) noexcept {left_ = left;};
+        void setRight(const float right) noexcept {right_ = right;};
+        void setTop(const float top) noexcept {top_ = top;};
+        void setBottom(const float bottom) noexcept {bottom_ = bottom;};
+        void setFarPlane(const float farPlane) noexcept {farPlane_ = farPlane;};
+        void setNearPlane(const float nearPlane) noexcept {nearPlane_ = nearPlane;};
+
+
+        [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept override {return projectionMatrix_;};
+        void render(const glm::mat4& C, glm::mat4 M) override;
+
 
     protected:
         float left_;
@@ -41,5 +44,7 @@ namespace Eng {
         float bottom_;
         float nearPlane_;
         float farPlane_;
+
+        glm::mat4 projectionMatrix_= {1.0};
     };
 }

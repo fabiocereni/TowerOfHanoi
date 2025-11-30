@@ -2,29 +2,29 @@
 
 using namespace Eng;
 
-ENG_API std::list<Instance> List::getRenderList() const noexcept {
+std::list<Instance> List::getRenderList() const noexcept {
    return instances_;
 }
 
-ENG_API void List::setRenderList(const std::list<Instance> &renderList) noexcept {
+void List::setRenderList(const std::list<Instance> &renderList) noexcept {
    instances_ = renderList;
 }
 
-ENG_API void List::addOnBottomToRenderList(const Instance &instance) noexcept {
+void List::addOnBottomToRenderList(const Instance &instance) noexcept {
    instances_.push_back(instance);
 }
 
-ENG_API void List::addOnTopToRenderList(const Instance &instance) noexcept {
+void List::addOnTopToRenderList(const Instance &instance) noexcept {
    instances_.push_front(instance);
 }
 
-ENG_API bool List::removeFromRenderList(const Instance &instance) noexcept {
+bool List::removeFromRenderList(const Instance &instance) noexcept {
    const size_t oldSize = instances_.size();
    instances_.remove(instance);
    return instances_.size() != oldSize;
 }
 
-ENG_API void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix = glm::mat4(1.0f)) {
+void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix = glm::mat4(1.0f)) {
 
    // Update current transformation:
    matrix = matrix * node_ptr->getMatrix();
@@ -45,7 +45,7 @@ ENG_API void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix 
 }
 
 
-ENG_API void List::render(const glm::mat4 &C, glm::mat4 M) const {
+void List::render(const glm::mat4 &C, glm::mat4 M) const {
 
    // Render each instance by passing its modelview as param:
    for (auto &instance : this->instances_) {
