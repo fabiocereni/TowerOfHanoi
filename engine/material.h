@@ -13,7 +13,7 @@ namespace Eng {
                const glm::vec4& ambient,
                const glm::vec4& diffuse,
                const glm::vec4& specular,
-               float shininess, Texture texture);
+               float shininess/*, Texture texture*/);
 
       ~Material() noexcept override = default;
 
@@ -45,6 +45,6 @@ namespace Eng {
       glm::vec4 diffuse_;
       glm::vec4 specular_;
       float shininess_;
-      Texture texture_;
+      //Texture texture_;
    };
 }

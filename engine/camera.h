@@ -1,25 +1,28 @@
 #pragma once
-#include <glm/mat4x4.hpp>
 #include "node.h"
+#include <glm/glm.hpp>
 
 namespace Eng {
-
    class ENG_API Camera : public Node {
    public:
-      Camera() noexcept;
-      ~Camera() noexcept override = default;
-      Camera(const Camera& other) = default;
-      Camera(Camera&& other) noexcept = default;
-      Camera& operator=(const Camera& other) = default;
-      Camera& operator=(Camera&& other) noexcept = default;
+      Camera() noexcept = default;
+      virtual ~Camera() noexcept = default;
 
-      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override = 0;
+      // camera non copiabile (dovremmo copiare tutta la gerarchia)
+      Camera(const Camera&) = delete;
+      Camera& operator=(const Camera&) = delete;
 
-      void setProjectionMatrix(const glm::mat4& matrix) noexcept;
-      [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept;
-      [[nodiscard]] glm::mat4 computeCameraInverse() const noexcept;
+      // camera spostabile (sposta solo "l'ownership" del puntatore)
+      Camera(Camera&&) noexcept = default;
+      Camera& operator=(Camera&&) noexcept = default;
 
-   protected:
-      glm::mat4 projectionMatrix_;
+      // la view non dipende dalla proiezione
+      glm::mat4 getViewMatrix() const noexcept;
+
+      // deve essere implementata in base al tipo di camera
+      [[nodiscard]] virtual glm::mat4 getProjectionMatrix() const noexcept = 0;
+
+
    };
+
 }

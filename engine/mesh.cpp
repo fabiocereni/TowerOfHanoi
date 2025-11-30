@@ -1,29 +1,30 @@
 #include "mesh.h"
-#include <iostream>
+#include <GL/gl.h>
+
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 using namespace Eng;
 
-
-ENG_API std::shared_ptr<Material> Mesh::getMaterial() const noexcept {
-   return material_;
-}
-
-ENG_API std::vector<glm::vec3> Mesh::getVertexes() const noexcept {
-   return vertexes_;
-}
-
-ENG_API void Mesh::setMaterial(const std::shared_ptr<Material>& material) noexcept {
-   material_ = material;
-}
-
-ENG_API void Mesh::setVertexes(const std::vector<glm::vec3>& vertexes) noexcept {
-   vertexes_ = vertexes;
-}
+ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr<Material>& material) noexcept
+         : vertexes_{vertexes}, material_{material} {}
 
 
 
-void setMaterial() noexcept;
-void setVertexes() noexcept;
+void Mesh::render(const glm::mat4 &C, glm::mat4 M) {
 
-ENG_API void Mesh::render(const glm::mat4 &C, glm::mat4 M) {
+
+    // glPushMatrix();
+    glMultMatrixf(glm::value_ptr(M));
+
+    glBegin(GL_TRIANGLE_STRIP);
+    for (auto& v : vertexes_) {
+        glVertex3fv(glm::value_ptr(v));
+    }
+    glEnd();
+
+    // glPopMatrix();
+
+
+
 }

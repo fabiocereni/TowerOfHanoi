@@ -48,5 +48,6 @@ namespace Eng {
       glm::vec4 specular_;
       bool ambientEnabled_;
       bool localViewerEnabled_;
+      static int number_of_lights;
    };
 }

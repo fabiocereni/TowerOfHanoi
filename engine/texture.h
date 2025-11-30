@@ -5,17 +5,20 @@ namespace Eng {
    class ENG_API Texture final : public Object {
 
    public:
-      Texture() noexcept = default;
-      ~Texture() noexcept override = default;
+      Texture(const unsigned char* bitmap, int width, int height) noexcept;
+      ~Texture() noexcept override;
       Texture(const Texture& other) = default;
       Texture(Texture&& other) noexcept = default;
       Texture& operator=(const Texture& other) = default;
       Texture& operator=(Texture&& other) noexcept = default;
 
-      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
+      void render(const glm::mat4& C, glm::mat4 M) override;
+
+      void bind() const;
 
    protected:
-      // da definire
-
+      unsigned int texId_;
+      int width_;
+      int height_;
    };
 }

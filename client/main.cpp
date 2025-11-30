@@ -1,32 +1,25 @@
 #include "engine.h"
-#include <iostream>
 
-#include "camera.h"
-#include "node.h"
 
-int main(int argc, char *argv[]) {
+int main(const int argc, char** argv) {
 
-   // Init engine:
    Eng::Base &eng = Eng::Base::getInstance();
 
-   eng.init(argc, argv);
 
-   std::shared_ptr<Eng::Node> root;
-   auto camera = dynamic_cast<std::shared_ptr<Eng::Camera>>(root->find("Camera"));
+   eng.init(argc, argv, "Hanoi Tower");
+
+    std::shared_ptr<Eng::Node> root = eng.load("nullptr");
+
+    eng.changeBackgroundColor(1,1,1);
+
+   while (eng.update()) {
+      eng.clear();
+
+       root->render(glm::mat4(1.0f));
 
 
-   while(isRunning)
-   {
-      processEvents();
-      clearBuffers();
-      render3D(root, camera);
-      swapBuffers();
+      eng.swap();
    }
 
-   // Release engine:
-   eng.free();
-
-   // Done:
-   std::cout << "\n[application terminated]" << std::endl;
    return 0;
 }
