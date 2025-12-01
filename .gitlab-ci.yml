@@ -2,7 +2,10 @@ variables:
   BUILD_TYPE: "Release"
   ENGINE_DIR: "$CI_PROJECT_DIR/engine"
   CLIENT_DIR: "$CI_PROJECT_DIR/client"
-  DEP_DIR: "$CI_PROJECT_DIR/dependencies"   # cartella nella ROOT del progetto
+  DEP_DIR: "$CI_PROJECT_DIR/dependencies"
+
+
+image: registry.gitlab.com/tuo-repo/gcc14-opengl
 
 stages:
   - engine
@@ -13,15 +16,20 @@ cache:
   paths:
     - engine/build/
     - client/build/
+    - dependencies/
 
 engine:
   stage: engine
   image: gcc:14
 
+  before_script:
+    - apt-get update -y
+    - apt-get install -y libglm-dev freeglut3-dev libglu1-mesa-dev
+    - cd "$ENGINE_DIR"
+
   script:
-    - cd engine
     - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
+    - make all BUILD_TYPE="$BUILD_TYPE"
 
   artifacts:
     paths:
@@ -32,17 +40,21 @@ engine:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
 
+
 client:
   stage: client
-  image: gcc:12
+  image: gcc:14
   dependencies:
     - engine
-    - engine
+
+  before_script:
+    - apt-get update -y
+    - apt-get install -y libglm-dev freeglut3-dev libglu1-mesa-dev
+    - cd "$CLIENT_DIR"
 
   script:
-    - cd client
     - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
+    - make all BUILD_TYPE="$BUILD_TYPE"
 
   artifacts:
     paths:
@@ -52,3 +64,4 @@ client:
 
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
+
