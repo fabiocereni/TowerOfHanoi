@@ -3,16 +3,6 @@
 
 using namespace Eng;
 
-/*
-
-// --- AGGIUNGI QUESTO BLOCCO MANUALMENTE ---
-// Serve perché il gl.h di Windows è troppo vecchio e non conosce queste costanti
-#ifndef GL_EXT_texture_filter_anisotropic
-#define GL_TEXTURE_MAX_ANISOTROPY_EXT     0x84FE
-#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
-#endif
-// ------------------------------------------
-*/
 
 Texture::Texture(const unsigned char* bitmap, const int width, const int height) noexcept
    : width_{width}, height_{height} {
@@ -29,11 +19,10 @@ Texture::Texture(const unsigned char* bitmap, const int width, const int height)
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 
-   /* per filtro anisotropico
-   float maxAnisotropy;
-   glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
-   */
+   // per filtro anisotropico
+   // float maxAnisotropy;
+   // glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
+   // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
 
 
 
