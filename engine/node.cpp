@@ -10,31 +10,6 @@ Node::Node() noexcept
             : matrix_(1.0f), parent_(nullptr) {
 }
 
-
-glm::mat4 Node::getMatrix() const noexcept {
-   return matrix_;
-}
-
-void Node::setMatrix(const glm::mat4& m) noexcept {
-   matrix_ = m;
-}
-
-std::shared_ptr<Node>& Node::getParent() noexcept {
-   return parent_;
-}
-
-void Node::setParent(std::shared_ptr<Node> p) noexcept {
-   parent_ = std::move(p);
-}
-
-std::vector<std::shared_ptr<Node>>& Node::getChildrens() noexcept {
-   return childrens_;
-}
-
-void Node::addChildren(const std::shared_ptr<Node>& child) noexcept {
-   childrens_.push_back(child);
-}
-
 std::shared_ptr<Node> Node::removeChildren(const std::string& name) {
    for (auto it = childrens_.begin(); it != childrens_.end(); ++it) {
       if ((*it)->getName() == name) {
@@ -70,16 +45,17 @@ std::shared_ptr<Node> Node::returnChild(const unsigned long& id) const {
 }
 
 
-ENG_API void Node::render(const glm::mat4 &C, glm::mat4 M) {
+ENG_API void Node::render(const glm::mat4 parentMatrix) {
 
+   glm::mat4 worldMatrix = parentMatrix * matrix_;
 
 
    glMatrixMode(GL_MODELVIEW);
-   glLoadMatrixf(glm::value_ptr(C));
+   glLoadMatrixf(glm::value_ptr(worldMatrix));
 
 
    for (const auto& c : childrens_) {
-      c->render(C);
+      c->render(worldMatrix);
    }
 
 }

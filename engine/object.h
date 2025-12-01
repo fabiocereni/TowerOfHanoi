@@ -15,13 +15,13 @@ namespace Eng {
       Object& operator=(Object&& other) noexcept = default;
 
 
-      void setName(const std::string& name) noexcept;
-      [[nodiscard]] std::string getName() const noexcept;
-      [[nodiscard]] unsigned long getId() const noexcept;
-      void setId(unsigned long id) noexcept;
+      void setName(const std::string& name) noexcept {name_ = name;};
+      [[nodiscard]] std::string getName() const noexcept {return name_;};
+      [[nodiscard]] unsigned long getId() const noexcept {return id_;};
+      void setId(unsigned long id) noexcept {id_ = id;};
 
 
-      virtual void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) = 0;
+      virtual void render(glm::mat4 parentMatrix = glm::mat4(1.0f)) = 0;
 
 
    protected:

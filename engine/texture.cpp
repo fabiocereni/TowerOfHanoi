@@ -49,7 +49,7 @@ Texture::~Texture() noexcept {
 }
 
 
-void Texture::render(const glm::mat4& C, glm::mat4 M) {
+void Texture::render(glm::mat4 parentMatrix) {
 
 
 }

@@ -17,16 +17,17 @@ namespace Eng {
       Node& operator=(const Node& other) = default;
       Node& operator=(Node&& other) noexcept = default;
 
-      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
+      void render(glm::mat4 parentMatrix = glm::mat4(1.0f)) override;
 
-      [[nodiscard]] glm::mat4 getMatrix() const noexcept;
-      void setMatrix(const glm::mat4& matrix) noexcept;
+      [[nodiscard]] glm::mat4 getMatrix() const noexcept {return matrix_;};
+      void setMatrix(const glm::mat4& matrix) noexcept {matrix_ = matrix;};
 
-      std::shared_ptr<Node>& getParent() noexcept;
-      void setParent(std::shared_ptr<Node> parent) noexcept;
+      std::shared_ptr<Node>& getParent() noexcept {return parent_;};
+      void setParent(const std::shared_ptr<Node>& parent) noexcept {parent_ = parent;};
 
-      std::vector<std::shared_ptr<Node>>& getChildrens() noexcept;
-      void addChildren(const std::shared_ptr<Node>& child) noexcept;
+      std::vector<std::shared_ptr<Node>>& getChildrens() noexcept {return childrens_;};
+      void addChildren(const std::shared_ptr<Node>& child) noexcept {childrens_.push_back(child);};
+
       std::shared_ptr<Node> removeChildren(const std::string& name);
       [[nodiscard]] std::shared_ptr<Node> returnChild(const std::string& name) const;
       [[nodiscard]] std::shared_ptr<Node> returnChild(const unsigned long& id) const;

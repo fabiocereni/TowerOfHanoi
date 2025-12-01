@@ -5,7 +5,7 @@
 
 
 namespace Eng {
-   class ENG_API Mesh : public Node {
+   class ENG_API Mesh final : public Node {
 
    public:
       Mesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr<Material>& material) noexcept;
@@ -15,7 +15,7 @@ namespace Eng {
       Mesh& operator=(const Mesh& other) = default;
       Mesh& operator=(Mesh&& other) noexcept = default;
 
-      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
+      void render(glm::mat4 parentMatrix = glm::mat4(1.0f)) override;
 
       [[nodiscard]] std::shared_ptr<Material> getMaterial() const noexcept {return material_;};
       [[nodiscard]] std::vector<glm::vec3> getVertexes() const noexcept {return vertexes_;};
