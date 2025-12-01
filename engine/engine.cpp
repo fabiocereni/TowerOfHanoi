@@ -182,33 +182,7 @@ static float angleY = 0.0f;
 
 void Base::displayCallback() {
 
-
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glutPostRedisplay();
-
-   glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -45));
-   glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-   rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
-
-   angleX += 1.0f;
-   angleY += 1.0f;
-
-   glm::mat4 f = translation * rotation;
-
-   glLoadMatrixf(glm::value_ptr(f));
-
-
-   glutSwapBuffers();
-
-
-
-   glutPostRedisplay();
-
 }
-
-
-
-
 
 
 void Base::changeWindowSize(const int width, const int height) {
