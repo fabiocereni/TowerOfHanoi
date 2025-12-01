@@ -23,21 +23,21 @@ namespace Eng {
       Material& operator=(const Material& other) = default;
       Material& operator=(Material&& other) noexcept = default;
 
-      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
+      void render(glm::mat4 worldMatrix = glm::mat4(1.0f)) override;
 
-      [[nodiscard]] glm::vec4 getEmission() const noexcept;
-      [[nodiscard]] glm::vec4 getAmbient() const noexcept;
-      [[nodiscard]] glm::vec4 getDiffuse() const noexcept;
-      [[nodiscard]] glm::vec4 getSpecular() const noexcept;
-      [[nodiscard]] float getShininess() const noexcept;
-      [[nodiscard]] Texture getTexture() const noexcept;
+      [[nodiscard]] glm::vec4 getEmission() const noexcept {return emission_;};
+      [[nodiscard]] glm::vec4 getAmbient() const noexcept {return ambient_;};
+      [[nodiscard]] glm::vec4 getDiffuse() const noexcept {return diffuse_;};
+      [[nodiscard]] glm::vec4 getSpecular() const noexcept {return specular_;};
+      [[nodiscard]] float getShininess() const noexcept {return shininess_;};
+      //[[nodiscard]] Texture getTexture() const noexcept {return texture_;};
 
-      void setEmission(const glm::vec4& emission) noexcept;
-      void setAmbient(const glm::vec4& ambient) noexcept;
-      void setDiffuse(const glm::vec4& diffuse) noexcept;
-      void setSpecular(const glm::vec4& specular) noexcept;
-      void setShininess(float shininess) noexcept;
-      void setTexture(const Texture& texture) noexcept;
+      void setEmission(const glm::vec4& emission) noexcept {emission_ = emission;};
+      void setAmbient(const glm::vec4& ambient) noexcept {ambient_ = ambient;};
+      void setDiffuse(const glm::vec4& diffuse) noexcept {diffuse_ = diffuse;};
+      void setSpecular(const glm::vec4& specular) noexcept {specular_ = specular;};
+      void setShininess(float shininess) noexcept {shininess_ = shininess;};
+      //void setTexture(const Texture& texture) noexcept {texture_ = texture;};
 
    protected:
       glm::vec4 emission_;

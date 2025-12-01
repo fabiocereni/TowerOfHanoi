@@ -11,11 +11,11 @@ ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr
 
 
 
-void Mesh::render(const glm::mat4 &C, glm::mat4 M) {
+void Mesh::render(glm::mat4 parentMatrix) {
 
 
     // glPushMatrix();
-    glMultMatrixf(glm::value_ptr(M));
+    glMultMatrixf(glm::value_ptr(worldMatrix));
 
     glBegin(GL_TRIANGLE_STRIP);
     for (auto& v : vertexes_) {
