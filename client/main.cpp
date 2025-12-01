@@ -10,12 +10,19 @@ int main(const int argc, char** argv) {
 
     std::shared_ptr<Eng::Node> root = eng.load("nullptr");
 
-    eng.changeBackgroundColor(1,1,1);
+    auto cam = eng.createPerspectiveCamera(45, 800/600.0f, 0.1f, 100.0f);
+    cam->setMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0,0,5)));
+    glm::mat4 view = glm::inverse(cam->getMatrix());
+
+
+    root->render(glm::mat4(1), view);
+
+
 
    while (eng.update()) {
       eng.clear();
 
-       root->render(glm::mat4(1.0f));
+       root->render(glm::mat4(1.0f), glm::mat4(1.0f));
 
 
       eng.swap();

@@ -42,4 +42,4 @@ void Spotlight::setAttenuationValue(const float value) noexcept {
    attenuationValue_ = value;
 }
 
-void Spotlight::render(const glm::mat4 &C, glm::mat4 M) {}
+void Spotlight::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {}

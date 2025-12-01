@@ -10,12 +10,15 @@ ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr
          : vertexes_{vertexes}, material_{material} {}
 
 
+void Mesh::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {
 
-void Mesh::render(glm::mat4 parentMatrix) {
 
+    const glm::mat4 worldMatrix = parentMatrix * matrix_;
+    glm::mat4 modelViewMatrix = viewMatrix * worldMatrix;
 
-    // glPushMatrix();
-    glMultMatrixf(glm::value_ptr(worldMatrix));
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(glm::value_ptr(modelViewMatrix));
+
 
     glBegin(GL_TRIANGLE_STRIP);
     for (auto& v : vertexes_) {
@@ -23,8 +26,10 @@ void Mesh::render(glm::mat4 parentMatrix) {
     }
     glEnd();
 
-    // glPopMatrix();
 
 
+    for (const auto& c : childrens_) {
+        c->render(worldMatrix, viewMatrix);
+    }
 
 }
