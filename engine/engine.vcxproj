@@ -47,7 +47,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC;DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -94,6 +94,7 @@
     <ClCompile Include="object.cpp" />
     <ClCompile Include="omnidirectionallight.cpp" />
     <ClCompile Include="orthographic_camera.cpp" />
+    <ClCompile Include="ovoreader.cpp" />
     <ClCompile Include="perspective_camera.cpp" />
     <ClCompile Include="spotlight.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="directionallight.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="engine_api.h" />
     <ClInclude Include="instance.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="list.h" />
@@ -118,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="engine.cbp" />
+    <None Include="Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
