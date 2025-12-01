@@ -6,6 +6,7 @@
 
 
 // #include "camera.h"
+#include "list.h"
 #include "mesh.h"
 #include "node.h"
 #include "perspective_camera.h"
@@ -89,6 +90,8 @@ namespace Eng {
       ENG_API [[nodiscard]] int getWidth() const {return width_;};
       ENG_API [[nodiscard]] int getHeight() const {return height_;};
 
+
+      ENG_API void render(std::shared_ptr<Camera> camera, std::shared_ptr<List> renderList) noexcept;
 
 
       ///////////

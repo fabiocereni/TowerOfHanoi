@@ -12,4 +12,4 @@ Material::Material(const glm::vec4& emission,
    : emission_{emission}, ambient_{ambient}, diffuse_{diffuse}, specular_{specular}, shininess_{shininess}/*, texture_{std::move(texture)}*/ {}
 
 
-void Material::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {}
+void Material::render(const glm::mat4& modelViewMatrix) {}

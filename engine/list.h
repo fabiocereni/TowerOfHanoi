@@ -18,16 +18,16 @@ namespace Eng {
       List& operator=(const List& other) = default;
       List& operator=(List&& other) noexcept = default;
 
-      [[nodiscard]] std::list<Instance> getRenderList() const noexcept;
-      void setRenderList(const std::list<Instance>& renderList) noexcept;
+      [[nodiscard]] std::list<Instance> getRenderList() const noexcept {return instances_;};
+      void setRenderList(const std::list<Instance>& renderList) noexcept {instances_ = renderList;};
 
       void addOnTopToRenderList(const Instance& instance) noexcept;
       void addOnBottomToRenderList(const Instance& instance) noexcept;
       bool removeFromRenderList(const Instance &instance) noexcept;
 
-      void pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix);
+      void pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatrix = glm::mat4(1.0f));
 
-      void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) const;
+      void render(const glm::mat4& viewMatrix) override;
 
    protected:
       std::list<Instance> instances_;

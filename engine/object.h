@@ -21,7 +21,7 @@ namespace Eng {
       void setId(unsigned long id) noexcept {id_ = id;};
 
 
-      virtual void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) = 0;
+      virtual void render(const glm::mat4& modelViewMatrix) = 0;
 
 
    protected:

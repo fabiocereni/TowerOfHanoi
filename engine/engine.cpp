@@ -1,6 +1,7 @@
 #include "engine.h"
 #include <iostream>
 #include <source_location>
+#include <variant>
 #include <GL/freeglut.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -88,8 +89,6 @@ bool Base::init(int argc, char **argv, const std::string& title) {
 
     // imposto luce ambient globale, indipendente dalle singole luci
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(gAmbient));
-
-
 
 
     // attivazione e configurazione una luce di default (GL_LIGHT0)
@@ -236,6 +235,23 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
   };
 
 
+   std::vector<glm::vec3> cubeNormals;
+   // 6 facce, 6 vertici per faccia
+   // FRONT (Z+)
+   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+   // BACK (Z-)
+   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+   // LEFT (X-)
+   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+   // RIGHT (X+)
+   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+   // TOP (Y+)
+   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+   // BOTTOM (Y-)
+   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+
+
+
    std::shared_ptr<Node> root = std::make_shared<Node>();
 
    // cubo
@@ -249,6 +265,7 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
 
    std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube, material);
 
+   first_cube->setNormals(cubeNormals);
 
    // aggiungere cubo a root
    root->addChildren(first_cube);
@@ -261,4 +278,19 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
 
 
    return root;
+}
+
+
+
+void Base::render(std::shared_ptr<Camera> camera, std::shared_ptr<List> renderList) noexcept {
+
+   for (const auto& instance : renderList->getRenderList()) {
+
+      glm::mat4 viewMatrix = glm::inverse(camera->getViewMatrix());
+      glm::mat4 modelViewMatrix = viewMatrix * instance.getNodePtr()->getMatrix();
+      instance.getNodePtr()->render(modelViewMatrix);
+
+   }
+
+
 }

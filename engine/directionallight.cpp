@@ -31,4 +31,4 @@ void DirectionalLight::setPosition(const glm::vec4& position) noexcept {
     position_ = position;
 }
 
-void DirectionalLight::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {}
+void DirectionalLight::render(const glm::mat4& modelViewMatrix) {}

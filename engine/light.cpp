@@ -10,4 +10,4 @@ Light::Light(bool smoothShading, int lightNumber, const glm::vec4& ambient,
       localViewerEnabled_{localViewerEnabled} {}
 
 
-void Light::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {}
+void Light::render(const glm::mat4& modelViewMatrix) {}

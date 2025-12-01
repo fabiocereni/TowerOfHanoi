@@ -10,26 +10,19 @@ ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr
          : vertexes_{vertexes}, material_{material} {}
 
 
-void Mesh::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {
-
-
-    const glm::mat4 worldMatrix = parentMatrix * matrix_;
-    glm::mat4 modelViewMatrix = viewMatrix * worldMatrix;
+void Mesh::render(const glm::mat4& modelViewMatrix) {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(modelViewMatrix));
 
-
     glBegin(GL_TRIANGLES);
-    for (auto& v : vertexes_) {
-        glVertex3fv(glm::value_ptr(v));
+    for (size_t i = 0; i < vertexes_.size(); ++i) {
+
+        if (!normals_.empty() && i < normals_.size())
+            glNormal3fv(glm::value_ptr(normals_[i]));
+
+        glVertex3fv(glm::value_ptr(vertexes_[i]));
     }
     glEnd();
-
-
-
-    for (const auto& c : childrens_) {
-        c->render(worldMatrix, viewMatrix);
-    }
-
 }
+

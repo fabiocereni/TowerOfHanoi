@@ -16,4 +16,4 @@ void Perspective_Camera::updateProjection() noexcept {
 }
 
 
-void Perspective_Camera::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {}
+void Perspective_Camera::render(const glm::mat4& modelViewMatrix) {}
