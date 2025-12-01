@@ -111,6 +111,7 @@ bool Base::init(int argc, char **argv, const std::string& title) {
     float pos[4] = {0.0f, 0.0f, 1.0f, 0.0f}; // direzionale che punta verso -Z
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
+   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 
@@ -145,7 +146,6 @@ void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept {
    glLoadMatrixf(glm::value_ptr(camera->getProjectionMatrix()));
 
    glMatrixMode(GL_MODELVIEW);
-   // glLoadMatrixf(glm::value_ptr(camera->getViewMatrix()));
 }
 
 
@@ -175,12 +175,7 @@ bool Base::free() const {
 
 
 
-void Base::displayCallback() {
-
-}
-
-
-
+void Base::displayCallback() {}
 
 
 
@@ -214,17 +209,87 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
 
-   const std::vector<glm::vec3> vertices = {
-      {-0.5f, -0.5f, -0.5f}, // 0
-      { 0.5f, -0.5f, -0.5f}, // 1
-      { 0.5f,  0.5f, -0.5f}, // 2
-      {-0.5f,  0.5f, -0.5f}, // 3
+   std::vector<glm::vec3> cube1 = {
 
-      {-0.5f, -0.5f,  0.5f}, // 4
-      { 0.5f, -0.5f,  0.5f}, // 5
-      { 0.5f,  0.5f,  0.5f}, // 6
-      {-0.5f,  0.5f,  0.5f}  // 7
-   };
+      // ===== FRONT =====
+      {-0.5f, -0.5f,  0.5f},
+      { 0.5f, -0.5f,  0.5f},
+      { 0.5f,  0.5f,  0.5f},
+      {-0.5f,  0.5f,  0.5f},
+
+      // ===== BACK =====
+      { 0.5f, -0.5f, -0.5f},
+      {-0.5f, -0.5f, -0.5f},
+      {-0.5f,  0.5f, -0.5f},
+      { 0.5f,  0.5f, -0.5f},
+
+      // ===== LEFT =====
+      {-0.5f, -0.5f, -0.5f},
+      {-0.5f, -0.5f,  0.5f},
+      {-0.5f,  0.5f,  0.5f},
+      {-0.5f,  0.5f, -0.5f},
+
+      // ===== RIGHT =====
+      { 0.5f, -0.5f,  0.5f},
+      { 0.5f, -0.5f, -0.5f},
+      { 0.5f,  0.5f, -0.5f},
+      { 0.5f,  0.5f,  0.5f},
+
+      // ===== TOP =====
+      {-0.5f,  0.5f,  0.5f},
+      { 0.5f,  0.5f,  0.5f},
+      { 0.5f,  0.5f, -0.5f},
+      {-0.5f,  0.5f, -0.5f},
+
+      // ===== BOTTOM =====
+      {-0.5f, -0.5f, -0.5f},
+      { 0.5f, -0.5f, -0.5f},
+      { 0.5f, -0.5f,  0.5f},
+      {-0.5f, -0.5f,  0.5f},
+  };
+
+
+   std::vector<glm::vec3> cube2 = {
+
+      // ===== FRONT =====
+      {1.2f - 0.5f, -0.5f,  0.5f},
+      {1.2f + 0.5f, -0.5f,  0.5f},
+      {1.2f + 0.5f,  0.5f,  0.5f},
+      {1.2f - 0.5f,  0.5f,  0.5f},
+
+      // ===== BACK =====
+      {1.2f + 0.5f, -0.5f, -0.5f},
+      {1.2f - 0.5f, -0.5f, -0.5f},
+      {1.2f - 0.5f,  0.5f, -0.5f},
+      {1.2f + 0.5f,  0.5f, -0.5f},
+
+      // ===== LEFT =====
+      {1.2f - 0.5f, -0.5f, -0.5f},
+      {1.2f - 0.5f, -0.5f,  0.5f},
+      {1.2f - 0.5f,  0.5f,  0.5f},
+      {1.2f - 0.5f,  0.5f, -0.5f},
+
+      // ===== RIGHT =====
+      {1.2f + 0.5f, -0.5f,  0.5f},
+      {1.2f + 0.5f, -0.5f, -0.5f},
+      {1.2f + 0.5f,  0.5f, -0.5f},
+      {1.2f + 0.5f,  0.5f,  0.5f},
+
+      // ===== TOP =====
+      {1.2f - 0.5f,  0.5f,  0.5f},
+      {1.2f + 0.5f,  0.5f,  0.5f},
+      {1.2f + 0.5f,  0.5f, -0.5f},
+      {1.2f - 0.5f,  0.5f, -0.5f},
+
+      // ===== BOTTOM =====
+      {1.2f - 0.5f, -0.5f, -0.5f},
+      {1.2f + 0.5f, -0.5f, -0.5f},
+      {1.2f + 0.5f, -0.5f,  0.5f},
+      {1.2f - 0.5f, -0.5f,  0.5f},
+  };
+
+
+
 
    std::shared_ptr<Node> root = std::make_shared<Node>();
 
@@ -237,14 +302,15 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
       32.0f);
 
 
-   std::shared_ptr<Mesh> cube = std::make_shared<Mesh>(vertices, material);
+   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube1, material);
+   std::shared_ptr<Mesh> second_cube = std::make_shared<Mesh>(cube2, material);
 
 
 
    // aggiungere cubo a root
-   root->addChildren(cube);
+   root->addChildren(first_cube);
+   root->addChildren(second_cube);
 
-   // root->setMatrix(glm::rotate(glm::mat4(1), glm::radians(20), glm::vec3(0,1,0)));
 
 
    // creare e aggiungere camera al cubo

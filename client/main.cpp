@@ -1,32 +1,39 @@
 #include "engine.h"
 
 
-int main(const int argc, char** argv) {
+int main(int argc, char** argv) {
 
-   Eng::Base &eng = Eng::Base::getInstance();
+    Eng::Base& eng = Eng::Base::getInstance();
+    eng.init(argc, argv, "Hanoi Tower");
 
+    auto root = eng.load("nullptr");
 
-   eng.init(argc, argv, "Hanoi Tower");
+    auto cam = eng.createPerspectiveCamera(45, 800.f/600.f, 0.1f, 100.0f);
+    cam->setMatrix(glm::translate(glm::mat4(1), glm::vec3(0,0,5)));
 
-    std::shared_ptr<Eng::Node> root = eng.load("nullptr");
+    float angle = 0.0f;
 
-    auto cam = eng.createPerspectiveCamera(45, 800/600.0f, 0.1f, 100.0f);
-    cam->setMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(0,0,5)));
-    glm::mat4 view = glm::inverse(cam->getMatrix());
+    while (eng.update()) {
+        eng.clear();
 
+        // PROJECTION
+        eng.begin3D(cam);
 
-    root->render(glm::mat4(1), view);
+        // ROTAZIONE
+        angle += 1.0f;
+        root->setMatrix(glm::rotate(glm::mat4(1), glm::radians(angle), glm::vec3(0,1,0)));
+        root->setMatrix(root->getMatrix() * glm::rotate(glm::mat4(1), glm::radians(angle), glm::vec3(1,0,0)));
 
+        // VIEW
+        glm::mat4 view = glm::inverse(cam->getWorldMatrix());
 
+        // RENDER DELLA SCENA
+        root->render(glm::mat4(1), view);
 
-   while (eng.update()) {
-      eng.clear();
+        // SWAP
+        eng.swap();
+    }
 
-       root->render(glm::mat4(1.0f), glm::mat4(1.0f));
-
-
-      eng.swap();
-   }
-
-   return 0;
+    return 0;
 }
+

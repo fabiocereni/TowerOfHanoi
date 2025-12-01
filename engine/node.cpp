@@ -1,6 +1,7 @@
 #include "node.h"
 
 #include <GL/freeglut.h>
+
 #include "glm/gtc/type_ptr.hpp"
 
 using namespace Eng;
