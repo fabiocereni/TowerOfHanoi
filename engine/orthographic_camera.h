@@ -34,7 +34,7 @@ namespace Eng {
 
 
         [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept override {return projectionMatrix_;};
-        void render(const glm::mat4& C, glm::mat4 M) override;
+        void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) override;
 
 
     protected:

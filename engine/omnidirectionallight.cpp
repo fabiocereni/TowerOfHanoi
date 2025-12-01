@@ -53,4 +53,4 @@ void OmnidirectionalLight::setAttenuationValue(float value) noexcept {
    attenuation_value_ = value;
 }
 
-void OmnidirectionalLight::render(const glm::mat4 &C, glm::mat4 M) {}
+void OmnidirectionalLight::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {}

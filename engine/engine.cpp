@@ -108,7 +108,7 @@ bool Base::init(int argc, char **argv, const std::string& title) {
     // Posizione della luce:
     // w = 0 → luce direzionale
     // w = 1 → luce puntiforme
-    GLfloat pos[4] = {0.0f, 0.0f, 1.0f, 0.0f}; // direzionale che punta verso -Z
+    float pos[4] = {0.0f, 0.0f, 1.0f, 0.0f}; // direzionale che punta verso -Z
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
 
@@ -173,36 +173,9 @@ bool Base::free() const {
    return true;
 }
 
-static float angleX = 0.0f;
-static float angleY = 0.0f;
-
-
-
 
 
 void Base::displayCallback() {
-
-
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glutPostRedisplay();
-
-   glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -45));
-   glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(angleX), glm::vec3(1.0f, 0.0f, 0.0f));
-   rotation = glm::rotate(rotation, glm::radians(angleY), glm::vec3(0.0f, 1.0f, 0.0f));
-
-   angleX += 1.0f;
-   angleY += 1.0f;
-
-   glm::mat4 f = translation * rotation;
-
-   glLoadMatrixf(glm::value_ptr(f));
-
-
-   glutSwapBuffers();
-
-
-
-   glutPostRedisplay();
 
 }
 
@@ -257,11 +230,11 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
 
    // cubo
    std::shared_ptr<Material> material = std::make_shared<Material>(
-   glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),   // emission
-    glm::vec4(0.1f, 0.1f, 0.1f, 1.0f),   // ambient
-    glm::vec4(0.5f, 0.2f, 0.8f, 1.0f),   // diffuse
-    glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),   // specular
-    32.0f);
+      glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), // emission
+      glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), // ambient
+      glm::vec4(0.5f, 0.2f, 0.8f, 1.0f), // diffuse
+      glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), // specular
+      32.0f);
 
 
    std::shared_ptr<Mesh> cube = std::make_shared<Mesh>(vertices, material);
@@ -271,6 +244,7 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
    // aggiungere cubo a root
    root->addChildren(cube);
 
+   // root->setMatrix(glm::rotate(glm::mat4(1), glm::radians(20), glm::vec3(0,1,0)));
 
 
    // creare e aggiungere camera al cubo

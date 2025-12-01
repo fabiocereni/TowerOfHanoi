@@ -45,11 +45,11 @@ void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 matrix = glm::m
 }
 
 
-void List::render(const glm::mat4 &C, glm::mat4 M) const {
-
-   // Render each instance by passing its modelview as param:
-   for (auto &instance : this->instances_) {
-      glm::mat4 modelview = C * instance.getNodeWorldMatrix();
-      instance.getNodePtr()->render(modelview);
-   }
-}
+// void List::render(const glm::mat4 &C, glm::mat4 M) const {
+//
+//    // Render each instance by passing its modelview as param:
+//    for (auto &instance : this->instances_) {
+//       glm::mat4 modelview = C * instance.getNodeWorldMatrix();
+//       instance.getNodePtr()->render(modelview);
+//    }
+// }

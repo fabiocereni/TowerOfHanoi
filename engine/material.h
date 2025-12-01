@@ -23,7 +23,7 @@ namespace Eng {
       Material& operator=(const Material& other) = default;
       Material& operator=(Material&& other) noexcept = default;
 
-      void render(glm::mat4 worldMatrix = glm::mat4(1.0f)) override;
+      void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) override;
 
       [[nodiscard]] glm::vec4 getEmission() const noexcept {return emission_;};
       [[nodiscard]] glm::vec4 getAmbient() const noexcept {return ambient_;};

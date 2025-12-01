@@ -22,23 +22,23 @@ namespace Eng {
       Light& operator=(const Light& other) = default;
       Light& operator=(Light&& other) noexcept = default;
 
-      void render(const glm::mat4 &C, glm::mat4 M = glm::mat4(1.0f)) override;
+      void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) override;
 
-      [[nodiscard]] bool getSmoothShading() const noexcept;
-      [[nodiscard]] int getLightNumber() const noexcept;
-      [[nodiscard]] glm::vec4 getAmbient() const noexcept;
-      [[nodiscard]] glm::vec4 getDiffuse() const noexcept;
-      [[nodiscard]] glm::vec4 getSpecular() const noexcept;
-      [[nodiscard]] bool isAmbientEnabled() const noexcept;
-      [[nodiscard]] bool isLocalViewer() const noexcept;
+      [[nodiscard]] bool getSmoothShading() const noexcept {return smoothShading_;};
+      [[nodiscard]] int getLightNumber() const noexcept {return lightNumber_;};
+      [[nodiscard]] glm::vec4 getAmbient() const noexcept {return ambient_;};
+      [[nodiscard]] glm::vec4 getDiffuse() const noexcept {return diffuse_;};
+      [[nodiscard]] glm::vec4 getSpecular() const noexcept {return specular_;};
+      [[nodiscard]] bool isAmbientEnabled() const noexcept {return ambientEnabled_;};
+      [[nodiscard]] bool isLocalViewer() const noexcept {return localViewerEnabled_;};
 
-      void setSmoothShading(bool smoothShading) noexcept;
-      void setLightNumber(int lightNumber) noexcept;
-      void setAmbient(const glm::vec4& ambient) noexcept;
-      void setDiffuse(const glm::vec4& diffuse) noexcept;
-      void setSpecular(const glm::vec4& specular) noexcept;
-      void setLocalViewer(bool enabled) noexcept;
-      void setAmbientEnabled(bool enabled) noexcept;
+      void setSmoothShading(bool smoothShading) noexcept {smoothShading_ = smoothShading;};
+      void setLightNumber(int lightNumber) noexcept {lightNumber_ = lightNumber;};
+      void setAmbient(const glm::vec4& ambient) noexcept {ambient_ = ambient;};
+      void setDiffuse(const glm::vec4& diffuse) noexcept {diffuse_ = diffuse;};
+      void setSpecular(const glm::vec4& specular) noexcept {specular_ = specular;};
+      void setLocalViewer(const bool enabled) noexcept {localViewerEnabled_ = enabled;};
+      void setAmbientEnabled(const bool enabled) noexcept {ambientEnabled_ = enabled;};
 
    protected:
       bool smoothShading_;
