@@ -2,7 +2,6 @@
 #include <list>
 #include "object.h"
 #include "instance.h"
-#include <algorithm>
 
 namespace Eng {
    class ENG_API List final : public Object {
@@ -28,6 +27,8 @@ namespace Eng {
       void pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatrix = glm::mat4(1.0f));
 
       void render(const glm::mat4& viewMatrix) override;
+
+      void clear() noexcept;
 
    protected:
       std::list<Instance> instances_;

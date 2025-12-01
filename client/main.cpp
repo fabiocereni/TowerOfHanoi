@@ -41,6 +41,8 @@ int main(int argc, char** argv) {
     while (eng.update()) {
         eng.clear();
 
+        renderList->clear();
+
         // PROJECTION
         eng.begin3D(cam);
 

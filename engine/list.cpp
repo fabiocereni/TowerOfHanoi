@@ -53,5 +53,9 @@ void List::render(const glm::mat4& viewMatrix) {
       // il render del node riceve e carica direttamente la modelViewMatrix
       instance.getNodePtr()->render(modelViewMatrix);
    }
+}
 
+
+void List::clear() noexcept {
+   instances_.clear();
 }

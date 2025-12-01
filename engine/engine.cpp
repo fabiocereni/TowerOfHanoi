@@ -286,8 +286,8 @@ void Base::render(std::shared_ptr<Camera> camera, std::shared_ptr<List> renderLi
 
    for (const auto& instance : renderList->getRenderList()) {
 
-      glm::mat4 viewMatrix = glm::inverse(camera->getViewMatrix());
-      glm::mat4 modelViewMatrix = viewMatrix * instance.getNodePtr()->getMatrix();
+      glm::mat4 viewMatrix = camera->getViewMatrix();
+      glm::mat4 modelViewMatrix = viewMatrix * instance.getNodeWorldMatrix();
       instance.getNodePtr()->render(modelViewMatrix);
 
    }
