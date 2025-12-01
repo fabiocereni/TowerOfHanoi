@@ -1,7 +1,6 @@
-#include <iostream>
-
 #include "engine.h"
 #include "list.h"
+#include "Test/test_suite.h"
 
 
 /*                     ----------------------
@@ -24,17 +23,22 @@
 
 
 
-int main(int argc, char** argv) {
+int main(const int argc, char** argv) {
+
+    TestSuite::runAllTests();
+
+
+
 
     Eng::Base& eng = Eng::Base::getInstance();
     eng.init(argc, argv, "Hanoi Tower");
 
-    auto root = eng.load("nullptr");
+    const auto root = eng.load("nullptr");
 
-    auto cam = eng.createPerspectiveCamera(45, 800.f/600.f, 0.1f, 100.0f);
+    const auto cam = eng.createPerspectiveCamera(45, 800.f/600.f, 0.1f, 100.0f);
     cam->setMatrix(glm::translate(glm::mat4(1), glm::vec3(0,0,5)));
 
-    auto renderList = std::make_shared<Eng::List>();
+    const auto renderList = std::make_shared<Eng::List>();
 
     float angle = 0.0f;
 
@@ -43,7 +47,7 @@ int main(int argc, char** argv) {
 
         renderList->clear();
 
-        // PROJECTION
+        // carichiamo matrice di proiezione
         eng.begin3D(cam);
 
         // ROTAZIONE
