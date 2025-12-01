@@ -209,86 +209,31 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
 
-   std::vector<glm::vec3> cube1 = {
+   std::vector<glm::vec3> cube = {
+      // ===== FRONT (z = 0.5) =====
+      {-0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, // Triangolo 1
+      {-0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f}, // Triangolo 2
 
-      // ===== FRONT =====
-      {-0.5f, -0.5f,  0.5f},
-      { 0.5f, -0.5f,  0.5f},
-      { 0.5f,  0.5f,  0.5f},
-      {-0.5f,  0.5f,  0.5f},
+      // ===== BACK (z = -0.5) =====
+      { 0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f},
+      { 0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f}, { 0.5f,  0.5f, -0.5f},
 
-      // ===== BACK =====
-      { 0.5f, -0.5f, -0.5f},
-      {-0.5f, -0.5f, -0.5f},
-      {-0.5f,  0.5f, -0.5f},
-      { 0.5f,  0.5f, -0.5f},
+      // ===== LEFT (x = -0.5) =====
+      {-0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f},
+      {-0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f,  0.5f}, {-0.5f,  0.5f, -0.5f},
 
-      // ===== LEFT =====
-      {-0.5f, -0.5f, -0.5f},
-      {-0.5f, -0.5f,  0.5f},
-      {-0.5f,  0.5f,  0.5f},
-      {-0.5f,  0.5f, -0.5f},
+      // ===== RIGHT (x = 0.5) =====
+      { 0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f, -0.5f}, { 0.5f,  0.5f, -0.5f},
+      { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f}, { 0.5f,  0.5f,  0.5f},
 
-      // ===== RIGHT =====
-      { 0.5f, -0.5f,  0.5f},
-      { 0.5f, -0.5f, -0.5f},
-      { 0.5f,  0.5f, -0.5f},
-      { 0.5f,  0.5f,  0.5f},
+      // ===== TOP (y = 0.5) =====
+      {-0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f},
+      {-0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f},
 
-      // ===== TOP =====
-      {-0.5f,  0.5f,  0.5f},
-      { 0.5f,  0.5f,  0.5f},
-      { 0.5f,  0.5f, -0.5f},
-      {-0.5f,  0.5f, -0.5f},
-
-      // ===== BOTTOM =====
-      {-0.5f, -0.5f, -0.5f},
-      { 0.5f, -0.5f, -0.5f},
-      { 0.5f, -0.5f,  0.5f},
-      {-0.5f, -0.5f,  0.5f},
+      // ===== BOTTOM (y = -0.5) =====
+      {-0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f,  0.5f},
+      {-0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f,  0.5f}, {-0.5f, -0.5f,  0.5f},
   };
-
-
-   std::vector<glm::vec3> cube2 = {
-
-      // ===== FRONT =====
-      {1.2f - 0.5f, -0.5f,  0.5f},
-      {1.2f + 0.5f, -0.5f,  0.5f},
-      {1.2f + 0.5f,  0.5f,  0.5f},
-      {1.2f - 0.5f,  0.5f,  0.5f},
-
-      // ===== BACK =====
-      {1.2f + 0.5f, -0.5f, -0.5f},
-      {1.2f - 0.5f, -0.5f, -0.5f},
-      {1.2f - 0.5f,  0.5f, -0.5f},
-      {1.2f + 0.5f,  0.5f, -0.5f},
-
-      // ===== LEFT =====
-      {1.2f - 0.5f, -0.5f, -0.5f},
-      {1.2f - 0.5f, -0.5f,  0.5f},
-      {1.2f - 0.5f,  0.5f,  0.5f},
-      {1.2f - 0.5f,  0.5f, -0.5f},
-
-      // ===== RIGHT =====
-      {1.2f + 0.5f, -0.5f,  0.5f},
-      {1.2f + 0.5f, -0.5f, -0.5f},
-      {1.2f + 0.5f,  0.5f, -0.5f},
-      {1.2f + 0.5f,  0.5f,  0.5f},
-
-      // ===== TOP =====
-      {1.2f - 0.5f,  0.5f,  0.5f},
-      {1.2f + 0.5f,  0.5f,  0.5f},
-      {1.2f + 0.5f,  0.5f, -0.5f},
-      {1.2f - 0.5f,  0.5f, -0.5f},
-
-      // ===== BOTTOM =====
-      {1.2f - 0.5f, -0.5f, -0.5f},
-      {1.2f + 0.5f, -0.5f, -0.5f},
-      {1.2f + 0.5f, -0.5f,  0.5f},
-      {1.2f - 0.5f, -0.5f,  0.5f},
-  };
-
-
 
 
    std::shared_ptr<Node> root = std::make_shared<Node>();
@@ -302,14 +247,11 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
       32.0f);
 
 
-   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube1, material);
-   std::shared_ptr<Mesh> second_cube = std::make_shared<Mesh>(cube2, material);
-
+   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube, material);
 
 
    // aggiungere cubo a root
    root->addChildren(first_cube);
-   root->addChildren(second_cube);
 
 
 

@@ -20,7 +20,7 @@ void Mesh::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {
     glLoadMatrixf(glm::value_ptr(modelViewMatrix));
 
 
-    glBegin(GL_TRIANGLE_STRIP);
+    glBegin(GL_TRIANGLES);
     for (auto& v : vertexes_) {
         glVertex3fv(glm::value_ptr(v));
     }
