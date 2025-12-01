@@ -36,7 +36,7 @@ namespace Eng {
    /**
     * @brief Base engine main class. This class is a singleton.
     */
-   class ENG_API Base final {
+   class Base final {
       //////////
    public: //
       //////////
