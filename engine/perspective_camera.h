@@ -31,7 +31,7 @@ namespace Eng {
         // serve per aggiornare la matrice in caso di cambiamenti dei valori
         void updateProjection() noexcept;
 
-        void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) override;
+        void render(const glm::mat4& modelViewMatrix) override;
 
 
     protected:

@@ -48,7 +48,7 @@ Texture::~Texture() noexcept {
 }
 
 
-void Texture::render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) {
+void Texture::render(const glm::mat4& modelViewMatrix) {
 
 
 }

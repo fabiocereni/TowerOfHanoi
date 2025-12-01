@@ -17,7 +17,7 @@ namespace Eng {
       Node& operator=(const Node& other) = default;
       Node& operator=(Node&& other) noexcept = default;
 
-      void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) override;
+      void render(const glm::mat4& modelViewMatrix) override;
 
       [[nodiscard]] glm::mat4 getMatrix() const noexcept {return matrix_;};
       void setMatrix(const glm::mat4& matrix) noexcept {matrix_ = matrix;};

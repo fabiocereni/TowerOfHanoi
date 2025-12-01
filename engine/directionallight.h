@@ -20,7 +20,7 @@ namespace Eng {
 
       ~DirectionalLight() noexcept override = default;
 
-      void render(const glm::mat4& parentMatrix, const glm::mat4& viewMatrix) override;
+      void render(const glm::mat4& modelViewMatrix) override;
 
       [[nodiscard]] std::shared_ptr<Node> getNodePtr() const noexcept;
       [[nodiscard]] glm::mat4 getNodeWorldMatrix() const noexcept;
