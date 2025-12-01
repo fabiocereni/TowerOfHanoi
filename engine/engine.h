@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include "engine_api.h"
+
 
 
 
@@ -36,13 +38,13 @@ namespace Eng {
    /**
     * @brief Base engine main class. This class is a singleton.
     */
-   class ENG_API Base final {
+   class Base final {
       //////////
    public: //
       //////////
 
       // Const/dest:
-      ENG_API Base(Base const &) = delete;
+       ENG_API Base(Base const &) = delete;
       ENG_API ~Base();
 
       // Operators:
