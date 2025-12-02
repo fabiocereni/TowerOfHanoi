@@ -47,19 +47,6 @@ std::shared_ptr<Node> Node::returnChild(const unsigned long& id) const {
 
 ENG_API void Node::render(const glm::mat4& modelViewMatrix) {
 
-   // const glm::mat4 worldMatrix = parentMatrix * matrix_;
-   // glm::mat4 modelViewMatrix = viewMatrix * worldMatrix;
-   //
-   // glMatrixMode(GL_MODELVIEW);
-   // glLoadMatrixf(glm::value_ptr(modelViewMatrix));
-   //
-   // // chiamare qua eventuali metodi per disegnare la mesh
-   //
-   // for (const auto& c : childrens_) {
-   //    c->render(worldMatrix, viewMatrix);
-   // }
-
-
    // ora con la renderlist
    glMatrixMode(GL_MODELVIEW);
    glLoadMatrixf(glm::value_ptr(modelViewMatrix));

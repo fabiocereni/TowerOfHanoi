@@ -32,9 +32,10 @@ namespace Eng {
         void setFarPlane(const float farPlane) noexcept {farPlane_ = farPlane;};
         void setNearPlane(const float nearPlane) noexcept {nearPlane_ = nearPlane;};
 
-
         [[nodiscard]] glm::mat4 getProjectionMatrix() const noexcept override {return projectionMatrix_;};
+
         void render(const glm::mat4& modelViewMatrix) override;
+        void onResize(int width, int height) noexcept override;
 
 
     protected:
