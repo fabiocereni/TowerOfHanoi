@@ -1,66 +1,55 @@
 variables:
+  BUILD_TYPE: "Release"
+  ENGINE_DIR: "$CI_PROJECT_DIR/engine"
+  CLIENT_DIR: "$CI_PROJECT_DIR/client"
+  DEP_DIR: "$CI_PROJECT_DIR/dependencies"   # cartella nella ROOT del progetto
 
 stages:
-  - structure
   - engine
   - client
 
-image: gitlab-edu.supsi.ch:5050/dti-isin/cg/common:ubuntu2404-cg
-
-
-structure:
-  stage: structure
-
-  script:
-#    - '[ -d dependencies ] || exit 1'
-    - '[ -d engine ] || exit 1'
-    - '[ -d client ] || exit 1'
-
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-
+cache:
+  key: "make-$CI_COMMIT_REF_SLUG"
+  paths:
+    - engine/build/
+    - client/build/
 
 engine:
   stage: engine
-
-  before_script:
-    - 'cd engine'
+  image: gcc:12
 
   script:
-    - 'make clean'
-    - 'make'
-
-  after_script:
-    - 'cd ..'
+    - cd engine
+    - make clean
+    - make all BUILD_TYPE=$BUILD_TYPE
 
   artifacts:
     paths:
-      - engine/bin/Release/libengine.so
-      - engine/bin/Debug/libengine.so
+      - engine/bin/
+      - dependencies/        # <<< ORA prende la cartella GIUSTA, quella in root
+    expire_in: 1 hour
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
 
 client:
   stage: client
-
-  before_script:
-    - 'cd client'
+  image: gcc:12
+  dependencies:
+    - engine
+    - engine
 
   script:
-    - 'make clean'
-    - 'make'
-
-  after_script:
-    - 'cd ..'
+    - cd client      # <<< ora esiste davvero
+    - make clean
+    - make all BUILD_TYPE=$BUILD_TYPE
 
   artifacts:
     paths:
-      - client/bin/Release/*
-      - client/bin/Debug/*
-
+      - client/bin/
+      - dependencies/
+    expire_in: 1 hour
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
 
