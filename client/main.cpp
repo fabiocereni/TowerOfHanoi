@@ -20,14 +20,10 @@
  *     ed è quella che OpenGL usa per il rendering.
  */
 
-
-
-
 int main(const int argc, char** argv) {
 
+    // esegue tutti i test, se passano il programma continua
     TestSuite::runAllTests();
-
-
 
 
     Eng::Base& eng = Eng::Base::getInstance();
@@ -50,14 +46,15 @@ int main(const int argc, char** argv) {
         // carichiamo matrice di proiezione
         eng.begin3D(cam);
 
-        // ROTAZIONE
+        // rotazione
         angle += 1.0f;
         root->setMatrix(glm::rotate(glm::mat4(1), glm::radians(angle), glm::vec3(0,1,0)));
         root->setMatrix(root->getMatrix() * glm::rotate(glm::mat4(1), glm::radians(angle), glm::vec3(1,0,0)));
 
         renderList.get()->pass(root);
-
+        eng.showFps();
         eng.render(cam, renderList);
+
 
         // SWAP
         eng.swap();

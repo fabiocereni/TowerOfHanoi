@@ -22,6 +22,10 @@ namespace Eng {
       // deve essere implementata in base al tipo di camera
       [[nodiscard]] virtual glm::mat4 getProjectionMatrix() const noexcept = 0;
 
+      // adattare le cam in base al resize della finestra
+      virtual void onResize(int width, int height) noexcept = 0;
+
+
 
    };
 

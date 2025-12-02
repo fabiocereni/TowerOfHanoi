@@ -14,13 +14,23 @@ using namespace Eng;
 struct Base::Reserved {
    // Flags:
    bool initFlag;
-   
-   Reserved() : initFlag{ false } 
+
+   Reserved() : initFlag{ false }
    {}
 };
 
+// inizializzazione variabile statica
+float Base::frames_ = 0.0f;
+// serve per il calcolo del framerate
+float fps = 0.0f;
+
+// servono per salvare le matrici
+glm::mat4 perspective;
+glm::mat4 ortho;
+
+
 Base::Base() : reserved_(std::make_unique<Reserved>()) {
-#ifdef _DEBUG   
+#ifdef _DEBUG
    std::cout << "[+] " << std::source_location::current().function_name() << " invoked" << std::endl;
 #endif
 }
@@ -36,93 +46,84 @@ Base& Base::getInstance() {
    return instance;
 }
 
-
-// static void reshapeCallback(int width, int height)
-// {
-//    std::cout << "[reshape func invoked]" << std::endl;
-//
-//    glViewport(0, 0, width, height);
-//    glMatrixMode(GL_PROJECTION);
-//    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, 1.0f, 100.0f);
-//    glLoadMatrixf(glm::value_ptr(projection));
-//    glMatrixMode(GL_MODELVIEW);
-// }
-
-
 bool Base::init(int argc, char **argv, const std::string& title) {
-    if (reserved_->initFlag)
-        return false;
+   if (reserved_->initFlag)
+      return false;
 
-    // inizializzazione di freeglut e creazione finestra
+   // inizializzazione di freeglut e creazione finestra
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowSize(getWidth(), getHeight());
+   glutInit(&argc, argv);
+   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+   glutInitWindowSize(getWidth(), getHeight());
 
-    const int id = glutCreateWindow(title.c_str());
-    setWindowId(id);
+   const int id = glutCreateWindow(title.c_str());
+   setWindowId(id);
 
-    // serve a glutMainLoopEvent() per ritornare quando la finestra viene chiusa
-    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+   // serve a glutMainLoopEvent() per ritornare quando la finestra viene chiusa
+   glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+
+   // ------------------------------------------------------
 
 
-
-
-    // impostazione base di OpenGL
+   // impostazione base di OpenGL
 
    // attiva depth testing
-    glEnable(GL_DEPTH_TEST);
+   glEnable(GL_DEPTH_TEST);
    // abilita il lighting della fixed pipeline
-    glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHTING);
    // normalizza automaticamente le normali
-    glEnable(GL_NORMALIZE);
+   glEnable(GL_NORMALIZE);
+// ------------------------------------------------------
 
 
+   // impostazioni del modello di illuminazione globale
+
+   glm::vec4 gAmbient(0.2f, 0.2f, 0.2f, 1.0f);
+   // imposto modello più realistico per lo specular (viewer locale, di default V = (0, 0, 1))
+   glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
+
+   // imposto luce ambient globale, indipendente dalle singole luci
+   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(gAmbient));
 
 
+   // attivazione e configurazione una luce di default (GL_LIGHT0)
+   glEnable(GL_LIGHT0);
 
-    // impostazioni del modello di illuminazione globale
+   // Componenti della luce
+   constexpr float diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
+   constexpr float ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
+   constexpr float specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
-    glm::vec4 gAmbient(0.2f, 0.2f, 0.2f, 1.0f);
-    // imposto modello più realistico per lo specular (viewer locale, di default V = (0, 0, 1))
-    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
+   glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
+   glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
+   glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-    // imposto luce ambient globale, indipendente dalle singole luci
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(gAmbient));
-
-
-    // attivazione e configurazione una luce di default (GL_LIGHT0)
-
-    glEnable(GL_LIGHT0);
-
-    // Componenti della luce
-    constexpr float diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
-    constexpr float ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
-    constexpr float specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-
-    // Posizione della luce:
-    // w = 0 → luce direzionale
-    // w = 1 → luce puntiforme
-    float pos[4] = {0.0f, 0.0f, 1.0f, 0.0f}; // direzionale che punta verso -Z
-    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+   // Posizione della luce:
+   // w = 0 per luce direzionale
+   constexpr float pos[4] = {0.0f, 0.0f, 1.0f, 0.0f};
+   glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+   // ------------------------------------------------------
 
 
+   // callbacks
 
-    // registrazione callback di rendering
+   // registrazione callback "base"
    glutDisplayFunc(displayCallback);
-   // glutReshapeFunc(reshapeCallback);
+   // registrazione callback per ridimensionamento
+   glutReshapeFunc(reshapeCallback);
+   // registrazione timer callback per fps
+   glutTimerFunc(1000, timerCallback, 0);
+   // registrazione callback per tasti "normali"
+   glutKeyboardFunc(keyboardCallback);
+   // registrazione callback per tasti "speciali"
+   glutSpecialFunc(specialCallback);
+   // ------------------------------------------------------
 
-
-    reserved_->initFlag = true;
-    return true;
+   reserved_->initFlag = true;
+   return true;
 }
-
 
 bool Base::update() const noexcept {
    // Processa eventi GLUT
@@ -140,21 +141,16 @@ void Base::swap() noexcept {
 }
 
 void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept {
-
    glMatrixMode(GL_PROJECTION);
    glLoadMatrixf(glm::value_ptr(camera->getProjectionMatrix()));
-
    glMatrixMode(GL_MODELVIEW);
 }
-
 
 void Base::end3D() noexcept {}
 
 void Base::clear() noexcept {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
-
-
 
 bool Base::free() const {
    // Not initialized?
@@ -172,19 +168,12 @@ bool Base::free() const {
    return true;
 }
 
-
-
-void Base::displayCallback() {}
-
-
-
 void Base::changeWindowSize(const int width, const int height) {
 
    glutReshapeWindow(width, height);
    setWidth(width);
    setHeight(height);
 }
-
 
 void Base::changeWindowTitle(const std::string &title) {
    glutSetWindowTitle(title.c_str());
@@ -198,15 +187,12 @@ ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& ver
    return std::make_shared<Mesh>(vertexes, material);
 }
 
-
 std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRatio,
-                                   float nearPlane, float farPlane) noexcept {
+                                                      float nearPlane, float farPlane) noexcept {
 
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
-
-
-std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
+std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
    std::vector<glm::vec3> cube = {
       // ===== FRONT (z = 0.5) =====
@@ -272,6 +258,7 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
 
 
 
+
    // creare e aggiungere camera al cubo
 
    // creare luce per cubo
@@ -280,17 +267,104 @@ std::shared_ptr<Node> Base::load(const std::string &path) const noexcept {
    return root;
 }
 
-
-
-void Base::render(std::shared_ptr<Camera> camera, std::shared_ptr<List> renderList) noexcept {
+void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
 
    for (const auto& instance : renderList->getRenderList()) {
 
       glm::mat4 viewMatrix = camera->getViewMatrix();
       glm::mat4 modelViewMatrix = viewMatrix * instance.getNodeWorldMatrix();
       instance.getNodePtr()->render(modelViewMatrix);
-
    }
 
 
+}
+
+void Base::displayCallback() {
+   frames_++;
+   glutPostRedisplay();
+}
+
+void Base::showFps() {
+
+   // disabilita luce, non altera il colore del testo
+   glDisable(GL_LIGHTING);
+
+   // salva proiezione
+   glMatrixMode(GL_PROJECTION);
+   glPushMatrix();
+   glLoadIdentity();
+
+
+   // salva modelview
+   glMatrixMode(GL_MODELVIEW);
+   glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+
+
+   char text[64]; sprintf(text, "FPS: %.1f", fps);
+   glColor3f(1, 1, 1);
+   // string position
+   glRasterPos2f(-0.95f, 0.85f);
+
+   // display the string
+   glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<unsigned char*>(text));
+   // ripristina
+   glPopMatrix();
+
+   // MODELVIEW
+   glMatrixMode(GL_PROJECTION);
+   glPopMatrix();
+   glEnable(GL_LIGHTING);
+
+}
+
+void Base::timerCallback(int) {
+   fps = getFrames();
+   setFrames(0);
+
+   // ogni secondo
+   glutTimerFunc(1000, timerCallback, 0);
+}
+
+void Base::reshapeCallback(const int width, const int height) {
+
+   // aggiorno view port
+   glViewport(0, 0, width, height);
+
+   if (const auto cam = getInstance().getActiveCamera()) {
+      // aggiorno in base alla camera attiva
+      cam->onResize(width, height);
+   }
+
+   ortho = glm::ortho(0.0f, static_cast<float>(width), 0.0f,
+                      static_cast<float>(height), -1.0f, 1.0f);
+}
+
+void Base::specialCallback(int key, int mouseX, int mouseY) {
+
+   switch (key) {
+   case GLUT_KEY_UP:
+      std::cout << "UP" << std::endl;
+      break;
+
+   case GLUT_KEY_DOWN:
+      std::cout << "DOWN" << std::endl;
+      break;
+
+   case GLUT_KEY_LEFT:
+      std::cout << "LEFT" << std::endl;
+      break;
+
+   case GLUT_KEY_RIGHT:
+      std::cout << "RIGHT" << std::endl;
+      break;
+
+   default: std::cout << "UNKNOWN" << std::endl ;
+   }
+}
+
+void Base::keyboardCallback(unsigned char key, int mouseX, int mouseY) {
+
+   switch (key) {
+      // da implementare
+   }
 }
