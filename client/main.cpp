@@ -27,6 +27,22 @@ int main(const int argc, char** argv) {
 
 
     Eng::Base& eng = Eng::Base::getInstance();
+
+    eng.overrideKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY){
+
+        std::cout << key << std::endl;
+
+        switch (key) {
+       // da implementare
+        }
+    });
+
+    eng.overrideUpArrowBehaviour([] {std::cout << "UP ARROW" << std::endl;});
+    eng.overrideDownArrowBehaviour([]{std::cout << "DOWN ARROW" << std::endl;});
+    eng.overrideRightArrowBehaviour([]{std::cout << "RIGHT ARROW" << std::endl;});
+    eng.overrideLeftArrowBehaviour([]{std::cout << "LEFT ARROW" << std::endl;});
+
+
     eng.init(argc, argv, "Hanoi Tower");
 
     const auto root = eng.load("nullptr");
@@ -56,7 +72,8 @@ int main(const int argc, char** argv) {
         eng.render(cam, renderList);
 
 
-        // SWAP
+        eng.end3D();
+
         eng.swap();
     }
 
