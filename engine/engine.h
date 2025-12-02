@@ -6,6 +6,8 @@
 
 
 // #include "camera.h"
+#include <functional>
+
 #include "list.h"
 #include "mesh.h"
 #include "node.h"
@@ -42,6 +44,12 @@ namespace Eng {
    public: //
       //////////
 
+
+      // alias per definire funzioni di callback
+      using KeyboardCallback = std::function<void(unsigned char key, int mouseX, int mouseY)>;
+      using SpecialKeyAction = std::function<void()>;
+
+
       // Const/dest:
       ENG_API Base(Base const &) = delete;
       ENG_API ~Base();
@@ -72,8 +80,6 @@ namespace Eng {
       ENG_API static void timerCallback(int value);
       ENG_API static void reshapeCallback(int width, int height);
       ENG_API static void specialCallback(int key, int mouseX, int mouseY);
-      ENG_API static void keyboardCallback(unsigned char key, int mouseX, int mouseY);
-
 
       ENG_API void changeWindowSize(int width, int height);
       ENG_API void changeWindowTitle(const std::string &title);
@@ -92,10 +98,27 @@ namespace Eng {
       ENG_API static void setFrames(const float frames) noexcept {frames_ = frames;};
       ENG_API void setActiveCamera(const std::shared_ptr<Camera>& camera) noexcept {activeCamera_ = camera;};
 
+
+      ENG_API void overrideKeyboardCallback(const KeyboardCallback &keyboardCallback) noexcept {customKeyboardCallbackVar_ = keyboardCallback;};
+      ENG_API void overrideUpArrowBehaviour(SpecialKeyAction action)   noexcept { up_arrow_key_ = action; }
+      ENG_API void overrideDownArrowBehaviour(SpecialKeyAction action) noexcept { down_arrow_key_ = action; }
+      ENG_API void overrideLeftArrowBehaviour(SpecialKeyAction action) noexcept { left_arrow_key_ = action; }
+      ENG_API void overrideRightArrowBehaviour(SpecialKeyAction action) noexcept { right_arrow_key_ = action; }
+
+
+
+
+
+
       ENG_API [[nodiscard]] int getWidth() const {return width_;};
       ENG_API [[nodiscard]] int getHeight() const {return height_;};
       ENG_API [[nodiscard]] static float getFrames() {return frames_;};
       ENG_API [[nodiscard]] std::shared_ptr<Camera> getActiveCamera() const noexcept {return activeCamera_;};
+
+
+
+      ENG_API static void useCustomKeyboardCallback(unsigned char key, int mouseX, int mouseY) noexcept;
+
 
 
       ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept;
@@ -109,6 +132,13 @@ namespace Eng {
       int height_ = 600;
       static float frames_;
       std::shared_ptr<Camera> activeCamera_;
+
+
+      static KeyboardCallback customKeyboardCallbackVar_;
+      static SpecialKeyAction up_arrow_key_;
+      static SpecialKeyAction down_arrow_key_;
+      static SpecialKeyAction left_arrow_key_;
+      static SpecialKeyAction right_arrow_key_;
 
       // Reserved:
       struct Reserved;

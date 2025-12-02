@@ -1,60 +1,66 @@
 variables:
-  BUILD_TYPE: "Release"
 
 stages:
+  - structure
   - engine
   - client
 
-cache:
-  key: "make-$CI_COMMIT_REF_SLUG"
-  paths:
-    - engine/build/
-    - client/build/
+image: gitlab-edu.supsi.ch:5050/dti-isin/cg/common:ubuntu2404-cg
+
+
+structure:
+  stage: structure
+
+  script:
+#    - '[ -d dependencies ] || exit 1'
+    - '[ -d engine ] || exit 1'
+    - '[ -d client ] || exit 1'
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
 
 engine:
   stage: engine
-  image: gcc:12
 
   before_script:
-    - apt-get update
-    - apt-get install -y freeglut3-dev libglu1-mesa-dev mesa-common-dev
+    - 'cd engine'
 
   script:
-    - cd engine
-    - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
+    - 'make clean'
+    - 'make'
+
+  after_script:
+    - 'cd ..'
 
   artifacts:
     paths:
-      - engine/bin/
-      - dependencies/
-    expire_in: 1 hour
+      - engine/bin/Release/libengine.so
+      - engine/bin/Debug/libengine.so
 
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
+    - if: $CI_COMMIT_BRANCH == "main"
 
 
 client:
   stage: client
-  image: gcc:12
-  dependencies:
-    - engine
 
   before_script:
-    - apt-get update
-    - apt-get install -y freeglut3-dev libglu1-mesa-dev mesa-common-dev
+    - 'cd client'
 
   script:
-    - cd client
-    - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
+    - 'make clean'
+    - 'make'
+
+  after_script:
+    - 'cd ..'
 
   artifacts:
     paths:
-      - client/bin/
-      - dependencies/
-    expire_in: 1 hour
+      - client/bin/Release/*
+      - client/bin/Debug/*
+
 
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
+    - if: $CI_COMMIT_BRANCH == "main"
 
