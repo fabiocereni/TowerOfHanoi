@@ -1,11 +1,14 @@
 variables:
   BUILD_TYPE: "Release"
+<<<<<<< HEAD
   ENGINE_DIR: "$CI_PROJECT_DIR/engine"
   CLIENT_DIR: "$CI_PROJECT_DIR/client"
   DEP_DIR: "$CI_PROJECT_DIR/dependencies"
 
 
 image: registry.gitlab.com/tuo-repo/gcc14-opengl
+=======
+>>>>>>> origin/engine-refactor
 
 stages:
   - engine
@@ -26,6 +29,10 @@ engine:
     - apt-get update -y
     - apt-get install -y libglm-dev freeglut3-dev libglu1-mesa-dev
     - cd "$ENGINE_DIR"
+
+  before_script:
+    - apt-get update
+    - apt-get install -y freeglut3-dev libglu1-mesa-dev mesa-common-dev
 
   script:
     - make clean
@@ -48,11 +55,19 @@ client:
     - engine
 
   before_script:
+<<<<<<< HEAD
     - apt-get update -y
     - apt-get install -y libglm-dev freeglut3-dev libglu1-mesa-dev
     - cd "$CLIENT_DIR"
 
   script:
+=======
+    - apt-get update
+    - apt-get install -y freeglut3-dev libglu1-mesa-dev mesa-common-dev
+
+  script:
+    - cd client
+>>>>>>> origin/engine-refactor
     - make clean
     - make all BUILD_TYPE="$BUILD_TYPE"
 

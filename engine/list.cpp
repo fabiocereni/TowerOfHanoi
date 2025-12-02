@@ -1,5 +1,4 @@
 #include "list.h"
-
 #include "light.h"
 
 using namespace Eng;

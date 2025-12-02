@@ -32,6 +32,7 @@ namespace Eng {
         void updateProjection() noexcept;
 
         void render(const glm::mat4& modelViewMatrix) override;
+        void onResize(int width, int height) noexcept override;
 
 
     protected:

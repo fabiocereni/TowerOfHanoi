@@ -3,9 +3,9 @@
 using namespace Eng;
 
 Perspective_Camera::Perspective_Camera(const float fov,
-                                               const float aspectRatio,
-                                               const float nearPlane,
-                                               const float farPlane) noexcept
+                                       const float aspectRatio,
+                                       const float nearPlane,
+                                       const float farPlane) noexcept
     : fov_{fov}, aspectRatio_{aspectRatio}, nearPlane_{nearPlane}, farPlane_{farPlane}
 {
     updateProjection();
@@ -17,3 +17,10 @@ void Perspective_Camera::updateProjection() noexcept {
 
 
 void Perspective_Camera::render(const glm::mat4& modelViewMatrix) {}
+
+void Perspective_Camera::onResize(const int width, const int height) noexcept {
+    // unico valore che cambia
+    setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
+    // aggiorno con i nuovi valori
+    updateProjection();
+}

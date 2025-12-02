@@ -10,7 +10,6 @@ void TestSuite::runAllTests() {
     testNodeTransformations();
     testListManagement();
     testCameraViewMatrix();
-
 }
 
 void TestSuite::assertCondition(const std::string& testName, const bool condition) {
