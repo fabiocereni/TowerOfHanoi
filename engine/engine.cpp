@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "ovoreader.h"
 #include "perspective_camera.h"
 
 using namespace Eng;
@@ -209,8 +210,10 @@ void Base::changeBackgroundColor(const float r, const float g, const float b) {
    glClearColor(r, g, b, 1.0f);
 }
 
-ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr<Material>& material) {
-   return std::make_shared<Mesh>(vertexes, material);
+ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
+                                               const std::string& materialName,
+                                               const std::shared_ptr<Material>& material) {
+   return std::make_shared<Mesh>(vertexes, materialName, material);
 }
 
 std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRatio,
@@ -220,6 +223,12 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 }
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
+
+      OvoParser ovoParser;
+
+      ovoParser.returnCompleteSceneTree(path);
+
+
 
    std::vector<glm::vec3> cube = {
       // ===== FRONT (z = 0.5) =====
@@ -273,10 +282,11 @@ std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
       glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), // ambient
       glm::vec4(0.5f, 0.2f, 0.8f, 1.0f), // diffuse
       glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), // specular
-      32.0f);
+      32.0f,
+      "test");
 
 
-   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube, material);
+   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube, "test" , material);
 
    first_cube->setNormals(cubeNormals);
 

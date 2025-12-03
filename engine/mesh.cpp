@@ -1,13 +1,21 @@
 #include "mesh.h"
 #include <GL/freeglut.h>
 
+#include <utility>
+
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 using namespace Eng;
 
-ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr<Material>& material) noexcept
-         : vertexes_{vertexes}, material_{material} {}
+ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes,
+                   const std::string& materialName,
+                   const std::shared_ptr<Material>& material) noexcept
+   : vertexes_{vertexes},
+     material_{material},
+     materialName_{materialName}
+{}
+
 
 
 void Mesh::render(const glm::mat4& modelViewMatrix) {
