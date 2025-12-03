@@ -1,12 +1,3 @@
-/**
- * @file		ovoreader.cpp
- * @brief	Minimal decoder for the OverVision Object (OVO) 3D file format
- *
- * @author	Achille Peternier (achille.peternier@supsi.ch), (C) 2013-2025
- */
-
-
-
 //////////////
 // #INCLUDE //
 //////////////
@@ -16,11 +7,16 @@
    #include <glm/gtc/packing.hpp>
 
    // C/C++:
+#include "ovoreader.h"
+
    #include <vector>
    #include <iostream>
    #include <iomanip>
    #include <limits.h>
-   using namespace std;
+#include <memory>
+
+#include "node.h"
+using namespace std;
 
 
 
@@ -32,10 +28,6 @@
    constexpr auto APP_NAME = "OVO Reader v0.8.2r";
 
    // Macro for printing an OvMatrix4 to console:
-   #define MAT2STR(m) cout << "   Matrix  . . . :  \t" << m[0][0] << "\t" << m[1][0] << "\t" << m[2][0] << "\t" << m[3][0] << std::endl \
-                           << "                    \t" << m[0][1] << "\t" << m[1][1] << "\t" << m[2][1] << "\t" << m[3][1] << std::endl \
-                           << "                    \t" << m[0][2] << "\t" << m[1][2] << "\t" << m[2][2] << "\t" << m[3][2] << std::endl \
-                           << "                    \t" << m[0][3] << "\t" << m[1][3] << "\t" << m[2][3] << "\t" << m[3][3] << std::endl
 
    // Stripped-down redefinition of OvObject (just for the chunk IDs):
    class OvObject
@@ -121,39 +113,24 @@
 
 /**
  * Application entry point. For details on the file format, build and browse the Doxygen documentation.
- * @param argc number of arguments
- * @param argv value of arguments
+ * @param file_path Path del file da aprire
  * @return error code
  */
-int main(int argc, char *argv[])
-{
-	cout << APP_NAME << ", A. Peternier (C) 2013-2024" << endl;
 
-	// Usage:
-	if (argc < 2 || argc > 3)
-	{
-      cout << "Shows the content of an OVO file" << endl << endl;
-		cout << "Syntax:" << endl;
-		cout << "   ovoreader [filename.ovo] {option}" << endl << endl;
-      cout << "Options:" << endl;
-      cout << "   -v     verbose logging (including vertex data)" << endl;
-		return 0;
-	}
+// prima prendeva come parametri const int argc, char** argv (era la firma del main)
+shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::string& file_path) {
 
-   // Check for options:
-   bool verbose = false;
-   if (argc == 3)
-   {
-      if (strstr(argv[2], "-v"))
-         verbose = true;
-   }
+	std::shared_ptr<Node> root;
+
+
 
 	// Open file:
-	FILE *dat = fopen(argv[1], "rb");
+	FILE *dat = fopen(file_path.c_str(), "r");
 	if (dat == nullptr)
 	{
-		cout << "ERROR: unable to open file '" << argv[1] << "'" << endl;
-		return 1;
+		cout << "ERROR: unable to open file '" << file_path << "'" << endl;
+		// originariamente tornava 1
+		return nullptr;
 	}
 
    // Configure stream:
@@ -174,18 +151,19 @@ int main(int argc, char *argv[])
 		cout << "\n[chunk id: " << chunkId << ", chunk size: " << chunkSize << ", chunk type: ";
 
 		// Load whole chunk into memory:
-      char *data = new char[chunkSize];
+      auto data = new char[chunkSize];
       if (fread(data, sizeof(char), chunkSize, dat) != chunkSize)
       {
-         cout << "ERROR: unable to read from file '" << argv[1] << "'" << endl;
+
          fclose(dat);
          delete[] data;
-         return 2;
+      	// originariamente tornava 2
+         return nullptr;
       }
 
       // Parse chunk information according to its type:
       unsigned int position = 0;
-		switch ((OvObject::Type) chunkId)
+		switch (static_cast<OvObject::Type>(chunkId))
 		{
          ///////////////////////////////
 			case OvObject::Type::OBJECT: //
@@ -210,14 +188,12 @@ int main(int argc, char *argv[])
 				char nodeName[FILENAME_MAX];
 				strcpy(nodeName, data + position);
             cout << "   Name  . . . . :  " << nodeName << endl;
-				position += (unsigned int) strlen(nodeName) + 1;
+				position += static_cast<unsigned int>(strlen(nodeName)) + 1;
 
             // Node matrix:
             glm::mat4 matrix;
             memcpy(&matrix, data + position, sizeof(glm::mat4));
-            if (verbose)
-               MAT2STR(matrix);
-				position += sizeof(glm::mat4);
+
 
             // Nr. of children nodes:
             unsigned int children;
@@ -229,7 +205,7 @@ int main(int argc, char *argv[])
             char targetName[FILENAME_MAX];
 				strcpy(targetName, data + position);
             cout << "   Target node . :  " << targetName << endl;
-				position += (unsigned int) strlen(targetName) + 1;
+				position += static_cast<unsigned int>(strlen(targetName)) + 1;
 			}
 			break;
 
@@ -278,19 +254,19 @@ int main(int argc, char *argv[])
             char textureName[FILENAME_MAX];
             strcpy(textureName, data + position);
             cout << "   Albedo tex. . :  " << textureName << endl;
-            position += (unsigned int) strlen(textureName) + 1;
+            position += static_cast<unsigned int>(strlen(textureName)) + 1;
 
             // Normal map filename, or [none] if not used:
             char normalMapName[FILENAME_MAX];
             strcpy(normalMapName, data + position);
             cout << "   Normalmap tex.:  " << normalMapName << endl;
-            position += (unsigned int) strlen(normalMapName) + 1;
+            position += static_cast<unsigned int>(strlen(normalMapName)) + 1;
 
             // Height map filename, or [none] if not used:
             char heightMapName[FILENAME_MAX];
             strcpy(heightMapName, data + position);
             cout << "   Heightmap tex.:  " << heightMapName << endl;
-            position += (unsigned int) strlen(heightMapName) + 1;
+            position += static_cast<unsigned int>(strlen(heightMapName)) + 1;
 
             // Roughness map filename, or [none] if not used:
             char roughnessMapName[FILENAME_MAX];
@@ -302,7 +278,7 @@ int main(int argc, char *argv[])
             char metalnessMapName[FILENAME_MAX];
             strcpy(metalnessMapName, data + position);
             cout << "   Metalness tex.:  " << metalnessMapName << endl;
-            position += (unsigned int) strlen(metalnessMapName) + 1;
+            position += static_cast<unsigned int>(strlen(metalnessMapName)) + 1;
 			}
 			break;
 
@@ -324,15 +300,13 @@ int main(int argc, char *argv[])
 				// Mesh name:
             char meshName[FILENAME_MAX];
 				strcpy(meshName, data + position);
-				position += (unsigned int) strlen(meshName) + 1;
+				position += static_cast<unsigned int>(strlen(meshName)) + 1;
             cout << "   Name  . . . . :  " << meshName << endl;
 
 				// Mesh matrix:
             glm::mat4 matrix;
             memcpy(&matrix, data + position, sizeof(glm::mat4));
-            if (verbose)
-               MAT2STR(matrix);
-				position += sizeof(glm::mat4);
+
 
 				// Mesh nr. of children nodes:
             unsigned int children;
@@ -387,7 +361,7 @@ int main(int argc, char *argv[])
             // Optional physics properties:
             unsigned char hasPhysics;
             memcpy(&hasPhysics, data + position, sizeof(unsigned char));
-            cout << "   Physics . . . :  " << (int) hasPhysics << endl;
+            cout << "   Physics . . . :  " << static_cast<int>(hasPhysics) << endl;
             position += sizeof(unsigned char);
             if (hasPhysics)
             {
@@ -423,10 +397,10 @@ int main(int argc, char *argv[])
                PhysProps mp;
                memcpy(&mp, data + position, sizeof(PhysProps));
                position += sizeof(PhysProps);
-               cout << "      Type . . . :  " << (int) mp.type << endl;
-               cout << "      Hull type  :  " << (int) mp.hullType << endl;
-               cout << "      Cont. coll.:  " << (int) mp.contCollisionDetection << endl;
-               cout << "      Col. bodies:  " << (int) mp.collideWithRBodies << endl;
+               cout << "      Type . . . :  " << static_cast<int>(mp.type) << endl;
+               cout << "      Hull type  :  " << static_cast<int>(mp.hullType) << endl;
+               cout << "      Cont. coll.:  " << static_cast<int>(mp.contCollisionDetection) << endl;
+               cout << "      Col. bodies:  " << static_cast<int>(mp.collideWithRBodies) << endl;
                cout << "      Center . . :  " << mp.massCenter.x << ", " << mp.massCenter.y << ", " << mp.massCenter.z << endl;
                cout << "      Mass . . . :  " << mp.mass << endl;
                cout << "      Static . . :  " << mp.staticFriction << endl;
@@ -441,28 +415,23 @@ int main(int argc, char *argv[])
                {
                   for (unsigned int c = 0; c < mp.nrOfHulls; c++)
                   {
-                     if (verbose)
-                        cout << "         Hull  . :  " << c + 1 << endl;
 
                      // Hull number of vertices:
                      unsigned int nrOfVertices;
 				         memcpy(&nrOfVertices, data + position, sizeof(unsigned int));
-                     if (verbose)
-				            cout << "         Nr. v.  :  " << nrOfVertices << endl;
+
                      position += sizeof(unsigned int);
 
                      // Hull number of faces:
                      unsigned int nrOfFaces;
 				         memcpy(&nrOfFaces, data + position, sizeof(unsigned int));
-                     if (verbose)
-				            cout << "         Nr. f.  :  " << nrOfFaces << endl;
+
                      position += sizeof(unsigned int);
 
                      // Hull centroid:
                      glm::vec3 centroid;
 				         memcpy(&centroid, data + position, sizeof(glm::vec3));
-                     if (verbose)
-				            cout << "         Centr.  :  " << centroid.x << ", " << centroid.y << ", " << centroid.z << endl;
+
                      position += sizeof(glm::vec3);
 
                      // Iterate through hull vertices:
@@ -471,8 +440,7 @@ int main(int argc, char *argv[])
                         // Vertex coords:
                         glm::vec3 vertex;
                         memcpy(&vertex, data + position, sizeof(glm::vec3));
-                        if (verbose)
-                           cout << "         Data  . :  v" << c << " " << vertex.x << ", " << vertex.y << ", " << vertex.z << endl;
+
                         position += sizeof(glm::vec3);
                      }
 
@@ -481,9 +449,8 @@ int main(int argc, char *argv[])
                      {
                         unsigned int face[3];
 				            memcpy(face, data + position, sizeof(unsigned int) * 3);
-                        if (verbose)
-                           cout << "         Data  . :  f" << c << " (" << face[0] << ", " << face[1] << ", " << face[2] << ")" << endl;
-                        position += sizeof(unsigned int) * 3;
+
+                     	position += sizeof(unsigned int) * 3;
                      }
                   }
                }
@@ -516,44 +483,29 @@ int main(int argc, char *argv[])
 				   // Interleaved and compressed vertex/normal/UV/tangent data:
 				   for (unsigned int c = 0; c < vertices; c++)
 				   {
-                  if (verbose)
-                     cout << "   Vertex data . :  v" << c << endl;
 
                   // Vertex coords:
                   glm::vec3 vertex;
                   memcpy(&vertex, data + position, sizeof(glm::vec3));
-                  if (verbose)
-                     cout << "      xyz  . . . :  " << vertex.x << ", " << vertex.y << ", " << vertex.z << endl;
+
                   position += sizeof(glm::vec3);
 
                   // Vertex normal:
                   unsigned int normalData;
                   memcpy(&normalData, data + position, sizeof(unsigned int));
-                  if (verbose)
-                  {
-                     glm::vec4 normal = glm::unpackSnorm3x10_1x2(normalData);
-                     cout << "      normal . . :  " << normal.x << ", " << normal.y << ", " << normal.z << endl;
-                  }
+
                   position += sizeof(unsigned int);
 
                   // Texture coordinates:
                   unsigned int textureData;
                   memcpy(&textureData, data + position, sizeof(unsigned int));
-                  if (verbose)
-                  {
-                     glm::vec2 uv = glm::unpackHalf2x16(textureData);
-                     cout << "      uv . . . . :  " << uv.x << ", " << uv.y << endl;
-                  }
+
                   position += sizeof(unsigned int);
 
                   // Tangent vector:
                   unsigned int tangentData;
                   memcpy(&tangentData, data + position, sizeof(unsigned int));
-                  if (verbose)
-                  {
-                     glm::vec4 tangent = glm::unpackSnorm3x10_1x2(tangentData);
-                     cout << "      tangent  . :  " << tangent.x << ", " << tangent.y << ", " << tangent.z << ", sign: " << tangent.w << endl;
-                  }
+
                   position += sizeof(unsigned int);
 				   }
 
@@ -564,8 +516,7 @@ int main(int argc, char *argv[])
 				      unsigned int face[3];
 				      memcpy(face, data + position, sizeof(unsigned int) * 3);
 				      position += sizeof(unsigned int) * 3;
-                  if (verbose)
-                     cout << "   Face data . . :  f" << c << " (" << face[0] << ", " << face[1] << ", " << face[2] << ")" << endl;
+
 				   }
             }
 
@@ -575,8 +526,7 @@ int main(int argc, char *argv[])
                // Initial mesh pose matrix:
                glm::mat4 poseMatrix;
                memcpy(&poseMatrix, data + position, sizeof(glm::mat4));
-               if (verbose)
-                  MAT2STR(poseMatrix);
+
 				   position += sizeof(glm::vec4);
 
                // Bone list:
@@ -597,8 +547,7 @@ int main(int argc, char *argv[])
                   // Initial bone pose matrix (already inverted):
                   glm::mat4 boneMatrix;
                   memcpy(&boneMatrix, data + position, sizeof(glm::mat4));
-                  if (verbose)
-                     MAT2STR(boneMatrix);
+
 				      position += sizeof(glm::mat4);
                }
 
@@ -610,28 +559,18 @@ int main(int argc, char *argv[])
                   // Per vertex bone weights and indexes:
 				      for (unsigned int c = 0; c < verticesPerLOD[l]; c++)
 				      {
-                     if (verbose)
-                        cout << "   Bone data . . :  v" << c << endl;
+
 
                      // Bone indexes:
 		               unsigned int boneIndex[4];
 				         memcpy(boneIndex, data + position, sizeof(unsigned int) * 4);
-                     if (verbose)
-                        cout << "      index  . . :  " << boneIndex[0] << ", " << boneIndex[1] << ", " << boneIndex[2] << ", " << boneIndex[3] << endl;
+
                      position += sizeof(unsigned int) * 4;
 
                      // Bone weights:
                      unsigned short boneWeightData[4];
                      memcpy(boneWeightData, data + position, sizeof(unsigned short) * 4);
-                     if (verbose)
-                     {
-                        glm::vec4 boneWeight;
-                        boneWeight.x = glm::unpackHalf1x16(boneWeightData[0]);
-                        boneWeight.y = glm::unpackHalf1x16(boneWeightData[1]);
-                        boneWeight.z = glm::unpackHalf1x16(boneWeightData[2]);
-                        boneWeight.w = glm::unpackHalf1x16(boneWeightData[3]);
-                        cout << "      weight . . :  " << boneWeight.x << ", " << boneWeight.y << ", " << boneWeight.z << ", " << boneWeight.w << endl;
-                     }
+
                      position += sizeof(unsigned short) * 4;
                   }
 				   }
@@ -641,91 +580,90 @@ int main(int argc, char *argv[])
 
 
          //////////////////////////////
-			case OvObject::Type::LIGHT: //
-         {
-            cout << "light]" << endl;
+		case OvObject::Type::LIGHT: //
+     {
+        cout << "light]" << endl;
 
-            // Light name:
-				char lightName[FILENAME_MAX];
-				strcpy(lightName, data + position);
-            cout << "   Name  . . . . :  " << lightName << endl;
-				position += (unsigned int) strlen(lightName) + 1;
+        // Light name:
+			char lightName[FILENAME_MAX];
+			strcpy(lightName, data + position);
+        cout << "   Name  . . . . :  " << lightName << endl;
+			position += static_cast<unsigned int>(strlen(lightName)) + 1;
 
-            // Light matrix:
-            glm::mat4 matrix;
-            memcpy(&matrix, data + position, sizeof(glm::mat4));
-            if (verbose)
-               MAT2STR(matrix);
-			   position += sizeof(glm::mat4);
+        // Light matrix:
+        glm::mat4 matrix;
+        memcpy(&matrix, data + position, sizeof(glm::mat4));
 
-				// Nr. of children nodes:
-            unsigned int children;
-				memcpy(&children, data + position, sizeof(unsigned int));
-				cout << "   Nr. children  :  " << children << endl;
-            position += sizeof(unsigned int);
+		   position += sizeof(glm::mat4);
 
-            // Optional target node name, or [none] if not used:
-            char targetName[FILENAME_MAX];
-				strcpy(targetName, data + position);
-            cout << "   Target node . :  " << targetName << endl;
-				position += (unsigned int) strlen(targetName) + 1;
+			// Nr. of children nodes:
+        unsigned int children;
+			memcpy(&children, data + position, sizeof(unsigned int));
+			cout << "   Nr. children  :  " << children << endl;
+        position += sizeof(unsigned int);
 
-            // Light subtype (see OvLight SUBTYPE enum):
-            unsigned char subtype;
-            memcpy(&subtype, data + position, sizeof(unsigned char));
-            char subtypeName[FILENAME_MAX];
-            switch ((OvLight::Subtype) subtype)
-            {
-               case OvLight::Subtype::DIRECTIONAL: strcpy(subtypeName, "directional"); break;
-               case OvLight::Subtype::OMNI: strcpy(subtypeName, "omni"); break;
-               case OvLight::Subtype::SPOT: strcpy(subtypeName, "spot"); break;
-               default: strcpy(subtypeName, "UNDEFINED");
-            }
-				cout << "   Subtype . . . :  " << (int) subtype << " (" << subtypeName << ")" << endl;
-            position += sizeof(unsigned char);
+        // Optional target node name, or [none] if not used:
+        char targetName[FILENAME_MAX];
+			strcpy(targetName, data + position);
+        cout << "   Target node . :  " << targetName << endl;
+			position += static_cast<unsigned int>(strlen(targetName)) + 1;
 
-            // Light color:
-            glm::vec3 color;
-            memcpy(&color, data + position, sizeof(glm::vec3));
-            cout << "   Color . . . . :  " << color.r << ", " << color.g << ", " << color.b << endl;
-            position += sizeof(glm::vec3);
+        // Light subtype (see OvLight SUBTYPE enum):
+        unsigned char subtype;
+        memcpy(&subtype, data + position, sizeof(unsigned char));
+        char subtypeName[FILENAME_MAX];
+        switch (static_cast<OvLight::Subtype>(subtype))
+        {
+           case OvLight::Subtype::DIRECTIONAL: strcpy(subtypeName, "directional"); break;
+           case OvLight::Subtype::OMNI: strcpy(subtypeName, "omni"); break;
+           case OvLight::Subtype::SPOT: strcpy(subtypeName, "spot"); break;
+           default: strcpy(subtypeName, "UNDEFINED");
+        }
+			cout << "   Subtype . . . :  " << (int) subtype << " (" << subtypeName << ")" << endl;
+        position += sizeof(unsigned char);
 
-            // Influence radius:
-            float radius;
-            memcpy(&radius, data + position, sizeof(float));
-            cout << "   Radius  . . . :  " << radius << endl;
-            position += sizeof(float);
+        // Light color:
+        glm::vec3 color;
+        memcpy(&color, data + position, sizeof(glm::vec3));
+        cout << "   Color . . . . :  " << color.r << ", " << color.g << ", " << color.b << endl;
+        position += sizeof(glm::vec3);
 
-            // Direction:
-            glm::vec3 direction;
-            memcpy(&direction, data + position, sizeof(glm::vec3));
-            cout << "   Direction . . :  " << direction.r << ", " << direction.g << ", " << direction.b << endl;
-            position += sizeof(glm::vec3);
+        // Influence radius:
+        float radius;
+        memcpy(&radius, data + position, sizeof(float));
+        cout << "   Radius  . . . :  " << radius << endl;
+        position += sizeof(float);
 
-            // Cutoff:
-            float cutoff;
-            memcpy(&cutoff, data + position, sizeof(float));
-            cout << "   Cutoff  . . . :  " << cutoff << endl;
-            position += sizeof(float);
+        // Direction:
+        glm::vec3 direction;
+        memcpy(&direction, data + position, sizeof(glm::vec3));
+        cout << "   Direction . . :  " << direction.r << ", " << direction.g << ", " << direction.b << endl;
+        position += sizeof(glm::vec3);
 
-            // Exponent:
-            float spotExponent;
-            memcpy(&spotExponent, data + position, sizeof(float));
-            cout << "   Spot exponent :  " << spotExponent << endl;
-            position += sizeof(float);
+        // Cutoff:
+        float cutoff;
+        memcpy(&cutoff, data + position, sizeof(float));
+        cout << "   Cutoff  . . . :  " << cutoff << endl;
+        position += sizeof(float);
 
-            // Cast shadow flag:
-            unsigned char castShadows;
-            memcpy(&castShadows, data + position, sizeof(unsigned char));
-            cout << "   Cast shadows  :  " << (int) castShadows << endl;
-            position += sizeof(unsigned char);
+        // Exponent:
+        float spotExponent;
+        memcpy(&spotExponent, data + position, sizeof(float));
+        cout << "   Spot exponent :  " << spotExponent << endl;
+        position += sizeof(float);
 
-            // Volumetric lighting flag:
-            unsigned char isVolumetric;
-            memcpy(&isVolumetric, data + position, sizeof(unsigned char));
-            cout << "   Volumetric  . :  " << (int)isVolumetric << endl;
-            position += sizeof(unsigned char);
-         }
+        // Cast shadow flag:
+        unsigned char castShadows;
+        memcpy(&castShadows, data + position, sizeof(unsigned char));
+        cout << "   Cast shadows  :  " << static_cast<int>(castShadows) << endl;
+        position += sizeof(unsigned char);
+
+        // Volumetric lighting flag:
+        unsigned char isVolumetric;
+        memcpy(&isVolumetric, data + position, sizeof(unsigned char));
+        cout << "   Volumetric  . :  " << static_cast<int>(isVolumetric) << endl;
+        position += sizeof(unsigned char);
+     }
          break;
 
 
@@ -743,8 +681,7 @@ int main(int argc, char *argv[])
             // Bone matrix:
             glm::mat4 matrix;
             memcpy(&matrix, data + position, sizeof(glm::mat4));
-            if (verbose)
-               MAT2STR(matrix);
+
 				position += sizeof(glm::mat4);
 
             // Nr. of children nodes:
@@ -777,10 +714,11 @@ int main(int argc, char *argv[])
 			///////////
 			default: //
 				cout << "UNKNOWN]" << endl;
-            cout << "ERROR: corrupted or bad data in file " << argv[1] << endl;
+            cout << "ERROR: corrupted or bad data in file " << endl;
             fclose(dat);
             delete[] data;
-            return 3;
+			// originariamente tornava 3
+            return nullptr;
 		}
 
 		// Release chunk memory:
@@ -790,5 +728,5 @@ int main(int argc, char *argv[])
 	// Done:
    fclose(dat);
    cout << "\nFile parsed" << endl;
-	return 0;
+	return root;
 }
