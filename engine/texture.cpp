@@ -1,56 +1,38 @@
 #include "texture.h"
 #include <GL/freeglut.h>
+#include <GL/glu.h> // NECESSARIO per gluBuild2DMipmaps
 
 using namespace Eng;
 
-
 Texture::Texture(const unsigned char* bitmap, const int width, const int height) noexcept
-   : width_{width}, height_{height} {
-   // Create and bind a texture:
+   : width_{width}, height_{height}
+{
+
+   // generazione texture
    glGenTextures(1, &texId_);
    glBindTexture(GL_TEXTURE_2D, texId_);
 
-   // Change texture settings:
+   // parametrizzazione texture
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   // in teoria questo è meglio (filtro trilineare)
+
+   // filtro trilineare
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-
-   // per filtro anisotropico
-   // float maxAnisotropy;
-   // glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-   // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
-
-
-
-   // Load texture content from a byte array:
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width_, height_, 0, GL_RGB,
-   GL_UNSIGNED_BYTE, bitmap);
-
-   // devo usarle da qualche parte
-   // gluBuild2DMipmaps();
+   // costruzione MIPMAP
+   gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width_, height_,GL_RGB,GL_UNSIGNED_BYTE, bitmap
+   );
 }
-
 
 void Texture::bind() const {
    glBindTexture(GL_TEXTURE_2D, texId_);
-   glEnable(GL_TEXTURE_2D);
+   glEnable(GL_TEXTURE_2D); // fixed pipeline
 }
 
-
-
 Texture::~Texture() noexcept {
-   // Release unused resources:
    glDeleteTextures(1, &texId_);
 }
 
-
-void Texture::render(const glm::mat4& modelViewMatrix) {
-
-
-}
-
-
+// La texture non renderizza niente da sola
+void Texture::render(const glm::mat4&) {}
