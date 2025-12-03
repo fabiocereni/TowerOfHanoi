@@ -74,6 +74,7 @@ namespace Eng {
       ENG_API void end3D() noexcept;
       ENG_API void swap() noexcept;
       ENG_API [[nodiscard]] std::shared_ptr<Node> load(const std::string &path) const noexcept;
+      ENG_API [[nodiscard]] std::shared_ptr<Texture> loadTextureFromFile(const std::string& path) const noexcept;
 
 
       ENG_API static void displayCallback();
@@ -90,7 +91,9 @@ namespace Eng {
       ENG_API std::shared_ptr<Camera> createOrthographicCamera(float size, float nearPlane, float farPlane) noexcept;
 
 
-      ENG_API static std::shared_ptr<Mesh> createMesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr<Material>& material);
+      ENG_API static std::shared_ptr<Mesh> createMesh(const std::vector<glm::vec3>& vertexes,
+                                                      const std::string& materialName,
+                                                      const std::shared_ptr<Material>& material);
 
 
       ENG_API void setWidth(const int width) noexcept {width_ = width;};
