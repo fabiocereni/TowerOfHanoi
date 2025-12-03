@@ -19,10 +19,20 @@ struct Base::Reserved {
    {}
 };
 
-// inizializzazione variabile statica
+// inizializzazione variabili statiche
 float Base::frames_ = 0.0f;
+Base::KeyboardCallback Base::customKeyboardCallbackVar_ = nullptr;
+Base::SpecialKeyAction Base::up_arrow_key_ = nullptr;
+Base::SpecialKeyAction Base::down_arrow_key_ = nullptr;
+Base::SpecialKeyAction Base::left_arrow_key_ = nullptr;
+Base::SpecialKeyAction Base::right_arrow_key_ = nullptr;
+
+
+
 // serve per il calcolo del framerate
 float fps = 0.0f;
+
+
 
 // servono per salvare le matrici
 glm::mat4 perspective;
@@ -61,8 +71,7 @@ bool Base::init(int argc, char **argv, const std::string& title) {
 
    // serve a glutMainLoopEvent() per ritornare quando la finestra viene chiusa
    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-
-   // ------------------------------------------------------
+   // ------------------------------------------------------------------------------------
 
 
    // impostazione base di OpenGL
@@ -73,7 +82,12 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glEnable(GL_LIGHTING);
    // normalizza automaticamente le normali
    glEnable(GL_NORMALIZE);
-// ------------------------------------------------------
+
+   // impostazioni per face culling
+   glEnable(GL_CULL_FACE);
+   glCullFace(GL_BACK);
+   glFrontFace(GL_CCW);
+   // ------------------------------------------------------------------------------------
 
 
    // impostazioni del modello di illuminazione globale
@@ -103,9 +117,9 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    constexpr float pos[4] = {0.0f, 0.0f, 1.0f, 0.0f};
    glLightfv(GL_LIGHT0, GL_POSITION, pos);
 
+   // per debug
    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-   // ------------------------------------------------------
-
+   // ------------------------------------------------------------------------------------
 
    // callbacks
 
@@ -113,17 +127,26 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glutDisplayFunc(displayCallback);
    // registrazione callback per ridimensionamento
    glutReshapeFunc(reshapeCallback);
-   // registrazione timer callback per fps
+   // registrazione timer callback per fps (ogni secondo)
    glutTimerFunc(1000, timerCallback, 0);
    // registrazione callback per tasti "normali"
-   glutKeyboardFunc(keyboardCallback);
+   glutKeyboardFunc(useCustomKeyboardCallback);
    // registrazione callback per tasti "speciali"
    glutSpecialFunc(specialCallback);
-   // ------------------------------------------------------
-
+   // ------------------------------------------------------------------------------------
    reserved_->initFlag = true;
    return true;
 }
+
+
+void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, const int mouseY) noexcept {
+   if (customKeyboardCallbackVar_) {
+      customKeyboardCallbackVar_(key, mouseX, mouseY);
+   }
+}
+
+
+
 
 bool Base::update() const noexcept {
    // Processa eventi GLUT
@@ -146,7 +169,10 @@ void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept {
    glMatrixMode(GL_MODELVIEW);
 }
 
-void Base::end3D() noexcept {}
+void Base::end3D() noexcept {
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+}
 
 void Base::clear() noexcept {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -192,6 +218,7 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
+
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
    std::vector<glm::vec3> cube = {
@@ -343,28 +370,25 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 
    switch (key) {
    case GLUT_KEY_UP:
-      std::cout << "UP" << std::endl;
+      if (up_arrow_key_)
+         up_arrow_key_();
       break;
 
    case GLUT_KEY_DOWN:
-      std::cout << "DOWN" << std::endl;
+      if (down_arrow_key_)
+         down_arrow_key_();
       break;
 
    case GLUT_KEY_LEFT:
-      std::cout << "LEFT" << std::endl;
+      if (left_arrow_key_)
+         left_arrow_key_();
       break;
 
    case GLUT_KEY_RIGHT:
-      std::cout << "RIGHT" << std::endl;
+      if (right_arrow_key_)
+         right_arrow_key_();
       break;
 
    default: std::cout << "UNKNOWN" << std::endl ;
-   }
-}
-
-void Base::keyboardCallback(unsigned char key, int mouseX, int mouseY) {
-
-   switch (key) {
-      // da implementare
    }
 }
