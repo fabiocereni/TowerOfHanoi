@@ -5,6 +5,7 @@
 #include <GL/freeglut.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "ovoreader.h"
 
 #include "perspective_camera.h"
 
@@ -221,6 +222,9 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
+    OvoParser ovoparser;
+    auto root = ovoparser.returnCompleteSceneTree(path);
+    /*
    std::vector<glm::vec3> cube = {
       // ===== FRONT (z = 0.5) =====
       {-0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, // Triangolo 1
@@ -282,7 +286,7 @@ std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
    // aggiungere cubo a root
    root->addChildren(first_cube);
-
+   */
 
 
 
