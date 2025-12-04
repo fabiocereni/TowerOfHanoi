@@ -227,69 +227,6 @@ std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
       OvoParser ovoParser;
 
-
-      // ===== LEFT (x = -0.5) =====
-      {-0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f},
-      {-0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f,  0.5f}, {-0.5f,  0.5f, -0.5f},
-
-      // ===== RIGHT (x = 0.5) =====
-      { 0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f, -0.5f}, { 0.5f,  0.5f, -0.5f},
-      { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f}, { 0.5f,  0.5f,  0.5f},
-
-      // ===== TOP (y = 0.5) =====
-      {-0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f},
-      {-0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f},
-
-      // ===== BOTTOM (y = -0.5) =====
-      {-0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f,  0.5f},
-      {-0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f,  0.5f}, {-0.5f, -0.5f,  0.5f},
-  };
-
-
-   std::vector<glm::vec3> cubeNormals;
-   // 6 facce, 6 vertici per faccia
-   // FRONT (Z+)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-   // BACK (Z-)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
-   // LEFT (X-)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
-   // RIGHT (X+)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-   // TOP (Y+)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-   // BOTTOM (Y-)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
-
-
-
-   std::shared_ptr<Node> root = std::make_shared<Node>();
-
-   // cubo
-   std::shared_ptr<Material> material = std::make_shared<Material>(
-      glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), // emission
-      glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), // ambient
-      glm::vec4(0.5f, 0.2f, 0.8f, 1.0f), // diffuse
-      glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), // specular
-      32.0f,
-      "test");
-
-
-   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube, "test" , material);
-
-   first_cube->setNormals(cubeNormals);
-
-   // aggiungere cubo a root
-   root->addChildren(first_cube);
-
-
-
-
-   // creare e aggiungere camera al cubo
-
-   // creare luce per cubo
-
-
    return ovoParser.returnCompleteSceneTree(path);;
 }
 
