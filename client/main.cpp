@@ -74,11 +74,11 @@ int main(const int argc, char** argv) {
 
         // --- DEBUG SETTINGS ---
         // Attiva Wireframe per vedere la struttura dell'oggetto
-        eng.setWireframe(true);
+        eng.setWireframe(false);
         // Disabilita luci per vedere il colore piatto/linee (utile se l'oggetto è nero/buio)
-        eng.setLighting(false);
+        eng.setLighting(true);
         // Disabilita culling per vedere anche l'interno o facce invertite
-        eng.setCulling(false);
+        eng.setCulling(true);
         // ----------------------
 
         // Carica matrice proiezione
