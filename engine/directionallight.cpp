@@ -1,22 +1,23 @@
 #include "directionallight.h"
-
 #include <GL/freeglut.h>
 
-#include "glm/gtc/type_ptr.inl"
+#include "glm/gtc/type_ptr.hpp"
 
-using namespace Eng;
+namespace Eng {
 
+    void DirectionalLight::render(const glm::mat4& modelViewMatrix) {
 
-DirectionalLight::DirectionalLight(const glm::vec3& color,
-                 const glm::vec3& direction) noexcept
-                     : color_(color), direction_(direction) {}
+        const GLenum id = GL_LIGHT0 + getLightNumber();
+        glEnable(id);
 
+        glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient_));
+        glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse_));
+        glLightfv(id, GL_SPECULAR, glm::value_ptr(specular_));
 
+        const glm::vec3 eyeDir = glm::mat3(modelViewMatrix) * (-direction_);
+        const float pos[] = { eyeDir.x, eyeDir.y, eyeDir.z, 0.0f };
 
+        glLightfv(id, GL_POSITION, pos);
+    }
 
-void DirectionalLight::render(const glm::mat4& modelViewMatrix) {
-    setPosition(glm::vec4(direction_, 0.0f));
-    // da mettere la posizione
-    int lightNumber = getLightNumber();
-    glLightfv(GL_LIGHT2, GL_POSITION, glm::value_ptr(getPosition()));
 }

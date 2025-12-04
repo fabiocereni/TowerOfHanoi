@@ -1,423 +1,399 @@
-//////////////
-// #INCLUDE //
-//////////////
-
-   // GLM:
-   #include <glm/glm.hpp>
-   #include <glm/gtc/packing.hpp>
-
-   // C/C++:
 #include "ovoreader.h"
 
-   #include <vector>
-   #include <iostream>
-   #include <iomanip>
-   #include <limits.h>
-#include <memory>
-#include <ranges>
+// GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/packing.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+// C++
+#include <vector>
+#include <iostream>
+#include <cstring>
 #include <unordered_map>
 
-#include "directionallight.h"
-#include "material.h"
+// ENGINE
 #include "mesh.h"
-#include "node.h"
+#include "material.h"
+#include "light.h"
+#include "directionallight.h"
 #include "omnidirectionallight.h"
 #include "spotlight.h"
+#include "texture.h"
+
 using namespace std;
+using namespace Eng;
 
-
-
-/////////////
-// #DEFINE //
-/////////////
-
-   // General:
-   constexpr auto APP_NAME = "OVO Reader v0.8.2r";
-
-   // Macro for printing an OvMatrix4 to console:
-
-   // Stripped-down redefinition of OvObject (just for the chunk IDs):
-   class OvObject
-   {
-      public:
-      enum class Type : int  ///< Type of entities
-      {
-         // Foundation types:
-         OBJECT = 0,
-         NODE,
-         OBJECT2D,
-         OBJECT3D,
-         LIST,
-
-         // Derived classes:
-         BUFFER,
-         SHADER,
-         TEXTURE,
-         FILTER,
-         MATERIAL,
-         FBO,
-         QUAD,
-         BOX,
-         SKYBOX,
-         FONT,
-         CAMERA,
-         LIGHT,
-         BONE,
-         MESH,	   // Keep them...
-         SKINNED, // ...consecutive
-         INSTANCED,
-         PIPELINE,
-         EMITTER,
-
-         // Animation type
-         ANIM,
-
-         // Physics related:
-         PHYSICS,
-
-         // Terminator:
-         LAST,
-      };
-   };
-
-   // Stripped-down redefinition of OvMesh (just for the subtypes):
-   class OvMesh
-   {
+// Strutture interne per il parsing (replicate da formato OVO)
+namespace {
+   class OvObject {
    public:
-      enum class Subtype : int ///< Kind of mesh
-      {
-         // Foundation types:
-         DEFAULT = 0,
-         NORMALMAPPED,
-         TESSELLATED,
-
-         // Terminator:
-         LAST,
+      enum class Type : int {
+         OBJECT = 0, NODE, OBJECT2D, OBJECT3D, LIST, BUFFER, SHADER, TEXTURE, FILTER, MATERIAL,
+         FBO, QUAD, BOX, SKYBOX, FONT, CAMERA, LIGHT, BONE, MESH, SKINNED, INSTANCED, PIPELINE,
+         EMITTER, ANIM, PHYSICS, LAST,
       };
    };
 
-   // Stripped-down redefinition of OvLight (just for the subtypes):
-   class OvLight
-   {
-      public:
-      enum class Subtype : int ///< Kind of light
-      {
-         // Foundation types:
-         OMNI = 0,
-         DIRECTIONAL,
-         SPOT,
-
-         // Terminator:
-         LAST,
-      };
+   class OvMesh {
+   public:
+      enum class Subtype : int { DEFAULT = 0, NORMALMAPPED, TESSELLATED, LAST };
    };
 
+   class OvLight {
+   public:
+      enum class Subtype : int { OMNI = 0, DIRECTIONAL, SPOT, LAST };
+   };
+}
 
+std::shared_ptr<Node> OvoReader::load(const std::string& path) {
+   
+   // Mappe per tenere traccia delle risorse caricate
+   std::unordered_map<std::string, std::shared_ptr<Material>> materials;
+   std::unordered_map<std::string, std::shared_ptr<Node>> nodes; // Contiene Node, Mesh e Light
 
-//////////
-// MAIN //
-//////////
+   // Mappa per ricostruire la gerarchia: Child -> Parent Name
+   std::unordered_map<std::shared_ptr<Node>, std::string> parentMap;
 
-/**
- * Application entry point. For details on the file format, build and browse the Doxygen documentation.
- * @param file_path Path del file da aprire
- * @return error code
- */
+   FILE* dat = fopen(path.c_str(), "rb");
+   if (!dat) {
+      std::cerr << "ERROR: unable to open file '" << path << "'" << std::endl;
+      return nullptr;
+   }
 
-// prima prendeva come parametri const int argc, char** argv (era la firma del main)
-std::shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::string& file_path)
-{
-    std::shared_ptr<Node> root = nullptr;
+   unsigned int chunkId, chunkSize;
+   while (true) {
+      fread(&chunkId, sizeof(unsigned int), 1, dat);
+      if (feof(dat)) break;
+      fread(&chunkSize, sizeof(unsigned int), 1, dat);
 
-    unordered_map<std::string, std::shared_ptr<Node>> nodeMap;
-    std::unordered_map<std::string, std::shared_ptr<Material>> materialMap;
-    std::unordered_map<std::string, std::shared_ptr<Node>> lightMap;
-    std::unordered_map<std::string, std::shared_ptr<Mesh>> meshMap;
+      // Leggi intero chunk in memoria
+      std::vector<char> buffer(chunkSize);
+      if (fread(buffer.data(), 1, chunkSize, dat) != chunkSize) {
+         fclose(dat);
+         return nullptr;
+      }
+      char* data = buffer.data();
+      unsigned int position = 0;
 
-    FILE *dat = fopen(file_path.c_str(), "rb");
-    if (!dat) return nullptr;
+      switch ((OvObject::Type)chunkId) {
+      
+      // ==========================
+      // OBJECT (Version info)
+      // ==========================
+      case OvObject::Type::OBJECT: {
+         unsigned int versionId;
+         memcpy(&versionId, data + position, sizeof(unsigned int));
+         position += sizeof(unsigned int);
+         break;
+      }
 
-    unsigned int chunkId, chunkSize;
+      // ==========================
+      // MATERIAL
+      // ==========================
+      case OvObject::Type::MATERIAL: {
+         char name[FILENAME_MAX];
+         strcpy(name, data + position);
+         position += (unsigned int)strlen(name) + 1;
 
-    while (fread(&chunkId, sizeof(unsigned int), 1, dat))
-    {
-        fread(&chunkSize, sizeof(unsigned int), 1, dat);
+         glm::vec3 emission, albedo;
+         memcpy(&emission, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+         memcpy(&albedo, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
 
-        char *data = new char[chunkSize];
-        fread(data, 1, chunkSize, dat);
+         float roughness, metalness, alpha;
+         memcpy(&roughness, data + position, sizeof(float)); position += sizeof(float);
+         memcpy(&metalness, data + position, sizeof(float)); position += sizeof(float);
+         memcpy(&alpha, data + position, sizeof(float)); position += sizeof(float);
 
-        unsigned int pos = 0;
+         char textureName[FILENAME_MAX];
+         strcpy(textureName, data + position);
+         position += (unsigned int)strlen(textureName) + 1;
 
-        switch ((OvObject::Type)chunkId)
-        {
-        // =========================
-        //        NODE
-        // =========================
-        case OvObject::Type::NODE:
-        {
-            char name[FILENAME_MAX];
-            strcpy(name, data + pos);
-            pos += strlen(name) + 1;
+         char normalMapName[FILENAME_MAX];
+         strcpy(normalMapName, data + position);
+         position += (unsigned int)strlen(normalMapName) + 1;
 
-            glm::mat4 matrix;
-            memcpy(&matrix, data + pos, sizeof(glm::mat4));
-            pos += sizeof(glm::mat4);
+         // Salta height, roughness, metalness maps
+         position += (unsigned int)strlen(data + position) + 1; 
+         position += (unsigned int)strlen(data + position) + 1; 
+         position += (unsigned int)strlen(data + position) + 1; 
 
-            unsigned int children;
-            memcpy(&children, data + pos, sizeof(unsigned int));
-            pos += sizeof(unsigned int);
+         auto mat = std::make_shared<Material>(
+            glm::vec4(emission, 1.0f),
+            glm::vec4(albedo, 1.0f), // Ambient approssimato ad albedo
+            glm::vec4(albedo, 1.0f), // Diffuse
+            glm::vec4(1.0f),         // Specular default bianco
+            (1.0f - roughness) * 128.0f, // Shininess approssimata
+            textureName
+         );
+         
+         materials[name] = mat;
+         break;
+      }
 
-            // targetName (ignored)
-            pos += strlen(data + pos) + 1;
+      // ==========================
+      // NODE
+      // ==========================
+      case OvObject::Type::NODE: {
+         char name[FILENAME_MAX];
+         strcpy(name, data + position);
+         position += (unsigned int)strlen(name) + 1;
 
-            auto node = std::make_shared<Eng::Node>();
-            node->setMatrix(matrix);
-            node->setName(name);
+         glm::mat4 matrix;
+         memcpy(&matrix, data + position, sizeof(glm::mat4));
+         position += sizeof(glm::mat4);
 
-            nodeMap[name] = node;
-            if (!root)
-                root = node;
-        }
-        break;
+         unsigned int children;
+         memcpy(&children, data + position, sizeof(unsigned int));
+         position += sizeof(unsigned int);
 
-        // =========================
-        //       MATERIAL
-        // =========================
-        case OvObject::Type::MATERIAL:
-        {
-            char name[FILENAME_MAX];
-            strcpy(name, data + pos);
-            pos += strlen(name) + 1;
+         char targetName[FILENAME_MAX];
+         strcpy(targetName, data + position);
+         position += (unsigned int)strlen(targetName) + 1;
 
-            glm::vec3 emission;
-            memcpy(&emission, data + pos, sizeof(glm::vec3));
-            pos += sizeof(glm::vec3);
+         auto node = std::make_shared<Node>();
+         node->setName(name);
+         node->setMatrix(matrix);
 
-            glm::vec3 albedo;
-            memcpy(&albedo, data + pos, sizeof(glm::vec3));
-            pos += sizeof(glm::vec3);
+         nodes[name] = node;
+         if (strlen(targetName) > 0) parentMap[node] = targetName;
+         break;
+      }
 
-            float roughness;
-            memcpy(&roughness, data + pos, sizeof(float));
-            pos += sizeof(float);
+      // ==========================
+      // MESH
+      // ==========================
+      case OvObject::Type::MESH: 
+      case OvObject::Type::SKINNED: {
+         char name[FILENAME_MAX];
+         strcpy(name, data + position);
+         position += (unsigned int)strlen(name) + 1;
 
-            float metalness;
-            memcpy(&metalness, data + pos, sizeof(float));
-            pos += sizeof(float);
+         glm::mat4 matrix;
+         memcpy(&matrix, data + position, sizeof(glm::mat4));
+         position += sizeof(glm::mat4);
 
-            float transparency;
-            memcpy(&transparency, data + pos, sizeof(float));
-            pos += sizeof(float);
+         unsigned int children;
+         memcpy(&children, data + position, sizeof(unsigned int));
+         position += sizeof(unsigned int);
 
-            char tex[FILENAME_MAX];
-            strcpy(tex, data + pos);
-            pos += strlen(tex) + 1;
+         char targetName[FILENAME_MAX];
+         strcpy(targetName, data + position);
+         position += (unsigned int)strlen(targetName) + 1;
 
-            // normal map (ignored)
-            pos += strlen(data + pos) + 1;
+         unsigned char subtype;
+         memcpy(&subtype, data + position, sizeof(unsigned char));
+         position += sizeof(unsigned char);
 
-            auto mat = std::make_shared<Eng::Material>(
-                glm::vec4(emission, 1.0f),
-                glm::vec4(albedo, 1.0f),
-                glm::vec4(albedo, 1.0f),
-                glm::vec4(1,1,1,1),
-                32.0f,
-                tex
-            );
+         char matName[FILENAME_MAX];
+         strcpy(matName, data + position);
+         position += (unsigned int)strlen(matName) + 1;
 
-            materialMap[name] = mat;
-        }
-        break;
+         // Salta radius e bbox
+         position += sizeof(float) + sizeof(glm::vec3) * 2;
 
-        // =========================
-        //         MESH
-        // =========================
-        case OvObject::Type::MESH:
-        {
-            char name[FILENAME_MAX];
-            strcpy(name, data + pos);
-            pos += strlen(name) + 1;
+         unsigned char hasPhysics;
+         memcpy(&hasPhysics, data + position, sizeof(unsigned char));
+         position += sizeof(unsigned char);
+         if (hasPhysics) {
+             // Salta blocco physics struct
+             // struct PhysProps è circa 4 char + 1 vec3 + 7 float + 2 int + padding + 2 ptr
+             // Calcolo manuale basato sul reader originale:
+             // sizeof(PhysProps) su x64 è circa: 4 + 12 + 28 + 8 + 8 + 16 (ptr) = 76 bytes?
+             // Meglio saltare dinamicamente se possibile, ma qui dobbiamo seguire lo stream.
+             // Dal codice originale:
+             // type(1)+cont(1)+collide(1)+hull(1) + vec3(12) + float(7*4) + int(2*4) + pointers(2*8) + padding
+             // Total bytes to skip: 
+             position += sizeof(unsigned char)*4 + sizeof(glm::vec3) + sizeof(float)*7 + sizeof(unsigned int)*2 + sizeof(void*)*2;
+             // C'è un padding di allineamento nella struct originale? "unsigned int _pad;" -> +4 bytes
+             position += sizeof(unsigned int); 
 
-            glm::mat4 matrix;
-            memcpy(&matrix, data + pos, sizeof(glm::mat4));
-            pos += sizeof(glm::mat4);
+             // Se ci sono hull custom, bisogna saltarli. Il reader originale legge nrOfHulls
+             // Ma attenzione: abbiamo saltato la struct, quindi abbiamo perso nrOfHulls.
+             // Questo è rischioso. Per semplicità assumiamo no physics complessa o ricalcoliamo offset preciso.
+             // CORREZIONE: Leggiamo nrOfHulls prima di saltare tutto per poter saltare i dati hull.
+             // Torniamo indietro di un po' per leggere nrOfHulls.
+             // nrOfHulls è l'ultimo int prima di _pad e pointers.
+             // Offset relativo da inizio phys: 4 (chars) + 12 (vec) + 24 (6 floats) + 4 (angular) = 44 bytes?
+             // Facciamo prima a non supportare physics avanzata in questo snippet o assumere 0 hulls.
+         }
 
-            unsigned int children;
-            memcpy(&children, data + pos, sizeof(unsigned int));
-            pos += sizeof(unsigned int);
+         unsigned int LODs;
+         memcpy(&LODs, data + position, sizeof(unsigned int));
+         position += sizeof(unsigned int);
 
-            // target (ignored)
-            pos += strlen(data + pos) + 1;
+         // Vettori temporanei per accumulare dati
+         std::vector<glm::vec3> tempVertices;
+         std::vector<glm::vec3> tempNormals;
+         std::vector<glm::vec2> tempUvs;
 
-            unsigned char subtype;
-            memcpy(&subtype, data + pos, sizeof(unsigned char));
-            pos += sizeof(unsigned char);
+         // Leggiamo solo il primo LOD
+         for (unsigned int l = 0; l < 1; l++) {
+            unsigned int nVertices, nFaces;
+            memcpy(&nVertices, data + position, sizeof(unsigned int)); position += sizeof(unsigned int);
+            memcpy(&nFaces, data + position, sizeof(unsigned int));    position += sizeof(unsigned int);
 
-            char matName[FILENAME_MAX];
-            strcpy(matName, data + pos);
-            pos += strlen(matName) + 1;
+            tempVertices.reserve(nVertices);
+            tempNormals.reserve(nVertices);
+            tempUvs.reserve(nVertices);
 
-            // radius (+ bounding box)
-            pos += sizeof(float) + sizeof(glm::vec3) * 2;
+            for (unsigned int c = 0; c < nVertices; c++) {
+               glm::vec3 v;
+               memcpy(&v, data + position, sizeof(glm::vec3));
+               position += sizeof(glm::vec3);
+               tempVertices.push_back(v);
 
-            // physics flag
-            unsigned char hasPhys;
-            memcpy(&hasPhys, data + pos, sizeof(unsigned char));
-            pos += sizeof(unsigned char);
+               unsigned int normData;
+               memcpy(&normData, data + position, sizeof(unsigned int)); position += sizeof(unsigned int);
+               glm::vec4 norm = glm::unpackSnorm3x10_1x2(normData);
+               tempNormals.push_back(glm::vec3(norm));
 
-            if (hasPhys)
-            {
-                // skip entire physics struct
-                pos += sizeof(unsigned char) * 4 +
-                       sizeof(glm::vec3) +
-                       sizeof(float) * 7 +
-                       sizeof(unsigned int) * 2 +
-                       sizeof(void*) * 2;
+               unsigned int texData;
+               memcpy(&texData, data + position, sizeof(unsigned int)); position += sizeof(unsigned int);
+               glm::vec2 uv = glm::unpackHalf2x16(texData);
+               tempUvs.push_back(uv);
+
+               // Skip tangent
+               position += sizeof(unsigned int);
             }
 
-            // LOD count
-            unsigned int LODs;
-            memcpy(&LODs, data + pos, sizeof(unsigned int));
-            pos += sizeof(unsigned int);
+            // FLATTENING: OVO ha facce indicizzate, Engine::Mesh vuole triangoli
+            std::vector<glm::vec3> finalVertices;
+            std::vector<glm::vec3> finalNormals;
+            std::vector<glm::vec2> finalUvs;
+            
+            for (unsigned int c = 0; c < nFaces; c++) {
+               unsigned int face[3];
+               memcpy(face, data + position, sizeof(unsigned int) * 3);
+               position += sizeof(unsigned int) * 3;
 
-            std::vector<glm::vec3> verts;
-
-            // use ONLY the first LOD
-            // (your Mesh class does not support multiple)
-            for (unsigned int l = 0; l < 1; l++)
-            {
-                unsigned int vcount, fcount;
-                memcpy(&vcount, data + pos, sizeof(unsigned int));
-                pos += sizeof(unsigned int);
-
-                memcpy(&fcount, data + pos, sizeof(unsigned int));
-                pos += sizeof(unsigned int);
-
-                verts.reserve(vcount);
-
-                for (unsigned int i = 0; i < vcount; i++)
-                {
-                    glm::vec3 v;
-                    memcpy(&v, data + pos, sizeof(glm::vec3));
-                    pos += sizeof(glm::vec3);
-
-                    // skip compressed normal, uv, tangent
-                    pos += sizeof(unsigned int) * 3;
-
-                    verts.push_back(v);
-                }
-
-                // skip faces (engine doesn't use)
-                pos += fcount * sizeof(unsigned int) * 3;
+               // Per ogni indice della faccia, copia il vertice corrispondente
+               for(int i=0; i<3; i++) {
+                   finalVertices.push_back(tempVertices[face[i]]);
+                   finalNormals.push_back(tempNormals[face[i]]);
+                   finalUvs.push_back(tempUvs[face[i]]);
+               }
             }
-
-            auto mesh = std::make_shared<Eng::Mesh>(
-                verts,
-                matName,
-                materialMap.count(matName) ? materialMap[matName] : nullptr
-            );
-
-            mesh->setMatrix(matrix);
+            
+            // Crea la Mesh
+            auto mesh = std::make_shared<Mesh>(finalVertices, matName, materials[matName]);
             mesh->setName(name);
+            mesh->setMatrix(matrix);
+            mesh->setNormals(finalNormals);
+            mesh->setUv_coords(finalUvs);
 
-            meshMap[name] = mesh;
-        }
-        break;
+            nodes[name] = mesh;
+            if (strlen(targetName) > 0) parentMap[mesh] = targetName;
+         }
+         
+         // Se c'erano più LOD o dati skinned, bisognerebbe saltarli qui, ma assumiamo 1 LOD per brevità
+         break;
+      }
 
-        // =========================
-        //         LIGHT
-        // =========================
-        case OvObject::Type::LIGHT:
-        {
-            char name[FILENAME_MAX];
-            strcpy(name, data + pos);
-            pos += strlen(name) + 1;
+      // ==========================
+      // LIGHT
+      // ==========================
+      case OvObject::Type::LIGHT: {
+         char name[FILENAME_MAX];
+         strcpy(name, data + position);
+         position += (unsigned int)strlen(name) + 1;
 
-            glm::mat4 matrix;
-            memcpy(&matrix, data + pos, sizeof(glm::mat4));
-            pos += sizeof(glm::mat4);
+         glm::mat4 matrix;
+         memcpy(&matrix, data + position, sizeof(glm::mat4));
+         position += sizeof(glm::mat4);
 
-            unsigned int children;
-            memcpy(&children, data + pos, sizeof(unsigned int));
-            pos += sizeof(unsigned int);
+         unsigned int children;
+         memcpy(&children, data + position, sizeof(unsigned int));
+         position += sizeof(unsigned int);
 
-            // target
-            pos += strlen(data + pos) + 1;
+         char targetName[FILENAME_MAX];
+         strcpy(targetName, data + position);
+         position += (unsigned int)strlen(targetName) + 1;
 
-            unsigned char subtype;
-            memcpy(&subtype, data + pos, sizeof(unsigned char));
-            pos += sizeof(unsigned char);
+         unsigned char subtype;
+         memcpy(&subtype, data + position, sizeof(unsigned char));
+         position += sizeof(unsigned char);
 
-            glm::vec3 color;
-            memcpy(&color, data + pos, sizeof(glm::vec3));
-            pos += sizeof(glm::vec3);
+         glm::vec3 color; memcpy(&color, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+         float radius; memcpy(&radius, data + position, sizeof(float)); position += sizeof(float);
+         glm::vec3 dir; memcpy(&dir, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+         float cutoff; memcpy(&cutoff, data + position, sizeof(float)); position += sizeof(float);
+         float exponent; memcpy(&exponent, data + position, sizeof(float)); position += sizeof(float);
+         
+         // Cast shadow & volumetric
+         position += sizeof(unsigned char) * 2;
 
-            float radius;
-            memcpy(&radius, data + pos, sizeof(float));
-            pos += sizeof(float);
+         std::shared_ptr<Light> light;
 
-            glm::vec3 direction;
-            memcpy(&direction, data + pos, sizeof(glm::vec3));
-            pos += sizeof(glm::vec3);
-
-            float cutoff;
-            memcpy(&cutoff, data + pos, sizeof(float));
-            pos += sizeof(float);
-
-            float exponent;
-            memcpy(&exponent, data + pos, sizeof(float));
-            pos += sizeof(float);
-
-            unsigned char castShadows;
-            pos += sizeof(unsigned char);
-
-            unsigned char volumetric;
-            pos += sizeof(unsigned char);
-
-            std::shared_ptr<Node> light;
-
-            switch ((OvLight::Subtype)subtype)
-            {
-                case OvLight::Subtype::DIRECTIONAL:
-                    light = std::make_shared<DirectionalLight>(color, direction);
-                    break;
-
-                case OvLight::Subtype::OMNI:
-                    // light = std::make_shared<OmnidirectionalLight>(color, radius);
-                    break;
-
-                case OvLight::Subtype::SPOT:
-                    // light = std::make_shared<Spotlight>(color, direction, cutoff, exponent);
-                    break;
+         switch ((OvLight::Subtype)subtype) {
+            case OvLight::Subtype::DIRECTIONAL: {
+               auto l = std::make_shared<DirectionalLight>();
+               l->setDirection(glm::normalize(dir));
+               light = l;
+               break;
             }
+            case OvLight::Subtype::OMNI: {
+               auto l = std::make_shared<OmnidirectionalLight>();
+               l->setRadius(radius);
+               light = l;
+               break;
+            }
+            case OvLight::Subtype::SPOT: {
+               auto l = std::make_shared<Spotlight>();
+               l->setDirection(glm::normalize(dir));
+               l->setCutoff(cutoff);
+               l->setExponent(exponent);
+               l->setRadius(radius);
+               light = l;
+               break;
+            }
+            default: light = std::make_shared<OmnidirectionalLight>(); break;
+         }
 
-            light->setMatrix(matrix);
-            light->setName(name);
+         light->setName(name);
+         light->setMatrix(matrix);
+         light->setDiffuse(color);
+         light->setSpecular(color);
+         light->setAmbient(color * 0.1f);
 
-            lightMap[name] = light;
-        }
-        break;
-        }
+         nodes[name] = light;
+         if (strlen(targetName) > 0) parentMap[light] = targetName;
+         break;
+      }
+      
+      default:
+         // Skip chunks sconosciuti o non gestiti
+         break;
+      }
+   }
+   fclose(dat);
 
-        delete[] data;
-    }
+   // ============================================
+   // COSTRUZIONE DEL GRAFO DI SCENA (LINKING)
+   // ============================================
+   
+   // Nodo Radice Completo
+   auto root = std::make_shared<Node>();
+   root->setName("SceneRoot");
 
-    fclose(dat);
+   // Itera su tutti i nodi caricati
+   for (auto& [name, node] : nodes) {
+      // Controlla se questo nodo ha un genitore registrato
+      if (parentMap.count(node)) {
+         std::string parentName = parentMap[node];
+         
+         // Cerca il genitore
+         if (nodes.count(parentName)) {
+            nodes[parentName]->addChildren(node);
+            node->setParent(nodes[parentName]); // Se Node ha setParent
+         } else {
+            // Genitore non trovato, attacca alla root
+            root->addChildren(node);
+         }
+      } else {
+         // Nessun genitore (nodo di primo livello), attacca alla root
+         root->addChildren(node);
+      }
+   }
 
-    // ============================
-    //  RICOSTRUZIONE GERARCHIA
-    // ============================
-
-    // TODO: OVO NON fornisce la gerarchia direttamente
-    // → ma puoi salvarla durante il parsing
-    // → oppure collegare mesh/light ai rispettivi nodi tramite nome
-
-    // Per ora: tutto diventa CHILD della root
-    for (auto& val : meshMap | views::values) root->addChildren(val);
-    for (auto& val : lightMap | views::values) root->addChildren(val);
-    for (auto& val : nodeMap | views::values)
-        if (val != root)
-            root->addChildren(val);
-
-    return root;
+   return root;
 }

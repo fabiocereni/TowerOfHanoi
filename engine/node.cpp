@@ -54,19 +54,8 @@ ENG_API void Node::render(const glm::mat4& modelViewMatrix) {
 }
 
 
-std::shared_ptr<Node> Node::findNodeByName(const std::string& name) const noexcept {
-
-   for (const auto& child : childrens_) {
-      if (child->getName() == name) {
-         return child;
-      }
-      auto found = child->findNodeByName(name);
-      if (found)
-      {
-         return found;
-      }
-   }
-    return nullptr;
-}
+// std::shared_ptr<Node> Node::find(const std::string& str) const noexcept {
+//    return nullptr;
+// }
 
 

@@ -19,7 +19,7 @@ bool List::removeFromRenderList(const Instance &instance) noexcept {
 
 void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatrix) {
 
-   // Update current transformation:
+   // costruzione world matrix del nodo
    parentWorldMatrix = parentWorldMatrix * node_ptr->getMatrix();
 
    const auto current = std::dynamic_pointer_cast<Light>(node_ptr);
@@ -47,6 +47,7 @@ void List::render(const glm::mat4& viewMatrix) {
 
    for (const auto& instance : getRenderList()) {
 
+      // costruzione della modelview
       glm::mat4 modelViewMatrix = viewMatrix * instance.getNodeWorldMatrix();
 
       // il render del node riceve e carica direttamente la modelViewMatrix

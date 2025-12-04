@@ -1,104 +1,42 @@
 #pragma once
 
 #include "engine_api.h"
-#include "engine.h"
+#include "node.h"
+#include "mesh.h"
 #include "light.h"
 #include "material.h"
-#include "mesh.h"
-#include "node.h"
 
-#include <vector>
 #include <memory>
+#include <string>
+#include <unordered_map>
 
 namespace Eng {
 
-class ENG_API Scene {
-public:
-    Scene() noexcept = default;
-    Scene(std::vector<std::shared_ptr<Mesh>> meshes,
-          std::vector<std::shared_ptr<Material>> materials,
-          std::vector<std::shared_ptr<Light>> lights,
-          std::vector<std::shared_ptr<Node>> nodes) noexcept;
+    class ENG_API Scene {
+    public:
+        Scene() noexcept = default;
+        ~Scene() noexcept = default;
 
-    Scene(const Scene& other) noexcept;
-    Scene(Scene&& other) noexcept;
+        void addMesh(const std::string& name, const std::shared_ptr<Mesh>& mesh) noexcept;
+        void addMaterial(const std::string& name, const std::shared_ptr<Material>& material) noexcept;
+        void addLight(const std::string& name, const std::shared_ptr<Light>& light) noexcept;
+        void addNode(const std::string& name, const std::shared_ptr<Node>& node) noexcept;
 
-    Scene& operator=(const Scene& other) noexcept;
-    Scene& operator=(Scene&& other) noexcept;
+        [[nodiscard]] std::shared_ptr<Mesh>     findMeshByName(const std::string& name) const noexcept;
+        [[nodiscard]] std::shared_ptr<Material> findMaterialByName(const std::string& name) const noexcept;
+        [[nodiscard]] std::shared_ptr<Light>    findLightByName(const std::string& name) const noexcept;
+        [[nodiscard]] std::shared_ptr<Node>     findNodeByName(const std::string& name) const noexcept;
 
-    ~Scene() noexcept = default;
+        [[nodiscard]] const auto& getMeshMap()     const noexcept { return meshesByName_; }
+        [[nodiscard]] const auto& getMaterialMap() const noexcept { return materialsByName_; }
+        [[nodiscard]] const auto& getLightMap()    const noexcept { return lightsByName_; }
+        [[nodiscard]] const auto& getNodeMap()     const noexcept { return nodesByName_; }
 
-
-    [[nodiscard]] const std::vector<std::shared_ptr<Mesh>>& getMeshes() const noexcept {
-        return meshes_;
-    }
-
-    [[nodiscard]] const std::vector<std::shared_ptr<Material>>& getMaterials() const noexcept {
-        return materials_;
-    }
-
-    [[nodiscard]] const std::vector<std::shared_ptr<Light>>& getLights() const noexcept {
-        return lights_;
-    }
-
-    [[nodiscard]] const std::vector<std::shared_ptr<Node>>& getNodes() const noexcept {
-        return nodes_;
-    }
-
-
-    [[nodiscard]] std::vector<std::shared_ptr<Mesh>>& getMeshes() noexcept {
-        return meshes_;
-    }
-
-    [[nodiscard]] std::vector<std::shared_ptr<Material>>& getMaterials() noexcept {
-        return materials_;
-    }
-
-    [[nodiscard]] std::vector<std::shared_ptr<Light>>& getLights() noexcept {
-        return lights_;
-    }
-
-    [[nodiscard]] std::vector<std::shared_ptr<Node>>& getNodes() noexcept {
-        return nodes_;
-    }
-
-    void setMeshes(std::vector<std::shared_ptr<Mesh>> meshes) noexcept {
-        meshes_ = std::move(meshes);
-    }
-
-    void setMaterials(std::vector<std::shared_ptr<Material>> materials) noexcept {
-        materials_ = std::move(materials);
-    }
-
-    void setLights(std::vector<std::shared_ptr<Light>> lights) noexcept {
-        lights_ = std::move(lights);
-    }
-
-    void setNodes(std::vector<std::shared_ptr<Node>> nodes) noexcept {
-        nodes_ = std::move(nodes);
-    }
-
-    void addMesh(const std::shared_ptr<Mesh>& mesh) noexcept {
-        meshes_.push_back(mesh);
-    }
-
-    void addMaterial(const std::shared_ptr<Material>& material) noexcept {
-        materials_.push_back(material);
-    }
-
-    void addLight(const std::shared_ptr<Light>& light) noexcept {
-        lights_.push_back(light);
-    }
-
-    void addNode(const std::shared_ptr<Node>& node) noexcept {
-        nodes_.push_back(node);
-    }
-
-private:
-    std::vector<std::shared_ptr<Mesh>> meshes_;
-    std::vector<std::shared_ptr<Material>> materials_;
-    std::vector<std::shared_ptr<Light>> lights_;
-    std::vector<std::shared_ptr<Node>> nodes_;
-};
+    private:
+        std::unordered_map<std::string, std::shared_ptr<Mesh>>     meshesByName_;
+        std::unordered_map<std::string, std::shared_ptr<Material>> materialsByName_;
+        std::unordered_map<std::string, std::shared_ptr<Light>>    lightsByName_;
+        std::unordered_map<std::string, std::shared_ptr<Node>>     nodesByName_;
+    };
 
 }

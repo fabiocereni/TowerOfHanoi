@@ -127,6 +127,13 @@ namespace Eng {
       ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept;
       ENG_API void showFps();
 
+
+      // In engine.h, dentro class Base public:
+
+      ENG_API void setWireframe(bool enable);
+      ENG_API void setLighting(bool enable);
+      ENG_API void setCulling(bool enable);
+
       ///////////
    private: //
       ///////////
