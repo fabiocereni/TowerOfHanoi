@@ -35,11 +35,23 @@ int main(const int argc, char** argv) {
     // Imposta sfondo grigio per vedere meglio il wireframe
     eng.changeBackgroundColor(0.3f, 0.3f, 0.3f);
 
-    const std::string scenePath = "/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/ProvaTavoloovo.ovo";
+    const std::string scenePath = "\\Users\\matti\\Documents\\Uni\\grafica\\Progetto\\Export3DSMAX Progetto\\ProvaTavoloovo.ovo";
 
     // 3. Caricamento della Scena
     // Usa il nuovo metodo eng.load che restituisce la radice del grafo
     std::shared_ptr<Eng::Node> sceneRoot = eng.load(scenePath);
+
+    for(auto var: sceneRoot->getChildrens())
+    {
+        if (var.get()->getName() == "baseHanoi") {
+            for (auto var1 : var->getChildrens())
+            {
+                std::cout << var1.get()->getName() << std::endl;
+            }
+        }
+            
+    }
+   
 
     if (!sceneRoot) {
         std::cerr << "ERRORE: Impossibile caricare la scena da " << scenePath << std::endl;
@@ -54,8 +66,8 @@ int main(const int argc, char** argv) {
     // Posizione: Alta (2000) e Indietro (2000)
     // Target: Centro (0,0,0)
     // Up: Asse Y (0,1,0)
-    glm::vec3 position = glm::vec3(0.0f, 2000.0f, 2000.0f);
-    glm::vec3 target   = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 position = glm::vec3(0.0f, 1400.0f, 400.0f);
+    glm::vec3 target   = glm::vec3(0.0f, 1200.0f, 0.0f);
     glm::vec3 up       = glm::vec3(0.0f, 1.0f, 0.0f);
 
     glm::mat4 viewMatrix = glm::lookAt(position, target, up);
