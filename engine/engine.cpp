@@ -105,9 +105,9 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glEnable(GL_LIGHT0);
 
    // Componenti della luce
-   constexpr float diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
-   constexpr float ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
-   constexpr float specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+   constexpr float diffuse[4]  = {10.0f, 10.0f, 10.0f, 1.0f};
+   constexpr float ambient[4]  = {10.0f, 10.0f, 10.0f, 1.0f};
+   constexpr float specular[4] = {10.0f, 10.0f, 10.0f, 1.0f};
 
    glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
    glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);

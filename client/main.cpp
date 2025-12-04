@@ -72,16 +72,18 @@ int main(const int argc, char** argv) {
     auto bordoTavolo = root->findNodeByName("bordoTavolo");
     auto gamba1 = root->findNodeByName("gamba1");
     auto gamba2 = root->findNodeByName("gamba2");
-
+    auto gamba3 = root->findNodeByName("gamba3");
+    auto gamba4 = root->findNodeByName("gamba4");
 
 
     root->addChildren(gamba1);
     root->addChildren(gamba2);
+    root->addChildren(gamba3);
+    root->addChildren(gamba4);
 
 
 
-    auto gamba3 = root->findNodeByName("gamba3");
-    auto gamba4 = root->findNodeByName("gamba4");
+
 
     auto torreDiHanoi = root->findNodeByName("torreDiHanoi");
     auto baseHanoi = root->findNodeByName("baseHanoi");
@@ -109,11 +111,15 @@ int main(const int argc, char** argv) {
 
     if (!disco1) std::cerr << "WARNING: disco1 non trovato." << std::endl;
 
+    if (root)
+    {
+        root->setMatrix(glm::scale(glm::mat4(0.1f), glm::vec3(0.1f, 0.1f, 0.1f)));
+    }
 
-    const auto cam = eng.createPerspectiveCamera(45, 800.f/600.f, 0.1f, 100.0f);
-    cam->setMatrix(glm::translate(glm::mat4(1), glm::vec3(-40,300,5)));
+    const auto cam = eng.createPerspectiveCamera(45, 800.f/600.f, 0.1f, 1000.0f);
+    cam->setMatrix(glm::translate(glm::mat4(1), glm::vec3(10,80,300)));
 
-    cam->setMatrix(glm::rotate(glm::mat4(1), glm::radians(60.0f), glm::vec3(0, 1, 0)) * cam->getMatrix());
+    cam->setMatrix(glm::rotate(glm::mat4(1), glm::radians(-20.0f), glm::vec3(0.0f, 1.0f, 0)) * cam->getMatrix());
 
     const auto renderList = std::make_shared<Eng::List>();
     renderList->pass(root);
