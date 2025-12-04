@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "node.h"
+
+
 #include "light.h"
 
 namespace Eng {
@@ -8,9 +9,9 @@ namespace Eng {
 
    public:
       DirectionalLight() noexcept = default;
-      DirectionalLight(const std::shared_ptr<Node>& node,
-                       const glm::mat4& worldMatrix,
-                       const glm::vec4& position);
+      DirectionalLight(const glm::vec3& color,
+                 const glm::vec3& direction) noexcept;
+
 
       DirectionalLight(const DirectionalLight& other) = default;
       DirectionalLight(DirectionalLight&& other) noexcept = default;
@@ -22,17 +23,19 @@ namespace Eng {
 
       void render(const glm::mat4& modelViewMatrix) override;
 
-      [[nodiscard]] std::shared_ptr<Node> getNodePtr() const noexcept;
       [[nodiscard]] glm::mat4 getNodeWorldMatrix() const noexcept;
-      [[nodiscard]] glm::vec4 getPosition() const noexcept;
+      [[nodiscard]] glm::vec3 getDirection() const noexcept {return direction_;};
+      [[nodiscard]] glm::vec4 getPosition() const noexcept {return position_;};
 
-      void setNodePtr(const std::shared_ptr<Node>& node) noexcept;
       void setNodeWorldMatrix(const glm::mat4& worldMatrix) noexcept;
-      void setPosition(const glm::vec4& position) noexcept;
+      void setDirection(const glm::vec4& direction) noexcept {direction_ = direction;};
+      void setPosition(glm::vec4 position) noexcept {position_ = position;};
 
    protected:
-      std::shared_ptr<Node> node_ptr_;
+
       glm::mat4 nodeWorldMatrix_;
+      glm::vec3 color_;
+      glm::vec3 direction_;
       glm::vec4 position_;
    };
 }

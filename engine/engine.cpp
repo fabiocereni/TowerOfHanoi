@@ -106,9 +106,9 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glEnable(GL_LIGHT0);
 
    // Componenti della luce
-   constexpr float diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
-   constexpr float ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
-   constexpr float specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+   constexpr float diffuse[4]  = {10.0f, 10.0f, 10.0f, 1.0f};
+   constexpr float ambient[4]  = {10.0f, 10.0f, 10.0f, 1.0f};
+   constexpr float specular[4] = {10.0f, 10.0f, 10.0f, 1.0f};
 
    glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
    glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
@@ -225,17 +225,8 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
-    OvoParser ovoparser;
-    auto root = ovoparser.returnCompleteSceneTree(path);
-    /*
-   std::vector<glm::vec3> cube = {
-      // ===== FRONT (z = 0.5) =====
-      {-0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, // Triangolo 1
-      {-0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f}, // Triangolo 2
+      OvoParser ovoParser;
 
-      // ===== BACK (z = -0.5) =====
-      { 0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f},
-      { 0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f}, { 0.5f,  0.5f, -0.5f},
 
       // ===== LEFT (x = -0.5) =====
       {-0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f},
@@ -290,7 +281,7 @@ std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
 
    // aggiungere cubo a root
    root->addChildren(first_cube);
-   */
+
 
 
 
@@ -299,7 +290,7 @@ std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
    // creare luce per cubo
 
 
-   return root;
+   return ovoParser.returnCompleteSceneTree(path);;
 }
 
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {

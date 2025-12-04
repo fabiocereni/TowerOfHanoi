@@ -33,7 +33,7 @@ namespace Eng {
       [[nodiscard]] std::shared_ptr<Node> returnChild(const unsigned long& id) const;
       [[nodiscard]] glm::mat4 getWorldMatrix() const noexcept;
 
-      //[[nodiscard]] std::shared_ptr<Node> find(const std::string& str) const noexcept;
+      [[nodiscard]] std::shared_ptr<Node> findNodeByName(const std::string& name) const noexcept;
 
    protected:
       glm::mat4 matrix_;

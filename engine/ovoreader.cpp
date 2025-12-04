@@ -14,8 +14,15 @@
    #include <iomanip>
    #include <limits.h>
 #include <memory>
+#include <ranges>
+#include <unordered_map>
 
+#include "directionallight.h"
+#include "material.h"
+#include "mesh.h"
 #include "node.h"
+#include "omnidirectionallight.h"
+#include "spotlight.h"
 using namespace std;
 
 
@@ -118,672 +125,299 @@ using namespace std;
  */
 
 // prima prendeva come parametri const int argc, char** argv (era la firma del main)
-shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::string& file_path) {
+std::shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::string& file_path)
+{
+    std::shared_ptr<Node> root = nullptr;
 
-	std::shared_ptr<Node> root;
+    unordered_map<std::string, std::shared_ptr<Node>> nodeMap;
+    std::unordered_map<std::string, std::shared_ptr<Material>> materialMap;
+    std::unordered_map<std::string, std::shared_ptr<Node>> lightMap;
+    std::unordered_map<std::string, std::shared_ptr<Mesh>> meshMap;
 
-cout << APP_NAME << ", A. Peternier (C) 2013-2024" << endl;
+    FILE *dat = fopen(file_path.c_str(), "rb");
+    if (!dat) return nullptr;
 
-	// // Usage:
-	// if (argc < 2 || argc > 3)
-	// {
- //      cout << "Shows the content of an OVO file" << endl << endl;
-	// 	cout << "Syntax:" << endl;
-	// 	cout << "   ovoreader [filename.ovo] {option}" << endl << endl;
- //      cout << "Options:" << endl;
- //      cout << "   -v     verbose logging (including vertex data)" << endl;
-	// 	return 0;
-	// }
+    unsigned int chunkId, chunkSize;
 
-   // Check for options:
-   bool verbose = false;
-   // if (argc == 3)
-   // {
-   //    if (strstr(argv[2], "-v"))
-   //       verbose = true;
-   // }
+    while (fread(&chunkId, sizeof(unsigned int), 1, dat))
+    {
+        fread(&chunkSize, sizeof(unsigned int), 1, dat);
 
-	// Open file:
-	FILE *dat = fopen(file_path.c_str(), "rb");
-	if (dat == nullptr)
-	{
-		cout << "ERROR: unable to open file '"  << "'" << endl;
-		return nullptr;
-	}
+        char *data = new char[chunkSize];
+        fread(data, 1, chunkSize, dat);
 
-   // Configure stream:
-   cout.precision(2);  // 2 decimals are enough
-   cout << fixed;      // Avoid scientific notation
+        unsigned int pos = 0;
 
+        switch ((OvObject::Type)chunkId)
+        {
+        // =========================
+        //        NODE
+        // =========================
+        case OvObject::Type::NODE:
+        {
+            char name[FILENAME_MAX];
+            strcpy(name, data + pos);
+            pos += strlen(name) + 1;
 
-	/////////////////
-	// Parse chuncks:
-	unsigned int chunkId, chunkSize;
-	while (true)
-	{
-		fread(&chunkId, sizeof(unsigned int), 1, dat);
-		if (feof(dat))
-			break;
-		fread(&chunkSize, sizeof(unsigned int), 1, dat);
-
-		cout << "\n[chunk id: " << chunkId << ", chunk size: " << chunkSize << ", chunk type: ";
-
-		// Load whole chunk into memory:
-      char *data = new char[chunkSize];
-      if (fread(data, sizeof(char), chunkSize, dat) != chunkSize)
-      {
-         // cout << "ERROR: unable to read from file '" << argv[1] << "'" << endl;
-         fclose(dat);
-         delete[] data;
-         // return 2;
-      }
-
-      // Parse chunk information according to its type:
-      unsigned int position = 0;
-		switch ((OvObject::Type) chunkId)
-		{
-         ///////////////////////////////
-			case OvObject::Type::OBJECT: //
-			{
-				cout << "version]" << endl;
-
-            // OVO revision number:
-				unsigned int versionId;
-				memcpy(&versionId, data + position, sizeof(unsigned int));
-				cout << "   Version . . . :  " << versionId << endl;
-            position += sizeof(unsigned int);
-			}
-			break;
-
-
-			/////////////////////////////
-			case OvObject::Type::NODE: //
-			{
-				cout << "node]" << endl;
-
-            // Node name:
-				char nodeName[FILENAME_MAX];
-				strcpy(nodeName, data + position);
-            cout << "   Name  . . . . :  " << nodeName << endl;
-				position += (unsigned int) strlen(nodeName) + 1;
-
-            // Node matrix:
             glm::mat4 matrix;
-            memcpy(&matrix, data + position, sizeof(glm::mat4));
-            // if (verbose)
-               // MAT2STR(matrix);
-				position += sizeof(glm::mat4);
+            memcpy(&matrix, data + pos, sizeof(glm::mat4));
+            pos += sizeof(glm::mat4);
 
-            // Nr. of children nodes:
             unsigned int children;
-				memcpy(&children, data + position, sizeof(unsigned int));
-				cout << "   Nr. children  :  " << children << endl;
-            position += sizeof(unsigned int);
+            memcpy(&children, data + pos, sizeof(unsigned int));
+            pos += sizeof(unsigned int);
 
-            // Optional target node, [none] if not used:
-            char targetName[FILENAME_MAX];
-				strcpy(targetName, data + position);
-            cout << "   Target node . :  " << targetName << endl;
-				position += (unsigned int) strlen(targetName) + 1;
-			}
-			break;
+            // targetName (ignored)
+            pos += strlen(data + pos) + 1;
 
+            auto node = std::make_shared<Eng::Node>();
+            node->setMatrix(matrix);
+            node->setName(name);
 
-			/////////////////////////////////
-         case OvObject::Type::MATERIAL: //
-			{
-				cout << "material]" << endl;
+            nodeMap[name] = node;
+            if (!root)
+                root = node;
+        }
+        break;
 
-            // Material name:
-				char materialName[FILENAME_MAX];
-				strcpy(materialName, data + position);
-				cout << "   Name  . . . . :  " << materialName << endl;
-            position += (unsigned int) strlen(materialName) + 1;
+        // =========================
+        //       MATERIAL
+        // =========================
+        case OvObject::Type::MATERIAL:
+        {
+            char name[FILENAME_MAX];
+            strcpy(name, data + pos);
+            pos += strlen(name) + 1;
 
-            // Material term colors, starting with emissive:
-            glm::vec3 emission, albedo;
-            memcpy(&emission, data + position, sizeof(glm::vec3));
-            cout << "   Emission  . . :  " << emission.r << ", " << emission.g << ", " << emission.b << endl;
-            position += sizeof(glm::vec3);
+            glm::vec3 emission;
+            memcpy(&emission, data + pos, sizeof(glm::vec3));
+            pos += sizeof(glm::vec3);
 
-            // Albedo:
-            memcpy(&albedo, data + position, sizeof(glm::vec3));
-            cout << "   Albedo  . . . :  " << albedo.r << ", " << albedo.g << ", " << albedo.b << endl;
-            position += sizeof(glm::vec3);
+            glm::vec3 albedo;
+            memcpy(&albedo, data + pos, sizeof(glm::vec3));
+            pos += sizeof(glm::vec3);
 
-				// Roughness factor:
-				float roughness;
-				memcpy(&roughness, data + position, sizeof(float));
-				cout << "   Roughness . . :  " << roughness << endl;
-				position += sizeof(float);
+            float roughness;
+            memcpy(&roughness, data + pos, sizeof(float));
+            pos += sizeof(float);
 
-				// Metalness factor:
-				float metalness;
-				memcpy(&metalness, data + position, sizeof(float));
-				cout << "   Metalness . . :  " << metalness << endl;
-				position += sizeof(float);
+            float metalness;
+            memcpy(&metalness, data + pos, sizeof(float));
+            pos += sizeof(float);
 
-            // Transparency factor:
-            float alpha;
-            memcpy(&alpha, data + position, sizeof(float));
-            cout << "   Transparency  :  " << alpha << endl;
-            position += sizeof(float);
+            float transparency;
+            memcpy(&transparency, data + pos, sizeof(float));
+            pos += sizeof(float);
 
-            // Albedo texture filename, or [none] if not used:
-            char textureName[FILENAME_MAX];
-            strcpy(textureName, data + position);
-            cout << "   Albedo tex. . :  " << textureName << endl;
-            position += (unsigned int) strlen(textureName) + 1;
+            char tex[FILENAME_MAX];
+            strcpy(tex, data + pos);
+            pos += strlen(tex) + 1;
 
-            // Normal map filename, or [none] if not used:
-            char normalMapName[FILENAME_MAX];
-            strcpy(normalMapName, data + position);
-            cout << "   Normalmap tex.:  " << normalMapName << endl;
-            position += (unsigned int) strlen(normalMapName) + 1;
+            // normal map (ignored)
+            pos += strlen(data + pos) + 1;
 
-            // Height map filename, or [none] if not used:
-            char heightMapName[FILENAME_MAX];
-            strcpy(heightMapName, data + position);
-            cout << "   Heightmap tex.:  " << heightMapName << endl;
-            position += (unsigned int) strlen(heightMapName) + 1;
+            auto mat = std::make_shared<Eng::Material>(
+                glm::vec4(emission, 1.0f),
+                glm::vec4(albedo, 1.0f),
+                glm::vec4(albedo, 1.0f),
+                glm::vec4(1,1,1,1),
+                32.0f,
+                tex
+            );
 
-            // Roughness map filename, or [none] if not used:
-            char roughnessMapName[FILENAME_MAX];
-            strcpy(roughnessMapName, data + position);
-            cout << "   Roughness tex.:  " << roughnessMapName << endl;
-            position += (unsigned int) strlen(roughnessMapName) + 1;
+            materialMap[name] = mat;
+        }
+        break;
 
-            // Metalness map filename, or [none] if not used:
-            char metalnessMapName[FILENAME_MAX];
-            strcpy(metalnessMapName, data + position);
-            cout << "   Metalness tex.:  " << metalnessMapName << endl;
-            position += (unsigned int) strlen(metalnessMapName) + 1;
-			}
-			break;
+        // =========================
+        //         MESH
+        // =========================
+        case OvObject::Type::MESH:
+        {
+            char name[FILENAME_MAX];
+            strcpy(name, data + pos);
+            pos += strlen(name) + 1;
 
-
-			////////////////////////////////
-			case OvObject::Type::MESH:    //
-         case OvObject::Type::SKINNED:
-			{
-            // Both standard and skinned meshes are handled through this case:
-            bool isSkinned = false;
-            if ((OvObject::Type) chunkId == OvObject::Type::SKINNED)
-            {
-               isSkinned = true;
-               cout << "skinned mesh]" << endl;
-            }
-            else
-				   cout << "mesh]" << endl;
-
-				// Mesh name:
-            char meshName[FILENAME_MAX];
-				strcpy(meshName, data + position);
-				position += (unsigned int) strlen(meshName) + 1;
-            cout << "   Name  . . . . :  " << meshName << endl;
-
-				// Mesh matrix:
             glm::mat4 matrix;
-            memcpy(&matrix, data + position, sizeof(glm::mat4));
-            // if (verbose)
-               // MAT2STR(matrix);
-				position += sizeof(glm::mat4);
+            memcpy(&matrix, data + pos, sizeof(glm::mat4));
+            pos += sizeof(glm::mat4);
 
-				// Mesh nr. of children nodes:
             unsigned int children;
-				memcpy(&children, data + position, sizeof(unsigned int));
-				cout << "   Nr. children  :  " << children << endl;
-            position += sizeof(unsigned int);
+            memcpy(&children, data + pos, sizeof(unsigned int));
+            pos += sizeof(unsigned int);
 
-            // Optional target node, or [none] if not used:
-            char targetName[FILENAME_MAX];
-				strcpy(targetName, data + position);
-            cout << "   Target node . :  " << targetName << endl;
-				position += (unsigned int) strlen(targetName) + 1;
+            // target (ignored)
+            pos += strlen(data + pos) + 1;
 
-				// Mesh subtype (see OvMesh SUBTYPE enum):
             unsigned char subtype;
-            memcpy(&subtype, data + position, sizeof(unsigned char));
-            char subtypeName[FILENAME_MAX];
-            switch ((OvMesh::Subtype) subtype)
+            memcpy(&subtype, data + pos, sizeof(unsigned char));
+            pos += sizeof(unsigned char);
+
+            char matName[FILENAME_MAX];
+            strcpy(matName, data + pos);
+            pos += strlen(matName) + 1;
+
+            // radius (+ bounding box)
+            pos += sizeof(float) + sizeof(glm::vec3) * 2;
+
+            // physics flag
+            unsigned char hasPhys;
+            memcpy(&hasPhys, data + pos, sizeof(unsigned char));
+            pos += sizeof(unsigned char);
+
+            if (hasPhys)
             {
-               case OvMesh::Subtype::DEFAULT: strcpy(subtypeName, "standard"); break;
-               case OvMesh::Subtype::NORMALMAPPED: strcpy(subtypeName, "normal-mapped"); break;
-               case OvMesh::Subtype::TESSELLATED: strcpy(subtypeName, "tessellated"); break;
-               default: strcpy(subtypeName, "UNDEFINED");
-            }
-            cout << "   Subtype . . . :  " << (int)subtype << " (" << subtypeName << ")" << endl;
-            position += sizeof(unsigned char);
-
-				// Material name, or [none] if not used:
-            char materialName[FILENAME_MAX];
-				strcpy(materialName, data + position);
-				cout << "   Material  . . :  " << materialName << endl;
-            position += (unsigned int) strlen(materialName) + 1;
-
-            // Mesh bounding sphere radius:
-            float radius;
-				memcpy(&radius, data + position, sizeof(float));
-				cout << "   Radius  . . . :  " << radius << endl;
-            position += sizeof(float);
-
-            // Mesh bounding box minimum corner:
-            glm::vec3 bBoxMin;
-				memcpy(&bBoxMin, data + position, sizeof(glm::vec3));
-				cout << "   BBox minimum  :  " << bBoxMin.x << ", " << bBoxMin.y << ", " << bBoxMin.z << endl;
-            position += sizeof(glm::vec3);
-
-            // Mesh bounding box maximum corner:
-            glm::vec3 bBoxMax;
-				memcpy(&bBoxMax, data + position, sizeof(glm::vec3));
-				cout << "   BBox maximum  :  " << bBoxMax.x << ", " << bBoxMax.y << ", " << bBoxMax.z << endl;
-            position += sizeof(glm::vec3);
-
-            // Optional physics properties:
-            unsigned char hasPhysics;
-            memcpy(&hasPhysics, data + position, sizeof(unsigned char));
-            cout << "   Physics . . . :  " << (int) hasPhysics << endl;
-            position += sizeof(unsigned char);
-            if (hasPhysics)
-            {
-               /**
-                * Mesh physics properties.
-                */
-               struct PhysProps
-               {
-                  // Pay attention to 16 byte alignement (use padding):
-                  unsigned char type;
-                  unsigned char contCollisionDetection;
-                  unsigned char collideWithRBodies;
-                  unsigned char hullType;
-
-                  // Vector data:
-                  glm::vec3 massCenter;
-
-                  // Mesh properties:
-                  float mass;
-                  float staticFriction;
-                  float dynamicFriction;
-                  float bounciness;
-                  float linearDamping;
-                  float angularDamping;
-                  unsigned int nrOfHulls;
-                  unsigned int _pad;
-
-                  // Pointers:
-                  void *physObj;
-                  void *hull;
-               };
-
-               PhysProps mp;
-               memcpy(&mp, data + position, sizeof(PhysProps));
-               position += sizeof(PhysProps);
-               cout << "      Type . . . :  " << (int) mp.type << endl;
-               cout << "      Hull type  :  " << (int) mp.hullType << endl;
-               cout << "      Cont. coll.:  " << (int) mp.contCollisionDetection << endl;
-               cout << "      Col. bodies:  " << (int) mp.collideWithRBodies << endl;
-               cout << "      Center . . :  " << mp.massCenter.x << ", " << mp.massCenter.y << ", " << mp.massCenter.z << endl;
-               cout << "      Mass . . . :  " << mp.mass << endl;
-               cout << "      Static . . :  " << mp.staticFriction << endl;
-               cout << "      Dynamic  . :  " << mp.dynamicFriction << endl;
-               cout << "      Bounciness :  " << mp.bounciness << endl;
-               cout << "      Linear . . :  " << mp.linearDamping << endl;
-               cout << "      Angular  . :  " << mp.angularDamping << endl;
-               cout << "      Nr. hulls  :  " << mp.nrOfHulls << endl;
-
-               // Custom hull(s) used?
-               if (mp.nrOfHulls)
-               {
-                  for (unsigned int c = 0; c < mp.nrOfHulls; c++)
-                  {
-                     // if (verbose)
-                        cout << "         Hull  . :  " << c + 1 << endl;
-
-                     // Hull number of vertices:
-                     unsigned int nrOfVertices;
-				         memcpy(&nrOfVertices, data + position, sizeof(unsigned int));
-                     // if (verbose)
-				            cout << "         Nr. v.  :  " << nrOfVertices << endl;
-                     position += sizeof(unsigned int);
-
-                     // Hull number of faces:
-                     unsigned int nrOfFaces;
-				         memcpy(&nrOfFaces, data + position, sizeof(unsigned int));
-                     // if (verbose)
-				            cout << "         Nr. f.  :  " << nrOfFaces << endl;
-                     position += sizeof(unsigned int);
-
-                     // Hull centroid:
-                     glm::vec3 centroid;
-				         memcpy(&centroid, data + position, sizeof(glm::vec3));
-                     // if (verbose)
-				            cout << "         Centr.  :  " << centroid.x << ", " << centroid.y << ", " << centroid.z << endl;
-                     position += sizeof(glm::vec3);
-
-                     // Iterate through hull vertices:
-                     for (unsigned int c = 0; c < nrOfVertices; c++)
-                     {
-                        // Vertex coords:
-                        glm::vec3 vertex;
-                        memcpy(&vertex, data + position, sizeof(glm::vec3));
-                        // if (verbose)
-                           cout << "         Data  . :  v" << c << " " << vertex.x << ", " << vertex.y << ", " << vertex.z << endl;
-                        position += sizeof(glm::vec3);
-                     }
-
-                     // Iterate through hull faces:
-                     for (unsigned int c = 0; c < nrOfFaces; c++)
-                     {
-                        unsigned int face[3];
-				            memcpy(face, data + position, sizeof(unsigned int) * 3);
-                        // if (verbose)
-                           cout << "         Data  . :  f" << c << " (" << face[0] << ", " << face[1] << ", " << face[2] << ")" << endl;
-                        position += sizeof(unsigned int) * 3;
-                     }
-                  }
-               }
+                // skip entire physics struct
+                pos += sizeof(unsigned char) * 4 +
+                       sizeof(glm::vec3) +
+                       sizeof(float) * 7 +
+                       sizeof(unsigned int) * 2 +
+                       sizeof(void*) * 2;
             }
 
-            // Nr. of LODs:
+            // LOD count
             unsigned int LODs;
-				memcpy(&LODs, data + position, sizeof(unsigned int));
-				cout << "   Nr. of LODs   :  " << LODs << endl;
-            position += sizeof(unsigned int);
+            memcpy(&LODs, data + pos, sizeof(unsigned int));
+            pos += sizeof(unsigned int);
 
-            // For each LOD...:
-            vector<unsigned int> verticesPerLOD(LODs); // Let's store this information for the skinned part, in case
-            for (unsigned int l = 0; l < LODs; l++)
+            std::vector<glm::vec3> verts;
+
+            // use ONLY the first LOD
+            // (your Mesh class does not support multiple)
+            for (unsigned int l = 0; l < 1; l++)
             {
-               cout << "   Current LOD . :  " << l + 1 << "/" << LODs << endl;
+                unsigned int vcount, fcount;
+                memcpy(&vcount, data + pos, sizeof(unsigned int));
+                pos += sizeof(unsigned int);
 
-               // Nr. of vertices:
-               unsigned int vertices, faces;
-				   memcpy(&vertices, data + position, sizeof(unsigned int));
-				   cout << "   Nr. vertices  :  " << vertices << endl;
-               position += sizeof(unsigned int);
-               verticesPerLOD[l] = vertices;
+                memcpy(&fcount, data + pos, sizeof(unsigned int));
+                pos += sizeof(unsigned int);
 
-				   // ...and faces:
-               memcpy(&faces, data + position, sizeof(unsigned int));
-				   cout << "   Nr. faces . . :  " << faces << endl;
-               position += sizeof(unsigned int);
+                verts.reserve(vcount);
 
-				   // Interleaved and compressed vertex/normal/UV/tangent data:
-				   for (unsigned int c = 0; c < vertices; c++)
-				   {
-                  // if (verbose)
-                     cout << "   Vertex data . :  v" << c << endl;
+                for (unsigned int i = 0; i < vcount; i++)
+                {
+                    glm::vec3 v;
+                    memcpy(&v, data + pos, sizeof(glm::vec3));
+                    pos += sizeof(glm::vec3);
 
-                  // Vertex coords:
-                  glm::vec3 vertex;
-                  memcpy(&vertex, data + position, sizeof(glm::vec3));
-                  // if (verbose)
-                     cout << "      xyz  . . . :  " << vertex.x << ", " << vertex.y << ", " << vertex.z << endl;
-                  position += sizeof(glm::vec3);
+                    // skip compressed normal, uv, tangent
+                    pos += sizeof(unsigned int) * 3;
 
-                  // Vertex normal:
-                  unsigned int normalData;
-                  memcpy(&normalData, data + position, sizeof(unsigned int));
-                  // if (verbose)
-                  // {
-                  //    glm::vec4 normal = glm::unpackSnorm3x10_1x2(normalData);
-                  //    cout << "      normal . . :  " << normal.x << ", " << normal.y << ", " << normal.z << endl;
-                  // }
-                  position += sizeof(unsigned int);
+                    verts.push_back(v);
+                }
 
-                  // Texture coordinates:
-                  unsigned int textureData;
-                  memcpy(&textureData, data + position, sizeof(unsigned int));
-                  // if (verbose)
-                  // {
-                  //    glm::vec2 uv = glm::unpackHalf2x16(textureData);
-                  //    cout << "      uv . . . . :  " << uv.x << ", " << uv.y << endl;
-                  // }
-                  position += sizeof(unsigned int);
-
-                  // Tangent vector:
-                  unsigned int tangentData;
-                  memcpy(&tangentData, data + position, sizeof(unsigned int));
-                  // if (verbose)
-                  // {
-                  //    glm::vec4 tangent = glm::unpackSnorm3x10_1x2(tangentData);
-                  //    cout << "      tangent  . :  " << tangent.x << ", " << tangent.y << ", " << tangent.z << ", sign: " << tangent.w << endl;
-                  // }
-                  position += sizeof(unsigned int);
-				   }
-
-               // Faces:
-				   for (unsigned int c = 0; c < faces; c++)
-				   {
-                  // Face indexes:
-				      unsigned int face[3];
-				      memcpy(face, data + position, sizeof(unsigned int) * 3);
-				      position += sizeof(unsigned int) * 3;
-                  // if (verbose)
-                     cout << "   Face data . . :  f" << c << " (" << face[0] << ", " << face[1] << ", " << face[2] << ")" << endl;
-				   }
+                // skip faces (engine doesn't use)
+                pos += fcount * sizeof(unsigned int) * 3;
             }
 
-            // Extra information for skinned meshes:
-            if (isSkinned)
-            {
-               // Initial mesh pose matrix:
-               glm::mat4 poseMatrix;
-               memcpy(&poseMatrix, data + position, sizeof(glm::mat4));
-               // if (verbose)
-                  // MAT2STR(poseMatrix);
-				   position += sizeof(glm::vec4);
+            auto mesh = std::make_shared<Eng::Mesh>(
+                verts,
+                matName,
+                materialMap.count(matName) ? materialMap[matName] : nullptr
+            );
 
-               // Bone list:
-               unsigned int nrOfBones;
-				   memcpy(&nrOfBones, data + position, sizeof(unsigned int));
-				   cout << "   Nr. bones . . :  " << nrOfBones << endl;
-               position += sizeof(unsigned int);
+            mesh->setMatrix(matrix);
+            mesh->setName(name);
 
-               // For each bone...:
-               for (unsigned int c = 0; c < nrOfBones; c++)
-               {
-                  // Bone name:
-                  char boneName[FILENAME_MAX];
-				      strcpy(boneName, data + position);
-                  cout << "      Bone name  :  " << boneName << " (" << c << ")" << endl;
-                  position += (unsigned int) strlen(boneName) + 1;
+            meshMap[name] = mesh;
+        }
+        break;
 
-                  // Initial bone pose matrix (already inverted):
-                  glm::mat4 boneMatrix;
-                  memcpy(&boneMatrix, data + position, sizeof(glm::mat4));
-                  // if (verbose)
-                  //    // MAT2STR(boneMatrix);
-				      position += sizeof(glm::mat4);
-               }
+        // =========================
+        //         LIGHT
+        // =========================
+        case OvObject::Type::LIGHT:
+        {
+            char name[FILENAME_MAX];
+            strcpy(name, data + pos);
+            pos += strlen(name) + 1;
 
-               // For each LOD...:
-               for (unsigned int l = 0; l < LODs; l++)
-               {
-                  cout << "   Current LOD . :  " << l + 1 << "/" << LODs << endl;
-
-                  // Per vertex bone weights and indexes:
-				      for (unsigned int c = 0; c < verticesPerLOD[l]; c++)
-				      {
-                     // if (verbose)
-                        cout << "   Bone data . . :  v" << c << endl;
-
-                     // Bone indexes:
-		               unsigned int boneIndex[4];
-				         memcpy(boneIndex, data + position, sizeof(unsigned int) * 4);
-                     // if (verbose)
-                        cout << "      index  . . :  " << boneIndex[0] << ", " << boneIndex[1] << ", " << boneIndex[2] << ", " << boneIndex[3] << endl;
-                     position += sizeof(unsigned int) * 4;
-
-                     // Bone weights:
-                     unsigned short boneWeightData[4];
-                     memcpy(boneWeightData, data + position, sizeof(unsigned short) * 4);
-                     // if (verbose)
-                     // {
-                     //    glm::vec4 boneWeight;
-                     //    boneWeight.x = glm::unpackHalf1x16(boneWeightData[0]);
-                     //    boneWeight.y = glm::unpackHalf1x16(boneWeightData[1]);
-                     //    boneWeight.z = glm::unpackHalf1x16(boneWeightData[2]);
-                     //    boneWeight.w = glm::unpackHalf1x16(boneWeightData[3]);
-                     //    cout << "      weight . . :  " << boneWeight.x << ", " << boneWeight.y << ", " << boneWeight.z << ", " << boneWeight.w << endl;
-                     // }
-                     position += sizeof(unsigned short) * 4;
-                  }
-				   }
-            }
-			}
-			break;
-
-
-         //////////////////////////////
-			case OvObject::Type::LIGHT: //
-         {
-            cout << "light]" << endl;
-
-            // Light name:
-				char lightName[FILENAME_MAX];
-				strcpy(lightName, data + position);
-            cout << "   Name  . . . . :  " << lightName << endl;
-				position += (unsigned int) strlen(lightName) + 1;
-
-            // Light matrix:
             glm::mat4 matrix;
-            memcpy(&matrix, data + position, sizeof(glm::mat4));
-            // if (verbose)
-               // MAT2STR(matrix);
-			   position += sizeof(glm::mat4);
+            memcpy(&matrix, data + pos, sizeof(glm::mat4));
+            pos += sizeof(glm::mat4);
 
-				// Nr. of children nodes:
             unsigned int children;
-				memcpy(&children, data + position, sizeof(unsigned int));
-				cout << "   Nr. children  :  " << children << endl;
-            position += sizeof(unsigned int);
+            memcpy(&children, data + pos, sizeof(unsigned int));
+            pos += sizeof(unsigned int);
 
-            // Optional target node name, or [none] if not used:
-            char targetName[FILENAME_MAX];
-				strcpy(targetName, data + position);
-            cout << "   Target node . :  " << targetName << endl;
-				position += (unsigned int) strlen(targetName) + 1;
+            // target
+            pos += strlen(data + pos) + 1;
 
-            // Light subtype (see OvLight SUBTYPE enum):
             unsigned char subtype;
-            memcpy(&subtype, data + position, sizeof(unsigned char));
-            char subtypeName[FILENAME_MAX];
-            switch ((OvLight::Subtype) subtype)
-            {
-               case OvLight::Subtype::DIRECTIONAL: strcpy(subtypeName, "directional"); break;
-               case OvLight::Subtype::OMNI: strcpy(subtypeName, "omni"); break;
-               case OvLight::Subtype::SPOT: strcpy(subtypeName, "spot"); break;
-               default: strcpy(subtypeName, "UNDEFINED");
-            }
-				cout << "   Subtype . . . :  " << (int) subtype << " (" << subtypeName << ")" << endl;
-            position += sizeof(unsigned char);
+            memcpy(&subtype, data + pos, sizeof(unsigned char));
+            pos += sizeof(unsigned char);
 
-            // Light color:
             glm::vec3 color;
-            memcpy(&color, data + position, sizeof(glm::vec3));
-            cout << "   Color . . . . :  " << color.r << ", " << color.g << ", " << color.b << endl;
-            position += sizeof(glm::vec3);
+            memcpy(&color, data + pos, sizeof(glm::vec3));
+            pos += sizeof(glm::vec3);
 
-            // Influence radius:
             float radius;
-            memcpy(&radius, data + position, sizeof(float));
-            cout << "   Radius  . . . :  " << radius << endl;
-            position += sizeof(float);
+            memcpy(&radius, data + pos, sizeof(float));
+            pos += sizeof(float);
 
-            // Direction:
             glm::vec3 direction;
-            memcpy(&direction, data + position, sizeof(glm::vec3));
-            cout << "   Direction . . :  " << direction.r << ", " << direction.g << ", " << direction.b << endl;
-            position += sizeof(glm::vec3);
+            memcpy(&direction, data + pos, sizeof(glm::vec3));
+            pos += sizeof(glm::vec3);
 
-            // Cutoff:
             float cutoff;
-            memcpy(&cutoff, data + position, sizeof(float));
-            cout << "   Cutoff  . . . :  " << cutoff << endl;
-            position += sizeof(float);
+            memcpy(&cutoff, data + pos, sizeof(float));
+            pos += sizeof(float);
 
-            // Exponent:
-            float spotExponent;
-            memcpy(&spotExponent, data + position, sizeof(float));
-            cout << "   Spot exponent :  " << spotExponent << endl;
-            position += sizeof(float);
+            float exponent;
+            memcpy(&exponent, data + pos, sizeof(float));
+            pos += sizeof(float);
 
-            // Cast shadow flag:
             unsigned char castShadows;
-            memcpy(&castShadows, data + position, sizeof(unsigned char));
-            cout << "   Cast shadows  :  " << (int) castShadows << endl;
-            position += sizeof(unsigned char);
+            pos += sizeof(unsigned char);
 
-            // Volumetric lighting flag:
-            unsigned char isVolumetric;
-            memcpy(&isVolumetric, data + position, sizeof(unsigned char));
-            cout << "   Volumetric  . :  " << (int)isVolumetric << endl;
-            position += sizeof(unsigned char);
-         }
-         break;
+            unsigned char volumetric;
+            pos += sizeof(unsigned char);
 
+            std::shared_ptr<Node> light;
 
-         /////////////////////////////
-			case OvObject::Type::BONE: //
-         {
-            cout << "bone]" << endl;
+            switch ((OvLight::Subtype)subtype)
+            {
+                case OvLight::Subtype::DIRECTIONAL:
+                    light = std::make_shared<DirectionalLight>(color, direction);
+                    break;
 
-				// Bone name:
-            char boneName[FILENAME_MAX];
-				strcpy(boneName, data+position);
-            cout << "   Name  . . . . :  " << boneName << endl;
-				position += (unsigned int) strlen(boneName) + 1;
+                case OvLight::Subtype::OMNI:
+                    // light = std::make_shared<OmnidirectionalLight>(color, radius);
+                    break;
 
-            // Bone matrix:
-            glm::mat4 matrix;
-            memcpy(&matrix, data + position, sizeof(glm::mat4));
-            // if (verbose)
-               // MAT2STR(matrix);
-				position += sizeof(glm::mat4);
+                case OvLight::Subtype::SPOT:
+                    // light = std::make_shared<Spotlight>(color, direction, cutoff, exponent);
+                    break;
+            }
 
-            // Nr. of children nodes:
-            unsigned int children;
-				memcpy(&children, data + position, sizeof(unsigned int));
-				cout << "   Nr. children  :  " << children << endl;
-            position += sizeof(unsigned int);
+            light->setMatrix(matrix);
+            light->setName(name);
 
-            // Optional target node, or [none] if not used:
-            char targetName[FILENAME_MAX];
-				strcpy(targetName, data + position);
-            cout << "   Target node . :  " << targetName << endl;
-				position += (unsigned int) strlen(targetName) + 1;
+            lightMap[name] = light;
+        }
+        break;
+        }
 
-            // Mesh bounding box minimum corner:
-            glm::vec3 bBoxMin;
-            memcpy(&bBoxMin, data + position, sizeof(glm::vec3));
-            cout << "   BBox minimum  :  " << bBoxMin.x << ", " << bBoxMin.y << ", " << bBoxMin.z << endl;
-            position += sizeof(glm::vec3);
+        delete[] data;
+    }
 
-            // Mesh bounding box maximum corner:
-            glm::vec3 bBoxMax;
-            memcpy(&bBoxMax, data + position, sizeof(glm::vec3));
-            cout << "   BBox maximum  :  " << bBoxMax.x << ", " << bBoxMax.y << ", " << bBoxMax.z << endl;
-            position += sizeof(glm::vec3);
-         }
-         break;
+    fclose(dat);
 
+    // ============================
+    //  RICOSTRUZIONE GERARCHIA
+    // ============================
 
-			///////////
-			default: //
-				cout << "UNKNOWN]" << endl;
-            cout << "ERROR: corrupted or bad data in file " << endl;
-            fclose(dat);
-            delete[] data;
-            // return 3;
-		}
+    // TODO: OVO NON fornisce la gerarchia direttamente
+    // → ma puoi salvarla durante il parsing
+    // → oppure collegare mesh/light ai rispettivi nodi tramite nome
 
-		// Release chunk memory:
-      delete[] data;
-	}
+    // Per ora: tutto diventa CHILD della root
+    for (auto& val : meshMap | views::values) root->addChildren(val);
+    for (auto& val : lightMap | views::values) root->addChildren(val);
+    for (auto& val : nodeMap | views::values)
+        if (val != root)
+            root->addChildren(val);
 
-	// Done:
-   fclose(dat);
-   cout << "\nFile parsed" << endl;
-	return root;
+    return root;
 }
