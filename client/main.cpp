@@ -1,7 +1,6 @@
 #include "engine.h"
 #include "list.h"
 #include "ovoreader.h"
-#include "scene.h"
 #include "Test/test_suite.h"
 
 #include <glm/glm.hpp>
