@@ -1,50 +1,26 @@
 #pragma once
-#include <memory>
-#include <glm/glm.hpp>
 #include "light.h"
 
 namespace Eng {
 
-   enum class AttenuationMode {
-      Constant,
-      Linear,
-      Quadratic
-   };
-
    class ENG_API Spotlight final : public Light {
-
    public:
       Spotlight() noexcept = default;
-      Spotlight(const glm::vec3& direction,
-                float cutoff,
-                AttenuationMode attenuationMode,
-                float attenuationValue) noexcept;
-
-      Spotlight(const Spotlight& other) = default;
-      Spotlight(Spotlight&& other) noexcept = default;
-
-      Spotlight& operator=(const Spotlight& other) = default;
-      Spotlight& operator=(Spotlight&& other) noexcept = default;
-
       void render(const glm::mat4& modelViewMatrix) override;
 
-      ~Spotlight() noexcept override;
+      void setCutoff   (const float c) noexcept { cutoff_ = c; }
+      void setExponent (const float e) noexcept { exponent_ = e; }
+      void setDirection(const glm::vec3& d) noexcept { direction_ = d; }
 
-      [[nodiscard]] glm::vec3 getDirection() const noexcept;
-      [[nodiscard]] float getCutoff() const noexcept;
-      [[nodiscard]] AttenuationMode getAttenuationMode() const noexcept;
-      [[nodiscard]] float getAttenuationValue() const noexcept;
 
-      void setDirection(const glm::vec3& dir) noexcept;
-      void setCutoff(float cutoff) noexcept;
-      void setAttenuationMode(AttenuationMode mode) noexcept;
-      void setAttenuationValue(float value) noexcept;
+      [[nodiscard]] float getCutoff()   const noexcept { return cutoff_; }
+      [[nodiscard]] float getExponent() const noexcept { return exponent_; }
+      [[nodiscard]] glm::vec3 getDirection() const noexcept { return direction_; }
 
-   protected:
-      glm::vec3 direction_;
-      float cutoff_;
-      AttenuationMode attenuationMode_;
-      float attenuationValue_;
+
+   private:
+      glm::vec3 direction_{0,0,-1};
+      float cutoff_   = 180.0f;   // spotlight only
+      float exponent_ = 0.0f;     // spotlight exponent
    };
-
 }

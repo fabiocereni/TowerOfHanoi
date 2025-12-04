@@ -1,45 +1,38 @@
 #include "spotlight.h"
+#include <GL/freeglut.h>
 
-using namespace Eng;
+#include "glm/gtc/type_ptr.hpp"
 
-Spotlight::Spotlight(const glm::vec3& direction,
-                             const float cutoff,
-                             const AttenuationMode attenuationMode,
-                             const float attenuationValue) noexcept
-    : direction_{direction}, cutoff_{cutoff}, attenuationMode_{attenuationMode}, attenuationValue_{attenuationValue} {}
+namespace Eng {
 
-Spotlight::~Spotlight() noexcept = default;
+   void Spotlight::render(const glm::mat4& modelViewMatrix) {
 
-glm::vec3 Spotlight::getDirection() const noexcept {
-   return direction_;
+      const GLenum id = GL_LIGHT0 + getLightNumber();
+      glEnable(id);
+
+      glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient_));
+      glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse_));
+      glLightfv(id, GL_SPECULAR, glm::value_ptr(specular_));
+
+      const glm::vec4 posWorld = getMatrix() * glm::vec4(0,0,0,1);
+      const glm::vec4 posEye   = modelViewMatrix * posWorld;
+
+      const float pos[] = { posEye.x, posEye.y, posEye.z, 1.0f };
+      glLightfv(id, GL_POSITION, pos);
+
+      // world coordinates
+      const glm::vec3 dirWorld = glm::mat3(getMatrix()) * direction_;
+      // eye coordinates
+      glm::vec3 dirEye    = glm::mat3(modelViewMatrix) * dirWorld;
+
+      glLightfv(id, GL_SPOT_DIRECTION, glm::value_ptr(dirEye));
+
+      glLightf(id, GL_SPOT_CUTOFF,   cutoff_);
+      glLightf(id, GL_SPOT_EXPONENT, exponent_);
+
+      glLightf(id, GL_CONSTANT_ATTENUATION,  attConst_);
+      glLightf(id, GL_LINEAR_ATTENUATION,    attLinear_);
+      glLightf(id, GL_QUADRATIC_ATTENUATION, attQuad_);
+   }
+
 }
-
-float Spotlight::getCutoff() const noexcept {
-   return cutoff_;
-}
-
-AttenuationMode Spotlight::getAttenuationMode() const noexcept {
-   return attenuationMode_;
-}
-
-float Spotlight::getAttenuationValue() const noexcept {
-   return attenuationValue_;
-}
-
-void Spotlight::setDirection(const glm::vec3& dir) noexcept {
-   direction_ = dir;
-}
-
-void Spotlight::setCutoff(const float cutoff) noexcept {
-   cutoff_ = cutoff;
-}
-
-void Spotlight::setAttenuationMode(const AttenuationMode mode) noexcept {
-   attenuationMode_ = mode;
-}
-
-void Spotlight::setAttenuationValue(const float value) noexcept {
-   attenuationValue_ = value;
-}
-
-void Spotlight::render(const glm::mat4& modelViewMatrix) {}

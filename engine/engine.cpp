@@ -105,9 +105,9 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glEnable(GL_LIGHT0);
 
    // Componenti della luce
-   constexpr float diffuse[4]  = {10.0f, 10.0f, 10.0f, 1.0f};
-   constexpr float ambient[4]  = {10.0f, 10.0f, 10.0f, 1.0f};
-   constexpr float specular[4] = {10.0f, 10.0f, 10.0f, 1.0f};
+   constexpr float diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
+   constexpr float ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
+   constexpr float specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
    glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
    glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
@@ -222,17 +222,11 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
 
+// In engine.cpp
+
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
-
-      OvoParser ovoParser;
-
-
-   // creare e aggiungere camera al cubo
-
-   // creare luce per cubo
-
-
-   return ovoParser.returnCompleteSceneTree(path);;
+   // Delega il caricamento, il parsing e la costruzione del grafo all'OvoReader
+   return OvoReader::load(path);
 }
 
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
@@ -332,4 +326,31 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 
    default: std::cout << "UNKNOWN" << std::endl ;
    }
+}
+
+
+// In engine.cpp
+
+void Base::setWireframe(bool enable) {
+   // Imposta la modalità di rendering: Linee (wireframe) o Riempimento (default)
+   if (enable)
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+   else
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void Base::setLighting(bool enable) {
+   // Attiva o disattiva il calcolo delle luci
+   if (enable)
+      glEnable(GL_LIGHTING);
+   else
+      glDisable(GL_LIGHTING);
+}
+
+void Base::setCulling(bool enable) {
+   // Attiva o disattiva il taglio delle facce posteriori
+   if (enable)
+      glEnable(GL_CULL_FACE);
+   else
+      glDisable(GL_CULL_FACE);
 }
