@@ -1,34 +1,22 @@
 #include "directionallight.h"
 
+#include <GL/freeglut.h>
+
+#include "glm/gtc/type_ptr.inl"
+
 using namespace Eng;
 
-DirectionalLight::DirectionalLight(const std::shared_ptr<Node>& node,
-                                           const glm::mat4& worldMatrix,
-                                           const glm::vec4& position)
-    : node_ptr_{node}, nodeWorldMatrix_{worldMatrix}, position_{position} {}
 
-std::shared_ptr<Node> DirectionalLight::getNodePtr() const noexcept {
-    return node_ptr_;
+DirectionalLight::DirectionalLight(const glm::vec3& color,
+                 const glm::vec3& direction) noexcept
+                     : color_(color), direction_(direction) {}
+
+
+
+
+void DirectionalLight::render(const glm::mat4& modelViewMatrix) {
+    setPosition(glm::vec4(direction_, 0.0f));
+    // da mettere la posizione
+    int lightNumber = getLightNumber();
+    glLightfv(GL_LIGHT2, GL_POSITION, glm::value_ptr(getPosition()));
 }
-
-glm::mat4 DirectionalLight::getNodeWorldMatrix() const noexcept {
-    return nodeWorldMatrix_;
-}
-
-glm::vec4 DirectionalLight::getPosition() const noexcept {
-    return position_;
-}
-
-void DirectionalLight::setNodePtr(const std::shared_ptr<Node>& node) noexcept {
-    node_ptr_ = node;
-}
-
-void DirectionalLight::setNodeWorldMatrix(const glm::mat4& worldMatrix) noexcept {
-    nodeWorldMatrix_ = worldMatrix;
-}
-
-void DirectionalLight::setPosition(const glm::vec4& position) noexcept {
-    position_ = position;
-}
-
-void DirectionalLight::render(const glm::mat4& modelViewMatrix) {}
