@@ -45,21 +45,41 @@ int main(const int argc, char** argv) {
 
     eng.init(argc, argv, "Hanoi Tower");
 
-    const auto root = eng.load("\\Mac\Home\Downloads\ProvaTavoloovo.ovo");
+    const auto root = eng.load("/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/ProvaTavoloovo.ovo");
+
+    for (const auto& n : root->getChildrens()) {
+        if (n != nullptr)
+            std::cout << n->getName() << std::endl;
+    }
+
+
     if (!root)
     {
        return -1;
     }
 
     auto tavolo = root->findNodeByName("baseTavolo");
+
+
     if (!tavolo)
     {
        std::cout << "Tavolo non trovato" << std::endl;
        return -1;
     }
+
+
+
     auto bordoTavolo = root->findNodeByName("bordoTavolo");
     auto gamba1 = root->findNodeByName("gamba1");
     auto gamba2 = root->findNodeByName("gamba2");
+
+
+
+    root->addChildren(gamba1);
+    root->addChildren(gamba2);
+
+
+
     auto gamba3 = root->findNodeByName("gamba3");
     auto gamba4 = root->findNodeByName("gamba4");
 
@@ -91,7 +111,9 @@ int main(const int argc, char** argv) {
 
 
     const auto cam = eng.createPerspectiveCamera(45, 800.f/600.f, 0.1f, 100.0f);
-    cam->setMatrix(glm::translate(glm::mat4(1), glm::vec3(0,0,5)));
+    cam->setMatrix(glm::translate(glm::mat4(1), glm::vec3(-40,300,5)));
+
+    cam->setMatrix(glm::rotate(glm::mat4(1), glm::radians(60.0f), glm::vec3(0, 1, 0)) * cam->getMatrix());
 
     const auto renderList = std::make_shared<Eng::List>();
     renderList->pass(root);
