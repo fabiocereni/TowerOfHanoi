@@ -172,6 +172,7 @@ std::shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::st
 
             auto node = std::make_shared<Eng::Node>();
             node->setMatrix(matrix);
+            node->setName(name);
 
             nodeMap[name] = node;
             if (!root)
@@ -317,6 +318,7 @@ std::shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::st
             );
 
             mesh->setMatrix(matrix);
+            mesh->setName(name);
 
             meshMap[name] = mesh;
         }
@@ -390,6 +392,8 @@ std::shared_ptr<Eng::Node> Eng::OvoParser::returnCompleteSceneTree(const std::st
             }
 
             light->setMatrix(matrix);
+            light->setName(name);
+
             lightMap[name] = light;
         }
         break;
