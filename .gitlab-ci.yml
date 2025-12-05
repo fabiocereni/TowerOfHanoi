@@ -14,35 +14,50 @@ build:
     
     - mkdir -p dependencies/lib
     - |
+      echo "--- Inizio Bundling Librerie ---"
+      
+
       BINARIES="engine/bin/Debug/libengine.so engine/bin/Release/libengine.so client/bin/Debug/client client/bin/Release/client"
       
       for bin in $BINARIES; do
         if [ -f "$bin" ]; then
-          echo "Bundling libraries for $bin..."
           ldd "$bin" | grep "=> /" | while read -r line; do
-            
             lib_soname=$(echo "$line" | awk '{print $1}')
-            
             lib_path=$(echo "$line" | awk '{print $3}')
-            
-            lib_realname=$(basename "$lib_path")
             
 
             if echo "$lib_path" | grep -q "dependencies/lib"; then
               continue
             fi
             
-           
-            cp -L "$lib_path" "dependencies/lib/$lib_realname"
-            
-            
-            if [ "$lib_soname" != "$lib_realname" ]; then
-              echo "Linking $lib_soname -> $lib_realname"
-              ln -sf "$lib_realname" "dependencies/lib/$lib_soname"
-            fi
+
+            cp -L -n "$lib_path" "dependencies/lib/$lib_soname" || true
           done
         fi
       done
+      
+
+      echo "--- Applicazione Fix Manuale FreeGLUT ---"
+      GLUT_REAL_PATH=$(ldd engine/bin/Debug/libengine.so | grep libglut | awk '{print $3}' | head -n 1)
+      
+      if [ ! -z "$GLUT_REAL_PATH" ]; then
+        echo "Trovata libglut in: $GLUT_REAL_PATH"
+        
+
+        
+ 
+        cp -L "$GLUT_REAL_PATH" dependencies/lib/libglut.so.3.12
+        echo "Creata dependencies/lib/libglut.so.3.12"
+        
+
+        cp -L "$GLUT_REAL_PATH" dependencies/lib/libglut.so.3
+        
+
+        cp -L "$GLUT_REAL_PATH" dependencies/lib/libglut.so
+      else
+        echo "ERRORE: Impossibile trovare il percorso di libglut tramite ldd!"
+        exit 1
+      fi
 
   artifacts:
     paths:
