@@ -7,7 +7,8 @@ build:
   stage: build
   script:
     - apt-get update
-    - apt-get install -y --no-install-recommends freeglut3 libglu1-mesa libgl1 libxi6 libxmu6
+    # freeglut runtime non è presente come pacchetto separato su noble, usiamo il dev che lo contiene
+    - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6
     - make clean
     - make -j"$(nproc)"
     # Copia le librerie runtime OpenGL/FreeGLUT nell'artifact per esecuzione senza installazioni
