@@ -1,9 +1,9 @@
 CXX := g++
 LD  := g++
 
-# cartella sorgenti client e auto-raccolta .cpp
+# cartella sorgenti client e auto-raccolta .cpp (anche sotto Test/)
 SRC_DIR := .
-SRCS    := $(wildcard $(SRC_DIR)/*.cpp)
+SRCS    := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/Test/*.cpp)
 
 # include di engine e dipendenze vendored
 INCLUDES := -I../engine -I../dependencies/glm/include -I../dependencies/freeglut/include
@@ -17,7 +17,7 @@ GL_LIBS := -lglut -lGL -lGLU -lm
 # configurazione Debug
 OBJDIR_Debug   := obj/Debug
 BINDIR_Debug   := bin/Debug
-OBJS_Debug     := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Debug)/%.o)
+OBJS_Debug     := $(SRCS:%.cpp=$(OBJDIR_Debug)/%.o)
 DEPS_Debug     := $(OBJS_Debug:.o=.d)
 TARGET_Debug   := $(BINDIR_Debug)/client
 CXXFLAGS_Debug := $(CXXFLAGS_COMMON) -g -D_DEBUG
@@ -27,7 +27,7 @@ LDFLAGS_Debug  := -L../engine/bin/Debug -Wl,-rpath,'$$ORIGIN/../../engine/bin/De
 # configurazione Release
 OBJDIR_Release   := obj/Release
 BINDIR_Release   := bin/Release
-OBJS_Release     := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Release)/%.o)
+OBJS_Release     := $(SRCS:%.cpp=$(OBJDIR_Release)/%.o)
 DEPS_Release     := $(OBJS_Release:.o=.d)
 TARGET_Release   := $(BINDIR_Release)/client
 CXXFLAGS_Release := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
@@ -48,10 +48,12 @@ $(TARGET_Release): $(OBJS_Release) | $(BINDIR_Release)
 	$(LD) -o $@ $(OBJS_Release) $(LDFLAGS_Release) $(ENGINE_LIB) $(GL_LIBS)
 
 # compilazione singolo oggetto
-$(OBJDIR_Debug)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Debug)
+$(OBJDIR_Debug)/%.o: %.cpp | $(OBJDIR_Debug)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS_Debug) -c $< -o $@
 
-$(OBJDIR_Release)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Release)
+$(OBJDIR_Release)/%.o: %.cpp | $(OBJDIR_Release)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS_Release) -c $< -o $@
 
 # creazione cartelle obj/bin
