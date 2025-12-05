@@ -10,9 +10,10 @@ build:
     - make -j"$(nproc)"
     # Copia le librerie runtime OpenGL/FreeGLUT nell'artifact per esecuzione senza installazioni
     - mkdir -p dependencies/lib
-    - cp /usr/lib/x86_64-linux-gnu/libglut.so* dependencies/lib/ || true
-    - cp /usr/lib/x86_64-linux-gnu/libGLU.so* dependencies/lib/ || true
-    - cp /usr/lib/x86_64-linux-gnu/libGL.so* dependencies/lib/ || true
+    - |
+      for lib in libglut.so libGLU.so libGL.so libX11.so libXi.so libXmu.so; do
+        find /usr/lib /lib -name "${lib}*" -type f -exec cp -L {} dependencies/lib/ \; || true
+      done
   artifacts:
     paths:
       - engine/bin
