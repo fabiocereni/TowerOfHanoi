@@ -17,7 +17,7 @@ namespace Eng {
       void bind() const;
 
    protected:
-      unsigned int texId_;
+      static unsigned int texId_;
       int width_;
       int height_;
    };

@@ -75,6 +75,9 @@ namespace Eng {
       ENG_API void swap() noexcept;
       ENG_API [[nodiscard]] std::shared_ptr<Node> load(const std::string &path) const noexcept;
       ENG_API [[nodiscard]] std::shared_ptr<Texture> loadTextureFromFile(const std::string& path) const noexcept;
+      ENG_API [[nodiscard]] void bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept;
+
+
 
 
       ENG_API static void displayCallback();

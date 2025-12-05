@@ -121,6 +121,7 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
             memcpy(&alpha, data + position, sizeof(float)); position += sizeof(float);
 
             char textureName[FILENAME_MAX];
+                std::cout << textureName << std::endl;
             strcpy(textureName, data + position);
             position += (unsigned int)strlen(textureName) + 1;
 
