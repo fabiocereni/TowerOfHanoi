@@ -20,17 +20,26 @@ build:
         if [ -f "$bin" ]; then
           echo "Bundling libraries for $bin..."
           ldd "$bin" | grep "=> /" | while read -r line; do
+            
             lib_soname=$(echo "$line" | awk '{print $1}')
+            
             lib_path=$(echo "$line" | awk '{print $3}')
             
-            # FIX: Verifica se il percorso sorgente contiene già "dependencies/lib"
-            # Se sì, significa che ldd ha risolto la libreria usando la nostra copia locale (rpath)
-            # In questo caso, non dobbiamo copiarla di nuovo su se stessa.
+            lib_realname=$(basename "$lib_path")
+            
+
             if echo "$lib_path" | grep -q "dependencies/lib"; then
               continue
             fi
             
-            cp -L "$lib_path" "dependencies/lib/$lib_soname"
+           
+            cp -L "$lib_path" "dependencies/lib/$lib_realname"
+            
+            
+            if [ "$lib_soname" != "$lib_realname" ]; then
+              echo "Linking $lib_soname -> $lib_realname"
+              ln -sf "$lib_realname" "dependencies/lib/$lib_soname"
+            fi
           done
         fi
       done
