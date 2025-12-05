@@ -43,7 +43,7 @@ int main(const int argc, char** argv) {
 
     for(auto var: sceneRoot->getChildrens())
     {
-        if (var.get()->getName() == "baseHanoi") {
+        if (var.get()->getName() == "[root]") {
             for (auto var1 : var->getChildrens())
             {
                 std::cout << var1.get()->getName() << std::endl;
