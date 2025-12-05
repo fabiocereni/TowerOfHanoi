@@ -7,30 +7,29 @@ build:
   stage: build
   script:
     - apt-get update
-    # Installazione dipendenze di compilazione
     - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6
     
-    # Pulizia e Compilazione
     - make clean
     - make -j"$(nproc)"
     
-    # Bundling delle librerie condivise (FIX per l'errore "cannot open shared object file")
     - mkdir -p dependencies/lib
     - |
-      # Lista dei binari da analizzare
       BINARIES="engine/bin/Debug/libengine.so engine/bin/Release/libengine.so client/bin/Debug/client client/bin/Release/client"
       
       for bin in $BINARIES; do
         if [ -f "$bin" ]; then
           echo "Bundling libraries for $bin..."
-          # ldd mostra le dipendenze. Filtriamo quelle che puntano a un percorso di sistema (=> /)
           ldd "$bin" | grep "=> /" | while read -r line; do
-            # $1 è il nome richiesto dal binario (es. libglut.so.3)
             lib_soname=$(echo "$line" | awk '{print $1}')
-            # $3 è il percorso reale del file sul sistema (es. /usr/lib/.../libglut.so.3.12.0)
             lib_path=$(echo "$line" | awk '{print $3}')
             
-            # Copiamo il file reale rinominandolo come il binario se lo aspetta
+            # FIX: Verifica se il percorso sorgente contiene già "dependencies/lib"
+            # Se sì, significa che ldd ha risolto la libreria usando la nostra copia locale (rpath)
+            # In questo caso, non dobbiamo copiarla di nuovo su se stessa.
+            if echo "$lib_path" | grep -q "dependencies/lib"; then
+              continue
+            fi
+            
             cp -L "$lib_path" "dependencies/lib/$lib_soname"
           done
         fi
