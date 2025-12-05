@@ -1,34 +1,23 @@
 #include "directionallight.h"
+#include <GL/freeglut.h>
 
-using namespace Eng;
+#include "glm/gtc/type_ptr.hpp"
 
-DirectionalLight::DirectionalLight(const std::shared_ptr<Node>& node,
-                                           const glm::mat4& worldMatrix,
-                                           const glm::vec4& position)
-    : node_ptr_{node}, nodeWorldMatrix_{worldMatrix}, position_{position} {}
+namespace Eng {
 
-std::shared_ptr<Node> DirectionalLight::getNodePtr() const noexcept {
-    return node_ptr_;
+    void DirectionalLight::render(const glm::mat4& modelViewMatrix) {
+
+        const GLenum id = GL_LIGHT0 + getLightNumber();
+        glEnable(id);
+
+        glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient_));
+        glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse_));
+        glLightfv(id, GL_SPECULAR, glm::value_ptr(specular_));
+
+        const glm::vec3 eyeDir = glm::mat3(modelViewMatrix) * (-direction_);
+        const float pos[] = { eyeDir.x, eyeDir.y, eyeDir.z, 0.0f };
+
+        glLightfv(id, GL_POSITION, pos);
+    }
+
 }
-
-glm::mat4 DirectionalLight::getNodeWorldMatrix() const noexcept {
-    return nodeWorldMatrix_;
-}
-
-glm::vec4 DirectionalLight::getPosition() const noexcept {
-    return position_;
-}
-
-void DirectionalLight::setNodePtr(const std::shared_ptr<Node>& node) noexcept {
-    node_ptr_ = node;
-}
-
-void DirectionalLight::setNodeWorldMatrix(const glm::mat4& worldMatrix) noexcept {
-    nodeWorldMatrix_ = worldMatrix;
-}
-
-void DirectionalLight::setPosition(const glm::vec4& position) noexcept {
-    position_ = position;
-}
-
-void DirectionalLight::render(const glm::mat4& modelViewMatrix) {}

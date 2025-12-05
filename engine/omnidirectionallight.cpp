@@ -1,56 +1,28 @@
 #include "omnidirectionallight.h"
+#include <GL/freeglut.h>
 
-using namespace Eng;
+#include "glm/gtc/type_ptr.hpp"
 
-OmnidirectionalLight::OmnidirectionalLight(const std::shared_ptr<Node>& node,
-                                                   const glm::mat4& worldMatrix,
-                                                   const glm::vec4& position,
-                                                   const attenuation_mode_enum attenuationMode,
-                                                   const float attenuationValue)
-    : node_ptr_{node},
-      nodeWorldMatrix_{worldMatrix},
-      position_{position},
-      attenuation_mode_{attenuationMode},
-      attenuation_value_{attenuationValue} {}
+namespace Eng {
 
-std::shared_ptr<Node> OmnidirectionalLight::getNodePtr() const noexcept {
-   return node_ptr_;
+   void OmnidirectionalLight::render(const glm::mat4& modelViewMatrix) {
+
+      const GLenum id = GL_LIGHT0 + getLightNumber();
+      glEnable(id);
+
+      glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient_));
+      glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse_));
+      glLightfv(id, GL_SPECULAR, glm::value_ptr(specular_));
+
+      glm::vec4 posWorld = getMatrix() * glm::vec4(0,0,0,1);
+      glm::vec4 posEye   = modelViewMatrix * posWorld;
+
+      GLfloat pos[] = { posEye.x, posEye.y, posEye.z, 1.0f };
+      glLightfv(id, GL_POSITION, pos);
+
+      glLightf(id, GL_CONSTANT_ATTENUATION,  attConst_);
+      glLightf(id, GL_LINEAR_ATTENUATION,    attLinear_);
+      glLightf(id, GL_QUADRATIC_ATTENUATION, attQuad_);
+   }
+
 }
-
-glm::mat4 OmnidirectionalLight::getNodeWorldMatrix() const noexcept {
-   return nodeWorldMatrix_;
-}
-
-glm::vec4 OmnidirectionalLight::getPosition() const noexcept {
-   return position_;
-}
-
-attenuation_mode_enum OmnidirectionalLight::getAttenuationMode() const noexcept {
-   return attenuation_mode_;
-}
-
-float OmnidirectionalLight::getAttenuationValue() const noexcept {
-   return attenuation_value_;
-}
-
-void OmnidirectionalLight::setNodePtr(const std::shared_ptr<Node>& node) noexcept {
-   node_ptr_ = node;
-}
-
-void OmnidirectionalLight::setNodeWorldMatrix(const glm::mat4& worldMatrix) noexcept {
-   nodeWorldMatrix_ = worldMatrix;
-}
-
-void OmnidirectionalLight::setPosition(const glm::vec4& position) noexcept {
-   position_ = position;
-}
-
-void OmnidirectionalLight::setAttenuationMode(attenuation_mode_enum mode) noexcept {
-   attenuation_mode_ = mode;
-}
-
-void OmnidirectionalLight::setAttenuationValue(float value) noexcept {
-   attenuation_value_ = value;
-}
-
-void OmnidirectionalLight::render(const glm::mat4& modelViewMatrix) {}

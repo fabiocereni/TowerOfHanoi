@@ -1,53 +1,56 @@
 #pragma once
-#include "node.h"
+#include "engine_api.h"
+
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <memory>
+
+#include "node.h"
 
 namespace Eng {
-   class ENG_API Light : public Node {
-   public:
-      Light() noexcept = default;
-      Light(bool smoothShading,
-            int lightNumber,
-            const glm::vec4& ambient,
-            const glm::vec4& diffuse,
-            const glm::vec4& specular,
-            bool ambientEnabled,
-            bool localViewerEnabled);
 
-      virtual ~Light() noexcept = default;
+class ENG_API Light : public Node {
+public:
+    Light() noexcept;
+    virtual ~Light() noexcept;
 
-      Light(const Light& other) = default;
-      Light(Light&& other) noexcept = default;
+    void render(const glm::mat4& modelViewMatrix) override = 0;
 
-      Light& operator=(const Light& other) = default;
-      Light& operator=(Light&& other) noexcept = default;
 
-      void render(const glm::mat4& modelViewMatrix) override;
+    void setAmbient (const glm::vec3& c) noexcept { ambient_  = c; }
+    void setDiffuse (const glm::vec3& c) noexcept { diffuse_  = c; }
+    void setSpecular(const glm::vec3& c) noexcept { specular_ = c; }
+    void setRadius      (const float r) noexcept { radius_ = r; }
+    void setConstantAtt (const float c) noexcept { attConst_ = c; }
+    void setLinearAtt   (const float l) noexcept { attLinear_ = l; }
+    void setQuadraticAtt(const float q) noexcept { attQuad_ = q; }
 
-      [[nodiscard]] bool getSmoothShading() const noexcept {return smoothShading_;};
-      [[nodiscard]] int getLightNumber() const noexcept {return lightNumber_;};
-      [[nodiscard]] glm::vec4 getAmbient() const noexcept {return ambient_;};
-      [[nodiscard]] glm::vec4 getDiffuse() const noexcept {return diffuse_;};
-      [[nodiscard]] glm::vec4 getSpecular() const noexcept {return specular_;};
-      [[nodiscard]] bool isAmbientEnabled() const noexcept {return ambientEnabled_;};
-      [[nodiscard]] bool isLocalViewer() const noexcept {return localViewerEnabled_;};
 
-      void setSmoothShading(bool smoothShading) noexcept {smoothShading_ = smoothShading;};
-      void setLightNumber(int lightNumber) noexcept {lightNumber_ = lightNumber;};
-      void setAmbient(const glm::vec4& ambient) noexcept {ambient_ = ambient;};
-      void setDiffuse(const glm::vec4& diffuse) noexcept {diffuse_ = diffuse;};
-      void setSpecular(const glm::vec4& specular) noexcept {specular_ = specular;};
-      void setLocalViewer(const bool enabled) noexcept {localViewerEnabled_ = enabled;};
-      void setAmbientEnabled(const bool enabled) noexcept {ambientEnabled_ = enabled;};
+    [[nodiscard]] static int getLightNumber() noexcept { return lightNumber_; }
 
-   protected:
-      bool smoothShading_;
-      int lightNumber_;
-      glm::vec4 ambient_;
-      glm::vec4 diffuse_;
-      glm::vec4 specular_;
-      bool ambientEnabled_;
-      bool localViewerEnabled_;
-      static int number_of_lights;
-   };
-}
+
+    [[nodiscard]] glm::vec3 getAmbient()  const noexcept { return ambient_; }
+    [[nodiscard]] glm::vec3 getDiffuse()  const noexcept { return diffuse_; }
+    [[nodiscard]] glm::vec3 getSpecular() const noexcept { return specular_; }
+    [[nodiscard]] float getRadius()       const noexcept { return radius_; }
+    [[nodiscard]] float getConstantAtt()  const noexcept { return attConst_; }
+    [[nodiscard]] float getLinearAtt()    const noexcept { return attLinear_; }
+    [[nodiscard]] float getQuadraticAtt() const noexcept { return attQuad_; }
+
+protected:
+    static int lightNumber_;
+
+    glm::vec3 ambient_  {0.0f};
+    glm::vec3 diffuse_  {1.0f};
+    glm::vec3 specular_ {1.0f};
+
+
+    float radius_      = 1.0f;  // for attenuation
+
+
+    float attConst_    = 1.0f;
+    float attLinear_   = 0.0f;
+    float attQuad_     = 0.0f;
+};
+
+} // namespace Eng
