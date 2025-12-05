@@ -21,8 +21,8 @@ OBJS_Debug     := $(SRCS:%.cpp=$(OBJDIR_Debug)/%.o)
 DEPS_Debug     := $(OBJS_Debug:.o=.d)
 TARGET_Debug   := $(BINDIR_Debug)/client
 CXXFLAGS_Debug := $(CXXFLAGS_COMMON) -g -D_DEBUG
-# path libreria engine e rpath relativo per trovare la .so a runtime
-LDFLAGS_Debug  := -L../engine/bin/Debug -Wl,-rpath,'$$ORIGIN/../../engine/bin/Debug'
+# path libreria engine e rpath relativo per trovare la .so a runtime (binario in client/bin/Debug)
+LDFLAGS_Debug  := -L../engine/bin/Debug -Wl,-rpath,'$$ORIGIN/../../../engine/bin/Debug'
 
 # configurazione Release
 OBJDIR_Release   := obj/Release
@@ -31,7 +31,7 @@ OBJS_Release     := $(SRCS:%.cpp=$(OBJDIR_Release)/%.o)
 DEPS_Release     := $(OBJS_Release:.o=.d)
 TARGET_Release   := $(BINDIR_Release)/client
 CXXFLAGS_Release := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
-LDFLAGS_Release  := -L../engine/bin/Release -Wl,-rpath,'$$ORIGIN/../../engine/bin/Release' -s
+LDFLAGS_Release  := -L../engine/bin/Release -Wl,-rpath,'$$ORIGIN/../../../engine/bin/Release' -s
 
 # target aggregati
 all: debug release
