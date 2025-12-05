@@ -1,13 +1,17 @@
+<<<<<<< HEAD
 variables:
   BUILD_TYPE: "Release"
   ENGINE_DIR: "$CI_PROJECT_DIR/engine"
   CLIENT_DIR: "$CI_PROJECT_DIR/client"
   DEP_DIR: "$CI_PROJECT_DIR/dependencies"   # cartella nella ROOT del progetto
+=======
+image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
+>>>>>>> feature/ovoparser
 
 stages:
-  - engine
-  - client
+  - build
 
+<<<<<<< HEAD
 cache:
   key: "make-$CI_COMMIT_REF_SLUG"
   paths:
@@ -18,13 +22,17 @@ engine:
   stage: engine
   image: gcc:12
 
-  script:
-    - cd engine
-    - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
+=======
 
+build:
+  stage: build
+>>>>>>> feature/ovoparser
+  script:
+    - make clean                         # pulizia artefatti precedenti
+    - make -j"$(nproc)"                  # build parallela engine + client
   artifacts:
     paths:
+<<<<<<< HEAD
       - engine/bin/
       - dependencies/        # <<< ORA prende la cartella GIUSTA, quella in root
     expire_in: 1 hour
@@ -50,6 +58,11 @@ client:
       - dependencies/
     expire_in: 1 hour
 
+=======
+      - engine/bin                       # esporta libreria compilata
+      - client/bin                       # esporta eseguibile compilato
+    when: always
+>>>>>>> feature/ovoparser
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
 

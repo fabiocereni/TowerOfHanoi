@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "ovoreader.h"
 #include "perspective_camera.h"
 
 using namespace Eng;
@@ -57,29 +58,27 @@ Base& Base::getInstance() {
 }
 
 bool Base::init(int argc, char **argv, const std::string& title) {
-   if (reserved_->initFlag)
-      return false;
+   if (reserved_->initFlag) return false;
 
-   // inizializzazione di freeglut e creazione finestra
-
+   // 1. Inizializzazione GLUT e Finestra (CORRETTO)
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitWindowSize(getWidth(), getHeight());
-
    const int id = glutCreateWindow(title.c_str());
    setWindowId(id);
-
-   // serve a glutMainLoopEvent() per ritornare quando la finestra viene chiusa
    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+<<<<<<< HEAD
    // ------------------------------------------------------------------------------------
+=======
 
+   // 2. Impostazioni OpenGL Base (CORRETTO)
+   glEnable(GL_DEPTH_TEST); // Fondamentale per il 3D
+   glEnable(GL_NORMALIZE);  // Utile se scali le mesh, ma costa performance
+>>>>>>> feature/ovoparser
 
-   // impostazione base di OpenGL
-
-   // attiva depth testing
-   glEnable(GL_DEPTH_TEST);
-   // abilita il lighting della fixed pipeline
+   // ILLUMINAZIONE: Abilita il sistema, ma non singole luci
    glEnable(GL_LIGHTING);
+<<<<<<< HEAD
    // normalizza automaticamente le normali
    glEnable(GL_NORMALIZE);
 
@@ -94,12 +93,24 @@ bool Base::init(int argc, char **argv, const std::string& title) {
 
    glm::vec4 gAmbient(0.2f, 0.2f, 0.2f, 1.0f);
    // imposto modello più realistico per lo specular (viewer locale, di default V = (0, 0, 1))
+=======
+   // Modello speculare realistico (utile tenerlo)
+>>>>>>> feature/ovoparser
    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-   // imposto luce ambient globale, indipendente dalle singole luci
-   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(gAmbient));
+   // 3. CULLING: Disabilitalo per sicurezza all'inizio (o lascialo commentato)
+   glDisable(GL_CULL_FACE);
+   // Se decidi di usarlo, assicurati che i modelli siano perfetti:
+   // glEnable(GL_CULL_FACE);
+   // glCullFace(GL_BACK);
 
+   // 4. LUCI DI DEFAULT: RIMOSSE ❌
+   // Lasciamo che sia la scena (tramite OvoReader o codice main) a creare le luci.
+   // Se vuoi una luce ambientale di base minima per non vedere tutto nero assoluto:
+   glm::vec4 globalAmbient(0.1f, 0.1f, 0.1f, 1.0f);
+   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(globalAmbient));
 
+<<<<<<< HEAD
    // attivazione e configurazione una luce di default (GL_LIGHT0)
    glEnable(GL_LIGHT0);
 
@@ -124,9 +135,12 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    // callbacks
 
    // registrazione callback "base"
+=======
+   // 5. Callbacks (CORRETTO)
+>>>>>>> feature/ovoparser
    glutDisplayFunc(displayCallback);
-   // registrazione callback per ridimensionamento
    glutReshapeFunc(reshapeCallback);
+<<<<<<< HEAD
    // registrazione timer callback per fps (ogni secondo)
    glutTimerFunc(1000, timerCallback, 0);
    // registrazione callback per tasti "normali"
@@ -134,6 +148,12 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    // registrazione callback per tasti "speciali"
    glutSpecialFunc(specialCallback);
    // ------------------------------------------------------------------------------------
+=======
+   glutTimerFunc(1000, timerCallback, 0);
+   glutKeyboardFunc(useCustomKeyboardCallback);
+   glutSpecialFunc(specialCallback);
+
+>>>>>>> feature/ovoparser
    reserved_->initFlag = true;
    return true;
 }
@@ -209,8 +229,10 @@ void Base::changeBackgroundColor(const float r, const float g, const float b) {
    glClearColor(r, g, b, 1.0f);
 }
 
-ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes, const std::shared_ptr<Material>& material) {
-   return std::make_shared<Mesh>(vertexes, material);
+ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
+                                               const std::string& materialName,
+                                               const std::shared_ptr<Material>& material) {
+   return std::make_shared<Mesh>(vertexes, materialName, material);
 }
 
 std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRatio,
@@ -219,79 +241,12 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> feature/ovoparser
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
-
-   std::vector<glm::vec3> cube = {
-      // ===== FRONT (z = 0.5) =====
-      {-0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, // Triangolo 1
-      {-0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f}, // Triangolo 2
-
-      // ===== BACK (z = -0.5) =====
-      { 0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f},
-      { 0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f}, { 0.5f,  0.5f, -0.5f},
-
-      // ===== LEFT (x = -0.5) =====
-      {-0.5f, -0.5f, -0.5f}, {-0.5f, -0.5f,  0.5f}, {-0.5f,  0.5f,  0.5f},
-      {-0.5f, -0.5f, -0.5f}, {-0.5f,  0.5f,  0.5f}, {-0.5f,  0.5f, -0.5f},
-
-      // ===== RIGHT (x = 0.5) =====
-      { 0.5f, -0.5f,  0.5f}, { 0.5f, -0.5f, -0.5f}, { 0.5f,  0.5f, -0.5f},
-      { 0.5f, -0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f}, { 0.5f,  0.5f,  0.5f},
-
-      // ===== TOP (y = 0.5) =====
-      {-0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f},
-      {-0.5f,  0.5f,  0.5f}, { 0.5f,  0.5f, -0.5f}, {-0.5f,  0.5f, -0.5f},
-
-      // ===== BOTTOM (y = -0.5) =====
-      {-0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f,  0.5f},
-      {-0.5f, -0.5f, -0.5f}, { 0.5f, -0.5f,  0.5f}, {-0.5f, -0.5f,  0.5f},
-  };
-
-
-   std::vector<glm::vec3> cubeNormals;
-   // 6 facce, 6 vertici per faccia
-   // FRONT (Z+)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-   // BACK (Z-)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
-   // LEFT (X-)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
-   // RIGHT (X+)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-   // TOP (Y+)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-   // BOTTOM (Y-)
-   for(int i=0; i<6; i++) cubeNormals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
-
-
-
-   std::shared_ptr<Node> root = std::make_shared<Node>();
-
-   // cubo
-   std::shared_ptr<Material> material = std::make_shared<Material>(
-      glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), // emission
-      glm::vec4(0.1f, 0.1f, 0.1f, 1.0f), // ambient
-      glm::vec4(0.5f, 0.2f, 0.8f, 1.0f), // diffuse
-      glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), // specular
-      32.0f);
-
-
-   std::shared_ptr<Mesh> first_cube = std::make_shared<Mesh>(cube, material);
-
-   first_cube->setNormals(cubeNormals);
-
-   // aggiungere cubo a root
-   root->addChildren(first_cube);
-
-
-
-
-   // creare e aggiungere camera al cubo
-
-   // creare luce per cubo
-
-
-   return root;
+   return OvoReader::load(path);
 }
 
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
@@ -392,3 +347,30 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
    default: std::cout << "UNKNOWN" << std::endl ;
    }
 }
+<<<<<<< HEAD
+=======
+
+
+
+
+void Base::setWireframe(const bool enable) {
+   if (enable)
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+   else
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void Base::setLighting(const bool enable) {
+   if (enable)
+      glEnable(GL_LIGHTING);
+   else
+      glDisable(GL_LIGHTING);
+}
+
+void Base::setCulling(const bool enable) {
+   if (enable)
+      glEnable(GL_CULL_FACE);
+   else
+      glDisable(GL_CULL_FACE);
+}
+>>>>>>> feature/ovoparser

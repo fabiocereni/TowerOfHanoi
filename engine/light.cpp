@@ -1,13 +1,16 @@
 #include "light.h"
 
-using namespace Eng;
+namespace Eng {
 
-Light::Light(bool smoothShading, int lightNumber, const glm::vec4& ambient,
-                     const glm::vec4& diffuse, const glm::vec4& specular,
-                     bool ambientEnabled, bool localViewerEnabled)
-    : smoothShading_{smoothShading}, lightNumber_{lightNumber}, ambient_{ambient},
-      diffuse_{diffuse}, specular_{specular}, ambientEnabled_{ambientEnabled},
-      localViewerEnabled_{localViewerEnabled} {}
+int Light::lightNumber_ = 0;
+
+    Light::Light() noexcept {
+        lightNumber_++;
+    }
 
 
-void Light::render(const glm::mat4& modelViewMatrix) {}
+    Light::~Light() noexcept {
+        lightNumber_--;
+    }
+
+}
