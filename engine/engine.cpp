@@ -67,35 +67,14 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    const int id = glutCreateWindow(title.c_str());
    setWindowId(id);
    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-<<<<<<< HEAD
-   // ------------------------------------------------------------------------------------
-=======
 
    // 2. Impostazioni OpenGL Base (CORRETTO)
    glEnable(GL_DEPTH_TEST); // Fondamentale per il 3D
    glEnable(GL_NORMALIZE);  // Utile se scali le mesh, ma costa performance
->>>>>>> feature/ovoparser
 
    // ILLUMINAZIONE: Abilita il sistema, ma non singole luci
    glEnable(GL_LIGHTING);
-<<<<<<< HEAD
-   // normalizza automaticamente le normali
-   glEnable(GL_NORMALIZE);
-
-   // impostazioni per face culling
-   glEnable(GL_CULL_FACE);
-   glCullFace(GL_BACK);
-   glFrontFace(GL_CCW);
-   // ------------------------------------------------------------------------------------
-
-
-   // impostazioni del modello di illuminazione globale
-
-   glm::vec4 gAmbient(0.2f, 0.2f, 0.2f, 1.0f);
-   // imposto modello più realistico per lo specular (viewer locale, di default V = (0, 0, 1))
-=======
    // Modello speculare realistico (utile tenerlo)
->>>>>>> feature/ovoparser
    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
    // 3. CULLING: Disabilitalo per sicurezza all'inizio (o lascialo commentato)
@@ -110,50 +89,13 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glm::vec4 globalAmbient(0.1f, 0.1f, 0.1f, 1.0f);
    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(globalAmbient));
 
-<<<<<<< HEAD
-   // attivazione e configurazione una luce di default (GL_LIGHT0)
-   glEnable(GL_LIGHT0);
-
-   // Componenti della luce
-   constexpr float diffuse[4]  = {1.0f, 1.0f, 1.0f, 1.0f};
-   constexpr float ambient[4]  = {0.1f, 0.1f, 0.1f, 1.0f};
-   constexpr float specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-
-   glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
-   glLightfv(GL_LIGHT0, GL_AMBIENT,  ambient);
-   glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-
-   // Posizione della luce:
-   // w = 0 per luce direzionale
-   constexpr float pos[4] = {0.0f, 0.0f, 1.0f, 0.0f};
-   glLightfv(GL_LIGHT0, GL_POSITION, pos);
-
-   // per debug
-   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-   // ------------------------------------------------------------------------------------
-
-   // callbacks
-
-   // registrazione callback "base"
-=======
    // 5. Callbacks (CORRETTO)
->>>>>>> feature/ovoparser
    glutDisplayFunc(displayCallback);
    glutReshapeFunc(reshapeCallback);
-<<<<<<< HEAD
-   // registrazione timer callback per fps (ogni secondo)
-   glutTimerFunc(1000, timerCallback, 0);
-   // registrazione callback per tasti "normali"
-   glutKeyboardFunc(useCustomKeyboardCallback);
-   // registrazione callback per tasti "speciali"
-   glutSpecialFunc(specialCallback);
-   // ------------------------------------------------------------------------------------
-=======
    glutTimerFunc(1000, timerCallback, 0);
    glutKeyboardFunc(useCustomKeyboardCallback);
    glutSpecialFunc(specialCallback);
 
->>>>>>> feature/ovoparser
    reserved_->initFlag = true;
    return true;
 }
@@ -241,10 +183,6 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> feature/ovoparser
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
    return OvoReader::load(path);
 }
@@ -347,12 +285,6 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
    default: std::cout << "UNKNOWN" << std::endl ;
    }
 }
-<<<<<<< HEAD
-=======
-
-
-
-
 void Base::setWireframe(const bool enable) {
    if (enable)
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -373,4 +305,3 @@ void Base::setCulling(const bool enable) {
    else
       glDisable(GL_CULL_FACE);
 }
->>>>>>> feature/ovoparser
