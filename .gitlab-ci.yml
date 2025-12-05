@@ -1,59 +1,18 @@
-variables:
-  BUILD_TYPE: "Release"
+image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
 
 stages:
-  - engine
-  - client
+  - build
 
-cache:
-  key: "make-$CI_COMMIT_REF_SLUG"
-  paths:
-    - engine/build/
-    - client/build/
 
-engine:
-  stage: engine
-  image: gcc:12
-
-  before_script:
-    - apt-get update
-    - apt-get install -y freeglut3-dev libglu1-mesa-dev mesa-common-dev
-
+build:
+  stage: build
   script:
-    - cd engine
-    - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
-
+    - make clean                         # pulizia artefatti precedenti
+    - make -j"$(nproc)"                  # build parallela engine + client
   artifacts:
     paths:
-      - engine/bin/
-      - dependencies/
-    expire_in: 1 hour
-
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
-
-
-client:
-  stage: client
-  image: gcc:12
-  dependencies:
-    - engine
-
-  before_script:
-    - apt-get update
-    - apt-get install -y freeglut3-dev libglu1-mesa-dev mesa-common-dev
-
-  script:
-    - cd client
-    - make clean
-    - make all BUILD_TYPE=$BUILD_TYPE
-
-  artifacts:
-    paths:
-      - client/bin/
-      - dependencies/
-    expire_in: 1 hour
-
+      - engine/bin                       # esporta libreria compilata
+      - client/bin                       # esporta eseguibile compilato
+    when: always
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
