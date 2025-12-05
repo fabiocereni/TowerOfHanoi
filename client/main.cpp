@@ -50,7 +50,7 @@ int main(const int argc, char** argv) {
     // Imposta sfondo grigio per vedere meglio il wireframe
     eng.changeBackgroundColor(0.3f, 0.3f, 0.3f);
 
-    const std::string scenePath = "\\Users\\matti\\Documents\\Uni\\grafica\\Progetto\\Export3DSMAX Progetto\\ProvaTavoloovo.ovo";
+    const std::string scenePath = "/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/ProvaTavoloovo.ovo";
 
     // 3. Caricamento della Scena
     // Usa il nuovo metodo eng.load che restituisce la radice del grafo
