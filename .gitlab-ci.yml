@@ -8,10 +8,16 @@ build:
   script:
     - make clean
     - make -j"$(nproc)"
+    # Copia le librerie runtime OpenGL/FreeGLUT nell'artifact per esecuzione senza installazioni
+    - mkdir -p dependencies/lib
+    - cp /usr/lib/x86_64-linux-gnu/libglut.so* dependencies/lib/ || true
+    - cp /usr/lib/x86_64-linux-gnu/libGLU.so* dependencies/lib/ || true
+    - cp /usr/lib/x86_64-linux-gnu/libGL.so* dependencies/lib/ || true
   artifacts:
     paths:
       - engine/bin
       - client/bin
+      - dependencies/lib
     when: always
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
