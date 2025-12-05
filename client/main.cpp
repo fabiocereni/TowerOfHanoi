@@ -30,8 +30,6 @@ int main(const int argc, char** argv) {
 
     // 2. Inizializza l'Engine
     Eng::Base& eng = Eng::Base::getInstance();
-<<<<<<< HEAD
-
     eng.overrideKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY){
 
         std::cout << key << std::endl;
@@ -47,10 +45,7 @@ int main(const int argc, char** argv) {
     eng.overrideLeftArrowBehaviour([]{std::cout << "LEFT ARROW" << std::endl;});
 
 
-    eng.init(argc, argv, "Hanoi Tower");
-=======
     eng.init(argc, argv, "Hanoi Tower Debug");
->>>>>>> feature/ovoparser
 
     // Imposta sfondo grigio per vedere meglio il wireframe
     eng.changeBackgroundColor(0.3f, 0.3f, 0.3f);
@@ -123,17 +118,12 @@ int main(const int argc, char** argv) {
 
         eng.end3D();
 
-<<<<<<< HEAD
-        eng.end3D();
-
-=======
         // Reset opzionale delle impostazioni di debug (se volessi riabilitarle per la UI o altro)
         // eng.setWireframe(false);
         // eng.setLighting(true);
         // eng.setCulling(true);
 
         eng.showFps();
->>>>>>> feature/ovoparser
         eng.swap();
     }
 
