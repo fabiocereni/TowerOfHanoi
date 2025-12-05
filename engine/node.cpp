@@ -54,8 +54,3 @@ ENG_API void Node::render(const glm::mat4& modelViewMatrix) {
 }
 
 
-// std::shared_ptr<Node> Node::find(const std::string& str) const noexcept {
-//    return nullptr;
-// }
-
-
