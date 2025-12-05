@@ -12,7 +12,7 @@ INCLUDES := -I. -I../dependencies/glm/include -I../dependencies/freeglut/include
 # flag comuni: warning, standard, PIC, depfile per header
 CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fPIC -m64 -fexceptions -MMD -MP $(INCLUDES)
 # link shared e librerie OpenGL/freeglut di sistema
-LDFLAGS_COMMON := -shared -m64
+LDFLAGS_COMMON := -shared -m64 -Wl,-rpath,'$$ORIGIN/../../dependencies/lib'
 LIBS := -lglut -lGL -lGLU -lm
 
 # configurazione Debug
