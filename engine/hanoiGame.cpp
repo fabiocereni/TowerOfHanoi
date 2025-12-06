@@ -1,26 +1,88 @@
 #include "hanoigame.h"
 
+// --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
+void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
+   if (!node) return;
+
+   // Crea l'indentazione visiva
+   std::string indent = "";
+   for (int i = 0; i < depth; i++) indent += "  |-- ";
+
+   std::cout << indent << node->getName() << std::endl;
+
+   for (auto& child : node->getChildrens()) {
+      debugPrintGraph(child, depth + 1);
+   }
+}
+
+// --- HELPER DI RICERCA RICORSIVA SICURA ---
+// Cerca un nodo per nome in tutto l'albero, non solo nel primo livello
+std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
+   if (!current) return nullptr;
+
+   // 1. Controlla se è questo
+   if (current->getName() == nameToFind) {
+      return current;
+   }
+
+   // 2. Cerca nei figli
+   for (auto& child : current->getChildrens()) {
+      auto result = findRecursive(child, nameToFind);
+      if (result != nullptr) {
+         return result; // Trovato! Risaliamo la catena
+      }
+   }
+
+   // 3. Non trovato qui sotto
+   return nullptr;
+}
+
 // --- COSTRUTTORE ---
 HanoiGame::HanoiGame(std::shared_ptr<Eng::Node> sceneRoot)
    : root(sceneRoot), selectedDisk(nullptr), sourcePole(nullptr)
 {
-}
+   if (!root) {
+      std::cerr << "!!! FATAL ERROR: sceneRoot e' NULL !!!" << std::endl;
+      return;
+   }
 
-// --- METODI PRIVATI (HELPER) ---
+   std::cout << "\n=== STRUTTURA SCENA OVO ===" << std::endl;
+   debugPrintGraph(root, 0); // <--- GUARDA QUI NELLA CONSOLE!
+   std::cout << "===========================\n" << std::endl;
 
-std::shared_ptr<Eng::Node> HanoiGame::getPole(int number) {
-   // Cerca "Palo1", "Palo2", ecc.
-   return root->findByName(root, "Palo" + std::to_string(number));
+   // Inizializziamo il vettore
+   poles.resize(4, nullptr);
+
+   // Usiamo la nostra ricerca ricorsiva
+   poles[1] = findRecursive(root, "palo1");
+   poles[2] = findRecursive(root, "palo2");
+   poles[3] = findRecursive(root, "palo3");
+
+   // Verifica
+   if (poles[1]) std::cout << ">> Palo 1 TROVATO!" << std::endl;
+   else std::cerr << ">> ERRORE: Palo 1 non trovato (neanche ricorsivamente)." << std::endl;
+
+   if (poles[2]) std::cout << ">> Palo 2 TROVATO!" << std::endl;
+   else std::cerr << ">> ERRORE: Palo 2 non trovato." << std::endl;
+
+   if (poles[3]) std::cout << ">> Palo 3 TROVATO!" << std::endl;
+   else std::cerr << ">> ERRORE: Palo 3 non trovato." << std::endl;
 }
 
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
+   if (!pole) return nullptr;
+
    auto disks = pole->getChildrens();
+
+   // Rimuovi ptr nulli
+   disks.erase(std::remove(disks.begin(), disks.end(), nullptr), disks.end());
+
    if (disks.empty()) return nullptr;
 
-   // Ordiniamo per trovare quello in cima (assumendo logica alfabetica o di inserimento)
-   // Qui usiamo la logica: il nome "maggiore" sta in cima? O viceversa?
-   // Adatta questo sort in base a come si chiamano i tuoi dischi nel .ovo
+   // Ordina (Modifica qui se l'ordine alfabetico non è corretto per la grandezza)
    std::sort(disks.begin(), disks.end(), [](const auto& a, const auto& b) {
+      // Logica: il nome "maggiore" (es. Disk3) sta sopra a "Disk1"?
+      // Oppure Z position? 
       return a->getName() > b->getName();
       });
 
@@ -33,55 +95,64 @@ bool HanoiGame::isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr
    // Se il palo è vuoto, è sempre valido
    if (!topDiskDest) return true;
 
-   // Se c'è un disco, il nostro deve essere più piccolo
-   return diskToMove->getName() < topDiskDest->getName();
+   // LOGICA CORRETTA:
+   // Poiché "disco7" (piccolo) > "disco1" (grande) alfabeticamente:
+   // Il disco che muovo deve avere un nome "MAGGIORE" di quello che sta sotto.
+   // Esempio valido: Muovo "disco7" su "disco1" -> "disco7" > "disco1" (VERO)
+   // Esempio errato: Muovo "disco1" su "disco7" -> "disco1" > "disco7" (FALSO)
+
+   return diskToMove->getName() > topDiskDest->getName(); // <--- CAMBIA QUI DA < A >
 }
 
-// --- METODO PUBBLICO ---
-
 void HanoiGame::processInput(int poleIndex) {
-   auto clickedPole = getPole(poleIndex);
+   if (poleIndex < 1 || poleIndex > 3) return;
+
+   auto clickedPole = poles[poleIndex]; // Usiamo la cache
 
    if (!clickedPole) {
-      std::cout << "ERRORE: Palo " << poleIndex << " non trovato!" << std::endl;
+      std::cerr << "ERRORE CRITICO: Il Palo " << poleIndex << " non e' stato caricato all'avvio." << std::endl;
       return;
    }
 
-   // STATO 1: PRENDI (PICK)
    if (selectedDisk == nullptr) {
+      // --- PICK (Prendi il disco) ---
       auto disk = getTopDisk(clickedPole);
       if (disk) {
          selectedDisk = disk;
          sourcePole = clickedPole;
-         std::cout << ">> Preso disco: " << disk->getName() << " dal Palo " << poleIndex << std::endl;
+         std::cout << ">> PRESO: " << disk->getName() << std::endl;
       }
       else {
-         std::cout << ">> Il Palo " << poleIndex << " e' vuoto." << std::endl;
+         std::cout << ">> Palo vuoto." << std::endl;
       }
    }
-   // STATO 2: POSA (DROP)
    else {
-      // Se clicco lo stesso palo, annullo
+      // --- DROP (Posa il disco) ---
       if (clickedPole == sourcePole) {
-         std::cout << ">> Selezione annullata." << std::endl;
+         std::cout << ">> Annullato." << std::endl;
          selectedDisk = nullptr;
          sourcePole = nullptr;
          return;
       }
 
       if (isValidMove(clickedPole, selectedDisk)) {
-         std::cout << ">> Sposto " << selectedDisk->getName() << " su Palo " << poleIndex << std::endl;
+         std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
 
-         // Logica del grafo: stacco dal vecchio padre, attacco al nuovo
+         // 1. Modifica del Grafo (Stacca e Attacca)
          sourcePole->removeChildren(selectedDisk->getName());
          clickedPole->addChildren(selectedDisk);
 
-         // Reset
+         // 2. Reset dello stato di gioco
          selectedDisk = nullptr;
          sourcePole = nullptr;
+
+         // 3. STAMPA LA NUOVA GERARCHIA
+         std::cout << "\n=== STATO SCENA AGGIORNATO ===" << std::endl;
+         debugPrintGraph(root, 0); // <--- ECCO LA MODIFICA
+         std::cout << "==============================\n" << std::endl;
       }
       else {
-         std::cout << ">> MOSSA NON VALIDA! Disco troppo grande." << std::endl;
+         std::cout << ">> MOSSA NON VALIDA" << std::endl;
       }
    }
 }

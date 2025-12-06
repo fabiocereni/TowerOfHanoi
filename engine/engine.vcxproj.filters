@@ -63,6 +63,9 @@
     <ClCompile Include="ovoreader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hanoiGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ovoreader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hanoiGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
