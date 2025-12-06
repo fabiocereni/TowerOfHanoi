@@ -1,6 +1,8 @@
 #include "list.h"
 #include "light.h"
 
+#include <iostream>
+
 using namespace Eng;
 
 void List::addOnBottomToRenderList(const Instance &instance) noexcept {
