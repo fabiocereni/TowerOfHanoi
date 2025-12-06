@@ -7,12 +7,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <algorithm>
 
-/*
-#include <FreeImage.h>
-*/
+#define FREEIMAGE_LIB
 
 #include "ovoreader.h"
 #include "perspective_camera.h"
+#include <FreeImage.h>
+
 
 using namespace Eng;
 
@@ -65,9 +65,8 @@ Base& Base::getInstance() {
 bool Base::init(int argc, char **argv, const std::string& title) {
    if (reserved_->initFlag) return false;
 
-   /*
+  
    FreeImage_Initialise();
-   */
 
    // 1. Inizializzazione GLUT e Finestra (CORRETTO)
    glutInit(&argc, argv);
@@ -154,7 +153,7 @@ bool Base::free() const {
    if (!reserved_->initFlag)
    {
       
-      //FreeImage_DeInitialise();
+      FreeImage_DeInitialise();
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
    }
@@ -301,7 +300,7 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
    // 1. Determina il formato del file
-   /*
+  
    FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
    if (format == FIF_UNKNOWN) {
       format = FreeImage_GetFIFFromFilename(path.c_str());
@@ -327,7 +326,7 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    bitmap = bitmap32;
 
    // 4. Inverti verticalmente (OpenGL ha l'origine in basso a sinistra)
-   // FreeImage_FlipVertical(bitmap); // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
+    // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
 
    // 5. Estrai info
    int width = FreeImage_GetWidth(bitmap);
@@ -342,58 +341,53 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    // Crea la texture usando il tuo costruttore
    auto texture = std::make_shared<Texture>(data, width, height);
 
-   const size_t lastSlashPos = path.find_last_of('/');
+   const size_t lastSlashPos = path.find_last_of('\\');
 
-
-   if (lastSlashPos == std::string::npos) {
-      texture->setName(path);
-   } else {
-      texture->setName(path.substr(lastSlashPos + 1));
-   }
+   texture->setName(path.substr(lastSlashPos + 1));
+   
 
    // 6. Pulisci memoria RAM
    FreeImage_Unload(bitmap);
    
-   return texture;*/
-   return nullptr;
+   return texture;
 }
 
 
 
 void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept {
 
-   if (!root || textures.empty()) {
-      return;
-   }
+    if (!root || textures.empty()) {
+        return;
+    }
 
-   // Nota: .get() non è necessario con l'operatore ->
-   for (const auto& childNode : root->getChildrens()) {
+    // Nota: .get() non è necessario con l'operatore ->
+    for (const auto& childNode : root->getChildrens()) {
 
-      // 1. Tenta il cast
-      auto mesh = std::dynamic_pointer_cast<Mesh>(childNode);
+        // 1. Tenta il cast
+        auto mesh = std::dynamic_pointer_cast<Mesh>(childNode);
 
-      // 2. VERIFICA SE IL CAST È RIUSCITO
-      if (mesh) {
+        // 2. VERIFICA SE IL CAST È RIUSCITO
+        if (mesh) {
 
-         // 3. Recupera il material e VERIFICA SE ESISTE
-         auto material = mesh->getMaterial();
+            // 3. Recupera il material e VERIFICA SE ESISTE
+            auto material = mesh->getMaterial();
 
-         if (material && !material->getTextureName().empty()) {
+            if (material && !material->getTextureName().empty()) {
 
-            for (const auto& texture : textures) {
-               // Nota: texture è già shared_ptr<Texture>, il cast qui è inutile/ridondante
-
-               if (texture->getName() == material->getTextureName()) {
-                  material->setTexture(texture);
-                  // Opzionale: break; // Se supporti solo 1 texture per materiale
-               }
+                for (const auto& texture : textures) {
+                    // Nota: texture è già shared_ptr<Texture>, il cast qui è inutile/ridondante
+               
+                    if (texture->getName() == material->getTextureName()) {
+                        material->setTexture(texture);
+                        // Opzionale: break; // Se supporti solo 1 texture per materiale
+                    }
+                }
             }
-         }
-      }
+        }
 
-      // Ricorsione
-      this->bindTexturesToMaterials(childNode, textures);
-   }
+        // Ricorsione
+        this->bindTexturesToMaterials(childNode, textures);
+    }
 }
 
 
