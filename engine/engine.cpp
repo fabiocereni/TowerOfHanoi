@@ -48,7 +48,6 @@ Base::SpecialKeyAction Base::right_arrow_key_ = nullptr;
 float fps = 0.0f;
 
 
-
 // servono per salvare le matrici
 glm::mat4 perspective;
 glm::mat4 ortho;
@@ -240,7 +239,6 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
       instance.getNodePtr()->render(modelViewMatrix);
    }
 
-
 }
 
 void Base::displayCallback() {
@@ -249,7 +247,6 @@ void Base::displayCallback() {
 }
 
 void Base::showFps() {
-
    // disabilita luce, non altera il colore del testo
    glDisable(GL_LIGHTING);
 
@@ -280,6 +277,47 @@ void Base::showFps() {
    glEnable(GL_LIGHTING);
 
 }
+
+void Base::infoPrinter(const std::string& info) {
+
+   // disabilita luce, non altera il colore del testo
+   glDisable(GL_LIGHTING);
+
+   // salva proiezione
+   glMatrixMode(GL_PROJECTION);
+   glPushMatrix();
+   glLoadIdentity();
+
+
+   // salva modelview
+   glMatrixMode(GL_MODELVIEW);
+   glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+
+
+   glColor3f(1, 1, 1);
+   // string position
+   glRasterPos2f(-0.95f, 0.80f);
+
+   Base::getInstance().setInfo(info);
+
+   // display the string
+   if (!info.empty()) {
+      glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(info.c_str()));
+   }   // ripristina
+
+   glPopMatrix();
+
+   // MODELVIEW
+   glMatrixMode(GL_PROJECTION);
+   glPopMatrix();
+   glEnable(GL_LIGHTING);
+
+}
+
+void Base::clearInfoPrinter() {
+   Base::getInstance().infoClear();
+}
+
 
 void Base::timerCallback(int) {
    fps = getFrames();

@@ -132,13 +132,14 @@ int main(const int argc, char** argv) {
         // Esegui il render
         eng.render(cam, renderList);
 
-
-
         eng.end3D();
 
         eng.showFps();
+        eng.infoPrinter(game.getStatusMessage());
+
         eng.swap();
     }
+
 
     return 0;
 }
