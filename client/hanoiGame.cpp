@@ -22,7 +22,7 @@ void debugPrintGraph(const std::shared_ptr<Eng::Node>& node, const int depth) {
 }
 
 
-bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) const {
+bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) {
 
    // for debug
    std::cout << poleToMonitor->getChildrens().size() << std::endl;
@@ -30,7 +30,7 @@ bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) co
    if (poleToMonitor == nullptr) return false;
 
    if (static_cast<int>(poleToMonitor->getChildrens().size()) == numberOfDisks_) {
-      std::cout << "GAME WON" << std::endl;
+      this->statusMessage_ = "WIN GAME";
       return true;
    }
 
@@ -89,14 +89,10 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    tmp.push_back(poles[3]->getChildrens().at(poles[3]->getChildrens().size() - 1));
    tmp.push_back(poles[3]->getChildrens().at(poles[3]->getChildrens().size() - 2));
 
-   constexpr std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
+   std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
    poles[3]->setChilders(tmpChildren);
    poles[3]->addChildren(tmp.at(0));
    poles[3]->addChildren(tmp.at(1));
-
-
-
-
 
 
    // Verifica

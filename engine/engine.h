@@ -114,7 +114,7 @@ namespace Eng {
       ENG_API void setHeight(const int height) noexcept {height_ = height;};
       ENG_API static void setFrames(const float frames) noexcept {frames_ = frames;};
       ENG_API void setActiveCamera(const std::shared_ptr<Camera>& camera) noexcept {activeCamera_ = camera;};
-
+      ENG_API void setInfo(const std::string& info) noexcept { info_ = info; };
 
       ENG_API void overrideKeyboardCallback(const KeyboardCallback &keyboardCallback) noexcept {customKeyboardCallbackVar_ = keyboardCallback;};
       ENG_API void overrideUpArrowBehaviour(SpecialKeyAction action)   noexcept { up_arrow_key_ = action; }
@@ -124,22 +124,21 @@ namespace Eng {
 
 
 
-
-
-
       ENG_API [[nodiscard]] int getWidth() const {return width_;};
       ENG_API [[nodiscard]] int getHeight() const {return height_;};
       ENG_API [[nodiscard]] static float getFrames() {return frames_;};
       ENG_API [[nodiscard]] std::shared_ptr<Camera> getActiveCamera() const noexcept {return activeCamera_;};
-
-
-
+      
+      
       ENG_API static void useCustomKeyboardCallback(unsigned char key, int mouseX, int mouseY) noexcept;
 
 
 
       ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept;
       ENG_API void showFps();
+      ENG_API static void infoPrinter(const std::string& info);
+      ENG_API void infoClear() { return info_.clear(); };
+      ENG_API static void clearInfoPrinter();
 
 
       // In engine.h, dentro class Base public:
@@ -155,6 +154,7 @@ namespace Eng {
       int width_ = 800;
       int height_ = 600;
       static float frames_;
+      std::string info_;
       std::shared_ptr<Camera> activeCamera_;
 
 

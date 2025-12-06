@@ -83,7 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\hanoiGame.cpp" />
+    <ClCompile Include="hanoiGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Test\test_suite.cpp" />
   </ItemGroup>
@@ -91,7 +91,7 @@
     <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\hanoiGame.h" />
+    <ClInclude Include="hanoiGame.h" />
     <ClInclude Include="Test\test_suite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
