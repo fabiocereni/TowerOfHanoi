@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
-#include <algorithm>
 
 
 /* ----------------------
@@ -36,26 +35,26 @@ int main(const int argc, char** argv) {
 
     // 2. Inizializza l'Engine
     Eng::Base& eng = Eng::Base::getInstance();
-    eng.init(argc, argv, "Hanoi Tower Debug");
+    eng.init(argc, argv, "Hanoi Tower");
 
-    const std::string scenePath = "C:\\Mac\\Home\\Desktop\\ProvaTavoloovo.ovo";
+    const std::string scenePath = "3d_model/ProvaTavoloovo.ovo";
 
     
-    /*
-    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\pngtree-dark-wood-grain-texture-background---seamless-pattern-picture-image_15712210.dds");
 
-    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\360_F_151926190_27YnXZJqE5dHQY0kdQR6BSK3iV9CdKnW.dds");
+    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile("textures/pngtree-dark-wood-grain-texture-background---seamless-pattern-picture-image_15712210.dds");
 
-    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\istockphoto-541570996-612x612.dds");
-    */
+    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile("textures/360_F_151926190_27YnXZJqE5dHQY0kdQR6BSK3iV9CdKnW.dds");
+
+    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile("textures/istockphoto-541570996-612x612.dds");
+
 
     std::vector<std::shared_ptr<Eng::Texture>> textures;
 
-    /*
+
     textures.push_back(plastic);
     textures.push_back(dark_wood_grain);
     textures.push_back(light_wood);
-    */
+
 
     //std::cout << dark_wood_grain->getName() << std::endl;
 

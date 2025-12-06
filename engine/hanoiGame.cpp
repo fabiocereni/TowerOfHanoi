@@ -1,5 +1,6 @@
-#include "hanoigame.h"
 
+
+#include "hanoiGame.h"
 // --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
 void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
    if (!node) return;
@@ -20,7 +21,7 @@ void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
 std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
    if (!current) return nullptr;
 
-   // 1. Controlla se è questo
+   // 1. Controlla se ï¿½ questo
    if (current->getName() == nameToFind) {
       return current;
    }
@@ -79,7 +80,7 @@ std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole
 
    if (disks.empty()) return nullptr;
 
-   // Ordina (Modifica qui se l'ordine alfabetico non è corretto per la grandezza)
+   // Ordina (Modifica qui se l'ordine alfabetico non ï¿½ corretto per la grandezza)
    std::sort(disks.begin(), disks.end(), [](const auto& a, const auto& b) {
       // Logica: il nome "maggiore" (es. Disk3) sta sopra a "Disk1"?
       // Oppure Z position? 
@@ -92,11 +93,11 @@ std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole
 bool HanoiGame::isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr<Eng::Node> diskToMove) {
    auto topDiskDest = getTopDisk(destPole);
 
-   // Se il palo è vuoto, è sempre valido
+   // Se il palo ï¿½ vuoto, ï¿½ sempre valido
    if (!topDiskDest) return true;
 
    // LOGICA CORRETTA:
-   // Poiché "disco7" (piccolo) > "disco1" (grande) alfabeticamente:
+   // Poichï¿½ "disco7" (piccolo) > "disco1" (grande) alfabeticamente:
    // Il disco che muovo deve avere un nome "MAGGIORE" di quello che sta sotto.
    // Esempio valido: Muovo "disco7" su "disco1" -> "disco7" > "disco1" (VERO)
    // Esempio errato: Muovo "disco1" su "disco7" -> "disco1" > "disco7" (FALSO)
