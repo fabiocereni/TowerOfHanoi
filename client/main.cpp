@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <algorithm>
+#include <filesystem>
 
 
 /* ----------------------
@@ -27,8 +28,7 @@
  * ed è quella che OpenGL usa per il rendering.
  */
 
-
-
+namespace fs = std::filesystem;
 
 int main(const int argc, char** argv) {
     // 1. Esegui i test
@@ -38,27 +38,32 @@ int main(const int argc, char** argv) {
     Eng::Base& eng = Eng::Base::getInstance();
     eng.init(argc, argv, "Hanoi Tower Debug");
 
-    const std::string scenePath = "C:\\Mac\\Home\\Desktop\\ProvaTavoloovo.ovo";
+
+
+    fs::path sourceFile = __FILE__;
+
+    fs::path projectDir = sourceFile.parent_path().parent_path();
+
+    fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovo.ovo";
+
+    const std::string scenePath = modelPath.string();
 
     
-    /*
-    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\pngtree-dark-wood-grain-texture-background---seamless-pattern-picture-image_15712210.dds");
+    
+    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "darkWood.dds").string());
 
-    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\360_F_151926190_27YnXZJqE5dHQY0kdQR6BSK3iV9CdKnW.dds");
+    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "lightWood.dds").string());
 
-    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\istockphoto-541570996-612x612.dds");
-    */
+    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "plastic.dds").string());
+   
 
     std::vector<std::shared_ptr<Eng::Texture>> textures;
 
-    /*
+
     textures.push_back(plastic);
     textures.push_back(dark_wood_grain);
     textures.push_back(light_wood);
-    */
-
-    //std::cout << dark_wood_grain->getName() << std::endl;
-
+     
 
     // 3. Caricamento della Scena
     // Usa il nuovo metodo eng.load che restituisce la radice del grafo
