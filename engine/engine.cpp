@@ -65,9 +65,9 @@ Base& Base::getInstance() {
 bool Base::init(int argc, char **argv, const std::string& title) {
    if (reserved_->initFlag) return false;
 
-   /*
+
    FreeImage_Initialise();
-   */
+
 
    // 1. Inizializzazione GLUT e Finestra (CORRETTO)
    glutInit(&argc, argv);
@@ -196,7 +196,7 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
-   return OvoReader::load(std::filesystem::absolute(path));
+   return OvoReader::load(std::filesystem::absolute(path).string());
 }
 
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
@@ -300,7 +300,7 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
-   const std::string absolutePath = std::filesystem::absolute(path);
+   const std::string absolutePath = std::filesystem::absolute(path).string();
 
    // 1. Determina il formato del file
 
@@ -320,7 +320,6 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
       return nullptr;
    }
 
-   FreeImage_FlipVertical(bitmap);
 
    // 3. Converti in 32 bit (RGBA) per uniformità
    // Questo passaggio è CRUCIALE per evitare problemi tra RGB/BGR/RGBA
