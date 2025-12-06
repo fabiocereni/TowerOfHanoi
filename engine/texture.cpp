@@ -1,15 +1,14 @@
 #include "texture.h"
 #include <GL/freeglut.h>
-#include <GL/glu.h>
 
 using namespace Eng;
 
-unsigned int Texture::texId_ = 0;
+
 
 Texture::Texture(const unsigned char* bitmap, const int width, const int height) noexcept
    : width_{width}, height_{height}
 {
-   texId_++;
+
    // generazione texture
    glGenTextures(1, &texId_);
    glBindTexture(GL_TEXTURE_2D, texId_);
@@ -24,6 +23,7 @@ Texture::Texture(const unsigned char* bitmap, const int width, const int height)
 
    // costruzione MIPMAP
    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, width_, height_, GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmap);
+
 }
 
 void Texture::bind() const {
