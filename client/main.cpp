@@ -92,30 +92,6 @@ int main(const int argc, char** argv) {
 
     HanoiGame game(sceneRoot);
 
-    eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY) {
-
-       switch (key) {
-       case '1': // Nota gli apici ''
-          game.processInput(1);
-          break;
-       case '2':
-          game.processInput(2);
-          break;
-       case '3':
-          game.processInput(3);
-          break;
-       case 27: // ESC
-          std::cout << "Uscita..." << std::endl;
-          // eng.close(); // se hai un metodo per chiudere
-          break;
-       default:
-          // Ignora altri tasti
-          break;
-       }
-       });
-
-
-
     // 4. Configurazione Telecamera
     // Far plane molto alto per vedere oggetti lontani
     const auto cam = eng.createPerspectiveCamera(60, 800.f / 600.f, 0.1f, 20000.0f);
@@ -141,6 +117,8 @@ int main(const int argc, char** argv) {
         eng.clear();
         renderList->clear();
 
+      
+
         // --- DEBUG SETTINGS ---
         // Attiva Wireframe per vedere la struttura dell'oggetto
         eng.setWireframe(false);
@@ -158,6 +136,28 @@ int main(const int argc, char** argv) {
 
         // Esegui il render
         eng.render(cam, renderList);
+
+        eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY) {
+
+            switch (key) {
+            case '1': // Nota gli apici ''
+                game.processInput(1);
+                break;
+            case '2':
+                game.processInput(2);
+                break;
+            case '3':
+                game.processInput(3);
+                break;
+            case 27: // ESC
+                std::cout << "Uscita..." << std::endl;
+                // eng.close(); // se hai un metodo per chiudere
+                break;
+            default:
+                // Ignora altri tasti
+                break;
+            }
+            });
 
         eng.end3D();
 
