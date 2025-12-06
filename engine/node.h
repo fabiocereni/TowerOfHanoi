@@ -29,6 +29,7 @@ namespace Eng {
       void addChildren(const std::shared_ptr<Node>& child) noexcept {childrens_.push_back(child);};
 
       std::shared_ptr<Node> removeChildren(const std::string& name);
+      void setChilders(const std::vector<std::shared_ptr<Node>>& childrens) noexcept {childrens_ = childrens;};
       [[nodiscard]] std::shared_ptr<Node> returnChild(const std::string& name) const;
       [[nodiscard]] std::shared_ptr<Node> returnChild(const unsigned long& id) const;
       [[nodiscard]] glm::mat4 getWorldMatrix() const noexcept;

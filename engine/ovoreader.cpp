@@ -17,6 +17,7 @@
 #include "material.h"
 #include "light.h"
 #include "directionallight.h"
+#include "light_number_exception.h"
 #include "omnidirectionallight.h"
 #include "spotlight.h"
 #include "texture.h"
@@ -51,7 +52,7 @@ namespace {
         unsigned int childrenCount;
         unsigned int childrenAdded;
 
-        NodeInfo(std::shared_ptr<Node> n, unsigned int count)
+        NodeInfo(const std::shared_ptr<Node>& n, const unsigned int count)
             : node(n), childrenCount(count), childrenAdded(0) {
         }
     };
@@ -91,7 +92,7 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
         char* data = buffer.data();
         unsigned int position = 0;
 
-        switch ((OvObject::Type)chunkId) {
+        switch (static_cast<OvObject::Type>(chunkId)) {
 
             // ==========================
             // OBJECT (Version info)
@@ -121,17 +122,19 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
             memcpy(&alpha, data + position, sizeof(float)); position += sizeof(float);
 
             char textureName[FILENAME_MAX];
+#ifdef DEBUG1231231
                 std::cout << textureName << std::endl;
+#endif
             strcpy(textureName, data + position);
-            position += (unsigned int)strlen(textureName) + 1;
+            position += static_cast<unsigned int>(strlen(textureName)) + 1;
 
             char normalMapName[FILENAME_MAX];
             strcpy(normalMapName, data + position);
-            position += (unsigned int)strlen(normalMapName) + 1;
+            position += static_cast<unsigned int>(strlen(normalMapName)) + 1;
 
             // Salta height, roughness, metalness maps
-            position += (unsigned int)strlen(data + position) + 1;
-            position += (unsigned int)strlen(data + position) + 1;
+            position += static_cast<unsigned int>(strlen(data + position)) + 1;
+            position += static_cast<unsigned int>(strlen(data + position)) + 1;
             position += (unsigned int)strlen(data + position) + 1;
 
             auto mat = std::make_shared<Material>(
@@ -153,7 +156,7 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
         case OvObject::Type::NODE: {
             char name[FILENAME_MAX];
             strcpy(name, data + position);
-            position += (unsigned int)strlen(name) + 1;
+            position += static_cast<unsigned int>(strlen(name)) + 1;
 
             glm::mat4 matrix;
             memcpy(&matrix, data + position, sizeof(glm::mat4));
@@ -199,7 +202,7 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
         case OvObject::Type::SKINNED: {
             char name[FILENAME_MAX];
             strcpy(name, data + position);
-            position += (unsigned int)strlen(name) + 1;
+            position += static_cast<unsigned int>(strlen(name)) + 1;
 
             glm::mat4 matrix;
             memcpy(&matrix, data + position, sizeof(glm::mat4));
@@ -211,7 +214,7 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
 
             char targetName[FILENAME_MAX];
             strcpy(targetName, data + position);
-            position += (unsigned int)strlen(targetName) + 1;
+            position += static_cast<unsigned int>(strlen(targetName)) + 1;
 
             unsigned char subtype;
             memcpy(&subtype, data + position, sizeof(unsigned char));
@@ -219,7 +222,7 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
 
             char matName[FILENAME_MAX];
             strcpy(matName, data + position);
-            position += (unsigned int)strlen(matName) + 1;
+            position += static_cast<unsigned int>(strlen(matName)) + 1;
 
             // Salta radius e bbox
             position += sizeof(float) + sizeof(glm::vec3) * 2;
@@ -279,10 +282,10 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
                     memcpy(face, data + position, sizeof(unsigned int) * 3);
                     position += sizeof(unsigned int) * 3;
 
-                    for (int i = 0; i < 3; i++) {
-                        finalVertices.push_back(tempVertices[face[i]]);
-                        finalNormals.push_back(tempNormals[face[i]]);
-                        finalUvs.push_back(tempUvs[face[i]]);
+                    for (unsigned int i : face) {
+                        finalVertices.push_back(tempVertices[i]);
+                        finalNormals.push_back(tempNormals[i]);
+                        finalUvs.push_back(tempUvs[i]);
                     }
                 }
 
@@ -317,88 +320,108 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
                                     // ==========================
                                     // LIGHT
                                     // ==========================
-        case OvObject::Type::LIGHT: {
-            char name[FILENAME_MAX];
-            strcpy(name, data + position);
-            position += (unsigned int)strlen(name) + 1;
-
-            glm::mat4 matrix;
-            memcpy(&matrix, data + position, sizeof(glm::mat4));
-            position += sizeof(glm::mat4);
-
-            unsigned int children;
-            memcpy(&children, data + position, sizeof(unsigned int));
-            position += sizeof(unsigned int);
-
-            char targetName[FILENAME_MAX];
-            strcpy(targetName, data + position);
-            position += (unsigned int)strlen(targetName) + 1;
-
-            unsigned char subtype;
-            memcpy(&subtype, data + position, sizeof(unsigned char));
-            position += sizeof(unsigned char);
-
-            glm::vec3 color; memcpy(&color, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
-            float radius; memcpy(&radius, data + position, sizeof(float)); position += sizeof(float);
-            glm::vec3 dir; memcpy(&dir, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
-            float cutoff; memcpy(&cutoff, data + position, sizeof(float)); position += sizeof(float);
-            float exponent; memcpy(&exponent, data + position, sizeof(float)); position += sizeof(float);
-
-            position += sizeof(unsigned char) * 2;
-
-            std::shared_ptr<Light> light;
-
-            switch ((OvLight::Subtype)subtype) {
-            case OvLight::Subtype::DIRECTIONAL: {
-                auto l = std::make_shared<DirectionalLight>();
-                l->setDirection(glm::normalize(dir));
-                light = l;
-                break;
-            }
-            case OvLight::Subtype::OMNI: {
-                auto l = std::make_shared<OmnidirectionalLight>();
-                l->setRadius(radius);
-                light = l;
-                break;
-            }
-            case OvLight::Subtype::SPOT: {
-                auto l = std::make_shared<Spotlight>();
-                l->setDirection(glm::normalize(dir));
-                l->setCutoff(cutoff);
-                l->setExponent(exponent);
-                l->setRadius(radius);
-                light = l;
-                break;
-            }
-            default: light = std::make_shared<OmnidirectionalLight>(); break;
-            }
-
-            light->setName(name);
-            light->setMatrix(matrix);
-            light->setDiffuse(color);
-            light->setSpecular(color);
-            light->setAmbient(color * 0.1f);
-
-            // Aggiungi al genitore corrente
-            if (!hierarchyStack.empty()) {
-                NodeInfo& parent = hierarchyStack.top();
-                parent.node->addChildren(light);
-                parent.childrenAdded++;
-
-                // Pulisci lo stack
-                while (!hierarchyStack.empty() &&
-                    hierarchyStack.top().childrenAdded >= hierarchyStack.top().childrenCount) {
-                    hierarchyStack.pop();
-                }
-            }
-
-            // Se questa luce ha figli, mettila nello stack
-            if (children > 0) {
-                hierarchyStack.push(NodeInfo(light, children));
-            }
-
-            break;
-        }
+        // case OvObject::Type::LIGHT: {
+        //     char name[FILENAME_MAX];
+        //     strcpy(name, data + position);
+        //     position += static_cast<unsigned int>(strlen(name)) + 1;
+        //
+        //     glm::mat4 matrix;
+        //     memcpy(&matrix, data + position, sizeof(glm::mat4));
+        //     position += sizeof(glm::mat4);
+        //
+        //     unsigned int children;
+        //     memcpy(&children, data + position, sizeof(unsigned int));
+        //     position += sizeof(unsigned int);
+        //
+        //     char targetName[FILENAME_MAX];
+        //     strcpy(targetName, data + position);
+        //     position += static_cast<unsigned int>(strlen(targetName)) + 1;
+        //
+        //     unsigned char subtype;
+        //     memcpy(&subtype, data + position, sizeof(unsigned char));
+        //     position += sizeof(unsigned char);
+        //
+        //     glm::vec3 color; memcpy(&color, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+        //     float radius; memcpy(&radius, data + position, sizeof(float)); position += sizeof(float);
+        //     glm::vec3 dir; memcpy(&dir, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+        //     float cutoff; memcpy(&cutoff, data + position, sizeof(float)); position += sizeof(float);
+        //     float exponent; memcpy(&exponent, data + position, sizeof(float)); position += sizeof(float);
+        //
+        //     position += sizeof(unsigned char) * 2;
+        //
+        //     std::shared_ptr<Light> light;
+        //
+        //     switch (static_cast<OvLight::Subtype>(subtype)) {
+        //     case OvLight::Subtype::DIRECTIONAL: {
+        //         try {
+        //             auto l = DirectionalLight::createDirectionalLight();
+        //             l->setDirection(glm::normalize(dir));
+        //             light = l;
+        //         } catch (const LightNumberExceededException& e) {
+        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+        //         }
+        //         break;
+        //     }
+        //     case OvLight::Subtype::OMNI: {
+        //         try {
+        //             auto l = OmnidirectionalLight::createOmnidirectionalLight();
+        //             l->setRadius(radius);
+        //             light = l;
+        //         } catch (const LightNumberExceededException& e) {
+        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+        //         }
+        //         break;
+        //     }
+        //     case OvLight::Subtype::SPOT: {
+        //         try {
+        //             auto l = Spotlight::createSpotLight();
+        //             l->setDirection(glm::normalize(dir));
+        //             l->setCutoff(cutoff);
+        //             l->setExponent(exponent);
+        //             l->setRadius(radius);
+        //             light = l;
+        //         } catch (const LightNumberExceededException& e) {
+        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+        //         }
+        //         break;
+        //     }
+        //     default:
+        //         try {
+        //             light = OmnidirectionalLight::createOmnidirectionalLight();
+        //
+        //         } catch (const LightNumberExceededException& e) {
+        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+        //         }
+        //
+        //         break;
+        //     }
+        //
+        //     light->setName(name);
+        //     light->setMatrix(matrix);
+        //     light->setDiffuse(color);
+        //     light->setSpecular(color);
+        //     light->setAmbient(color * 0.1f);
+        //
+        //     // Aggiungi al genitore corrente
+        //     if (!hierarchyStack.empty()) {
+        //         NodeInfo& parent = hierarchyStack.top();
+        //         parent.node->addChildren(light);
+        //         parent.childrenAdded++;
+        //
+        //         // Pulisci lo stack
+        //         while (!hierarchyStack.empty() &&
+        //             hierarchyStack.top().childrenAdded >= hierarchyStack.top().childrenCount) {
+        //             hierarchyStack.pop();
+        //         }
+        //     }
+        //
+        //     // Se questa luce ha figli, mettila nello stack
+        //     if (children > 0) {
+        //         hierarchyStack.push(NodeInfo(light, children));
+        //     }
+        //
+        //     break;
+        // }
 
         default:
             break;

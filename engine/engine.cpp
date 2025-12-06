@@ -16,6 +16,14 @@
 #include <FreeImage.h>
 
 
+constexpr char pathSeparator =
+                              #ifdef _WIN32
+                                 '\\';
+                              #else
+                                 '/';
+                              #endif
+
+
 using namespace Eng;
 
 
@@ -70,7 +78,7 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    FreeImage_Initialise();
 
 
-   // 1. Inizializzazione GLUT e Finestra (CORRETTO)
+   // 1. Inizializzazione GLUT
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitWindowSize(getWidth(), getHeight());
@@ -82,16 +90,14 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glEnable(GL_DEPTH_TEST); // Fondamentale per il 3D
    glEnable(GL_NORMALIZE);  // Utile se scali le mesh, ma costa performance
 
-   // ILLUMINAZIONE: Abilita il sistema, ma non singole luci
+   // ILLUMINAZIONE: Abilita il sistema
    glEnable(GL_LIGHTING);
-   // Modello speculare realistico (utile tenerlo)
+   // Modello speculare realistico
    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-   // 3. CULLING: Disabilitalo per sicurezza all'inizio (o lascialo commentato)
+   // 3. CULLING: Disabilitalo per sicurezza all'inizio
    glDisable(GL_CULL_FACE);
-   // Se decidi di usarlo, assicurati che i modelli siano perfetti:
-   // glEnable(GL_CULL_FACE);
-   // glCullFace(GL_BACK);
+
 
    // 4. LUCI DI DEFAULT: RIMOSSE ❌
    // Lasciamo che sia la scena (tramite OvoReader o codice main) a creare le luci.
@@ -192,6 +198,33 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
+
+
+std::shared_ptr<Camera> Base::createOrthographicCamera(float left,
+                                                       float right,
+                                                       float top,
+                                                       float bottom,
+                                                       float nearPlane,
+                                                       float farPlane) noexcept
+{
+   return std::make_shared<Orthographic_Camera>(left, right, top, bottom, nearPlane, farPlane);
+}
+
+
+std::shared_ptr<OmnidirectionalLight> Base::createOmnidirectionalLight() {
+   return OmnidirectionalLight::createOmnidirectionalLight();
+}
+
+
+std::shared_ptr<Spotlight> Base::createSpotlight() {
+   return Spotlight::createSpotLight();
+}
+
+
+std::shared_ptr<DirectionalLight> Base::createDirectionalLight() {
+   return DirectionalLight::createDirectionalLight();
+}
+
 
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
@@ -340,7 +373,8 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    // Crea la texture usando il tuo costruttore
    auto texture = std::make_shared<Texture>(data, width, height);
 
-   const size_t lastSlashPos = path.find_last_of('/');
+
+   const size_t lastSlashPos = path.find_last_of(pathSeparator);
 
    texture->setName(path.substr(lastSlashPos + 1));
 

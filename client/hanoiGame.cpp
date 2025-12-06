@@ -1,6 +1,5 @@
 #include "hanoiGame.h"
 
-
 #include "mesh.h"
 #include <limits>
 #include <iostream>
@@ -8,11 +7,11 @@
 
 
 // --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
-void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
+void debugPrintGraph(const std::shared_ptr<Eng::Node>& node, const int depth) {
    if (!node) return;
 
    // Crea l'indentazione visiva
-   std::string indent = "";
+   std::string indent;
    for (int i = 0; i < depth; i++) indent += "  |-- ";
 
    std::cout << indent << node->getName() << std::endl;
@@ -21,6 +20,24 @@ void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
       debugPrintGraph(child, depth + 1);
    }
 }
+
+
+bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) const {
+
+   // for debug
+   std::cout << poleToMonitor->getChildrens().size() << std::endl;
+
+   if (poleToMonitor == nullptr) return false;
+
+   if (static_cast<int>(poleToMonitor->getChildrens().size()) == numberOfDisks_) {
+      std::cout << "GAME WON" << std::endl;
+      return true;
+   }
+
+
+   return false;
+}
+
 
 // --- HELPER DI RICERCA RICORSIVA SICURA ---
 // Cerca un nodo per nome in tutto l'albero, non solo nel primo livello
@@ -45,7 +62,7 @@ std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, con
 }
 
 // --- COSTRUTTORE ---
-HanoiGame::HanoiGame(std::shared_ptr<Eng::Node> sceneRoot)
+HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    : root(sceneRoot), selectedDisk(nullptr), sourcePole(nullptr)
 {
    if (!root) {
@@ -64,6 +81,23 @@ HanoiGame::HanoiGame(std::shared_ptr<Eng::Node> sceneRoot)
    poles[1] = findRecursive(root, "palo1");
    poles[2] = findRecursive(root, "palo2");
    poles[3] = findRecursive(root, "palo3");
+
+
+
+   // modifica per test vittoria
+   std::vector<std::shared_ptr<Eng::Node>> tmp;
+   tmp.push_back(poles[3]->getChildrens().at(poles[3]->getChildrens().size() - 1));
+   tmp.push_back(poles[3]->getChildrens().at(poles[3]->getChildrens().size() - 2));
+
+   constexpr std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
+   poles[3]->setChilders(tmpChildren);
+   poles[3]->addChildren(tmp.at(0));
+   poles[3]->addChildren(tmp.at(1));
+
+
+
+
+
 
    // Verifica
    if (poles[1]) std::cout << ">> Palo 1 TROVATO!" << std::endl;
@@ -103,7 +137,7 @@ bool HanoiGame::isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr
    if (!topDiskDest) return true;
 
    // LOGICA CORRETTA:
-   // Poich� "disco7" (piccolo) > "disco1" (grande) alfabeticamente:
+   // Poiche' "disco7" (piccolo) > "disco1" (grande) alfabeticamente:
    // Il disco che muovo deve avere un nome "MAGGIORE" di quello che sta sotto.
    // Esempio valido: Muovo "disco7" su "disco1" -> "disco7" > "disco1" (VERO)
    // Esempio errato: Muovo "disco1" su "disco7" -> "disco1" > "disco7" (FALSO)
@@ -113,7 +147,7 @@ bool HanoiGame::isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr
 
 // In Gruppo_03/engine/hanoiGame.cpp
 
-void HanoiGame::processInput(int poleIndex) {
+void HanoiGame::processInput(const int poleIndex) {
     if (poleIndex < 1 || poleIndex > 3) return;
 
     auto clickedPole = poles[poleIndex];
@@ -123,10 +157,12 @@ void HanoiGame::processInput(int poleIndex) {
     // Parametro: quanto alzare il disco quando è selezionato
     const float LIFT_HEIGHT = 500.0f; // Regola questo valore in base alla scala della tua scena
 
-    // STATO 1: PRENDI (PICK)
-    if (selectedDisk == nullptr) {
-        auto disk = getTopDisk(clickedPole);
-        if (disk) {
+   if (!checkVictory(findRecursive(root, poleToMonitorName_)))
+   {
+      // STATO 1: PRENDI (PICK)
+      if (selectedDisk == nullptr) {
+         auto disk = getTopDisk(clickedPole);
+         if (disk) {
             selectedDisk = disk;
             sourcePole = clickedPole;
 
@@ -137,15 +173,15 @@ void HanoiGame::processInput(int poleIndex) {
             // ----------------------------
 
             std::cout << ">> PRESO: " << disk->getName() << " (Alzato)" << std::endl;
-        }
-        else {
+         }
+         else {
             std::cout << ">> Palo vuoto." << std::endl;
-        }
-    }
-    // STATO 2: POSA (DROP)
-    else {
-        // Se clicco sullo stesso palo -> ANNULLA
-        if (clickedPole == sourcePole) {
+         }
+      }
+      // STATO 2: POSA (DROP)
+      else {
+         // Se clicco sullo stesso palo -> ANNULLA
+         if (clickedPole == sourcePole) {
             std::cout << ">> Annullato." << std::endl;
 
             // --- NUOVO: ABBASSA IL DISCO (Torna alla posizione originale) ---
@@ -157,14 +193,15 @@ void HanoiGame::processInput(int poleIndex) {
             selectedDisk = nullptr;
             sourcePole = nullptr;
             return;
-        }
+         }
 
-        // Se clicco su un altro palo -> PROVA A SPOSTARE
-        if (isValidMove(clickedPole, selectedDisk)) {
+         // Se clicco su un altro palo -> PROVA A SPOSTARE
+         if (isValidMove(clickedPole, selectedDisk)) {
             std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
 
             sourcePole->removeChildren(selectedDisk->getName());
             clickedPole->addChildren(selectedDisk);
+            checkVictory(findRecursive(root, poleToMonitorName_));
 
             // --- CALCOLO NUOVA POSIZIONE (Codice precedente) ---
             // Nota: Qui non dobbiamo "abbassare" il disco sottraendo LIFT_HEIGHT,
@@ -175,12 +212,14 @@ void HanoiGame::processInput(int poleIndex) {
 
             auto& children = clickedPole->getChildrens();
             for (size_t i = 0; i < children.size() - 1; i++) {
-                currentStackHeight += getMeshHeight(children[i]);
+               currentStackHeight += getMeshHeight(children[i]);
             }
 
             float newY = baseOffset + currentStackHeight;
 
             glm::mat4 currentMatrix = selectedDisk->getMatrix();
+
+            // TODO: da controllare, mi sa che bisogna applicare una traslazione e non modificare la matrice
             currentMatrix[3] = glm::vec4(0.0f, newY, 0.0f, 1.0f); // Sovrascrive la Y "alzata" con quella finale
             selectedDisk->setMatrix(currentMatrix);
             // ---------------------------------------------------
@@ -189,17 +228,25 @@ void HanoiGame::processInput(int poleIndex) {
             sourcePole = nullptr;
 
             // Debug print...
-        }
-        else {
+         }
+         else {
             std::cout << ">> MOSSA NON VALIDA" << std::endl;
             // Opzionale: Se la mossa non è valida, il disco rimane alzato e selezionato
             // così l'utente può provare un altro palo.
-        }
-    }
+         }
+      }
+   }
 }
+
+
+
+
+
+
+
 //DA CONTROLLARE SE DEVE STARE QUI
 // Calcola l'altezza fisica (Y max - Y min) di un nodo Mesh
-float HanoiGame::getMeshHeight(std::shared_ptr<Eng::Node> node) {
+float HanoiGame::getMeshHeight(const std::shared_ptr<Eng::Node>& node) {
     auto mesh = std::dynamic_pointer_cast<Eng::Mesh>(node);
     if (!mesh) return 0.0f; // Se non è una mesh (es. luce), altezza 0
 

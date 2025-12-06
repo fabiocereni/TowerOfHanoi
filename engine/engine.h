@@ -8,12 +8,14 @@
 // #include "camera.h"
 #include <functional>
 
+#include "directionallight.h"
 #include "list.h"
 #include "mesh.h"
 #include "node.h"
+#include "omnidirectionallight.h"
 #include "perspective_camera.h"
 #include "orthographic_camera.h"
-
+#include "spotlight.h"
 
 
 ///////////////
@@ -91,7 +93,16 @@ namespace Eng {
 
 
       ENG_API std::shared_ptr<Camera> createPerspectiveCamera(float fov, float aspectRatio, float nearPlane, float farPlane) noexcept;
-      ENG_API std::shared_ptr<Camera> createOrthographicCamera(float size, float nearPlane, float farPlane) noexcept;
+      ENG_API std::shared_ptr<Camera> createOrthographicCamera(float left,
+                                                               float right,
+                                                               float top,
+                                                               float bottom,
+                                                               float nearPlane,
+                                                               float farPlane) noexcept;
+
+      ENG_API std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
+      ENG_API std::shared_ptr<DirectionalLight> createDirectionalLight();
+      ENG_API std::shared_ptr<Spotlight> createSpotlight();
 
 
       ENG_API static std::shared_ptr<Mesh> createMesh(const std::vector<glm::vec3>& vertexes,
