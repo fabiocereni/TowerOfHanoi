@@ -23,8 +23,7 @@ struct Base::Reserved {
    // Flags:
    bool initFlag;
 
-   Reserved() : initFlag{ false }
-   {}
+   Reserved() : initFlag{ false } {}
 };
 
 // inizializzazione variabili statiche
@@ -117,8 +116,6 @@ void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, 
       customKeyboardCallbackVar_(key, mouseX, mouseY);
    }
 }
-
-
 
 
 bool Base::update() const noexcept {
@@ -303,7 +300,7 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
    // 1. Determina il formato del file
-  
+
    FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
    if (format == FIF_UNKNOWN) {
       format = FreeImage_GetFIFFromFilename(path.c_str());
@@ -343,19 +340,17 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    // Crea la texture usando il tuo costruttore
    auto texture = std::make_shared<Texture>(data, width, height);
 
-   const size_t lastSlashPos = path.find_last_of('\\');
+   const size_t lastSlashPos = path.find_last_of('/');
 
    texture->setName(path.substr(lastSlashPos + 1));
-   
+
 
    // 6. Pulisci memoria RAM
    FreeImage_Unload(bitmap);
-   
+
    return texture;
 
 }
-
-
 
 void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept {
 
@@ -379,7 +374,7 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
 
                 for (const auto& texture : textures) {
                     // Nota: texture è già shared_ptr<Texture>, il cast qui è inutile/ridondante
-               
+
                     if (texture->getName() == material->getTextureName()) {
                         material->setTexture(texture);
                         // Opzionale: break; // Se supporti solo 1 texture per materiale
@@ -392,11 +387,6 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
         this->bindTexturesToMaterials(childNode, textures);
     }
 }
-
-
-
-
-
 
 void Base::setWireframe(const bool enable) {
    if (enable)

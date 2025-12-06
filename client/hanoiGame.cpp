@@ -1,7 +1,12 @@
-﻿#include "hanoigame.h"
-
-
 #include "hanoiGame.h"
+
+
+#include "mesh.h"
+#include <limits>
+#include <iostream>
+#include <algorithm>
+
+
 // --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
 void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
    if (!node) return;
@@ -22,7 +27,7 @@ void debugPrintGraph(std::shared_ptr<Eng::Node> node, int depth) {
 std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
    if (!current) return nullptr;
 
-   // 1. Controlla se ï¿½ questo
+   // 1. Controlla se � questo
    if (current->getName() == nameToFind) {
       return current;
    }
@@ -84,7 +89,7 @@ std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole
    // Ordina (Modifica qui se l'ordine alfabetico non � corretto per la grandezza)
    std::sort(disks.begin(), disks.end(), [](const auto& a, const auto& b) {
       // Logica: il nome "maggiore" (es. Disk3) sta sopra a "Disk1"?
-      // Oppure Z position? 
+      // Oppure Z position?
       return a->getName() > b->getName();
       });
 
@@ -106,58 +111,113 @@ bool HanoiGame::isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr
    return diskToMove->getName() > topDiskDest->getName(); // <--- CAMBIA QUI DA < A >
 }
 
-// --- METODO PUBBLICO ---
+// In Gruppo_03/engine/hanoiGame.cpp
 
 void HanoiGame::processInput(int poleIndex) {
-   if (poleIndex < 1 || poleIndex > 3) return;
+    if (poleIndex < 1 || poleIndex > 3) return;
 
-   auto clickedPole = poles[poleIndex]; // Usiamo la cache
+    auto clickedPole = poles[poleIndex];
+    if (!clickedPole) return;
 
-   if (!clickedPole) {
-      return;
-   }
+    //DA CONTROLLARE
+    // Parametro: quanto alzare il disco quando è selezionato
+    const float LIFT_HEIGHT = 500.0f; // Regola questo valore in base alla scala della tua scena
 
-   // STATO 1: PRENDI (PICK)
-   if (selectedDisk == nullptr) {
-      // --- PICK (Prendi il disco) ---
-      auto disk = getTopDisk(clickedPole);
-      if (disk) {
-         selectedDisk = disk;
-         sourcePole = clickedPole;
-         std::cout << ">> PRESO: " << disk->getName() << std::endl;
-      }
-      else {
-         std::cout << ">> Palo vuoto." << std::endl;
-      }
-   }
-   // STATO 2: POSA (DROP)
-   else {
-      // --- DROP (Posa il disco) ---
-      if (clickedPole == sourcePole) {
-         std::cout << ">> Annullato." << std::endl;
-         selectedDisk = nullptr;
-         sourcePole = nullptr;
-         return;
-      }
+    // STATO 1: PRENDI (PICK)
+    if (selectedDisk == nullptr) {
+        auto disk = getTopDisk(clickedPole);
+        if (disk) {
+            selectedDisk = disk;
+            sourcePole = clickedPole;
 
-      if (isValidMove(clickedPole, selectedDisk)) {
-         std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
+            // --- NUOVO: ALZA IL DISCO ---
+            glm::mat4 matrix = selectedDisk->getMatrix();
+            matrix[3][1] += LIFT_HEIGHT; // Aggiunge altezza alla Y (colonna 3, riga 1)
+            selectedDisk->setMatrix(matrix);
+            // ----------------------------
 
-         // 1. Modifica del Grafo (Stacca e Attacca)
-         sourcePole->removeChildren(selectedDisk->getName());
-         clickedPole->addChildren(selectedDisk);
+            std::cout << ">> PRESO: " << disk->getName() << " (Alzato)" << std::endl;
+        }
+        else {
+            std::cout << ">> Palo vuoto." << std::endl;
+        }
+    }
+    // STATO 2: POSA (DROP)
+    else {
+        // Se clicco sullo stesso palo -> ANNULLA
+        if (clickedPole == sourcePole) {
+            std::cout << ">> Annullato." << std::endl;
 
-         // 2. Reset dello stato di gioco
-         selectedDisk = nullptr;
-         sourcePole = nullptr;
+            // --- NUOVO: ABBASSA IL DISCO (Torna alla posizione originale) ---
+            glm::mat4 matrix = selectedDisk->getMatrix();
+            matrix[3][1] -= LIFT_HEIGHT; // Rimuove l'altezza aggiunta prima
+            selectedDisk->setMatrix(matrix);
+            // ----------------------------------------------------------------
 
-         // 3. STAMPA LA NUOVA GERARCHIA
-         std::cout << "\n=== STATO SCENA AGGIORNATO ===" << std::endl;
-         debugPrintGraph(root, 0); // <--- ECCO LA MODIFICA
-         std::cout << "==============================\n" << std::endl;
-      }
-      else {
-         std::cout << ">> MOSSA NON VALIDA" << std::endl;
-      }
-   }
+            selectedDisk = nullptr;
+            sourcePole = nullptr;
+            return;
+        }
+
+        // Se clicco su un altro palo -> PROVA A SPOSTARE
+        if (isValidMove(clickedPole, selectedDisk)) {
+            std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
+
+            sourcePole->removeChildren(selectedDisk->getName());
+            clickedPole->addChildren(selectedDisk);
+
+            // --- CALCOLO NUOVA POSIZIONE (Codice precedente) ---
+            // Nota: Qui non dobbiamo "abbassare" il disco sottraendo LIFT_HEIGHT,
+            // perché stiamo ricalcolando la Y da zero basandoci sui dischi sotto.
+
+            float currentStackHeight = 0.0f;
+            float baseOffset = 0.0f;
+
+            auto& children = clickedPole->getChildrens();
+            for (size_t i = 0; i < children.size() - 1; i++) {
+                currentStackHeight += getMeshHeight(children[i]);
+            }
+
+            float newY = baseOffset + currentStackHeight;
+
+            glm::mat4 currentMatrix = selectedDisk->getMatrix();
+            currentMatrix[3] = glm::vec4(0.0f, newY, 0.0f, 1.0f); // Sovrascrive la Y "alzata" con quella finale
+            selectedDisk->setMatrix(currentMatrix);
+            // ---------------------------------------------------
+
+            selectedDisk = nullptr;
+            sourcePole = nullptr;
+
+            // Debug print...
+        }
+        else {
+            std::cout << ">> MOSSA NON VALIDA" << std::endl;
+            // Opzionale: Se la mossa non è valida, il disco rimane alzato e selezionato
+            // così l'utente può provare un altro palo.
+        }
+    }
+}
+//DA CONTROLLARE SE DEVE STARE QUI
+// Calcola l'altezza fisica (Y max - Y min) di un nodo Mesh
+float HanoiGame::getMeshHeight(std::shared_ptr<Eng::Node> node) {
+    auto mesh = std::dynamic_pointer_cast<Eng::Mesh>(node);
+    if (!mesh) return 0.0f; // Se non è una mesh (es. luce), altezza 0
+
+    float minY = std::numeric_limits<float>::max();
+    float maxY = std::numeric_limits<float>::lowest();
+
+    // Scansiona tutti i vertici per trovare l'estensione su Y
+    for (const auto& v : mesh->getVertexes()) {
+        if (v.y < minY) minY = v.y;
+        if (v.y > maxY) maxY = v.y;
+    }
+
+    // Calcoliamo lo spessore base
+    float height = maxY - minY;
+
+    // Moltiplichiamo per la scala Y della matrice locale (se l'oggetto è scalato)
+    // La lunghezza della seconda colonna della matrice (index 1) è la scala Y
+    float scaleY = glm::length(glm::vec3(node->getMatrix()[1]));
+
+    return height * scaleY;
 }
