@@ -6,10 +6,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <algorithm>
+#include "filesystem"
 
-/*
 #include <FreeImage.h>
-*/
+
 
 #include "ovoreader.h"
 #include "perspective_camera.h"
@@ -154,7 +154,7 @@ bool Base::free() const {
    if (!reserved_->initFlag)
    {
       
-      //FreeImage_DeInitialise();
+      FreeImage_DeInitialise();
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
    }
@@ -196,7 +196,7 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
-   return OvoReader::load(path);
+   return OvoReader::load(std::filesystem::absolute(path));
 }
 
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
@@ -300,11 +300,13 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
+   const std::string absolutePath = std::filesystem::absolute(path);
+
    // 1. Determina il formato del file
-   /*
-   FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
+
+   FREE_IMAGE_FORMAT format = FreeImage_GetFileType(absolutePath.c_str(), 0);
    if (format == FIF_UNKNOWN) {
-      format = FreeImage_GetFIFFromFilename(path.c_str());
+      format = FreeImage_GetFIFFromFilename(absolutePath.c_str());
    }
    if (format == FIF_UNKNOWN) {
       std::cout << "ERROR: Unknown image format for " << path << std::endl;
@@ -312,7 +314,7 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    }
 
    // 2. Carica l'immagine
-   FIBITMAP* bitmap = FreeImage_Load(format, path.c_str());
+   FIBITMAP* bitmap = FreeImage_Load(format, absolutePath.c_str());
    if (!bitmap) {
       std::cout << "ERROR: Unable to load image " << path << std::endl;
       return nullptr;
@@ -327,7 +329,7 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    bitmap = bitmap32;
 
    // 4. Inverti verticalmente (OpenGL ha l'origine in basso a sinistra)
-   // FreeImage_FlipVertical(bitmap); // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
+    FreeImage_FlipVertical(bitmap); // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
 
    // 5. Estrai info
    int width = FreeImage_GetWidth(bitmap);
@@ -353,9 +355,9 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
 
    // 6. Pulisci memoria RAM
    FreeImage_Unload(bitmap);
-   
-   return texture;*/
-   return nullptr;
+
+   return texture;
+
 }
 
 
