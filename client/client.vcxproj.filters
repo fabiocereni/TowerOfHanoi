@@ -21,7 +21,7 @@
     <ClCompile Include="Test\test_suite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\engine\hanoiGame.cpp">
+    <ClCompile Include="..\..\..\..\..\..\Downloads\hanoiGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClInclude Include="Test\test_suite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\engine\hanoiGame.h">
+    <ClInclude Include="..\..\..\..\..\..\Downloads\hanoiGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
