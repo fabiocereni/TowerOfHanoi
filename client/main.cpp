@@ -2,10 +2,13 @@
 #include "list.h"
 #include "ovoreader.h"
 #include "Test/test_suite.h"
+#include "hanoiGame.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <algorithm>
+
 
 /* ----------------------
  * |     REMINDER       |
@@ -24,6 +27,9 @@
  * ed è quella che OpenGL usa per il rendering.
  */
 
+
+
+
 int main(const int argc, char** argv) {
     // 1. Esegui i test
     TestSuite::runAllTests();
@@ -32,32 +38,31 @@ int main(const int argc, char** argv) {
     Eng::Base& eng = Eng::Base::getInstance();
     eng.init(argc, argv, "Hanoi Tower Debug");
 
+    const std::string scenePath = "C:\\Mac\\Home\\Desktop\\ProvaTavoloovo.ovo";
 
+    
+    /*
+    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\pngtree-dark-wood-grain-texture-background---seamless-pattern-picture-image_15712210.dds");
 
-    const std::string scenePath = "/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/ProvaTavoloovo.ovo";
+    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\360_F_151926190_27YnXZJqE5dHQY0kdQR6BSK3iV9CdKnW.dds");
 
-    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile("/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/pngtree-dark-wood-grain-texture-background---seamless-pattern-picture-image_15712210.dds");
-
-    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile("/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/360_F_151926190_27YnXZJqE5dHQY0kdQR6BSK3iV9CdKnW.dds");
-
-    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile("/home/simone/Documenti/SUPSI/Terzo_Anno/Quinto_Semestre/Grafica/Progetto/istockphoto-541570996-612x612.dds");
-
+    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile("C:\\Mac\\Home\\Desktop\\istockphoto-541570996-612x612.dds");
+    */
 
     std::vector<std::shared_ptr<Eng::Texture>> textures;
 
+    /*
     textures.push_back(plastic);
     textures.push_back(dark_wood_grain);
     textures.push_back(light_wood);
+    */
 
-
-    std::cout << dark_wood_grain->getName() << std::endl;
+    //std::cout << dark_wood_grain->getName() << std::endl;
 
 
     // 3. Caricamento della Scena
     // Usa il nuovo metodo eng.load che restituisce la radice del grafo
     std::shared_ptr<Eng::Node> sceneRoot = eng.load(scenePath);
-
-
 
 
     for(auto var: sceneRoot->getChildrens())
@@ -78,6 +83,31 @@ int main(const int argc, char** argv) {
     }
 
     eng.bindTexturesToMaterials(sceneRoot, textures);
+
+
+    HanoiGame game(sceneRoot);
+
+    eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY) {
+
+       switch (key) {
+       case '1': // Nota gli apici ''
+          game.processInput(1);
+          break;
+       case '2':
+          game.processInput(2);
+          break;
+       case '3':
+          game.processInput(3);
+          break;
+       case 27: // ESC
+          std::cout << "Uscita..." << std::endl;
+          // eng.close(); // se hai un metodo per chiudere
+          break;
+       default:
+          // Ignora altri tasti
+          break;
+       }
+       });
 
 
 

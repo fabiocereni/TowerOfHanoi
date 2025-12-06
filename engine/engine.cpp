@@ -7,7 +7,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <algorithm>
 
+/*
 #include <FreeImage.h>
+*/
 
 #include "ovoreader.h"
 #include "perspective_camera.h"
@@ -63,7 +65,9 @@ Base& Base::getInstance() {
 bool Base::init(int argc, char **argv, const std::string& title) {
    if (reserved_->initFlag) return false;
 
+   /*
    FreeImage_Initialise();
+   */
 
    // 1. Inizializzazione GLUT e Finestra (CORRETTO)
    glutInit(&argc, argv);
@@ -149,8 +153,8 @@ bool Base::free() const {
    // Not initialized?
    if (!reserved_->initFlag)
    {
-
-      FreeImage_DeInitialise();
+      
+      //FreeImage_DeInitialise();
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
    }
@@ -297,6 +301,7 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
    // 1. Determina il formato del file
+   /*
    FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
    if (format == FIF_UNKNOWN) {
       format = FreeImage_GetFIFFromFilename(path.c_str());
@@ -348,8 +353,9 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
 
    // 6. Pulisci memoria RAM
    FreeImage_Unload(bitmap);
-
-   return texture;
+   
+   return texture;*/
+   return nullptr;
 }
 
 
