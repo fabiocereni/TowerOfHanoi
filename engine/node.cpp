@@ -53,4 +53,13 @@ ENG_API void Node::render(const glm::mat4& modelViewMatrix) {
 
 }
 
+std::shared_ptr<Node> Node::findByName(const std::shared_ptr<Node>& root, const std::string& name) const {
+   for (const auto& childNode : root.get()->getChildrens()) {
+      if (childNode->getName() == name)
+      {
+         return childNode;
+      }
+      this->findByName(childNode, name);
+   }
+}
 

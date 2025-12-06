@@ -50,14 +50,15 @@
       <PreprocessorDefinitions>FREEGLUT_STATIC;DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,7 +79,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\freeglut\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -114,6 +116,7 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="omnidirectionallight.h" />
     <ClInclude Include="orthographic_camera.h" />
+    <ClInclude Include="ovoreader.h" />
     <ClInclude Include="perspective_camera.h" />
     <ClInclude Include="spotlight.h" />
     <ClInclude Include="texture.h" />
