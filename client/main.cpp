@@ -11,6 +11,7 @@
 #include <filesystem>
 
 
+
 /* ----------------------
  * |     REMINDER       |
  * ----------------------
@@ -36,8 +37,7 @@ int main(const int argc, char** argv) {
 
     // 2. Inizializza l'Engine
     Eng::Base& eng = Eng::Base::getInstance();
-    eng.init(argc, argv, "Hanoi Tower Debug");
-
+    eng.init(argc, argv, "Hanoi Tower");
 
 
     fs::path sourceFile = __FILE__;

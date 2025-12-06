@@ -6,8 +6,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <algorithm>
+#include "filesystem"
 
 #define FREEIMAGE_LIB
+
 
 #include "ovoreader.h"
 #include "perspective_camera.h"
@@ -67,6 +69,7 @@ bool Base::init(int argc, char **argv, const std::string& title) {
 
   
    FreeImage_Initialise();
+
 
    // 1. Inizializzazione GLUT e Finestra (CORRETTO)
    glutInit(&argc, argv);
@@ -195,7 +198,7 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 
 
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
-   return OvoReader::load(path);
+   return OvoReader::load(std::filesystem::absolute(path).string());
 }
 
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
@@ -317,7 +320,6 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
       return nullptr;
    }
 
-   FreeImage_FlipVertical(bitmap);
 
    // 3. Converti in 32 bit (RGBA) per uniformità
    // Questo passaggio è CRUCIALE per evitare problemi tra RGB/BGR/RGBA
@@ -326,7 +328,7 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    bitmap = bitmap32;
 
    // 4. Inverti verticalmente (OpenGL ha l'origine in basso a sinistra)
-    // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
+    FreeImage_FlipVertical(bitmap); // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
 
    // 5. Estrai info
    int width = FreeImage_GetWidth(bitmap);
@@ -350,6 +352,7 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
    FreeImage_Unload(bitmap);
    
    return texture;
+
 }
 
 
