@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
-#include <algorithm>
 #include <filesystem>
 
 
@@ -63,6 +62,11 @@ int main(const int argc, char** argv) {
     textures.push_back(plastic);
     textures.push_back(dark_wood_grain);
     textures.push_back(light_wood);
+
+    printf("TEXTURES");
+    for (const auto& texture : textures) {
+        std::cout << texture->getName() << std::endl;
+    }
      
 
     // 3. Caricamento della Scena
@@ -70,16 +74,16 @@ int main(const int argc, char** argv) {
     std::shared_ptr<Eng::Node> sceneRoot = eng.load(scenePath);
 
 
-    for(auto var: sceneRoot->getChildrens())
-    {
-        if (var.get()->getName() == "[root]") {
-            for (auto var1 : var->getChildrens())
-            {
-                std::cout << var1.get()->getName() << std::endl;
-            }
-        }
-            
-    }
+    // for(auto var: sceneRoot->getChildrens())
+    // {
+    //     if (var.get()->getName() == "[root]") {
+    //         for (auto var1 : var->getChildrens())
+    //         {
+    //             std::cout << var1.get()->getName() << std::endl;
+    //         }
+    //     }
+    //
+    // }
    
 
     if (!sceneRoot) {
@@ -160,11 +164,6 @@ int main(const int argc, char** argv) {
             });
 
         eng.end3D();
-
-        // Reset opzionale delle impostazioni di debug (se volessi riabilitarle per la UI o altro)
-        // eng.setWireframe(false);
-        // eng.setLighting(true);
-        // eng.setCulling(true);
 
         eng.showFps();
         eng.swap();
