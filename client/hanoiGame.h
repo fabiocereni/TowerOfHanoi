@@ -6,7 +6,7 @@
 
 class HanoiGame {
 public:
-   HanoiGame(std::shared_ptr<Eng::Node> sceneRoot);
+   HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot);
    void processInput(int poleIndex);
 
 private:
@@ -20,6 +20,9 @@ private:
    // Helper interni
    std::shared_ptr<Eng::Node> getTopDisk(std::shared_ptr<Eng::Node> pole);
    bool isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr<Eng::Node> diskToMove);
-   float getMeshHeight(std::shared_ptr<Eng::Node> node);
+   float getMeshHeight(const std::shared_ptr<Eng::Node>& node);
+   bool checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) const;
 
+   const int numberOfDisks_ = 2;
+   std::string poleToMonitorName_ = "palo1";
 };

@@ -9,30 +9,14 @@
 #include <iostream>
 #include <filesystem>
 
-
-
-/* ----------------------
- * |     REMINDER       |
- * ----------------------
- * WORLD MATRIX:
- * Posizione, rotazione e scala dell'oggetto nello spazio globale.
- * Calcolata come: parentWorldMatrix * localMatrix.
- *
- * VIEW MATRIX:
- * È l'inversa della world matrix della camera.
- * Trasforma le coordinate dal mondo allo spazio della camera.
- *
- * MODELVIEW MATRIX:
- * Calcolata dalla render list: modelView = viewMatrix * worldMatrix.
- * Rappresenta l'oggetto nello spazio della camera (coordinate camera-space),
- * ed è quella che OpenGL usa per il rendering.
- */
-
 namespace fs = std::filesystem;
 
 int main(const int argc, char** argv) {
     // 1. Esegui i test
+
+#ifdef DEBUG
     TestSuite::runAllTests();
+#endif
 
     // 2. Inizializza l'Engine
     Eng::Base& eng = Eng::Base::getInstance();
@@ -47,52 +31,41 @@ int main(const int argc, char** argv) {
 
     const std::string scenePath = modelPath.string();
 
-    
-    
+
     const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "darkWood.dds").string());
 
     const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "lightWood.dds").string());
 
     const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "plastic.dds").string());
-   
+
 
     std::vector<std::shared_ptr<Eng::Texture>> textures;
-
 
     textures.push_back(plastic);
     textures.push_back(dark_wood_grain);
     textures.push_back(light_wood);
 
-    printf("TEXTURES");
-    for (const auto& texture : textures) {
-        std::cout << texture->getName() << std::endl;
-    }
-     
 
     // 3. Caricamento della Scena
     // Usa il nuovo metodo eng.load che restituisce la radice del grafo
     std::shared_ptr<Eng::Node> sceneRoot = eng.load(scenePath);
 
 
-    // for(auto var: sceneRoot->getChildrens())
-    // {
-    //     if (var.get()->getName() == "[root]") {
-    //         for (auto var1 : var->getChildrens())
-    //         {
-    //             std::cout << var1.get()->getName() << std::endl;
-    //         }
-    //     }
-    //
-    // }
-   
-
-    if (!sceneRoot) {
-        std::cerr << "ERRORE: Impossibile caricare la scena da " << scenePath << std::endl;
-        return -1;
-    }
-
     eng.bindTexturesToMaterials(sceneRoot, textures);
 
+
+    std::cout << "Number of lights: " << Eng::Light::getLightNumber() << std::endl;
+    std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
+
+
+    my_omnilight->setAmbient(glm::vec3(1.0f));
+    my_omnilight->setDiffuse(glm::vec3(0.5f));
+    my_omnilight->setSpecular(glm::vec3(0.5f));
+
+
+    sceneRoot->addChildren(my_omnilight);
+
+    std::cout << "Number of lights: " << Eng::Light::getLightNumber() << std::endl;
 
     HanoiGame game(sceneRoot);
 
@@ -104,9 +77,9 @@ int main(const int argc, char** argv) {
     // Posizione: Alta (2000) e Indietro (2000)
     // Target: Centro (0,0,0)
     // Up: Asse Y (0,1,0)
-    glm::vec3 position = glm::vec3(0.0f, 1400.0f, 400.0f);
-    glm::vec3 target   = glm::vec3(0.0f, 1200.0f, 0.0f);
-    glm::vec3 up       = glm::vec3(0.0f, 1.0f, 0.0f);
+    auto position = glm::vec3(0.0f, 1400.0f, 400.0f);
+    auto target   = glm::vec3(0.0f, 1200.0f, 0.0f);
+    auto up       = glm::vec3(0.0f, 1.0f, 0.0f);
 
     glm::mat4 viewMatrix = glm::lookAt(position, target, up);
 
@@ -116,12 +89,30 @@ int main(const int argc, char** argv) {
 
     const auto renderList = std::make_shared<Eng::List>();
 
+
+    eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY){
+        switch (key)
+        {
+        case '1':
+            game.processInput(1);
+            break;
+        case '2':
+            game.processInput(2);
+            break;
+        case '3':
+            game.processInput(3);
+            break;
+        default:
+            // Ignora altri tasti
+            break;
+        }
+    });
+
     // 5. Ciclo di Rendering
     while (eng.update()) {
         eng.clear();
         renderList->clear();
 
-      
 
         // --- DEBUG SETTINGS ---
         // Attiva Wireframe per vedere la struttura dell'oggetto
@@ -141,27 +132,7 @@ int main(const int argc, char** argv) {
         // Esegui il render
         eng.render(cam, renderList);
 
-        eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY) {
 
-            switch (key) {
-            case '1': // Nota gli apici ''
-                game.processInput(1);
-                break;
-            case '2':
-                game.processInput(2);
-                break;
-            case '3':
-                game.processInput(3);
-                break;
-            case 27: // ESC
-                std::cout << "Uscita..." << std::endl;
-                // eng.close(); // se hai un metodo per chiudere
-                break;
-            default:
-                // Ignora altri tasti
-                break;
-            }
-            });
 
         eng.end3D();
 
