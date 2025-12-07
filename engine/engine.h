@@ -139,6 +139,7 @@ namespace Eng {
 
 
       ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept;
+      ENG_API void renderPlanarShadows(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList);
       ENG_API void showFps();
       ENG_API static void infoPrinter(const std::string& info);
       ENG_API void infoClear() { return info_.clear(); };
