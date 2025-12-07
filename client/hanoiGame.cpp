@@ -5,6 +5,62 @@
 #include <iostream>
 #include <algorithm>
 
+void HanoiGame::initLights() {
+   poleLights.resize(4, nullptr);
+
+   for (int i = 1; i <= 3; i++)
+   {
+      auto pole = poles[i];
+      if (!pole) continue;
+
+      auto light = Eng::Base::getInstance().createSpotlight();
+
+      light->setCutoff(45.0f);
+      light->setExponent(5.0f);
+
+      glm::mat4 m = glm::mat4(1.0f);
+      m = glm::translate(m, glm::vec3(0.0f, 700.0f, 0.0f));
+      m = glm::rotate(m, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+      light->setMatrix(m);
+
+      light->setDiffuse(glm::vec3(0.0f));
+      light->setSpecular(glm::vec3(0.0f));
+      light->setAmbient(glm::vec3(0.0f));
+
+      pole->addChildren(light);
+      poleLights[i] = light;
+   }
+}
+
+void HanoiGame::updateLightsColors(int selectedIndex) {
+   glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
+   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
+   glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
+
+   for (int i = 1; i <= 3; i++) {
+      auto light = poleLights[i];
+      if (!light) continue;
+
+      if (selectedIndex == -1) {
+         // Tutto spento
+         light->setDiffuse(black);
+         light->setSpecular(black);
+         light->setAmbient(black);
+      }
+      else if (i == selectedIndex) {
+         // Rosso
+         light->setDiffuse(red);
+         light->setSpecular(red);
+         light->setAmbient(glm::vec3(0.2f, 0.2f, 0.0f));
+      }
+      else {
+         // Blu
+         light->setDiffuse(blue);
+         light->setSpecular(blue);
+         light->setAmbient(glm::vec3(0.0f, 0.0f, 0.2f));
+      }
+   }
+}
 
 // --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
 void debugPrintGraph(const std::shared_ptr<Eng::Node>& node, const int depth) {
@@ -23,18 +79,22 @@ void debugPrintGraph(const std::shared_ptr<Eng::Node>& node, const int depth) {
 
 
 bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) {
-
-   // for debug
-   std::cout << poleToMonitor->getChildrens().size() << std::endl;
-
    if (poleToMonitor == nullptr) return false;
 
-   if (static_cast<int>(poleToMonitor->getChildrens().size()) == numberOfDisks_) {
-      this->statusMessage_ = "WIN GAME";
-      return true;
+   // conto i dischi in questo modo altrimenti mi conterebbe anche le luci
+   int diskCount = 0;
+   for (const std::shared_ptr<Eng::Node>& child : poleToMonitor->getChildrens())
+   {
+      if (std::dynamic_pointer_cast<Eng::Mesh>(child)) {
+         diskCount++;
+      }
    }
 
-
+   if (diskCount == numberOfDisks_)
+   {
+      this->statusMessage_ = "HAI VINTO!!!";
+      return true;
+   }
    return false;
 }
 
@@ -104,6 +164,8 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
 
    if (poles[3]) std::cout << ">> Palo 3 TROVATO!" << std::endl;
    else std::cerr << ">> ERRORE: Palo 3 non trovato." << std::endl;
+
+   initLights();
 }
 
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
@@ -169,6 +231,7 @@ void HanoiGame::processInput(const int poleIndex) {
             // ----------------------------
 
             std::cout << ">> PRESO: " << disk->getName() << " (Alzato)" << std::endl;
+            updateLightsColors(poleIndex);
          }
          else {
             std::cout << ">> Palo vuoto." << std::endl;
@@ -188,6 +251,8 @@ void HanoiGame::processInput(const int poleIndex) {
 
             selectedDisk = nullptr;
             sourcePole = nullptr;
+            // spengo la luce
+            updateLightsColors(-1);
             return;
          }
 
@@ -222,6 +287,7 @@ void HanoiGame::processInput(const int poleIndex) {
 
             selectedDisk = nullptr;
             sourcePole = nullptr;
+            updateLightsColors(-1);
 
             // Debug print...
          }
