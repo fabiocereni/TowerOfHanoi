@@ -320,108 +320,105 @@ std::shared_ptr<Node> OvoReader::load(const std::string& path) {
                                     // ==========================
                                     // LIGHT
                                     // ==========================
-        // case OvObject::Type::LIGHT: {
-        //     char name[FILENAME_MAX];
-        //     strcpy(name, data + position);
-        //     position += static_cast<unsigned int>(strlen(name)) + 1;
-        //
-        //     glm::mat4 matrix;
-        //     memcpy(&matrix, data + position, sizeof(glm::mat4));
-        //     position += sizeof(glm::mat4);
-        //
-        //     unsigned int children;
-        //     memcpy(&children, data + position, sizeof(unsigned int));
-        //     position += sizeof(unsigned int);
-        //
-        //     char targetName[FILENAME_MAX];
-        //     strcpy(targetName, data + position);
-        //     position += static_cast<unsigned int>(strlen(targetName)) + 1;
-        //
-        //     unsigned char subtype;
-        //     memcpy(&subtype, data + position, sizeof(unsigned char));
-        //     position += sizeof(unsigned char);
-        //
-        //     glm::vec3 color; memcpy(&color, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
-        //     float radius; memcpy(&radius, data + position, sizeof(float)); position += sizeof(float);
-        //     glm::vec3 dir; memcpy(&dir, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
-        //     float cutoff; memcpy(&cutoff, data + position, sizeof(float)); position += sizeof(float);
-        //     float exponent; memcpy(&exponent, data + position, sizeof(float)); position += sizeof(float);
-        //
-        //     position += sizeof(unsigned char) * 2;
-        //
-        //     std::shared_ptr<Light> light;
-        //
-        //     switch (static_cast<OvLight::Subtype>(subtype)) {
-        //     case OvLight::Subtype::DIRECTIONAL: {
-        //         try {
-        //             auto l = DirectionalLight::createDirectionalLight();
-        //             l->setDirection(glm::normalize(dir));
-        //             light = l;
-        //         } catch (const LightNumberExceededException& e) {
-        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
-        //         }
-        //         break;
-        //     }
-        //     case OvLight::Subtype::OMNI: {
-        //         try {
-        //             auto l = OmnidirectionalLight::createOmnidirectionalLight();
-        //             l->setRadius(radius);
-        //             light = l;
-        //         } catch (const LightNumberExceededException& e) {
-        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
-        //         }
-        //         break;
-        //     }
-        //     case OvLight::Subtype::SPOT: {
-        //         try {
-        //             auto l = Spotlight::createSpotLight();
-        //             l->setDirection(glm::normalize(dir));
-        //             l->setCutoff(cutoff);
-        //             l->setExponent(exponent);
-        //             l->setRadius(radius);
-        //             light = l;
-        //         } catch (const LightNumberExceededException& e) {
-        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
-        //         }
-        //         break;
-        //     }
-        //     default:
-        //         try {
-        //             light = OmnidirectionalLight::createOmnidirectionalLight();
-        //
-        //         } catch (const LightNumberExceededException& e) {
-        //             std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
-        //         }
-        //
-        //         break;
-        //     }
-        //
-        //     light->setName(name);
-        //     light->setMatrix(matrix);
-        //     light->setDiffuse(color);
-        //     light->setSpecular(color);
-        //     light->setAmbient(color * 0.1f);
-        //
-        //     // Aggiungi al genitore corrente
-        //     if (!hierarchyStack.empty()) {
-        //         NodeInfo& parent = hierarchyStack.top();
-        //         parent.node->addChildren(light);
-        //         parent.childrenAdded++;
-        //
-        //         // Pulisci lo stack
-        //         while (!hierarchyStack.empty() &&
-        //             hierarchyStack.top().childrenAdded >= hierarchyStack.top().childrenCount) {
-        //             hierarchyStack.pop();
-        //         }
-        //     }
-        //
-        //     // Se questa luce ha figli, mettila nello stack
-        //     if (children > 0) {
-        //         hierarchyStack.push(NodeInfo(light, children));
-        //     }
-        //
-        //     break;
-        // }
+         case OvObject::Type::LIGHT: {
+             char name[FILENAME_MAX];
+             strcpy(name, data + position);
+             position += static_cast<unsigned int>(strlen(name)) + 1;
+        
+             glm::mat4 matrix;
+             memcpy(&matrix, data + position, sizeof(glm::mat4));
+             position += sizeof(glm::mat4);
+        
+             unsigned int children;
+             memcpy(&children, data + position, sizeof(unsigned int));
+             position += sizeof(unsigned int);
+        
+             char targetName[FILENAME_MAX];
+             strcpy(targetName, data + position);
+             position += static_cast<unsigned int>(strlen(targetName)) + 1;
+        
+             unsigned char subtype;
+             memcpy(&subtype, data + position, sizeof(unsigned char));
+             position += sizeof(unsigned char);
+        
+             glm::vec3 color; memcpy(&color, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+             float radius; memcpy(&radius, data + position, sizeof(float)); position += sizeof(float);
+             glm::vec3 dir; memcpy(&dir, data + position, sizeof(glm::vec3)); position += sizeof(glm::vec3);
+             float cutoff; memcpy(&cutoff, data + position, sizeof(float)); position += sizeof(float);
+             float exponent; memcpy(&exponent, data + position, sizeof(float)); position += sizeof(float);
+        
+             position += sizeof(unsigned char) * 2;
+        
+             std::shared_ptr<Light> light;
+        
+             switch (static_cast<OvLight::Subtype>(subtype)) {
+             case OvLight::Subtype::DIRECTIONAL: {
+                 try {
+                     auto l = DirectionalLight::createDirectionalLight();
+                     l->setDirection(glm::normalize(dir));
+                     light = l;
+                 } catch (const LightNumberExceededException& e) {
+                     std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+                 }
+                 break;
+             }
+             case OvLight::Subtype::OMNI: {
+                 try {
+                     auto l = OmnidirectionalLight::createOmnidirectionalLight();
+                     l->setRadius(radius);
+                     light = l;
+                 } catch (const LightNumberExceededException& e) {
+                     std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+                 }
+                 break;
+             }
+             case OvLight::Subtype::SPOT: {
+                 try {
+                     auto l = Spotlight::createSpotLight();
+                     l->setDirection(glm::normalize(dir));
+                     l->setCutoff(cutoff);
+                     l->setExponent(exponent);
+                     l->setRadius(radius);
+                     light = l;
+                 } catch (const LightNumberExceededException& e) {
+                     std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+                 }
+                 break;
+             }
+             default:
+                 try {
+                     light = OmnidirectionalLight::createOmnidirectionalLight();
+        
+                 } catch (const LightNumberExceededException& e) {
+                     std::cerr << "LightNumberExceededException: " << e.what() << std::endl;
+                 }
+        
+                 break;
+             }
+        
+             light->setName(name);
+             light->setMatrix(matrix);
+             light->setDiffuse(color);
+             light->setSpecular(color);
+             light->setAmbient(color * 0.1f);
+        
+             if (!hierarchyStack.empty()) {
+                 NodeInfo& parent = hierarchyStack.top();
+                 parent.node->addChildren(light);
+                 parent.childrenAdded++;
+        
+                 while (!hierarchyStack.empty() &&
+                     hierarchyStack.top().childrenAdded >= hierarchyStack.top().childrenCount) {
+                     hierarchyStack.pop();
+                 }
+             }
+        
+             if (children > 0) {
+                 hierarchyStack.push(NodeInfo(light, children));
+             }
+        
+             break;
+         }
 
         default:
             break;

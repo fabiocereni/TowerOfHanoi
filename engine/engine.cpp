@@ -245,6 +245,109 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
 
 }
 
+// In engine.cpp (aggiungi questo metodo)
+
+// In engine.cpp
+
+#include "light.h" // Assicurati di includere questo!
+
+void Base::renderPlanarShadows(const std::shared_ptr<Camera>& camera,
+    const std::shared_ptr<List>& renderList)
+{
+    // --- 1. CERCA LA LUCE E IL PIANO NELLA LISTA ---
+
+    glm::vec4 lightPos(0.0f, 100.0f, 0.0f, 1.0f); // Default se non trova luci
+    glm::vec4 planeEquation(0.0f, 1.0f, 0.0f, 0.0f); // Default: Piano Y=0 (Pavimento)
+
+    bool lightFound = false;
+
+    for (const auto& instance : renderList->getRenderList()) {
+        auto node = instance.getNodePtr();
+
+        // A. Cerca una luce (Light)
+        // Usiamo dynamic_pointer_cast per vedere se il nodo è una luce
+        if (!lightFound) {
+            auto light = std::dynamic_pointer_cast<Light>(node);
+            if (light) {
+                // Trovata! Prendiamo la sua posizione World dalla matrice dell'istanza
+                glm::vec3 pos = glm::vec3(instance.getNodeWorldMatrix()[3]);
+                lightPos = glm::vec4(pos, 1.0f);
+                lightFound = true;
+            }
+        }
+
+        // B. (Opzionale) Cerca l'altezza del tavolo
+        // Se il tuo tavolo si chiama "baseTavolo", possiamo prendere la sua Y
+        if (node->getName() == "pavimento") {
+            float tableHeight = instance.getNodeWorldMatrix()[3].y;
+            // Aggiorna l'equazione del piano: Y = tableHeight -> 0x + 1y + 0z - tableHeight = 0
+            // Usiamo un piccolo offset (+0.1) per evitare z-fighting
+            planeEquation.w = -(tableHeight + 0.1f);
+        }
+    }
+
+    // --- 2. CALCOLO MATRICE (Come prima) ---
+
+    glm::mat4 shadowMat(0.0f);
+    float dot = planeEquation.x * lightPos.x +
+        planeEquation.y * lightPos.y +
+        planeEquation.z * lightPos.z +
+        planeEquation.w * lightPos.w;
+
+    // Matrice di proiezione planare standard
+    shadowMat[0][0] = dot - lightPos.x * planeEquation.x;
+    shadowMat[1][0] = 0.f - lightPos.x * planeEquation.y;
+    shadowMat[2][0] = 0.f - lightPos.x * planeEquation.z;
+    shadowMat[3][0] = 0.f - lightPos.x * planeEquation.w;
+
+    shadowMat[0][1] = 0.f - lightPos.y * planeEquation.x;
+    shadowMat[1][1] = dot - lightPos.y * planeEquation.y;
+    shadowMat[2][1] = 0.f - lightPos.y * planeEquation.z;
+    shadowMat[3][1] = 0.f - lightPos.y * planeEquation.w;
+
+    shadowMat[0][2] = 0.f - lightPos.z * planeEquation.x;
+    shadowMat[1][2] = 0.f - lightPos.z * planeEquation.y;
+    shadowMat[2][2] = dot - lightPos.z * planeEquation.z;
+    shadowMat[3][2] = 0.f - lightPos.z * planeEquation.w;
+
+    shadowMat[0][3] = 0.f - lightPos.w * planeEquation.x;
+    shadowMat[1][3] = 0.f - lightPos.w * planeEquation.y;
+    shadowMat[2][3] = 0.f - lightPos.w * planeEquation.z;
+    shadowMat[3][3] = dot - lightPos.w * planeEquation.w;
+
+    // --- 3. RENDERIZZAZIONE ---
+
+    glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT | GL_COLOR_BUFFER_BIT);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Colore ombra (nero trasparente)
+    glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+
+    // Applichiamo la matrice d'ombra alla View Matrix corrente
+    // (Simuliamo l'effetto duplicando la logica di render base)
+    glm::mat4 shadowView = camera->getViewMatrix() * shadowMat;
+
+    for (const auto& instance : renderList->getRenderList()) {
+        // NON disegnare l'ombra della base del tavolo o del pavimento (si auto-ombreggerebbero male)
+        // Filtra per nome o tipo
+        std::string name = instance.getNodePtr()->getName();
+        if (name == "pavimento") continue;
+
+        // Disegna solo gli oggetti che proiettano ombra (es. dischi, pali)
+        glm::mat4 modelViewMatrix = shadowView * instance.getNodeWorldMatrix();
+        instance.getNodePtr()->render(modelViewMatrix);
+    }
+
+    glPopMatrix();
+    glPopAttrib();
+}
+
 void Base::displayCallback() {
    frames_++;
    glutPostRedisplay();
