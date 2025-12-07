@@ -13,7 +13,7 @@ namespace fs = std::filesystem;
 
 fs::path sourceFile = __FILE__;
 fs::path projectDir = sourceFile.parent_path().parent_path();
-fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovo.ovo";
+fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovoNew.ovo";
 
 
 
