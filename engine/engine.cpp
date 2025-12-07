@@ -393,60 +393,41 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
 
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
-   // 1. Determina il formato del file
+    FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
+    if (format == FIF_UNKNOWN)
+        format = FreeImage_GetFIFFromFilename(path.c_str());
 
-   FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
-   if (format == FIF_UNKNOWN) {
-      format = FreeImage_GetFIFFromFilename(path.c_str());
-   }
-   if (format == FIF_UNKNOWN) {
-      std::cout << "ERROR: Unknown image format for " << path << std::endl;
-      return nullptr;
-   }
+    if (format == FIF_UNKNOWN) {
+        std::cout << "ERROR: Unknown image format " << path << '\n';
+        return nullptr;
+    }
 
-   // 2. Carica l'immagine
-   FIBITMAP* bitmap = FreeImage_Load(format, path.c_str());
-   if (!bitmap) {
-      std::cout << "ERROR: Unable to load image " << path << std::endl;
-      return nullptr;
-   }
+    // Load image (can be 24 or 32 bits)
+    FIBITMAP* bitmap = FreeImage_Load(format, path.c_str());
+    if (!bitmap) {
+        std::cout << "ERROR: Failed to load image " << path << '\n';
+        return nullptr;
+    }
 
+    // Flip Y like screenshot
+    FreeImage_FlipVertical(bitmap);
 
-   // 3. Converti in 32 bit (RGBA) per uniformità
-   // Questo passaggio è CRUCIALE per evitare problemi tra RGB/BGR/RGBA
-   FIBITMAP* bitmap32 = FreeImage_ConvertTo32Bits(bitmap);
-   FreeImage_Unload(bitmap); // Scarica l'originale
-   bitmap = bitmap32;
+    int width = FreeImage_GetWidth(bitmap);
+    int height = FreeImage_GetHeight(bitmap);
+    BYTE* data = FreeImage_GetBits(bitmap);
 
-   // 4. Inverti verticalmente (OpenGL ha l'origine in basso a sinistra)
-    FreeImage_FlipVertical(bitmap); // Nota: gluBuild2DMipmaps potrebbe non richiedere il flip, prova con e senza.
+    // Determine bit depth (24 = RGB/BGR, 32 = RGBA/BGRA)
+    int bpp = FreeImage_GetBPP(bitmap);  // bits per pixel
+    int channels = bpp / 8;              // 3 or 4
 
-   // 5. Estrai info
-   int width = FreeImage_GetWidth(bitmap);
-   int height = FreeImage_GetHeight(bitmap);
-   unsigned char* data = FreeImage_GetBits(bitmap);
+    auto texture = std::make_shared<Texture>(data, width, height, channels);
 
-   // ATTENZIONE: FreeImage usa BGR per default, OpenGL vuole RGB o RGBA.
-   // Nel costruttore della Texture (texture.cpp) usi GL_RGB.
-   // Per semplicità qui invieremo i dati così come sono, ma dovrai aggiornare texture.cpp
-   // per gestire il canale Alpha se vuoi la trasparenza.
+    size_t p = path.find_last_of(pathSeparator);
+    texture->setName(path.substr(p + 1));
 
-   // Crea la texture usando il tuo costruttore
-   auto texture = std::make_shared<Texture>(data, width, height);
-
-
-   const size_t lastSlashPos = path.find_last_of(pathSeparator);
-
-   texture->setName(path.substr(lastSlashPos + 1));
-
-
-   // 6. Pulisci memoria RAM
-   FreeImage_Unload(bitmap);
-
-   return texture;
-
+    FreeImage_Unload(bitmap);
+    return texture;
 }
-
 void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept {
 
     if (!root || textures.empty()) {
