@@ -21,7 +21,7 @@ std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {
     const auto frontTableCam = eng.createPerspectiveCamera(40, 800.f / 600.f, 0.1f, 20000.0f);
 
 
-    constexpr auto frontTablePosition = glm::vec3(0.0f, 1600.0f, 400.0f);
+    constexpr auto frontTablePosition = glm::vec3(0.0f, 2000.0f, 700.0f);
 
     const glm::mat4 frontTableCamWorldMatrix = glm::translate(glm::mat4(1.0f), frontTablePosition) *
         glm::rotate(glm::mat4(1.0f), glm::radians(-40.0f), glm::vec3(1.0f, 0, 0));
