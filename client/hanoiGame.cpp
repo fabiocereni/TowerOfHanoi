@@ -15,11 +15,11 @@ void HanoiGame::initLights() {
 
       auto light = Eng::Base::getInstance().createSpotlight();
 
-      light->setCutoff(45.0f);
-      light->setExponent(5.0f);
+      light->setCutoff(15.0f);
+      light->setExponent(15.0f);
 
       glm::mat4 m = glm::mat4(1.0f);
-      m = glm::translate(m, glm::vec3(0.0f, 700.0f, 0.0f));
+      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, -750.0f));
       m = glm::rotate(m, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
       light->setMatrix(m);
 
@@ -34,7 +34,7 @@ void HanoiGame::initLights() {
 
 void HanoiGame::updateLightsColors(int selectedIndex) {
    glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
-   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
+   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 0.6f);
    glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
 
    for (int i = 1; i <= 3; i++) {
