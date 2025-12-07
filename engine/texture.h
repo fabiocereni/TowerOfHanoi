@@ -2,23 +2,24 @@
 #include "object.h"
 
 namespace Eng {
-   class ENG_API Texture final : public Object {
+    class ENG_API Texture final : public Object {
 
-   public:
-      Texture(const unsigned char* bitmap, int width, int height) noexcept;
-      ~Texture() noexcept override;
-      Texture(const Texture& other) = default;
-      Texture(Texture&& other) noexcept = default;
-      Texture& operator=(const Texture& other) = default;
-      Texture& operator=(Texture&& other) noexcept = default;
+    public:
+        Texture(const unsigned char* bitmap, int width, int height, int numberOfChannels) noexcept;
+        ~Texture() noexcept override;
+        Texture(const Texture& other) = default;
+        Texture(Texture&& other) noexcept = default;
+        Texture& operator=(const Texture& other) = default;
+        Texture& operator=(Texture&& other) noexcept = default;
 
-      void render(const glm::mat4& modelViewMatrix) override;
+        void render(const glm::mat4& modelViewMatrix) override;
 
-      void bind() const;
+        void bind() const;
 
-   protected:
-      unsigned int texId_;
-      int width_;
-      int height_;
-   };
+    protected:
+        unsigned int texId_;
+        int width_;
+        int height_;
+        int numberOfChannels_;
+    };
 }
