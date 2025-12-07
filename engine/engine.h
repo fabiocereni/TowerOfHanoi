@@ -117,10 +117,14 @@ namespace Eng {
       ENG_API void setInfo(const std::string& info) noexcept { info_ = info; };
 
       ENG_API void overrideKeyboardCallback(const KeyboardCallback &keyboardCallback) noexcept {customKeyboardCallbackVar_ = keyboardCallback;};
-      ENG_API void overrideUpArrowBehaviour(SpecialKeyAction action)   noexcept { up_arrow_key_ = action; }
-      ENG_API void overrideDownArrowBehaviour(SpecialKeyAction action) noexcept { down_arrow_key_ = action; }
-      ENG_API void overrideLeftArrowBehaviour(SpecialKeyAction action) noexcept { left_arrow_key_ = action; }
-      ENG_API void overrideRightArrowBehaviour(SpecialKeyAction action) noexcept { right_arrow_key_ = action; }
+      ENG_API void overrideUpArrowBehaviour(const SpecialKeyAction& action)   noexcept { up_arrow_key_ = action; }
+      ENG_API void overrideDownArrowBehaviour(const SpecialKeyAction& action) noexcept { down_arrow_key_ = action; }
+      ENG_API void overrideLeftArrowBehaviour(const SpecialKeyAction& action) noexcept { left_arrow_key_ = action; }
+      ENG_API void overrideRightArrowBehaviour(const SpecialKeyAction& action) noexcept { right_arrow_key_ = action; }
+      ENG_API void overrideF1KeyBehaviour(const SpecialKeyAction& action) noexcept { F1_key = action; }
+      ENG_API void overrideF2KeyBehaviour(const SpecialKeyAction& action) noexcept { F2_key = action; }
+      ENG_API void overrideF3KeyBehaviour(const SpecialKeyAction& action) noexcept { F3_key = action; }
+      ENG_API void overrideF4KeyBehaviour(const SpecialKeyAction& action) noexcept { F4_key = action; }
 
 
 
@@ -151,8 +155,8 @@ namespace Eng {
    private: //
       ///////////
       int windowId_;
-      int width_ = 800;
-      int height_ = 600;
+      int width_ = 1800;
+      int height_ = 1000;
       static float frames_;
       std::string info_;
       std::shared_ptr<Camera> activeCamera_;
@@ -163,6 +167,10 @@ namespace Eng {
       static SpecialKeyAction down_arrow_key_;
       static SpecialKeyAction left_arrow_key_;
       static SpecialKeyAction right_arrow_key_;
+      static SpecialKeyAction F1_key;
+      static SpecialKeyAction F2_key;
+      static SpecialKeyAction F3_key;
+      static SpecialKeyAction F4_key;
 
       // Reserved:
       struct Reserved;

@@ -41,6 +41,10 @@ Base::SpecialKeyAction Base::up_arrow_key_ = nullptr;
 Base::SpecialKeyAction Base::down_arrow_key_ = nullptr;
 Base::SpecialKeyAction Base::left_arrow_key_ = nullptr;
 Base::SpecialKeyAction Base::right_arrow_key_ = nullptr;
+Base::SpecialKeyAction Base::F1_key = nullptr;
+Base::SpecialKeyAction Base::F2_key = nullptr;
+Base::SpecialKeyAction Base::F3_key = nullptr;
+Base::SpecialKeyAction Base::F4_key = nullptr;
 
 
 
@@ -318,7 +322,6 @@ void Base::clearInfoPrinter() {
    Base::getInstance().infoClear();
 }
 
-
 void Base::timerCallback(int) {
    fps = getFrames();
    setFrames(0);
@@ -362,6 +365,26 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
    case GLUT_KEY_RIGHT:
       if (right_arrow_key_)
          right_arrow_key_();
+      break;
+
+   case GLUT_KEY_F1:
+      if (F1_key)
+         F1_key();
+      break;
+
+   case GLUT_KEY_F2:
+      if (F2_key)
+         F2_key();
+      break;
+
+   case GLUT_KEY_F3:
+      if (F3_key)
+         F3_key();
+      break;
+
+   case GLUT_KEY_F4:
+      if (F4_key)
+         F4_key();
       break;
 
    default: std::cout << "UNKNOWN" << std::endl ;
