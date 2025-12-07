@@ -15,11 +15,11 @@ void HanoiGame::initLights() {
 
       auto light = Eng::Base::getInstance().createSpotlight();
 
-      light->setCutoff(15.0f);
-      light->setExponent(15.0f);
+      light->setCutoff(10.0f);
+      light->setExponent(100.0f);
 
       glm::mat4 m = glm::mat4(1.0f);
-      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, -750.0f));
+      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, -700.0f));
       m = glm::rotate(m, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
       light->setMatrix(m);
 
@@ -33,8 +33,8 @@ void HanoiGame::initLights() {
 }
 
 void HanoiGame::updateLightsColors(int selectedIndex) {
-   glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
-   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 0.6f);
+   glm::vec3 red = glm::vec3(100.0f, 0.0f, 0.0f);
+   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 40.0f);
    glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
 
    for (int i = 1; i <= 3; i++) {
@@ -51,13 +51,13 @@ void HanoiGame::updateLightsColors(int selectedIndex) {
          // Rosso
          light->setDiffuse(red);
          light->setSpecular(red);
-         light->setAmbient(glm::vec3(0.2f, 0.2f, 0.0f));
+         light->setAmbient(glm::vec3(0.9f, 0.0f, 0.0f));
       }
       else {
          // Blu
          light->setDiffuse(blue);
          light->setSpecular(blue);
-         light->setAmbient(glm::vec3(0.0f, 0.0f, 0.2f));
+         light->setAmbient(glm::vec3(0.0f, 0.0f, 0.1f));
       }
    }
 }
