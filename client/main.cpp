@@ -11,25 +11,41 @@
 
 namespace fs = std::filesystem;
 
-int main(const int argc, char** argv) {
-    // 1. Esegui i test
-
-#ifdef DEBUG
-    TestSuite::runAllTests();
-#endif
-
-    // 2. Inizializza l'Engine
-    Eng::Base& eng = Eng::Base::getInstance();
-    eng.init(argc, argv, "Hanoi Tower");
+fs::path sourceFile = __FILE__;
+fs::path projectDir = sourceFile.parent_path().parent_path();
+fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovo.ovo";
 
 
-    fs::path sourceFile = __FILE__;
 
-    fs::path projectDir = sourceFile.parent_path().parent_path();
+std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {
+    const auto frontTableCam = eng.createPerspectiveCamera(40, 800.f / 600.f, 0.1f, 20000.0f);
 
-    fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovo.ovo";
 
-    const std::string scenePath = modelPath.string();
+    constexpr auto frontTablePosition = glm::vec3(0.0f, 1600.0f, 400.0f);
+
+    const glm::mat4 frontTableCamWorldMatrix = glm::translate(glm::mat4(1.0f), frontTablePosition) *
+        glm::rotate(glm::mat4(1.0f), glm::radians(-40.0f), glm::vec3(1.0f, 0, 0));
+
+    frontTableCam->setMatrix(frontTableCamWorldMatrix);
+
+    return frontTableCam;
+}
+
+std::shared_ptr<Eng::Camera> returnTopTableCamera(Eng::Base& eng) {
+    const auto cam2 = eng.createPerspectiveCamera(40, 800.f / 600.f, 0.1f, 20000.0f);
+
+    // posizione sopra al tavolo
+    constexpr auto cam2Pos = glm::vec3(0.0f, 3000.0f, -700.0f);
+
+    const glm::mat4 cam2WorldMatrix =
+        glm::translate(glm::mat4(1.0f), cam2Pos) *
+        glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(1, 0, 0));
+
+    cam2->setMatrix(cam2WorldMatrix);
+    return cam2;
+}
+
+std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base& eng) {
 
 
     const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "darkWood.dds").string());
@@ -45,18 +61,11 @@ int main(const int argc, char** argv) {
     textures.push_back(dark_wood_grain);
     textures.push_back(light_wood);
 
+    return textures;
+}
 
-    // 3. Caricamento della Scena
-    // Usa il nuovo metodo eng.load che restituisce la radice del grafo
-    std::shared_ptr<Eng::Node> sceneRoot = eng.load(scenePath);
-
-
-    eng.bindTexturesToMaterials(sceneRoot, textures);
-
-
-    std::cout << "Number of lights: " << Eng::Light::getLightNumber() << std::endl;
+void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<Eng::Node>& sceneRoot) {
     std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
-
 
     my_omnilight->setAmbient(glm::vec3(1.0f));
     my_omnilight->setDiffuse(glm::vec3(0.5f));
@@ -64,28 +73,37 @@ int main(const int argc, char** argv) {
 
 
     sceneRoot->addChildren(my_omnilight);
+}
 
-    std::cout << "Number of lights: " << Eng::Light::getLightNumber() << std::endl;
+int main(const int argc, char** argv) {
+    // 1. Esegui i test
+
+#ifdef DEBUG
+    TestSuite::runAllTests();
+#endif
+
+    // 2. Inizializza l'Engine
+    Eng::Base& eng = Eng::Base::getInstance();
+    eng.init(argc, argv, "Hanoi Tower");
+
+
+    // 3. Caricamento della Scena
+    const std::string scenePath = modelPath.string();
+    std::shared_ptr<Eng::Node> sceneRoot = eng.load(scenePath);
+
+
+    const std::vector<std::shared_ptr<Eng::Texture>> textures = loadAndReturnTextures(eng);
+    eng.bindTexturesToMaterials(sceneRoot, textures);
+
+    createAndReturnOmniDirectionalLight(eng, sceneRoot);
 
     HanoiGame game(sceneRoot);
 
-    // 4. Configurazione Telecamera
-    // Far plane molto alto per vedere oggetti lontani
-    const auto cam = eng.createPerspectiveCamera(60, 800.f / 600.f, 0.1f, 20000.0f);
 
-    // --- POSIZIONAMENTO CON LOOKAT ---
-    // Posizione: Alta (2000) e Indietro (2000)
-    // Target: Centro (0,0,0)
-    // Up: Asse Y (0,1,0)
-    auto position = glm::vec3(0.0f, 1400.0f, 400.0f);
-    auto target   = glm::vec3(0.0f, 1200.0f, 0.0f);
-    auto up       = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    glm::mat4 viewMatrix = glm::lookAt(position, target, up);
-
-    // Invertiamo la view matrix perché l'engine si aspetta la World Matrix della camera
-    cam->setMatrix(glm::inverse(viewMatrix));
     // ---------------------------------
+
+    eng.setActiveCamera(returnFrontTableCamera(eng));
 
     const auto renderList = std::make_shared<Eng::List>();
 
@@ -108,6 +126,12 @@ int main(const int argc, char** argv) {
         }
     });
 
+    auto cam1 = returnFrontTableCamera(eng);
+    eng.overrideF1KeyBehaviour([&eng, &cam1]() {eng.setActiveCamera(cam1);});
+
+    auto cam2 = returnTopTableCamera(eng);
+    eng.overrideF2KeyBehaviour([&cam2, &eng](){eng.setActiveCamera(cam2);});
+
     // 5. Ciclo di Rendering
     while (eng.update()) {
         eng.clear();
@@ -124,13 +148,13 @@ int main(const int argc, char** argv) {
         // ----------------------
 
         // Carica matrice proiezione
-        eng.begin3D(cam);
+        eng.begin3D(eng.getActiveCamera());
 
         // Passa la radice della scena alla render list
         renderList->pass(sceneRoot);
 
         // Esegui il render
-        eng.render(cam, renderList);
+        eng.render(eng.getActiveCamera(), renderList);
 
         eng.end3D();
 
