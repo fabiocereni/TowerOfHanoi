@@ -86,13 +86,13 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
 
    // modifica per test vittoria
    std::vector<std::shared_ptr<Eng::Node>> tmp;
-   tmp.push_back(poles[3]->getChildrens().at(poles[3]->getChildrens().size() - 1));
-   tmp.push_back(poles[3]->getChildrens().at(poles[3]->getChildrens().size() - 2));
+   tmp.push_back(poles[1]->getChildrens().at(poles[1]->getChildrens().size() - 1));
+   tmp.push_back(poles[1]->getChildrens().at(poles[1]->getChildrens().size() - 2));
 
    std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
-   poles[3]->setChilders(tmpChildren);
-   poles[3]->addChildren(tmp.at(0));
-   poles[3]->addChildren(tmp.at(1));
+   poles[1]->setChilders(tmpChildren);
+   poles[1]->addChildren(tmp.at(0));
+   poles[1]->addChildren(tmp.at(1));
 
 
    // Verifica

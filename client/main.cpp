@@ -54,6 +54,7 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
 
     const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "plastic.dds").string());
 
+    //TODO AGGIUNGERE TEXTURE
 
     std::vector<std::shared_ptr<Eng::Texture>> textures;
 
@@ -75,6 +76,8 @@ void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<E
     // Alzala sopra il tavolo (es. Y = 2000 se la camera è a 1600)
     glm::mat4 lightMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2000.0f, 0.0f));
     my_omnilight->setMatrix(lightMatrix);
+
+    my_omnilight->setName("luce1");
 
     sceneRoot->addChildren(my_omnilight);
 }
