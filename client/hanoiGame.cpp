@@ -34,7 +34,7 @@ void HanoiGame::initLights() {
 
 void HanoiGame::updateLightsColors(int selectedIndex) {
    glm::vec3 red = glm::vec3(100.0f, 0.0f, 0.0f);
-   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 40.0f);
+   glm::vec3 blue = glm::vec3(0.0f, 50.0f, 100.0f);
    glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
 
    for (int i = 1; i <= 3; i++) {
@@ -57,7 +57,7 @@ void HanoiGame::updateLightsColors(int selectedIndex) {
          // Blu
          light->setDiffuse(blue);
          light->setSpecular(blue);
-         light->setAmbient(glm::vec3(0.0f, 0.0f, 0.1f));
+         light->setAmbient(glm::vec3(0.0f, 0.45f, 0.9f));
       }
    }
 }
