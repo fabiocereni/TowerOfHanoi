@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "engine.h"
 #include "list.h"
 #include "ovoreader.h"
@@ -7,9 +9,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <filesystem>
+#include <set>
 
 namespace fs = std::filesystem;
-
 
 fs::path sourceFile = __FILE__;
 fs::path projectDir = sourceFile.parent_path().parent_path();
@@ -19,6 +21,18 @@ auto dynamic_cam_pos = glm::vec3(0.0f, 800.0f, 1600.0f);
 float dynamic_cam_x_angle = 0.0f;
 float dynamic_cam_y_angle = 0.0f;
 float dynamic_cam_y = 800.0f;
+
+float angle_speed_rotation = 0.8f;
+float dynamic_cam_speed = 40.0f;
+
+// CAMERA LIMITS
+float minX = std::numeric_limits<float>::max();
+float maxX = std::numeric_limits<float>::lowest();
+float minY = std::numeric_limits<float>::max();
+float maxY = std::numeric_limits<float>::lowest();
+float minZ = std::numeric_limits<float>::max();
+float maxZ = std::numeric_limits<float>::lowest();
+
 
 std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {
     const auto frontTableCam = eng.createPerspectiveCamera(40, 1800.f / 1000.f, 0.1f, 20000.0f);
@@ -48,9 +62,90 @@ std::shared_ptr<Eng::Camera> returnTopTableCamera(Eng::Base& eng) {
     return topTableCam;
 }
 
-void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam) {
+std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
+    if (!current) return nullptr;
+
+    // 1. Controlla se e' questo
+    if (current->getName() == nameToFind) {
+        return current;
+    }
+
+    // 2. Cerca nei figli
+    for (const auto& child : current->getChildrens()) {
+        auto result = findRec(child, nameToFind);
+        if (result != nullptr) {
+            return result; // Trovato! Risaliamo la catena
+        }
+    }
+
+    // 3. Non trovato qui sotto
+    return nullptr;
+}
+
+void computeWorldOrientedVertexes(const std::vector<glm::vec3>& vertexes,
+                                  const std::shared_ptr<Eng::Node>& node,
+                                  std::vector<glm::vec3>& out) {
+    const glm::mat4 world = node->getWorldMatrix();
+
+    for (const auto& v : vertexes) {
+        out.push_back(glm::vec3(world * glm::vec4(v, 1.0f)));
+    }
+}
+
+void computeDynamicCameraLimits(const std::shared_ptr<Eng::Node>& sceneRoot) {
+
+    std::vector<glm::vec3> room_vertexes;
+
+    const auto floor = findRec(sceneRoot, "pavimento");
+    const std::vector<glm::vec3> floor_vec = std::dynamic_pointer_cast<Eng::Mesh>(floor)->getVertexes();
+    computeWorldOrientedVertexes(floor_vec, floor, room_vertexes);
+
+
+    const auto wall_1 = findRec(sceneRoot, "muro1");
+    const auto wall_1_vec = std::dynamic_pointer_cast<Eng::Mesh>(wall_1)->getVertexes();
+    computeWorldOrientedVertexes(wall_1_vec, wall_1, room_vertexes);
+
+
+    const auto wall_2 = findRec(sceneRoot, "muro2");
+    const auto wall_2_vec = std::dynamic_pointer_cast<Eng::Mesh>(wall_2)->getVertexes();
+    computeWorldOrientedVertexes(wall_2_vec, wall_2, room_vertexes);
+
+
+    const auto wall_3 = findRec(sceneRoot, "muro3");
+    const auto wall_3_vec = std::dynamic_pointer_cast<Eng::Mesh>(wall_3)->getVertexes();
+    computeWorldOrientedVertexes(wall_3_vec, wall_3, room_vertexes);
+
+
+    const auto wall_4 = findRec(sceneRoot, "muro4");
+    const auto wall_4_vec = std::dynamic_pointer_cast<Eng::Mesh>(wall_4)->getVertexes();
+    computeWorldOrientedVertexes(wall_4_vec, wall_4, room_vertexes);
+
+
+    for (auto& v : room_vertexes) {
+        minX = std::min(minX, v.x);
+        maxX = std::max(maxX, v.x);
+        minY = std::min(minY, v.y);
+        maxY = std::max(maxY, v.y);
+        minZ = std::min(minZ, v.z);
+        maxZ = std::max(maxZ, v.z);
+    }
+
+}
+
+
+void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::shared_ptr<Eng::Node>& sceneRoot) {
+    constexpr float limitation_bound = 100.0f;
+
+
+    computeDynamicCameraLimits(sceneRoot);
 
     dynamic_cam_pos.y = dynamic_cam_y;
+
+
+    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minY+limitation_bound, maxY-limitation_bound);
+    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minX+limitation_bound, maxX-limitation_bound);
+    dynamic_cam_pos.z = glm::clamp(dynamic_cam_pos.z, minZ+limitation_bound, maxZ-limitation_bound);
+
 
     const glm::mat4 x_rot = glm::rotate(glm::mat4(1.0f),
                     glm::radians(dynamic_cam_x_angle),
@@ -85,7 +180,7 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
 }
 
 void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<Eng::Node>& sceneRoot) {
-    std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
+    const std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
 
     my_omnilight->setAmbient(glm::vec3(1.0f));
     my_omnilight->setDiffuse(glm::vec3(0.5f));
@@ -94,6 +189,8 @@ void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<E
 
     sceneRoot->addChildren(my_omnilight);
 }
+
+
 
 
 
@@ -140,30 +237,30 @@ int main(const int argc, char** argv) {
             game.processInput(3);
             break;
         case 'w':
-            dynamic_cam_pos.z -= 15.0f;
-            updateDynamicCamera(cam3);
+            dynamic_cam_pos.z -= dynamic_cam_speed;
+            updateDynamicCamera(cam3, sceneRoot);
             break;
         case 's':
-            dynamic_cam_pos.z += 15.0f;
-            updateDynamicCamera(cam3);
+            dynamic_cam_pos.z += dynamic_cam_speed;
+            updateDynamicCamera(cam3, sceneRoot);
             break;
         case 'a':
-            dynamic_cam_x_angle += 0.5f;
-            updateDynamicCamera(cam3);
+            dynamic_cam_x_angle += angle_speed_rotation;
+            updateDynamicCamera(cam3, sceneRoot);
             break;
         case 'd':
-            dynamic_cam_x_angle -= 0.5f;
-            updateDynamicCamera(cam3);
+            dynamic_cam_x_angle -= angle_speed_rotation;
+            updateDynamicCamera(cam3, sceneRoot);
             break;
 
         case 'u':
-            dynamic_cam_y_angle += 0.5f;
-            updateDynamicCamera(cam3);
+            dynamic_cam_y_angle += angle_speed_rotation;
+            updateDynamicCamera(cam3, sceneRoot);
             break;
 
         case 'g':
-            dynamic_cam_y_angle -= 0.5f;
-            updateDynamicCamera(cam3);
+            dynamic_cam_y_angle -= angle_speed_rotation;
+            updateDynamicCamera(cam3, sceneRoot);
             break;
 
         default:
@@ -178,19 +275,18 @@ int main(const int argc, char** argv) {
     auto cam2 = returnTopTableCamera(eng);
     eng.overrideF2KeyBehaviour([&cam2, &eng] {eng.setActiveCamera(cam2);});
 
-    updateDynamicCamera(cam3);
+    updateDynamicCamera(cam3, sceneRoot);
 
     eng.overrideF3KeyBehaviour([&cam3, &eng] {eng.setActiveCamera(cam3);});
 
     eng.overrideUpArrowBehaviour([&] {
-        dynamic_cam_y += 15.0f;
-        updateDynamicCamera(cam3);
+        dynamic_cam_y += dynamic_cam_speed;
+        updateDynamicCamera(cam3, sceneRoot);
     });
 
-
     eng.overrideDownArrowBehaviour([&]{
-        dynamic_cam_y -= 15.0f;
-        updateDynamicCamera(cam3);
+        dynamic_cam_y -= dynamic_cam_speed;
+        updateDynamicCamera(cam3, sceneRoot);
     });
 
 
