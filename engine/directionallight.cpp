@@ -6,10 +6,21 @@
 
 namespace Eng {
 
+    /**
+     * @brief Costruttore
+     * @param index
+     * @return Crea e torna una luce direzionale
+     */
     DirectionalLight::DirectionalLight(const int index) noexcept
         : Light(index) {}
 
 
+    /**
+     * @brief Factory Method per creare una luce direzionale
+     * @details Se le luci create sono meno di 8 viene
+     * creata una nuova luce, altrimenti viene lanciata un'eccezione
+     * @return Crea e torna una luce direzionale
+     */
     std::shared_ptr<DirectionalLight> DirectionalLight::createDirectionalLight() {
 
         if (lightNumber_ < 8) {
@@ -26,6 +37,10 @@ namespace Eng {
     }
 
 
+    /**
+     * @brief Metodo che si occupa di renderizzare la luce
+     * @param modelViewMatrix
+     */
     void DirectionalLight::render(const glm::mat4& modelViewMatrix) {
 
         const GLenum id = GL_LIGHT0 + index_;
@@ -35,9 +50,15 @@ namespace Eng {
         glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse_));
         glLightfv(id, GL_SPECULAR, glm::value_ptr(specular_));
 
+    /*
+     * @brief calcola la direzione in eye coordinates
+     * @details usiamo -direction perchè OpenGL richiede il vettore
+     * che punta verso la fonte di luce (opposto ai raggi)
+     */
         const glm::vec3 eyeDir = glm::mat3(modelViewMatrix) * (-direction_);
         const float pos[] = { eyeDir.x, eyeDir.y, eyeDir.z, 0.0f };
 
+        // @brief crea la luce
         glLightfv(id, GL_POSITION, pos);
     }
 

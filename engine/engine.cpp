@@ -15,7 +15,11 @@
 #include "perspective_camera.h"
 #include <FreeImage.h>
 
-
+/**
+ * @brief Path separator
+ * @details Permette di usare il corretto
+ * separatore di percorsi in base al sistema operativo
+ */
 constexpr char pathSeparator =
                               #ifdef _WIN32
                                  '\\';
@@ -34,7 +38,10 @@ struct Base::Reserved {
    Reserved() : initFlag{ false } {}
 };
 
-// inizializzazione variabili statiche
+/**
+ * @brief Inizializzazione dei
+ * componenti statici
+ */
 float Base::frames_ = 0.0f;
 Base::KeyboardCallback Base::customKeyboardCallbackVar_ = nullptr;
 Base::SpecialKeyAction Base::up_arrow_key_ = nullptr;
@@ -48,11 +55,11 @@ Base::SpecialKeyAction Base::F4_key = nullptr;
 
 
 
-// serve per il calcolo del framerate
+/// @brief Variabile per il calcolo degli fps
 float fps = 0.0f;
 
 
-// servono per salvare le matrici
+/// @brief Variabili per salvare le matrici
 glm::mat4 perspective;
 glm::mat4 ortho;
 
@@ -74,14 +81,24 @@ Base& Base::getInstance() {
    return instance;
 }
 
+
+/**
+ * @brief Si occupa dell'inizializzazione del motore
+ * @param argc
+ * @param argv
+ * @param title
+ * @return Se riesce a inizializzare il motore
+ * torna true
+ */
 bool Base::init(int argc, char **argv, const std::string& title) {
    if (reserved_->initFlag) return false;
 
-  
+  /// @brief inizializzazione di FreeImage
    FreeImage_Initialise();
 
 
-   // 1. Inizializzazione GLUT
+   /// @brief Inizializzazione di FreeGLUT
+   /// e della finestra
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitWindowSize(getWidth(), getHeight());
@@ -89,37 +106,43 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    setWindowId(id);
    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
-   // 2. Impostazioni OpenGL Base (CORRETTO)
-   glEnable(GL_DEPTH_TEST); // Fondamentale per il 3D
-   glEnable(GL_NORMALIZE);  // Utile se scali le mesh, ma costa performance
+   /// @brief Impostazioni OpenGL
+   /// @details attivazione dello z-buffer
+   glEnable(GL_DEPTH_TEST);
+   /// @details normalizzazione automatica
+   /// delle normali delle mesh
+   glEnable(GL_NORMALIZE);
 
-   // ILLUMINAZIONE: Abilita il sistema
+   /// @brief Abilita il sistema di illuminazione
    glEnable(GL_LIGHTING);
-   // Modello speculare realistico
+   /// @bried Abilita il modello speculare realistico
    glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-   // 3. CULLING: Disabilitalo per sicurezza all'inizio
+   /// @brief Culling disabilitalo all'inizio
    glDisable(GL_CULL_FACE);
 
 
-   // 4. LUCI DI DEFAULT: RIMOSSE ❌
-   // Lasciamo che sia la scena (tramite OvoReader o codice main) a creare le luci.
-   // Se vuoi una luce ambientale di base minima per non vedere tutto nero assoluto:
-   glm::vec4 globalAmbient(0.1f, 0.1f, 0.1f, 1.0f);
-   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(globalAmbient));
 
-   // 5. Callbacks (CORRETTO)
+   /// @brief Callbacks
    glutDisplayFunc(displayCallback);
    glutReshapeFunc(reshapeCallback);
    glutTimerFunc(1000, timerCallback, 0);
    glutKeyboardFunc(useCustomKeyboardCallback);
    glutSpecialFunc(specialCallback);
 
+   /// @brief motore inizializzato
    reserved_->initFlag = true;
    return true;
 }
 
-
+/**
+ * @brief Registrazione callback di tasti "normali"
+ * @details Permette una registrazione esterna
+ * delle callbacks su tasti "normali"
+ * @param key
+ * @param mouseX
+ * @param mouseY
+ */
 void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, const int mouseY) noexcept {
    if (customKeyboardCallbackVar_) {
       customKeyboardCallbackVar_(key, mouseX, mouseY);
@@ -127,54 +150,83 @@ void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, 
 }
 
 
+/**
+ * @brief Richiama il main loop
+ * @return Ritorna true se la finestra
+ * non è stata chiusa
+ */
 bool Base::update() const noexcept {
-   // Processa eventi GLUT
    glutMainLoopEvent();
 
-   // Se la finestra è stata chiusa:
    if (!glutGetWindow())
       return false;
 
    return true;
 }
 
+
+/**
+ * @brief Eseguo lo swap dei buffer (front e back)
+ */
 void Base::swap() noexcept {
    glutSwapBuffers();
 }
 
+
+/**
+ * @brief Inizializza il contesto di rendering 3D
+ * @param camera La telecamera da cui prendere la matrice di proiezione
+ */
 void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept {
+   /// @brief attiva la modalità matrice di proiezione
    glMatrixMode(GL_PROJECTION);
+   /// @brief attiva la modalità matrice di proiezione
    glLoadMatrixf(glm::value_ptr(camera->getProjectionMatrix()));
+   /// @brief attiva la modalità matrice di proiezione
    glMatrixMode(GL_MODELVIEW);
 }
 
+/**
+ * @brief De-inizializza il contesto di rendering 3D
+ */
 void Base::end3D() noexcept {
    glMatrixMode(GL_MODELVIEW);
+   /// @details carica una matrice neutra
    glLoadIdentity();
 }
 
+/**
+ * @brief Pulisce i buffer per preparare il nuovo frame
+ */
 void Base::clear() noexcept {
+   /// @brief pulisce sia il buffer di colore che il depth buffer (z-buffer)
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+/**
+ * @brief Si occupa del rilascio delle risorse
+ * @return Se il motore era stato inizializzato torna true
+ */
 bool Base::free() const {
-   // Not initialized?
    if (!reserved_->initFlag)
    {
-      
+
       FreeImage_DeInitialise();
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
    }
 
-   // Here you can properly dispose of any allocated resource (including third-party dependencies)...
 
-   // Done:
    std::cout << "[<] " << LIB_NAME << " deinitialized" << std::endl;
    reserved_->initFlag = false;
    return true;
 }
 
+/**
+ * @details Gestisce il resize della finestra
+ * @param width
+ * @param height
+ */
 void Base::changeWindowSize(const int width, const int height) {
 
    glutReshapeWindow(width, height);
@@ -182,20 +234,37 @@ void Base::changeWindowSize(const int width, const int height) {
    setHeight(height);
 }
 
+
+/**
+ * @brief Si occupa di cambiare il nome della finestra
+ * @param title
+ */
 void Base::changeWindowTitle(const std::string &title) {
    glutSetWindowTitle(title.c_str());
 }
 
-void Base::changeBackgroundColor(const float r, const float g, const float b) {
-   glClearColor(r, g, b, 1.0f);
-}
 
+/**
+ * @brief Metodo statico per creazione di una mesh
+ * @param vertexes
+ * @param materialName
+ * @param material
+ * @return Ritorna la mesh
+ */
 ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
                                                const std::string& materialName,
                                                const std::shared_ptr<Material>& material) {
    return std::make_shared<Mesh>(vertexes, materialName, material);
 }
 
+/**
+ * @brief Metodo statico per creazione della telecamera prospettica
+ * @param fov
+ * @param aspectRatio
+ * @param nearPlane
+ * @param farPlane
+ * @return Ritorna una telecamera prospettica
+ */
 std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRatio,
                                                       float nearPlane, float farPlane) noexcept {
 
@@ -203,6 +272,16 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
 }
 
 
+/**
+ * @brief Metodo statico per creazione della telecamera ortografica
+ * @param left
+ * @param right
+ * @param top
+ * @param bottom
+ * @param nearPlane
+ * @param farPlane
+ * @return Ritorna una telecamera ortografica
+ */
 std::shared_ptr<Camera> Base::createOrthographicCamera(float left,
                                                        float right,
                                                        float top,
@@ -213,27 +292,37 @@ std::shared_ptr<Camera> Base::createOrthographicCamera(float left,
    return std::make_shared<Orthographic_Camera>(left, right, top, bottom, nearPlane, farPlane);
 }
 
-
+/// @brief Metodo statico per la creazione di una luce omnidirezionale
 std::shared_ptr<OmnidirectionalLight> Base::createOmnidirectionalLight() {
    return OmnidirectionalLight::createOmnidirectionalLight();
 }
 
-
+/// @brief Metodo statico per la creazione di una luce spotlight
 std::shared_ptr<Spotlight> Base::createSpotlight() {
    return Spotlight::createSpotLight();
 }
 
-
+/// @brief Metodo statico per la creazione di una luce direzionale
 std::shared_ptr<DirectionalLight> Base::createDirectionalLight() {
    return DirectionalLight::createDirectionalLight();
 }
 
 
 
+/**
+ * @brief Permette il caricamento di una scena
+ * @param path Path al percorso del file OVO
+ * @return Ritorna la root con la gerarchia completa
+ */
 std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
    return OvoReader::load(std::filesystem::absolute(path).string());
 }
 
+/**
+ * @brief
+ * @param camera
+ * @param renderList
+ */
 void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept {
 
    for (const auto& instance : renderList->getRenderList()) {
@@ -245,11 +334,7 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
 
 }
 
-// In engine.cpp (aggiungi questo metodo)
 
-// In engine.cpp
-
-#include "light.h" // Assicurati di includere questo!
 
 void Base::renderPlanarShadows(const std::shared_ptr<Camera>& camera,
     const std::shared_ptr<List>& renderList)
@@ -270,7 +355,7 @@ void Base::renderPlanarShadows(const std::shared_ptr<Camera>& camera,
             auto light = std::dynamic_pointer_cast<Light>(node);
             if (light) {
                 // Trovata! Prendiamo la sua posizione World dalla matrice dell'istanza
-                glm::vec3 pos = glm::vec3(instance.getNodeWorldMatrix()[3]);
+                auto pos = glm::vec3(instance.getNodeWorldMatrix()[3]);
                 lightPos = glm::vec4(pos, 1.0f);
                 lightFound = true;
             }
@@ -538,7 +623,7 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
     }
 
     // Nota: .get() non è necessario con l'operatore ->
-    for (const auto& childNode : root->getChildrens()) {
+    for (const auto& childNode : root->getChildren()) {
 
         // 1. Tenta il cast
         auto mesh = std::dynamic_pointer_cast<Mesh>(childNode);
@@ -586,4 +671,16 @@ void Base::setCulling(const bool enable) {
       glEnable(GL_CULL_FACE);
    else
       glDisable(GL_CULL_FACE);
+}
+
+
+std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& node, const std::string& name) const {
+   for (const auto& childNode : node.get()->getChildren()) {
+      if (childNode->getName() == name)
+      {
+         return childNode;
+      }
+      this->findByName(childNode, name);
+   }
+   return nullptr;
 }

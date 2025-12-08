@@ -21,8 +21,8 @@ float dynamic_cam_x_angle = 0.0f;
 float dynamic_cam_y_angle = 0.0f;
 float dynamic_cam_y = 800.0f;
 
-float angle_speed_rotation = 0.8f;
-float dynamic_cam_speed = 40.0f;
+float angle_speed_rotation = 2.0f;
+float dynamic_cam_speed = 60.0f;
 
 // CAMERA LIMITS
 float minX = std::numeric_limits<float>::max();
@@ -70,7 +70,7 @@ std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> current, const std
     }
 
     // 2. Cerca nei figli
-    for (const auto& child : current->getChildrens()) {
+    for (const auto& child : current->getChildren()) {
         auto result = findRec(child, nameToFind);
         if (result != nullptr) {
             return result; // Trovato! Risaliamo la catena
@@ -141,8 +141,8 @@ void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::sha
     dynamic_cam_pos.y = dynamic_cam_y;
 
 
-    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minY+limitation_bound, maxY-limitation_bound);
-    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minX+limitation_bound, maxX-limitation_bound);
+    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minX+limitation_bound, maxX-limitation_bound);
+    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minY+limitation_bound, maxY-limitation_bound);
     dynamic_cam_pos.z = glm::clamp(dynamic_cam_pos.z, minZ+limitation_bound, maxZ-limitation_bound);
 
 
