@@ -159,22 +159,54 @@ void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::sha
     cam->setMatrix(trans * x_rot * y_rot);
 }
 
+// In client/main.cpp
+
 std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base& eng) {
-
-
-    const std::shared_ptr<Eng::Texture> dark_wood_grain = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "darkWood.dds").string());
-
-    const std::shared_ptr<Eng::Texture> light_wood = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "lightWood.dds").string());
-
-    const std::shared_ptr<Eng::Texture> plastic = eng.loadTextureFromFile((projectDir / "ExportProgetto" / "plastic.dds").string());
-
-    //TODO AGGIUNGERE TEXTURE
-
     std::vector<std::shared_ptr<Eng::Texture>> textures;
 
-    textures.push_back(plastic);
-    textures.push_back(dark_wood_grain);
-    textures.push_back(light_wood);
+    // Definisci il percorso della cartella texture
+    // Nota: Basandomi sui tuoi file precedenti, le texture erano in "ExportProgetto".
+    // Se hai creato una cartella specifica chiamata "texture", cambia "ExportProgetto" in "texture".
+    fs::path textureDir = projectDir / "ExportProgetto";
+
+    // Verifica se la cartella esiste
+    if (!fs::exists(textureDir) || !fs::is_directory(textureDir)) {
+        std::cerr << "ATTENZIONE: La cartella texture non esiste: " << textureDir << std::endl;
+        return textures;
+    }
+
+    std::cout << "--- CARICAMENTO TEXTURE AUTOMATICO ---" << std::endl;
+
+    // Itera su tutti i file nella cartella
+    for (const auto& entry : fs::directory_iterator(textureDir)) {
+        if (entry.is_regular_file()) {
+            // Ottieni l'estensione del file
+            std::string ext = entry.path().extension().string();
+
+            // Converti in minuscolo per il confronto (per gestire .PNG, .png, .DDS, ecc.)
+            std::transform(ext.begin(), ext.end(), ext.begin(),
+                [](unsigned char c) { return std::tolower(c); });
+
+            // Lista delle estensioni supportate (aggiungine altre se serve)
+            if (ext == ".dds" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp") {
+
+                std::cout << "Loading: " << entry.path().filename() << "... ";
+
+                // Carica la texture usando l'engine
+                auto tex = eng.loadTextureFromFile(entry.path().string());
+
+                if (tex) {
+                    textures.push_back(tex);
+                    std::cout << "OK" << std::endl;
+                }
+                else {
+                    std::cout << "FALLITO" << std::endl;
+                }
+            }
+        }
+    }
+    std::cout << "--------------------------------------" << std::endl;
+    std::cout << "Totale texture caricate: " << textures.size() << std::endl;
 
     return textures;
 }

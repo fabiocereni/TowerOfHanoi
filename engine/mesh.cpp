@@ -23,13 +23,24 @@ void Mesh::render(const glm::mat4& modelViewMatrix) {
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(modelViewMatrix));
 
-    // --- 1. APPLICAZIONE MATERIALE ---
-    if (material_) {
-        material_->render(modelViewMatrix);
-    } else {
-        // Fallback: se non c'è materiale, usa un colore grigio standard e disattiva texture
-        float gray[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, gray);
+    // --- OTTIMIZZAZIONE 1: Salta i Materiali durante le ombre ---
+    // Se le luci sono spente, siamo probabilmente nel pass delle ombre.
+    // Non ha senso caricare texture e materiali pesanti per disegnare una sagoma nera.
+    bool lightingEnabled = glIsEnabled(GL_LIGHTING);
+
+    if (lightingEnabled) {
+        if (material_) {
+            material_->render(modelViewMatrix);
+        }
+        else {
+            float gray[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, gray);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+    }
+    else {
+        // Siamo nel pass delle ombre: assicuriamoci che le texture siano spente!
+        // (Altrimenti Texture::bind() nel materiale le riaccenderebbe sopra l'ombra)
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
