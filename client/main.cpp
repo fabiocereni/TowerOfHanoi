@@ -18,7 +18,7 @@ fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovoNew.ovo";
 
 
 std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {
-    const auto frontTableCam = eng.createPerspectiveCamera(40, 800.f / 600.f, 0.1f, 20000.0f);
+    const auto frontTableCam = eng.createPerspectiveCamera(40, 800.f / 600.f, 10.0f, 20000.0f);
 
 
     constexpr auto frontTablePosition = glm::vec3(0.0f, 2000.0f, 700.0f);
@@ -32,7 +32,7 @@ std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {
 }
 
 std::shared_ptr<Eng::Camera> returnTopTableCamera(Eng::Base& eng) {
-    const auto cam2 = eng.createPerspectiveCamera(40, 800.f / 600.f, 0.1f, 20000.0f);
+    const auto cam2 = eng.createPerspectiveCamera(40, 800.f / 600.f, 10.0f, 20000.0f);
 
     // posizione sopra al tavolo
     constexpr auto cam2Pos = glm::vec3(0.0f, 3000.0f, -700.0f);
@@ -68,12 +68,20 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
 void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<Eng::Node>& sceneRoot) {
     std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
 
-    my_omnilight->setAmbient(glm::vec3(1.0f));
-    my_omnilight->setDiffuse(glm::vec3(0.5f));
-    my_omnilight->setSpecular(glm::vec3(0.5f));
+    my_omnilight->setAmbient(glm::vec3(0.2f)); // Un po' di luce ambiente per non avere nero assoluto
+    my_omnilight->setDiffuse(glm::vec3(1.0f));
+    my_omnilight->setSpecular(glm::vec3(1.0f));
 
+
+    // --- POSIZIONA LA LUCE ---
+    // Alzala sopra il tavolo (es. Y = 2000 se la camera è a 1600)
+    glm::mat4 lightMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2000.0f, 0.0f));
+    my_omnilight->setMatrix(lightMatrix);
+
+    // -----------------------
 
     my_omnilight->setName("luce1");
+
 
     sceneRoot->addChildren(my_omnilight);
 }
@@ -155,6 +163,8 @@ int main(const int argc, char** argv) {
 
         // Passa la radice della scena alla render list
         renderList->pass(sceneRoot);
+
+        eng.renderPlanarShadows(eng.getActiveCamera(), renderList);
 
         // Esegui il render
         eng.render(eng.getActiveCamera(), renderList);

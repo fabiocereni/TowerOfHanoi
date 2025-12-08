@@ -165,7 +165,7 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    if (poles[3]) std::cout << ">> Palo 3 TROVATO!" << std::endl;
    else std::cerr << ">> ERRORE: Palo 3 non trovato." << std::endl;
 
-   initLights();
+       initLights();
 }
 
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
