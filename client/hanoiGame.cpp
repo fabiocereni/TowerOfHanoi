@@ -5,6 +5,70 @@
 #include <iostream>
 #include <algorithm>
 
+void HanoiGame::forceReflectivity(const std::shared_ptr<Eng::Node>& node) {
+   if (!node) return;
+
+   // 1. Controlla se il nodo è una MESH (cioè un oggetto 3D visibile)
+   if (auto mesh = std::dynamic_pointer_cast<Eng::Mesh>(node)) {
+      auto material = mesh->getMaterial();
+      if (material) {
+         // 2. AUMENTA LA LUCIDITÀ (Shininess)
+         // Valori tipici: 0 (opaco) -> 128 (specchio bagnato). 
+         // 64.0f o 100.0f è ottimo per plastica lucida o legno laccato.
+         material->setShininess(100.0f);
+
+         // 3. ABILITA IL COLORE RIFLESSO (Specular)
+         // Se è nero (0,0,0), non riflette nulla. 
+         // Mettiamolo Bianco/Grigio chiaro per riflettere il colore della luce.
+         material->setSpecular(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+      }
+   }
+
+   // 4. Ripeti per tutti i figli (ricorsione)
+   for (const auto& child : node->getChildrens()) {
+      forceReflectivity(child);
+   }
+}
+
+void HanoiGame::findMainLight() {
+   if (!root) return;
+
+   for (const auto& child : root->getChildrens()) {
+      // Cerchiamo una luce generica
+      auto light = std::dynamic_pointer_cast<Eng::Light>(child);
+
+      bool isMySpotlight = false;
+      for (auto& pl : poleLights) if (pl == light) isMySpotlight = true;
+
+      if (light && !isMySpotlight) {
+         mainLight = light;
+
+         // Salviamo i valori originali per ripristinarli dopo
+         originalMainDiffuse = mainLight->getDiffuse();
+         originalMainAmbient = mainLight->getAmbient();
+
+         std::cout << ">> Luce Principale trovata e agganciata." << std::endl;
+         return; // Ne basta una
+      }
+   }
+}
+
+void HanoiGame::dimMainLight(bool dim) {
+   if (!mainLight) return;
+
+   if (dim) {
+      // FASE OSCURA: Riduciamo al 20% (0.2f)
+      mainLight->setDiffuse(originalMainDiffuse * 0.2f);
+      mainLight->setAmbient(originalMainAmbient * 0.2f);
+      // Opzionale: puoi anche ridurre lo Specular se vuoi togliere i riflessi
+   }
+   else {
+      // FASE NORMALE: Ripristina originale
+      mainLight->setDiffuse(originalMainDiffuse);
+      mainLight->setAmbient(originalMainAmbient);
+   }
+}
+
 void HanoiGame::initLights() {
    poleLights.resize(4, nullptr);
 
@@ -15,14 +79,25 @@ void HanoiGame::initLights() {
 
       auto light = Eng::Base::getInstance().createSpotlight();
 
-      light->setCutoff(10.0f);
-      light->setExponent(100.0f);
+      // --- GEOMETRIA NETTA ---
+      light->setCutoff(10.0f);    // Angolo stretto per fare un cerchio preciso
+      light->setExponent(100.0f); // Massima concentrazione: bordo netto, niente sfumatura
 
+
+
+      // --- POSIZIONAMENTO ---
       glm::mat4 m = glm::mat4(1.0f);
-      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, -700.0f));
+
+      // IMPORTANTE: Z deve essere 0.0f per essere centrata sul palo!
+      // Y a 800.0f è una buona altezza per proiettare sulla base.
+      m = glm::translate(m, glm::vec3(0.0f, 1700.0f, -1500.0f));
+
+      // Ruota per puntare GIÙ (-Y)
       m = glm::rotate(m, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
       light->setMatrix(m);
 
+      // Colore iniziale (spento)
       light->setDiffuse(glm::vec3(0.0f));
       light->setSpecular(glm::vec3(0.0f));
       light->setAmbient(glm::vec3(0.0f));
@@ -33,31 +108,36 @@ void HanoiGame::initLights() {
 }
 
 void HanoiGame::updateLightsColors(int selectedIndex) {
-   glm::vec3 red = glm::vec3(100.0f, 0.0f, 0.0f);
-   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 40.0f);
+   // Colori "Overdrive" (molto > 1.0) per vincere sul materiale scuro
+   glm::vec3 red = glm::vec3(2000.0f, 0.0f, 0.0f);
+   glm::vec3 blue = glm::vec3(0.0f, 0.0f, 2000.0f);
    glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
+
+   // Ambient minimo colorato per dare tridimensionalità
+   glm::vec3 dimRed = glm::vec3(0.2f, 0.0f, 0.0f);
+   glm::vec3 dimBlue = glm::vec3(0.0f, 0.0f, 0.2f);
 
    for (int i = 1; i <= 3; i++) {
       auto light = poleLights[i];
       if (!light) continue;
 
       if (selectedIndex == -1) {
-         // Tutto spento
+         // SPENTO
          light->setDiffuse(black);
          light->setSpecular(black);
          light->setAmbient(black);
       }
       else if (i == selectedIndex) {
-         // Rosso
+         // ROSSO LASER
          light->setDiffuse(red);
          light->setSpecular(red);
-         light->setAmbient(glm::vec3(0.9f, 0.0f, 0.0f));
+         light->setAmbient(dimRed);
       }
       else {
-         // Blu
+         // BLU LASER
          light->setDiffuse(blue);
          light->setSpecular(blue);
-         light->setAmbient(glm::vec3(0.0f, 0.0f, 0.1f));
+         light->setAmbient(dimBlue);
       }
    }
 }
@@ -165,7 +245,9 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    if (poles[3]) std::cout << ">> Palo 3 TROVATO!" << std::endl;
    else std::cerr << ">> ERRORE: Palo 3 non trovato." << std::endl;
 
-       initLights();
+   forceReflectivity(root);
+   initLights();
+   findMainLight();
 }
 
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
@@ -232,6 +314,7 @@ void HanoiGame::processInput(const int poleIndex) {
 
             std::cout << ">> PRESO: " << disk->getName() << " (Alzato)" << std::endl;
             updateLightsColors(poleIndex);
+            dimMainLight(true);
          }
          else {
             std::cout << ">> Palo vuoto." << std::endl;
@@ -253,6 +336,7 @@ void HanoiGame::processInput(const int poleIndex) {
             sourcePole = nullptr;
             // spengo la luce
             updateLightsColors(-1);
+            dimMainLight(false);
             return;
          }
 
@@ -288,6 +372,7 @@ void HanoiGame::processInput(const int poleIndex) {
             selectedDisk = nullptr;
             sourcePole = nullptr;
             updateLightsColors(-1);
+            dimMainLight(false);
 
             // Debug print...
          }

@@ -3,6 +3,7 @@
 #include <vector>
 #include "engine.h"
 #include "spotlight.h"
+#include "light.h"
 
 
 class HanoiGame {
@@ -12,6 +13,14 @@ public:
    [[nodiscard]] std::string getStatusMessage() const { return statusMessage_; }
 
 private:
+
+   std::shared_ptr<Eng::Light> mainLight;
+   glm::vec3 originalMainDiffuse;
+   glm::vec3 originalMainAmbient;
+   void findMainLight();
+   void dimMainLight(bool dim);
+   void forceReflectivity(const std::shared_ptr<Eng::Node>& node);
+
    std::shared_ptr<Eng::Node> root;
    std::shared_ptr<Eng::Node> selectedDisk;
    std::shared_ptr<Eng::Node> sourcePole;
