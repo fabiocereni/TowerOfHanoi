@@ -72,7 +72,7 @@ void debugPrintGraph(const std::shared_ptr<Eng::Node>& node, const int depth) {
 
    std::cout << indent << node->getName() << std::endl;
 
-   for (auto& child : node->getChildrens()) {
+   for (auto& child : node->getChildren()) {
       debugPrintGraph(child, depth + 1);
    }
 }
@@ -83,7 +83,7 @@ bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) {
 
    // conto i dischi in questo modo altrimenti mi conterebbe anche le luci
    int diskCount = 0;
-   for (const std::shared_ptr<Eng::Node>& child : poleToMonitor->getChildrens())
+   for (const std::shared_ptr<Eng::Node>& child : poleToMonitor->getChildren())
    {
       if (std::dynamic_pointer_cast<Eng::Mesh>(child)) {
          diskCount++;
@@ -110,7 +110,7 @@ std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, con
    }
 
    // 2. Cerca nei figli
-   for (auto& child : current->getChildrens()) {
+   for (auto& child : current->getChildren()) {
       auto result = findRecursive(child, nameToFind);
       if (result != nullptr) {
          return result; // Trovato! Risaliamo la catena
@@ -144,15 +144,15 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
 
 
 
-   // modifica per test vittoria
-   std::vector<std::shared_ptr<Eng::Node>> tmp;
-   tmp.push_back(poles[1]->getChildrens().at(poles[1]->getChildrens().size() - 1));
-   tmp.push_back(poles[1]->getChildrens().at(poles[1]->getChildrens().size() - 2));
-
-   std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
-   poles[1]->setChilders(tmpChildren);
-   poles[1]->addChildren(tmp.at(0));
-   poles[1]->addChildren(tmp.at(1));
+   // // modifica per test vittoria
+   // std::vector<std::shared_ptr<Eng::Node>> tmp;
+   // tmp.push_back(poles[1]->getChildren().at(poles[1]->getChildren().size() - 1));
+   // tmp.push_back(poles[1]->getChildren().at(poles[1]->getChildren().size() - 2));
+   //
+   // std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
+   // poles[1]->setChildren(tmpChildren);
+   // poles[1]->addChildren(tmp.at(0));
+   // poles[1]->addChildren(tmp.at(1));
 
 
    // Verifica
@@ -171,7 +171,7 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
    if (!pole) return nullptr;
 
-   auto disks = pole->getChildrens();
+   auto disks = pole->getChildren();
 
    // Rimuovi ptr nulli
    disks.erase(std::remove(disks.begin(), disks.end(), nullptr), disks.end());
@@ -271,7 +271,7 @@ void HanoiGame::processInput(const int poleIndex) {
             float currentStackHeight = 0.0f;
             float baseOffset = 0.0f;
 
-            auto& children = clickedPole->getChildrens();
+            auto& children = clickedPole->getChildren();
             for (size_t i = 0; i < children.size() - 1; i++) {
                currentStackHeight += getMeshHeight(children[i]);
             }

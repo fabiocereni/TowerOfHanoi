@@ -29,7 +29,7 @@ private:
    float getMeshHeight(const std::shared_ptr<Eng::Node>& node);
    bool checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor);
 
-   const int numberOfDisks_ = 2;
+   const int numberOfDisks_ = 7;
    std::string poleToMonitorName_ = "palo3";
    std::string statusMessage_ = R"(--- ISTRUZIONI DI GIOCO ---
 1 - Seleziona da 1 a 3 il palo da cui vuoi prendere il disco

@@ -2,6 +2,10 @@
 #include <memory>
 #include "engine.h"
 
+
+/**
+ * @class Base
+ */
 namespace Eng {
    class ENG_API Base {
    public:
