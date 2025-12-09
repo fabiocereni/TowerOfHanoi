@@ -1,58 +1,79 @@
-# --- CLIENT MAKEFILE ---
+# --- CLIENT MAKEFILE (Universal v2) ---
 BASE_NAME := hanoiTower
-TARGET := $(BASE_NAME)
 TARGET_ARCHIVE := $(BASE_NAME).tar.gz
 
-# Sorgenti
-MAIN_SRC_FILES := $(wildcard *.cpp)
-MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+# Rilevamento OS
+ifeq ($(OS),Windows_NT)
+    detected_OS := Windows
+else
+    detected_OS := $(shell uname -s)
+endif
 
-# Riferimenti all'Engine
 ENGINE_DIR := ../engine
 ENGINE_LIB_NAME := engine
-ENGINE_LIB_FILENAME := lib$(ENGINE_LIB_NAME).so
 
-# Compiler Settings
+# --- Default: Linux ---
+LIB_EXT := .so
+EXE_EXT :=
 CXX := g++
 CXX_FLAGS := -std=c++20 -O2 -I$(ENGINE_DIR)
-# Linker: cerca la libreria in ../engine durante la compilazione
 LDFLAGS := -L$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lglut -lGL -lGLU -lfreeimage
 TAR_GZ := tar zcvf
 
-# Target Principale
+# --- Mac Settings ---
+ifeq ($(detected_OS),Darwin)
+	LIB_EXT := .dylib
+	CXX_FLAGS += -I/opt/homebrew/include -Wno-deprecated-declarations
+	LDFLAGS := -L$(ENGINE_DIR) -L/opt/homebrew/lib -l$(ENGINE_LIB_NAME) -lglut -framework OpenGL -lfreeimage
+endif
+
+# --- Windows Settings ---
+ifeq ($(detected_OS),Windows)
+	LIB_EXT := .dll
+	EXE_EXT := .exe
+	# Su Windows linkiamo opengl32 e glu32 standard
+	LDFLAGS := -L$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lfreeglut -lopengl32 -lglu32
+endif
+
+TARGET := $(BASE_NAME)$(EXE_EXT)
+ENGINE_LIB_FILENAME := lib$(ENGINE_LIB_NAME)$(LIB_EXT)
+
+MAIN_SRC_FILES := $(wildcard *.cpp)
+MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+
 all: $(TARGET)
 
-# Compilazione Eseguibile
 $(TARGET): $(MAIN_OBJ_FILES)
 	$(CXX) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
 	@echo "$(TARGET) compile done!"
 
-# Regola .cpp -> .o
 %.o: %.cpp
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
-# --- PACKAGING SECTION (Corretta) ---
-
-# Crea l'archivio con Eseguibile + Libreria .so + Script di avvio
+# --- PACKAGING SECTION ---
 package: $(TARGET)
 	@echo "Creating package..."
-	# 1. Copia la libreria dall'engine qui
+	# Copia la libreria dinamica (dll/so/dylib)
 	cp $(ENGINE_DIR)/$(ENGINE_LIB_FILENAME) .
 	
-	# 2. Crea uno script per lanciare il programma (fix per LD_LIBRARY_PATH)
+	# Crea script run.sh universale
 	echo '#!/bin/bash' > run.sh
-	echo 'export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH' >> run.sh
-	echo './$(TARGET)' >> run.sh
+	echo 'OS="$$(uname -s)"' >> run.sh
+	echo 'if [[ "$$OS" == "MINGW"* ]] || [[ "$$OS" == "CYGWIN"* ]]; then' >> run.sh
+	echo '  ./$(TARGET)' >> run.sh
+	echo 'elif [ "$$OS" = "Darwin" ]; then' >> run.sh
+	echo '  export DYLD_LIBRARY_PATH=.:$$DYLD_LIBRARY_PATH' >> run.sh
+	echo '  ./$(TARGET)' >> run.sh
+	echo 'else' >> run.sh
+	echo '  export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH' >> run.sh
+	echo '  ./$(TARGET)' >> run.sh
+	echo 'fi' >> run.sh
 	chmod +x run.sh
 	
-	# 3. Crea il tar.gz con tutto dentro
 	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET) $(ENGINE_LIB_FILENAME) run.sh
-	
-	# 4. Pulizia file temporanei copiati
 	rm $(ENGINE_LIB_FILENAME) run.sh
 	@echo "Package $(TARGET_ARCHIVE) created!"
 
-# --- CLEAN ---
 clean:
 	rm -f $(TARGET) $(MAIN_OBJ_FILES) $(TARGET_ARCHIVE)
 
