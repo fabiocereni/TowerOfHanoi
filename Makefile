@@ -1,93 +1,75 @@
-MAKE = make
-ENGINE_DIR = engine
-CLIENT_DIR = client
-ARCHIVE_NAME = hanoiTower_release.tar.gz
+# Makefile Root
 
-.PHONY: all build_engine build_client test package clean cross_win universal
+# Nome del pacchetto generato dal client (senza _release)
+PKG_NAME = hanoiTower.tar.gz
+# Nome finale del pacchetto Linux completo
+FINAL_PKG_NAME = hanoiTower_linux_complete.tar.gz
 
-# Default
-all: package
+.PHONY: all clean engine client package universal test
 
-build_engine:
+# Target predefinito
+all: engine client
+
+# Compila l'engine
+engine:
+	$(MAKE) -C engine all
+
+# Compila il client
+client: engine
+	$(MAKE) -C client all
+
+# Esegue i test dell'engine
+test: engine
+	$(MAKE) -C engine test
+
+# Target Clean
+clean:
+	$(MAKE) -C engine clean
+	$(MAKE) -C client clean
+	rm -rf *.tar.gz *.zip temp_pkg universal_bundle
+
+# Target Package: compila, pacchettizza e prepara il pacchetto finale
+package:
 	@echo "=== Building Engine ==="
-	$(MAKE) -C $(ENGINE_DIR) all
-
-build_client: build_engine
-	@echo "=== Building Client ==="
-	$(MAKE) -C $(CLIENT_DIR) all
-
-test: build_engine
+	$(MAKE) -C engine all
 	@echo "=== Running Engine Tests ==="
-	$(MAKE) -C $(ENGINE_DIR) test
-
-package: test build_client
+	$(MAKE) -C engine test
+	@echo "=== Building Client ==="
+	$(MAKE) -C client all
 	@echo "=== Packaging Linux ==="
-	$(MAKE) -C $(CLIENT_DIR) package
-	mv $(CLIENT_DIR)/*.tar.gz . 2>/dev/null || true
+	$(MAKE) -C client package
+	# Sposta il pacchetto generato nella root
+	mv client/$(PKG_NAME) . 2>/dev/null || true
 	
-	# --- FIX LINUX: INIEZIONE DIPENDENZE ---
-	mkdir -p temp_pkg
-	tar -xf $(ARCHIVE_NAME) -C temp_pkg
-	cp /usr/lib/x86_64-linux-gnu/libglut.so.3* temp_pkg/ 2>/dev/null || true
-	cp /usr/lib/x86_64-linux-gnu/libGLU.so.1* temp_pkg/ 2>/dev/null || true
-	tar -czvf $(ARCHIVE_NAME) -C temp_pkg .
+	# --- FIX LINUX: INIEZIONE DIPENDENZE E CREAZIONE PACCHETTO FINALE ---
+	@echo "=== Finalizing Linux Package ==="
 	rm -rf temp_pkg
-	@echo "Linux Package creato con dipendenze incluse."
+	mkdir -p temp_pkg
+	# QUI ERA L'ERRORE: ora usa il nome corretto $(PKG_NAME)
+	tar -xf $(PKG_NAME) -C temp_pkg
+	
+	# Qui puoi aggiungere comandi extra se devi copiare altre lib (es. freeimage)
+	# cp /usr/lib/x86_64-linux-gnu/libfreeimage.so.3 temp_pkg/ || true
+	
+	# Ricrea l'archivio finale
+	tar -C temp_pkg -zcvf $(FINAL_PKG_NAME) .
+	@echo "Pacchetto finale creato: $(FINAL_PKG_NAME)"
+	
+	# Pulizia
+	rm -rf temp_pkg
 
-# --- CROSS-COMPILE WINDOWS (Usa la TUA cartella dependencies) ---
-cross_win:
-	@echo "=== Cross Compiling for Windows using LOCAL dependencies ==="
-	
-	# Definiamo i path basandoci sulla tua cartella 'dependencies'
-	# Nota: Adatto i path alla struttura che vedo nei tuoi file caricati
-	$(eval DEP_INC := -I../dependencies/glm/include -I../dependencies/freeglut/include -I../dependencies/freeimage/include)
-	$(eval DEP_LIB := -L../dependencies/freeglut/lib/x64/Release -L../dependencies/freeimage/lib/x64/Release)
-	
-	# 1. Compila Engine (DLL)
-	$(MAKE) -C $(ENGINE_DIR) clean
-	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll \
-		CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static $(DEP_INC)" \
-		LIBS="$(DEP_LIB) -lfreeglut_static -lFreeImage -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
-	
-	# 2. Compila Client (EXE)
-	$(MAKE) -C $(CLIENT_DIR) clean
-	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll \
-		CXX_FLAGS="-c -O2 -std=c++20 -I../engine $(DEP_INC)" \
-		LDFLAGS="-L../engine -lengine $(DEP_LIB) -lfreeglut_static -lFreeImage -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
-	
-	# 3. Crea ZIP Windows
-	mkdir -p windows_dist
-	cp $(CLIENT_DIR)/hanoiTower.exe windows_dist/
-	cp $(ENGINE_DIR)/libengine.dll windows_dist/
-	# Se hai una DLL di FreeImage o FreeGLUT nella cartella dependencies, copiala qui
-	# cp dependencies/freeglut/bin/x64/freeglut.dll windows_dist/ 2>/dev/null || true
-	# cp dependencies/freeimage/Dist/x64/FreeImage.dll windows_dist/ 2>/dev/null || true
-	
-	cd windows_dist && zip -r ../hanoiTower_win.zip .
-	rm -rf windows_dist
-
-# --- BUILD UNIVERSALE ---
+# Target Universal (dal log sembra essere quello chiamato dalla CI)
 universal:
 	@echo "=== Creating Universal Bundle ==="
 	rm -rf universal_bundle
 	mkdir -p universal_bundle/linux
 	mkdir -p universal_bundle/windows
 	
-	# 1. Linux
+	# 1. Pulisci tutto
 	$(MAKE) clean
+	
+	# 2. Crea pacchetto Linux
 	$(MAKE) package
-	mv *.tar.gz universal_bundle/linux/
 	
-	# 2. Windows (Usa le tue dipendenze)
-	$(MAKE) cross_win
-	mv *.zip universal_bundle/windows/
-	
-	# 3. Finale
-	zip -r hanoiTower_COMPLETE.zip universal_bundle
-	rm -rf universal_bundle
-	@echo "SUCCESS: hanoiTower_COMPLETE.zip created!"
-
-clean:
-	$(MAKE) -C $(ENGINE_DIR) clean
-	$(MAKE) -C $(CLIENT_DIR) clean
-	rm -f *.tar.gz *.zip
+	# (Opzionale) Se avessi cross-compilazione Windows la aggiungeresti qui
+	# $(MAKE) package_windows ...
