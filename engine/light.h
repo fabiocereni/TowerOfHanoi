@@ -46,7 +46,7 @@ protected:
     glm::vec3 specular_ {1.0f};
 
 
-    float radius_      = 1.0f;  // for attenuation
+    float radius_      = 1.0f;
 
 
     float attConst_    = 1.0f;

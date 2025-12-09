@@ -3,6 +3,10 @@
 #include "glm/glm.hpp"
 #include "engine_api.h"
 
+/*
+ * @class Object
+ * @brief classe astratta rappresentante un generico oggetto
+ */
 namespace Eng {
    class ENG_API Object {
 
