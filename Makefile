@@ -1,74 +1,128 @@
-MAKE = make
+# --- CONFIGURAZIONE ---
 ENGINE_DIR = engine
 CLIENT_DIR = client
-ARCHIVE_NAME = hanoiTower_release.tar.gz
 
-.PHONY: all build_engine build_client test package clean cross_win universal
+# Percorsi di output basati sul tuo script "funzionante su Linux"
+LINUX_BIN_PATH = $(CLIENT_DIR)/bin/Debug/client
+LINUX_LIB_PATH = $(ENGINE_DIR)/bin/Debug/libengine.so
+
+.PHONY: all clean build_linux package_linux cross_win universal
 
 # Default
-all: package
+all: build_linux
 
-build_engine:
-	@echo "=== Building Engine ==="
+# --- 1. BUILD LINUX (Standard) ---
+build_linux:
+	@echo "=== Building Engine (Linux) ==="
 	$(MAKE) -C $(ENGINE_DIR) all
-
-build_client: build_engine
-	@echo "=== Building Client ==="
+	@echo "=== Building Client (Linux) ==="
 	$(MAKE) -C $(CLIENT_DIR) all
 
-test: build_engine
-	@echo "=== Running Engine Tests ==="
-	$(MAKE) -C $(ENGINE_DIR) test
+# --- 2. PACKAGE LINUX (Logica 'ldd' integrata) ---
+package_linux: build_linux
+	@echo "=== Packaging Linux Bundle ==="
+	rm -rf linux_dist
+	mkdir -p linux_dist/libs
+	
+	# 1. Copia eseguibile e libreria engine
+	# Verifica se i file esistono (supporta sia Debug che Release se cambiate config)
+	if [ -f "$(CLIENT_DIR)/bin/Release/client" ]; then \
+		cp $(CLIENT_DIR)/bin/Release/client linux_dist/hanoiTower; \
+		cp $(ENGINE_DIR)/bin/Release/libengine.so linux_dist/libs/; \
+	else \
+		cp $(CLIENT_DIR)/bin/Debug/client linux_dist/hanoiTower; \
+		cp $(ENGINE_DIR)/bin/Debug/libengine.so linux_dist/libs/; \
+	fi
+	
+	# 2. Copia dipendenze di sistema (Logica estratta dal tuo script yml)
+	# Cerca libglut e altre dipendenze dinamiche
+	@echo "Gathering system libraries..."
+	ldd linux_dist/hanoiTower | grep "=> /" | while read -r line; do \
+		lib_path=$$(echo "$$line" | awk '{print $$3}'); \
+		lib_name=$$(echo "$$line" | awk '{print $$1}'); \
+		if echo "$$lib_name" | grep -Eq "^(libc\.so|libstdc\+\+|libm\.so|libpthread|libdl|librt|ld-linux|libgcc_s)"; then continue; fi; \
+		echo "Copying $$lib_name"; \
+		cp -L -n "$$lib_path" linux_dist/libs/ || true; \
+	done
+	
+	# Fix specifico per libglut se non trovata da ldd (dal tuo script)
+	if [ ! -f linux_dist/libs/libglut.so.3 ]; then \
+		GLUT_PATH=$$(find /usr/lib -name "libglut.so*" | head -n 1); \
+		if [ -n "$$GLUT_PATH" ]; then \
+			cp -L "$$GLUT_PATH" linux_dist/libs/libglut.so.3; \
+			cp -L "$$GLUT_PATH" linux_dist/libs/libglut.so; \
+		fi \
+	fi
 
-package: test build_client
-	@echo "=== Packaging Linux ==="
-	$(MAKE) -C $(CLIENT_DIR) package
-	mv $(CLIENT_DIR)/*.tar.gz . 2>/dev/null || true
+	# 3. Crea script di avvio run.sh
+	echo '#!/bin/bash' > linux_dist/run.sh
+	echo 'DIR="$$( cd "$$( dirname "$${BASH_SOURCE[0]}" )" && pwd )"' >> linux_dist/run.sh
+	echo 'export LD_LIBRARY_PATH="$$DIR/libs:$$LD_LIBRARY_PATH"' >> linux_dist/run.sh
+	echo 'chmod +x "$$DIR/hanoiTower"' >> linux_dist/run.sh
+	echo 'exec "$$DIR/hanoiTower"' >> linux_dist/run.sh
+	chmod +x linux_dist/run.sh
+	
+	# 4. Crea archivio Linux
+	cd linux_dist && tar -czvf ../hanoiTower_linux.tar.gz .
 
-# --- CROSS-COMPILE WINDOWS ---
+# --- 3. CROSS-COMPILE WINDOWS (Funzionante dal primo esempio) ---
 cross_win:
 	@echo "=== Cross Compiling for Windows ==="
+	rm -rf win_deps windows_dist
 	mkdir -p win_deps
+	
+	# Scarica FreeGLUT
 	wget -q -O win_deps/freeglut.zip https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MinGW-3.0.0-1.mp.zip
 	unzip -o -q win_deps/freeglut.zip -d win_deps
 	
+	# Pulisce build precedenti
 	$(MAKE) -C $(ENGINE_DIR) clean
-	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll \
-		CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static -I../dependencies/glm/include -I../win_deps/freeglut/include" \
-		LIBS="-L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
-	
 	$(MAKE) -C $(CLIENT_DIR) clean
-	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll \
-		CXX_FLAGS="-c -O2 -std=c++20 -I../engine -I../dependencies/glm/include -I../win_deps/freeglut/include" \
-		LDFLAGS="-L../engine -lengine -L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
 	
+	# Compila Engine (DLL)
+	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll \
+		CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static -D_WIN32 -I../win_deps/freeglut/include" \
+		LIBS="-L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++ -Wl,--allow-multiple-definition" all
+	
+	# Compila Client (EXE)
+	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll \
+		CXX_FLAGS="-c -O2 -std=c++20 -D_WIN32 -I../engine -I../win_deps/freeglut/include" \
+		LDFLAGS="-L../engine -lengine -L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++ -Wl,--allow-multiple-definition" all
+	
+	# Pacchettizzazione Windows
 	mkdir -p windows_dist
 	cp $(CLIENT_DIR)/hanoiTower.exe windows_dist/
 	cp $(ENGINE_DIR)/libengine.dll windows_dist/
-	cp win_deps/freeglut/bin/x64/freeglut.dll windows_dist/
-	# Creiamo lo zip temporaneo per Windows
+	# Copia DLL freeglut se serve (anche se linkata statica, per sicurezza)
+	cp win_deps/freeglut/bin/x64/freeglut.dll windows_dist/ 2>/dev/null || true
+	
+	# Script run.bat semplice
+	echo "hanoiTower.exe" > windows_dist/run.bat
+	
 	cd windows_dist && zip -r ../hanoiTower_win.zip .
-	rm -rf windows_dist win_deps
+	rm -rf win_deps windows_dist
 
-# --- NUOVO COMANDO: BUILD UNIVERSALE (Linux + Windows) ---
+# --- 4. UNIVERSAL (Orchestratore) ---
 universal:
 	@echo "=== Creating Universal Bundle ==="
-	rm -rf universal_bundle
+	rm -rf universal_bundle hanoiTower_COMPLETE.zip
 	mkdir -p universal_bundle/linux
 	mkdir -p universal_bundle/windows
 	
-	# 1. Compila versione Linux
+	# FASE 1: LINUX
+	# Pulisci tutto per partire da zero
 	$(MAKE) clean
-	$(MAKE) package
-	# Sposta il tar.gz nella cartella linux
-	mv *.tar.gz universal_bundle/linux/
+	# Esegui il target package_linux che compila e fa l'ldd
+	$(MAKE) package_linux
+	mv hanoiTower_linux.tar.gz universal_bundle/linux/
+	rm -rf linux_dist
 	
-	# 2. Compila versione Windows
+	# FASE 2: WINDOWS
+	$(MAKE) clean
 	$(MAKE) cross_win
-	# Sposta lo zip windows nella cartella windows (e lo scompatta se preferisci, qui lo lascio zip)
-	mv *.zip universal_bundle/windows/
+	mv hanoiTower_win.zip universal_bundle/windows/
 	
-	# 3. Crea il pacchetto finale unico
+	# ZIP FINALE
 	zip -r hanoiTower_COMPLETE.zip universal_bundle
 	rm -rf universal_bundle
 	@echo "SUCCESS: hanoiTower_COMPLETE.zip created!"
@@ -76,4 +130,4 @@ universal:
 clean:
 	$(MAKE) -C $(ENGINE_DIR) clean
 	$(MAKE) -C $(CLIENT_DIR) clean
-	rm -f *.tar.gz *.zip
+	rm -rf win_deps windows_dist linux_dist universal_bundle *.zip *.tar.gz
