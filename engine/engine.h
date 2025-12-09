@@ -138,12 +138,13 @@ namespace Eng {
 
 
 
-      ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept;
-      ENG_API void renderPlanarShadows(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList);
+      ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList, const std::list<std::string>& excludedList) const;
       ENG_API void showFps();
       ENG_API static void infoPrinter(const std::string& info);
       ENG_API void infoClear() { return info_.clear(); };
       ENG_API static void clearInfoPrinter();
+
+      ENG_API std::shared_ptr<Node> findByName(const std::shared_ptr<Node>& node, const std::string& name) const;
 
 
       // In engine.h, dentro class Base public:

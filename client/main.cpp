@@ -251,6 +251,7 @@ int main(const int argc, char** argv) {
     const std::string scenePath = modelPath.string();
     const auto sceneRoot = eng.load(scenePath);
 
+    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" };
 
     const std::vector<std::shared_ptr<Eng::Texture>> textures = loadAndReturnTextures(eng);
     eng.bindTexturesToMaterials(sceneRoot, textures);
@@ -352,10 +353,8 @@ int main(const int argc, char** argv) {
         // Passa la radice della scena alla render list
         renderList->pass(sceneRoot);
 
-        eng.renderPlanarShadows(eng.getActiveCamera(), renderList);
-
         // Esegui il render
-        eng.render(eng.getActiveCamera(), renderList);
+        eng.render(eng.getActiveCamera(), renderList, excluded);
 
         eng.end3D();
 
