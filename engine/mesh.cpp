@@ -20,28 +20,55 @@ ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes,
 
 void Mesh::render(const glm::mat4& modelViewMatrix) {
 
+    // @brief carichiamo la matrice di modelView
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(modelViewMatrix));
 
-    // --- 1. APPLICAZIONE MATERIALE ---
-    if (material_) {
-        material_->render(modelViewMatrix);
-    } else {
-        // Fallback: se non c'è materiale, usa un colore grigio standard e disattiva texture
-        float gray[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, gray);
+
+    /* @details
+     * se le luci sono spente, stiamo renderizzando un'ombra
+     * non serve quindi applicare materiali o texture
+     * altrimenti stiamo renderizzando una mesh
+     */
+    if (glIsEnabled(GL_LIGHTING)) {
+        if (material_) {
+            material_->render(modelViewMatrix);
+        }
+        else {
+            /* @details
+             * in caso che la mesh non abbia un materiale
+             * evita che venga utilizzato il materiale
+             * della mesh precedente
+             */
+            constexpr float gray[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, gray);
+            /*
+             * @brief reset dello stato per la prossima mesh
+             * @details se non c'è texture, ripuliamo
+             * lo stato per non applicare texture di altri
+             * oggetti a questo
+             */
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+    }
+    else {
+        /*
+         * @brief reset dello stato per la prossima mesh
+         * @details se non c'è texture, ripuliamo
+         * lo stato per non applicare texture di altri
+         * oggetti a questo
+         */
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    // --- 2. DISEGNO GEOMETRIA ---
     glBegin(GL_TRIANGLES);
     for (size_t i = 0; i < vertexes_.size(); ++i) {
 
-        // Applica la normale (essenziale per le luci)
+        // @brief applicazione della normale
         if (!normals_.empty() && i < normals_.size())
             glNormal3fv(glm::value_ptr(normals_[i]));
 
-        // NUOVO: Applica le coordinate Texture (UV) se presenti
+        // @brief applica le coordinate uv se presenti
         if (!uv_coords_.empty() && i < uv_coords_.size())
             glTexCoord2fv(glm::value_ptr(uv_coords_[i]));
 
@@ -49,7 +76,12 @@ void Mesh::render(const glm::mat4& modelViewMatrix) {
     }
     glEnd();
 
-    // Pulizia: disabilita texture dopo il render
+
+    /*
+     * @brief reset dello stato per la prossima mesh
+     * @details se non c'è texture, ripuliamo
+     * lo stato per non applicare texture di altri
+     * oggetti a questo
+     */
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-

@@ -1,82 +1,70 @@
-# Nome del tuo progetto
-BASE_NAME := hanoiTower
-TARGET_ARCHIVE := $(BASE_NAME).tar.gz
-
-# Rilevamento OS
-ifeq ($(OS),Windows_NT)
-    detected_OS := Windows
-else
-    detected_OS := $(shell uname -s)
-endif
-
-ENGINE_DIR := ../engine
-ENGINE_LIB_NAME := engine
-
-# --- Default: Linux ---
-LIB_EXT := .so
-EXE_EXT :=
 CXX := g++
-CXX_FLAGS := -std=c++20 -O2 -I$(ENGINE_DIR)
-LDFLAGS := -L$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lglut -lGL -lGLU -lfreeimage
-TAR_GZ := tar zcvf
+LD  := g++
 
-# --- Mac Settings ---
-ifeq ($(detected_OS),Darwin)
-	LIB_EXT := .dylib
-	CXX_FLAGS += -I/opt/homebrew/include -Wno-deprecated-declarations
-	LDFLAGS := -L$(ENGINE_DIR) -L/opt/homebrew/lib -l$(ENGINE_LIB_NAME) -lglut -framework OpenGL -lfreeimage
-endif
+# cartella sorgenti client e auto-raccolta .cpp (anche sotto Test/)
+SRC_DIR := .
+SRCS    := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/Test/*.cpp)
 
-# --- Windows Settings ---
-ifeq ($(detected_OS),Windows)
-	LIB_EXT := .dll
-	EXE_EXT := .exe
-	LDFLAGS := -L$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lfreeglut -lopengl32 -lglu32
-endif
+# include di engine e dipendenze vendored
+INCLUDES := -I../engine -I../dependencies/glm/include -I../dependencies/freeglut/include -I../dependencies/freeimage/include
+# flag comuni con depfile
+CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fexceptions -MMD -MP $(INCLUDES)
 
-TARGET := $(BASE_NAME)$(EXE_EXT)
-ENGINE_LIB_FILENAME := lib$(ENGINE_LIB_NAME)$(LIB_EXT)
+# librerie da linkare
+ENGINE_LIB := -lengine
+GL_LIBS := -lglut -lGL -lGLU -lm
 
-MAIN_SRC_FILES := $(wildcard *.cpp)
-MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+# configurazione Debug
+OBJDIR_Debug   := obj/Debug
+BINDIR_Debug   := bin/Debug
+OBJS_Debug     := $(SRCS:%.cpp=$(OBJDIR_Debug)/%.o)
+DEPS_Debug     := $(OBJS_Debug:.o=.d)
+TARGET_Debug   := $(BINDIR_Debug)/client
+CXXFLAGS_Debug := $(CXXFLAGS_COMMON) -g -D_DEBUG
+# path libreria engine e rpath relativo per trovare la .so a runtime (binario in client/bin/Debug)
+LDFLAGS_Debug  := -L../engine/bin/Debug -Wl,-rpath,'$$ORIGIN/../../../engine/bin/Debug:$$ORIGIN/../../../dependencies/lib'
 
-all: $(TARGET)
+# configurazione Release
+OBJDIR_Release   := obj/Release
+BINDIR_Release   := bin/Release
+OBJS_Release     := $(SRCS:%.cpp=$(OBJDIR_Release)/%.o)
+DEPS_Release     := $(OBJS_Release:.o=.d)
+TARGET_Release   := $(BINDIR_Release)/client
+CXXFLAGS_Release := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
+LDFLAGS_Release  := -L../engine/bin/Release -Wl,-rpath,'$$ORIGIN/../../../engine/bin/Release:$$ORIGIN/../../../dependencies/lib' -s
 
-$(TARGET): $(MAIN_OBJ_FILES)
-	$(CXX) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
-	@echo "$(TARGET) compile done!"
+# target aggregati
+all: debug release
 
-%.o: %.cpp
-	$(CXX) $(CXX_FLAGS) -c $< -o $@
+# build Debug/Release
+debug: $(TARGET_Debug)
+release: $(TARGET_Release)
 
-# --- PACKAGING SECTION (Include Lib + Script) ---
-package: $(TARGET)
-	@echo "Creating package..."
-	# Copia la libreria dinamica (necessaria per eseguire)
-	cp $(ENGINE_DIR)/$(ENGINE_LIB_FILENAME) .
-	
-	# Crea script run.sh universale
-	echo '#!/bin/bash' > run.sh
-	echo 'OS="$$(uname -s)"' >> run.sh
-	echo 'if [[ "$$OS" == "MINGW"* ]] || [[ "$$OS" == "CYGWIN"* ]]; then' >> run.sh
-	echo '  ./$(TARGET)' >> run.sh
-	echo 'elif [ "$$OS" = "Darwin" ]; then' >> run.sh
-	echo '  export DYLD_LIBRARY_PATH=.:$$DYLD_LIBRARY_PATH' >> run.sh
-	echo '  ./$(TARGET)' >> run.sh
-	echo 'else' >> run.sh
-	echo '  export LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH' >> run.sh
-	echo '  ./$(TARGET)' >> run.sh
-	echo 'fi' >> run.sh
-	chmod +x run.sh
-	
-	# Crea l'archivio
-	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET) $(ENGINE_LIB_FILENAME) run.sh
-	
-	# Pulizia file temporanei
-	rm $(ENGINE_LIB_FILENAME) run.sh
-	@echo "Package $(TARGET_ARCHIVE) created!"
+# link eseguibile
+$(TARGET_Debug): $(OBJS_Debug) | $(BINDIR_Debug)
+	$(LD) -o $@ $(OBJS_Debug) $(LDFLAGS_Debug) $(ENGINE_LIB) $(GL_LIBS)
 
+$(TARGET_Release): $(OBJS_Release) | $(BINDIR_Release)
+	$(LD) -o $@ $(OBJS_Release) $(LDFLAGS_Release) $(ENGINE_LIB) $(GL_LIBS)
+
+# compilazione singolo oggetto
+$(OBJDIR_Debug)/%.o: %.cpp | $(OBJDIR_Debug)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS_Debug) -c $< -o $@
+
+$(OBJDIR_Release)/%.o: %.cpp | $(OBJDIR_Release)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS_Release) -c $< -o $@
+
+# creazione cartelle obj/bin
+$(OBJDIR_Debug) $(BINDIR_Debug) $(OBJDIR_Release) $(BINDIR_Release):
+	mkdir -p $@
+
+# pulizia
 clean:
-	rm -f $(TARGET) $(MAIN_OBJ_FILES) $(TARGET_ARCHIVE)
+	rm -rf $(OBJDIR_Debug) $(OBJDIR_Release) $(BINDIR_Debug) $(BINDIR_Release)
 
-.PHONY: all clean package
+# include dei depfile generati
+-include $(DEPS_Debug) $(DEPS_Release)
+
+.PHONY: all debug release clean

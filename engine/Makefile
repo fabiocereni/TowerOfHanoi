@@ -1,72 +1,65 @@
-BASE_NAME := engine
-
-# Rilevamento OS
-ifeq ($(OS),Windows_NT)
-    detected_OS := Windows
-else
-    detected_OS := $(shell uname -s)
-endif
-
-# --- Default: Linux Settings ---
-LIB_EXT := .so
-CXX_FLAGS := -c -fPIC -std=c++20 -O2
-LD_FLAGS := -shared
-LIBS := -lglut -lGL -lGLU -lfreeimage
-EXE_EXT :=
-
-# --- Mac Settings (Darwin) ---
-ifeq ($(detected_OS),Darwin)
-	LIB_EXT := .dylib
-	CXX_FLAGS += -I/opt/homebrew/include -Wno-deprecated-declarations
-	LD_FLAGS := -dynamiclib
-	LIBS := -L/opt/homebrew/lib -lglut -framework OpenGL -lfreeimage
-endif
-
-# --- Windows Settings ---
-ifeq ($(detected_OS),Windows)
-	LIB_EXT := .dll
-	LIBS := -lfreeglut -lopengl32 -lglu32
-	LD_FLAGS := -shared
-	EXE_EXT := .exe
-endif
-
-TARGET := lib$(BASE_NAME)$(LIB_EXT)
-
-# Sorgenti
-MAIN_SRC_FILES := $(wildcard *.cpp)
-MAIN_OBJ_FILES := $(MAIN_SRC_FILES:.cpp=.o)
-
-# Test Config
-TESTS_RUNNER := $(BASE_NAME)-tests-runner$(EXE_EXT)
-TEST_SRC_FILES := $(wildcard tests/*_test.cpp)
-TEST_OBJ_FILES := $(TEST_SRC_FILES:.cpp=.o)
 CXX := g++
+LD  := g++
 
-# --- TARGETS ---
-all: $(TARGET)
+# cartella sorgenti e auto-raccolta di tutti i .cpp
+SRC_DIR := .
+SRCS    := $(wildcard $(SRC_DIR)/*.cpp)
 
-$(TARGET): $(MAIN_OBJ_FILES)
-	$(CXX) $(LD_FLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LIBS)
-	@echo "$(TARGET) build done!"
+# include locali (engine + dipendenze vendored)
+INCLUDES := -I. -I../dependencies/glm/include -I../dependencies/freeglut/include -I../dependencies/freeimage/include
 
-%.o: %.cpp
-	$(CXX) $(CXX_FLAGS) -o $@ $<
+# flag comuni: warning, standard, PIC, depfile per header
+CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fPIC -m64 -fexceptions -MMD -MP $(INCLUDES)
+# link shared e librerie OpenGL/freeglut di sistema
+LDFLAGS_COMMON := -shared -m64 -Wl,-rpath,'$$ORIGIN/../../dependencies/lib'
+LIBS := -lglut -lGL -lGLU -lfreeimage -lm
 
-# --- TEST SECTION (Importante: esegue i test) ---
-test: $(TESTS_RUNNER)
-	@echo "--- Executing Tests ---"
-ifeq ($(detected_OS),Windows)
-	./$(TESTS_RUNNER)
-else ifeq ($(detected_OS),Darwin)
-	DYLD_LIBRARY_PATH=. ./$(TESTS_RUNNER)
-else
-	LD_LIBRARY_PATH=. ./$(TESTS_RUNNER)
-endif
+# configurazione Debug
+OBJDIR_Debug   := obj/Debug
+BINDIR_Debug   := bin/Debug
+OBJS_Debug     := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Debug)/%.o)
+DEPS_Debug     := $(OBJS_Debug:.o=.d)
+TARGET_Debug   := $(BINDIR_Debug)/libengine.so
+CXXFLAGS_Debug := $(CXXFLAGS_COMMON) -g -D_DEBUG
 
-$(TESTS_RUNNER): $(TEST_OBJ_FILES) $(TARGET)
-	$(CXX) -std=c++20 -o $(TESTS_RUNNER) $(TEST_OBJ_FILES) -L. -l$(BASE_NAME) $(LIBS)
+# configurazione Release
+OBJDIR_Release   := obj/Release
+BINDIR_Release   := bin/Release
+OBJS_Release     := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Release)/%.o)
+DEPS_Release     := $(OBJS_Release:.o=.d)
+TARGET_Release   := $(BINDIR_Release)/libengine.so
+CXXFLAGS_Release := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
 
+# target aggregati
+all: debug release
+
+# build Debug/Release
+debug: $(TARGET_Debug)
+release: $(TARGET_Release)
+
+# link libreria condivisa
+$(TARGET_Debug): $(OBJS_Debug) | $(BINDIR_Debug)
+	$(LD) $(LDFLAGS_COMMON) -o $@ $(OBJS_Debug) $(LIBS)
+
+$(TARGET_Release): $(OBJS_Release) | $(BINDIR_Release)
+	$(LD) $(LDFLAGS_COMMON) -s -o $@ $(OBJS_Release) $(LIBS)
+
+# compilazione singolo oggetto con dipendenze
+$(OBJDIR_Debug)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Debug)
+	$(CXX) $(CXXFLAGS_Debug) -c $< -o $@
+
+$(OBJDIR_Release)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Release)
+	$(CXX) $(CXXFLAGS_Release) -c $< -o $@
+
+# creazione cartelle obj/bin
+$(OBJDIR_Debug) $(BINDIR_Debug) $(OBJDIR_Release) $(BINDIR_Release):
+	mkdir -p $@
+
+# pulizia
 clean:
-	rm -f *.so *.dylib *.dll $(MAIN_OBJ_FILES) $(TESTS_RUNNER) $(TEST_OBJ_FILES)
+	rm -rf $(OBJDIR_Debug) $(OBJDIR_Release) $(BINDIR_Debug) $(BINDIR_Release)
 
-.PHONY: all clean test
+# include automatico dei depfile generati
+-include $(DEPS_Debug) $(DEPS_Release)
+
+.PHONY: all debug release clean

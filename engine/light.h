@@ -11,8 +11,8 @@ namespace Eng {
 
 class ENG_API Light : public Node {
 public:
-    Light() noexcept;
-    virtual ~Light() noexcept;
+    explicit Light(int index) noexcept;
+    virtual ~Light() noexcept = default;
 
     void render(const glm::mat4& modelViewMatrix) override = 0;
 
@@ -39,13 +39,14 @@ public:
 
 protected:
     static int lightNumber_;
+    int index_;
 
     glm::vec3 ambient_  {0.0f};
     glm::vec3 diffuse_  {1.0f};
     glm::vec3 specular_ {1.0f};
 
 
-    float radius_      = 1.0f;  // for attenuation
+    float radius_      = 1.0f;
 
 
     float attConst_    = 1.0f;
@@ -53,4 +54,4 @@ protected:
     float attQuad_     = 0.0f;
 };
 
-} // namespace Eng
+}

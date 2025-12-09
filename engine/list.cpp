@@ -1,6 +1,8 @@
 #include "list.h"
 #include "light.h"
 
+#include <iostream>
+
 using namespace Eng;
 
 void List::addOnBottomToRenderList(const Instance &instance) noexcept {
@@ -36,7 +38,7 @@ void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatr
 
 
    // Recursively pass all child nodes:
-   for (const auto& childNode : node_ptr.get()->getChildrens()) {
+   for (const auto& childNode : node_ptr.get()->getChildren()) {
       this->pass(childNode, parentWorldMatrix);
    }
 

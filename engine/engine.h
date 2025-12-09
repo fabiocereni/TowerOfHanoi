@@ -8,12 +8,14 @@
 // #include "camera.h"
 #include <functional>
 
+#include "directionallight.h"
 #include "list.h"
 #include "mesh.h"
 #include "node.h"
+#include "omnidirectionallight.h"
 #include "perspective_camera.h"
 #include "orthographic_camera.h"
-
+#include "spotlight.h"
 
 
 ///////////////
@@ -75,6 +77,9 @@ namespace Eng {
       ENG_API void swap() noexcept;
       ENG_API [[nodiscard]] std::shared_ptr<Node> load(const std::string &path) const noexcept;
       ENG_API [[nodiscard]] std::shared_ptr<Texture> loadTextureFromFile(const std::string& path) const noexcept;
+      ENG_API [[nodiscard]] void bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept;
+
+
 
 
       ENG_API static void displayCallback();
@@ -88,7 +93,16 @@ namespace Eng {
 
 
       ENG_API std::shared_ptr<Camera> createPerspectiveCamera(float fov, float aspectRatio, float nearPlane, float farPlane) noexcept;
-      ENG_API std::shared_ptr<Camera> createOrthographicCamera(float size, float nearPlane, float farPlane) noexcept;
+      ENG_API std::shared_ptr<Camera> createOrthographicCamera(float left,
+                                                               float right,
+                                                               float top,
+                                                               float bottom,
+                                                               float nearPlane,
+                                                               float farPlane) noexcept;
+
+      ENG_API std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
+      ENG_API std::shared_ptr<DirectionalLight> createDirectionalLight();
+      ENG_API std::shared_ptr<Spotlight> createSpotlight();
 
 
       ENG_API static std::shared_ptr<Mesh> createMesh(const std::vector<glm::vec3>& vertexes,
@@ -100,16 +114,17 @@ namespace Eng {
       ENG_API void setHeight(const int height) noexcept {height_ = height;};
       ENG_API static void setFrames(const float frames) noexcept {frames_ = frames;};
       ENG_API void setActiveCamera(const std::shared_ptr<Camera>& camera) noexcept {activeCamera_ = camera;};
-
+      ENG_API void setInfo(const std::string& info) noexcept { info_ = info; };
 
       ENG_API void overrideKeyboardCallback(const KeyboardCallback &keyboardCallback) noexcept {customKeyboardCallbackVar_ = keyboardCallback;};
-      ENG_API void overrideUpArrowBehaviour(SpecialKeyAction action)   noexcept { up_arrow_key_ = action; }
-      ENG_API void overrideDownArrowBehaviour(SpecialKeyAction action) noexcept { down_arrow_key_ = action; }
-      ENG_API void overrideLeftArrowBehaviour(SpecialKeyAction action) noexcept { left_arrow_key_ = action; }
-      ENG_API void overrideRightArrowBehaviour(SpecialKeyAction action) noexcept { right_arrow_key_ = action; }
-
-
-
+      ENG_API void overrideUpArrowBehaviour(const SpecialKeyAction& action)   noexcept { up_arrow_key_ = action; }
+      ENG_API void overrideDownArrowBehaviour(const SpecialKeyAction& action) noexcept { down_arrow_key_ = action; }
+      ENG_API void overrideLeftArrowBehaviour(const SpecialKeyAction& action) noexcept { left_arrow_key_ = action; }
+      ENG_API void overrideRightArrowBehaviour(const SpecialKeyAction& action) noexcept { right_arrow_key_ = action; }
+      ENG_API void overrideF1KeyBehaviour(const SpecialKeyAction& action) noexcept { F1_key = action; }
+      ENG_API void overrideF2KeyBehaviour(const SpecialKeyAction& action) noexcept { F2_key = action; }
+      ENG_API void overrideF3KeyBehaviour(const SpecialKeyAction& action) noexcept { F3_key = action; }
+      ENG_API void overrideF4KeyBehaviour(const SpecialKeyAction& action) noexcept { F4_key = action; }
 
 
 
@@ -119,13 +134,17 @@ namespace Eng {
       ENG_API [[nodiscard]] std::shared_ptr<Camera> getActiveCamera() const noexcept {return activeCamera_;};
 
 
-
       ENG_API static void useCustomKeyboardCallback(unsigned char key, int mouseX, int mouseY) noexcept;
 
 
 
-      ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList) noexcept;
+      ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList, const std::list<std::string>& excludedList) const;
       ENG_API void showFps();
+      ENG_API static void infoPrinter(const std::string& info);
+      ENG_API void infoClear() { return info_.clear(); };
+      ENG_API static void clearInfoPrinter();
+
+      ENG_API std::shared_ptr<Node> findByName(const std::shared_ptr<Node>& node, const std::string& name) const;
 
 
       // In engine.h, dentro class Base public:
@@ -138,9 +157,10 @@ namespace Eng {
    private: //
       ///////////
       int windowId_;
-      int width_ = 800;
-      int height_ = 600;
+      int width_ = 1800;
+      int height_ = 1000;
       static float frames_;
+      std::string info_;
       std::shared_ptr<Camera> activeCamera_;
 
 
@@ -149,6 +169,10 @@ namespace Eng {
       static SpecialKeyAction down_arrow_key_;
       static SpecialKeyAction left_arrow_key_;
       static SpecialKeyAction right_arrow_key_;
+      static SpecialKeyAction F1_key;
+      static SpecialKeyAction F2_key;
+      static SpecialKeyAction F3_key;
+      static SpecialKeyAction F4_key;
 
       // Reserved:
       struct Reserved;

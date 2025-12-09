@@ -28,7 +28,7 @@ void TestSuite::testNodeHierarchy() {
     child->setParent(parent);
 
     // Verifica che il padre abbia 1 figlio
-    assertCondition("Parent has 1 child", parent->getChildrens().size() == 1);
+    assertCondition("Parent has 1 child", parent->getChildren().size() == 1);
 
     // Verifica che il figlio punti al padre corretto
     assertCondition("Child has correct parent", child->getParent() == parent);
