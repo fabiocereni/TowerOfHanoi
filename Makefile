@@ -44,22 +44,23 @@ package:
 # Target chiamato dalla CI
 universal:
 	@echo "=== Creating Universal Bundle ==="
-	# 1. Pulizia
-	rm -rf release_temp $(ARTIFACT_NAME)
+	
+	# 1. Pulizia INIZIALE (così non cancelliamo le cartelle che stiamo per creare)
+	$(MAKE) clean
+
+	# 2. Crea la struttura delle directory
 	mkdir -p release_temp/linux
 	
-	# 2. Crea il pacchetto Linux
-	$(MAKE) clean
+	# 3. Crea il pacchetto Linux
 	$(MAKE) package
 	
-	# 3. Sposta il .tar.gz finale nella cartella temporanea
+	# 4. Sposta il .tar.gz finale nella cartella temporanea
 	mv $(FINAL_PKG_NAME) release_temp/linux/
 	
-	# 4. CREA LO ZIP RICHIESTO DALLA CI
-	# Entra nella cartella release_temp e zippa tutto
+	# 5. CREA LO ZIP RICHIESTO DALLA CI
 	cd release_temp && zip -r ../$(ARTIFACT_NAME) .
 	
 	@echo "Artifact creato con successo: $(ARTIFACT_NAME)"
 	
-	# Pulizia finale
+	# Pulizia finale (opzionale, rimuove solo la temp folder)
 	rm -rf release_temp
