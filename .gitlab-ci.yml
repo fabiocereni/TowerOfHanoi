@@ -44,12 +44,12 @@ build:
     - chmod +x run_client.sh
     - |
       cat > ARTIFACT_README.md <<'EOF'
-# Avvio dell'artifact
-Dopo aver scaricato l'artifact da GitLab, rendere eseguibile lo script di avvio con:
-  chmod +x run_client.sh
-Poi lanciare:
-  ./run_client.sh
-EOF
+      # Avvio dell'artifact
+      Dopo aver scaricato l'artifact da GitLab, rendere eseguibile lo script di avvio con:
+        chmod +x run_client.sh
+      Poi lanciare:
+        ./run_client.sh
+      EOF
 
   artifacts:
     paths:
