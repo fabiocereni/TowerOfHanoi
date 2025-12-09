@@ -1,4 +1,4 @@
-image: ubuntu:24.04
+image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
 
 stages:
   - build
@@ -6,10 +6,10 @@ stages:
 build-all-in-one:
   stage: build
   script:
-    # Aggiorna e installa le dipendenze su una riga unica per evitare errori di spazi
+    # CORRETTO: Tutto su una riga senza backslash (\)
     - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip
     
-    # Esegue la build universale
+    # Lancia la build universale (Linux + Windows)
     - make universal
     
   artifacts:
