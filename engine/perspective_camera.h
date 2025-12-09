@@ -41,7 +41,7 @@ namespace Eng {
         float nearPlane_;
         float farPlane_;
 
-        glm::mat4 projectionMatrix_ = {1.0};
+        glm::mat4 projectionMatrix_ = glm::mat4{1.0f};
 
     };
 }
