@@ -5,8 +5,17 @@ namespace Eng {
 
    class ENG_API OmnidirectionalLight final : public Light {
    public:
-      OmnidirectionalLight() noexcept = default;
+
+      ~OmnidirectionalLight() override;
+
       void render(const glm::mat4& modelViewMatrix) override;
+
+      static std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
+
+
+   private:
+
+      explicit OmnidirectionalLight(int index) noexcept;
    };
 
 }

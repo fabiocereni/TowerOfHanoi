@@ -4,13 +4,11 @@ namespace Eng {
 
 int Light::lightNumber_ = 0;
 
-    Light::Light() noexcept {
-        lightNumber_++;
-    }
+
+   Light::Light(const int index) noexcept
+      : index_(index) {}
 
 
-    Light::~Light() noexcept {
-        lightNumber_--;
-    }
+
 
 }

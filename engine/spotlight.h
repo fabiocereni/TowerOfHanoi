@@ -5,7 +5,9 @@ namespace Eng {
 
    class ENG_API Spotlight final : public Light {
    public:
-      Spotlight() noexcept = default;
+
+      ~Spotlight() override;
+
       void render(const glm::mat4& modelViewMatrix) override;
 
       void setCutoff   (const float c) noexcept { cutoff_ = c; }
@@ -18,9 +20,16 @@ namespace Eng {
       [[nodiscard]] glm::vec3 getDirection() const noexcept { return direction_; }
 
 
+      static std::shared_ptr<Spotlight> createSpotLight();
+
+
    private:
+
+      explicit Spotlight(int index) noexcept;
+
+
       glm::vec3 direction_{0,0,-1};
-      float cutoff_   = 180.0f;   // spotlight only
-      float exponent_ = 0.0f;     // spotlight exponent
+      float cutoff_   = 180.0f;
+      float exponent_ = 0.0f;
    };
 }
