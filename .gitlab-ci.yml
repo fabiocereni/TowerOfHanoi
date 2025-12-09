@@ -43,10 +43,11 @@ build:
     - echo 'exec "$DIR/client/bin/Debug/client"' >> run_client.sh
     - chmod +x run_client.sh
     - |
-      cat > ARTIFACT_README.md <<'EOF'
+      cat > README.txt <<'EOF'
       # Avvio dell'artifact
       Dopo aver scaricato l'artifact da GitLab, rendere eseguibile lo script di avvio con:
         chmod +x run_client.sh
+        Copiare nella cartella artifacts la cartella ExportProgetto 
       Poi lanciare:
         ./run_client.sh
       EOF
@@ -57,7 +58,7 @@ build:
       - client/bin
       - dependencies/lib
       - run_client.sh
-      - ARTIFACT_README.md
+      - README.txt
     when: always
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
