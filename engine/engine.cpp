@@ -79,7 +79,7 @@ Base& Base::getInstance() {
 bool Base::init(int argc, char **argv, const std::string& title) {
    if (reserved_->initFlag) return false;
 
-  
+
    FreeImage_Initialise();
 
 
@@ -168,7 +168,7 @@ bool Base::free() const {
    // Not initialized?
    if (!reserved_->initFlag)
    {
-      
+
       FreeImage_DeInitialise();
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
@@ -268,7 +268,7 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
 
     for (const auto& instance : renderList->getRenderList())
     {
-       
+
         // 1. Tenta il cast a Mesh
         std::shared_ptr<Mesh> mesh = std::dynamic_pointer_cast<Mesh>(instance.getNodePtr());
 
@@ -279,9 +279,9 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
                 if (mesh->getName() == name)
                     mesh->setShadow(false);
             }
-        
 
-        // 2. Se è un Mesh e può proiettare ombre 
+
+        // 2. Se è un Mesh e può proiettare ombre
         if (mesh != nullptr && mesh->getShadow())
         {
             // Salva il materiale originale
@@ -290,11 +290,11 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
             // Cambia temporaneamente il materiale della mesh con quello dell'ombra (scuro, non illuminato)
             mesh->setMaterial(shadowMaterial);
 
-            // Calcola la matrice di trasformazione dell'ombra: 
+            // Calcola la matrice di trasformazione dell'ombra:
             // Scalatura dell'ombra * Matrice mondiale dell'oggetto
             const glm::mat4 shadow_matrix = shadowModelScaleMatrix * instance.getNodeWorldMatrix();
 
-            // Calcola la Model-View Matrix per l'ombra: 
+            // Calcola la Model-View Matrix per l'ombra:
             // Inversa della View Matrix * Matrice di trasformazione dell'ombra
             // Nota: Se la renderizzazione del mesh avviene con la Model-View Matrix (View * Model)
             // allora l'ombra deve essere renderizzata con l'inversa della View Matrix (Model * View^-1)
@@ -330,7 +330,7 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
 std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& node, const std::string& name) const {
 
     // @brief iterazione su tutti i figli diretti del nodo corrente
-    for (const auto& childNode : node->getChildrens()) {
+    for (const auto& childNode : node->getChildren()) {
 
         // @details caso base: se il figlio corrente ha il nome cercato, lo restituiamo subito
         if (childNode->getName() == name)
@@ -542,7 +542,7 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
     }
 
     // Nota: .get() non è necessario con l'operatore ->
-    for (const auto& childNode : root->getChildrens()) {
+    for (const auto& childNode : root->getChildren()) {
 
         // 1. Tenta il cast
         auto mesh = std::dynamic_pointer_cast<Mesh>(childNode);

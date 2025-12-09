@@ -31,29 +31,22 @@ namespace Eng {
       const GLenum id = GL_LIGHT0 + index_;
       glEnable(id);
 
-      glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient_));
-      glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse_));
-      glLightfv(id, GL_SPECULAR, glm::value_ptr(specular_));
+      const auto ambient = glm::vec4(ambient_, 1.0f);
+      const auto diffuse = glm::vec4(diffuse_, 1.0f);
+      const auto specular = glm::vec4(specular_, 1.0f);
+      const auto direction = glm::vec4(direction_, 0.0f);
+      const auto position = glm::vec4(direction_, 1.0f);
 
-      const glm::vec4 posWorld = getMatrix() * glm::vec4(0,0,0,1);
-      const glm::vec4 posEye   = modelViewMatrix * posWorld;
+      const float constantAttenuation = 1.0f / (radius_ / 100);
 
-      const float pos[] = { posEye.x, posEye.y, posEye.z, 1.0f };
-      glLightfv(id, GL_POSITION, pos);
-
-      // world coordinates
-      const glm::vec3 dirWorld = glm::mat3(getMatrix()) * direction_;
-      // eye coordinates
-      glm::vec3 dirEye = glm::normalize(glm::mat3(modelViewMatrix) * dirWorld);
-      glLightfv(id, GL_SPOT_DIRECTION, glm::value_ptr(dirEye));
-
-
-      glLightf(id, GL_SPOT_CUTOFF,   cutoff_);
+      glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient));
+      glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse));
+      glLightfv(id, GL_SPECULAR, glm::value_ptr(specular));
+      glLightfv(id, GL_POSITION, glm::value_ptr(position));
+      glLightfv(id, GL_SPOT_DIRECTION, glm::value_ptr(direction));
+      glLightf(id, GL_SPOT_CUTOFF, cutoff_);
       glLightf(id, GL_SPOT_EXPONENT, exponent_);
-
-      // glLightf(id, GL_CONSTANT_ATTENUATION,  attConst_);
-      glLightf(id, GL_LINEAR_ATTENUATION,    attLinear_);
-      // glLightf(id, GL_QUADRATIC_ATTENUATION, attQuad_);
+      glLightf(id, GL_CONSTANT_ATTENUATION,  constantAttenuation);
    }
 
 }
