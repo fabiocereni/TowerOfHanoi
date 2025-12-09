@@ -1,4 +1,4 @@
-# --- CLIENT MAKEFILE (Universal v2) ---
+# Nome del tuo progetto
 BASE_NAME := hanoiTower
 TARGET_ARCHIVE := $(BASE_NAME).tar.gz
 
@@ -31,7 +31,6 @@ endif
 ifeq ($(detected_OS),Windows)
 	LIB_EXT := .dll
 	EXE_EXT := .exe
-	# Su Windows linkiamo opengl32 e glu32 standard
 	LDFLAGS := -L$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lfreeglut -lopengl32 -lglu32
 endif
 
@@ -50,10 +49,10 @@ $(TARGET): $(MAIN_OBJ_FILES)
 %.o: %.cpp
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
-# --- PACKAGING SECTION ---
+# --- PACKAGING SECTION (Include Lib + Script) ---
 package: $(TARGET)
 	@echo "Creating package..."
-	# Copia la libreria dinamica (dll/so/dylib)
+	# Copia la libreria dinamica (necessaria per eseguire)
 	cp $(ENGINE_DIR)/$(ENGINE_LIB_FILENAME) .
 	
 	# Crea script run.sh universale
@@ -70,7 +69,10 @@ package: $(TARGET)
 	echo 'fi' >> run.sh
 	chmod +x run.sh
 	
+	# Crea l'archivio
 	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET) $(ENGINE_LIB_FILENAME) run.sh
+	
+	# Pulizia file temporanei
 	rm $(ENGINE_LIB_FILENAME) run.sh
 	@echo "Package $(TARGET_ARCHIVE) created!"
 

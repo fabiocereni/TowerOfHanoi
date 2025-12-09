@@ -1,13 +1,12 @@
-# --- MAKEFILE ROOT (Universal v2: Linux, Mac, Windows) ---
 MAKE = make
 ENGINE_DIR = engine
 CLIENT_DIR = client
+# Nome dell'archivio finale
+ARCHIVE_NAME = hanoiTower_release.tar.gz
 
-# Nome archivio
-ARCHIVE_NAME = hanoiTower.tar.gz
+.PHONY: all build_engine build_client test package clean cross_win
 
-.PHONY: all build_engine build_client test package clean
-
+# Default: costruisce tutto per il sistema attuale
 all: package
 
 build_engine:
@@ -26,9 +25,29 @@ package: test build_client
 	@echo "=== Packaging ==="
 	$(MAKE) -C $(CLIENT_DIR) package
 	# Sposta l'archivio nella root
-	mv $(CLIENT_DIR)/$(ARCHIVE_NAME) .
+	mv $(CLIENT_DIR)/*.tar.gz . || mv $(CLIENT_DIR)/*.zip .
+
+# --- COMANDO SPECIALE PER GITLAB (Cross-Compile Windows) ---
+cross_win:
+	@echo "=== Cross Compiling for Windows ==="
+	# 1. Compila Engine per Windows
+	$(MAKE) -C $(ENGINE_DIR) clean
+	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static" LIBS="-lfreeglut -lopengl32 -lglu32" all
+	
+	# 2. Compila Client per Windows
+	$(MAKE) -C $(CLIENT_DIR) clean
+	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll LDFLAGS="-L../engine -lengine -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
+	
+	# 3. Pacchettizza per Windows (Zip)
+	mkdir -p windows_dist
+	cp $(CLIENT_DIR)/hanoiTower.exe windows_dist/
+	cp $(ENGINE_DIR)/libengine.dll windows_dist/
+	# Scarica freeglut.dll necessaria
+	wget -q -O windows_dist/freeglut.dll https://github.com/transmission/transmission/raw/main/third-party/freeglut/freeglut.dll || echo "Warning: freeglut.dll download failed"
+	cd windows_dist && zip -r ../hanoiTower_win.zip .
+	rm -rf windows_dist
 
 clean:
 	$(MAKE) -C $(ENGINE_DIR) clean
 	$(MAKE) -C $(CLIENT_DIR) clean
-	rm -f $(ARCHIVE_NAME)
+	rm -f *.tar.gz *.zip
