@@ -29,7 +29,7 @@ namespace Eng {
 
 
       glm::vec3 direction_{0,0,-1};
-      float cutoff_   = 180.0f;   // spotlight only
-      float exponent_ = 0.0f;     // spotlight exponent
+      float cutoff_   = 180.0f;
+      float exponent_ = 0.0f;
    };
 }

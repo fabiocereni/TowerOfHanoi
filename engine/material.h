@@ -4,11 +4,16 @@
 #include <glm/glm.hpp>
 #include "texture.h"
 
+/**
+ * @class Material
+ * @brief Rappresenta una generica mesh
+ */
 namespace Eng {
    class ENG_API Material final : public Object {
 
 
    public:
+      /// @brief Costruttori, distruttore, operatori di copia e spostamento
       Material(const glm::vec4& emission,
                const glm::vec4& ambient,
                const glm::vec4& diffuse,
@@ -26,6 +31,7 @@ namespace Eng {
 
       void render(const glm::mat4& modelViewMatrix) override;
 
+      /// @brief getters e setters
       [[nodiscard]] glm::vec4 getEmission() const noexcept {return emission_;};
       [[nodiscard]] glm::vec4 getAmbient() const noexcept {return ambient_;};
       [[nodiscard]] glm::vec4 getDiffuse() const noexcept {return diffuse_;};
@@ -43,12 +49,20 @@ namespace Eng {
       void setTextureName(const std::string& textureName) noexcept {textureName_ = textureName;};
 
    protected:
+      /// @brief Componente emissiva del materiale
       glm::vec4 emission_;
+      /// @brief Componente ambient del materiale
       glm::vec4 ambient_;
+      /// @brief Componente diffusiva del materiale
       glm::vec4 diffuse_;
+      /// @brief Componente speculare del materiale
       glm::vec4 specular_;
+      /// @brief Lucentezza del materiale
       float shininess_;
+      /// @brief Texture associata al materiale
       std::shared_ptr<Texture> texture_;
+      /// @brief Nome della texture
+      /// @details serve per binding
       std::string textureName_;
    };
 }

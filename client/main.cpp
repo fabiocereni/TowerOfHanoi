@@ -21,8 +21,8 @@ float dynamic_cam_x_angle = 0.0f;
 float dynamic_cam_y_angle = 0.0f;
 float dynamic_cam_y = 800.0f;
 
-float angle_speed_rotation = 0.8f;
-float dynamic_cam_speed = 40.0f;
+float angle_speed_rotation = 2.0f;
+float dynamic_cam_speed = 60.0f;
 
 // CAMERA LIMITS
 float minX = std::numeric_limits<float>::max();
@@ -70,7 +70,7 @@ std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> current, const std
     }
 
     // 2. Cerca nei figli
-    for (const auto& child : current->getChildrens()) {
+    for (const auto& child : current->getChildren()) {
         auto result = findRec(child, nameToFind);
         if (result != nullptr) {
             return result; // Trovato! Risaliamo la catena
@@ -141,8 +141,8 @@ void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::sha
     dynamic_cam_pos.y = dynamic_cam_y;
 
 
-    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minY+limitation_bound, maxY-limitation_bound);
-    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minX+limitation_bound, maxX-limitation_bound);
+    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minX+limitation_bound, maxX-limitation_bound);
+    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minY+limitation_bound, maxY-limitation_bound);
     dynamic_cam_pos.z = glm::clamp(dynamic_cam_pos.z, minZ+limitation_bound, maxZ-limitation_bound);
 
 
@@ -159,7 +159,6 @@ void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::sha
     cam->setMatrix(trans * x_rot * y_rot);
 }
 
-// In client/main.cpp
 
 std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base& eng) {
     std::vector<std::shared_ptr<Eng::Texture>> textures;
@@ -214,20 +213,15 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
 void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<Eng::Node>& sceneRoot) {
     const std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
 
-    my_omnilight->setAmbient(glm::vec3(0.2f)); // Un po' di luce ambiente per non avere nero assoluto
-    my_omnilight->setDiffuse(glm::vec3(1.0f));
-    my_omnilight->setSpecular(glm::vec3(1.0f));
+    my_omnilight->setAmbient(glm::vec3(5.0f));
+    my_omnilight->setDiffuse(glm::vec3(5.0f));
+    my_omnilight->setSpecular(glm::vec3(5.0f));
+    my_omnilight->setRadius(3000.0f);
 
-
-    // --- POSIZIONA LA LUCE ---
-    // Alzala sopra il tavolo (es. Y = 2000 se la camera è a 1600)
-    glm::mat4 lightMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2000.0f, 0.0f));
+    constexpr glm::mat4 lightMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2000.0f, 0.0f));
     my_omnilight->setMatrix(lightMatrix);
 
-    // -----------------------
-
     my_omnilight->setName("luce1");
-
 
     sceneRoot->addChildren(my_omnilight);
 }
@@ -246,12 +240,10 @@ int main(const int argc, char** argv) {
     Eng::Base& eng = Eng::Base::getInstance();
     eng.init(argc, argv, "Hanoi Tower");
 
-
     // Caricamento della Scena
     const std::string scenePath = modelPath.string();
     const auto sceneRoot = eng.load(scenePath);
 
-    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" };
 
     const std::vector<std::shared_ptr<Eng::Texture>> textures = loadAndReturnTextures(eng);
     eng.bindTexturesToMaterials(sceneRoot, textures);
@@ -259,7 +251,6 @@ int main(const int argc, char** argv) {
     createAndReturnOmniDirectionalLight(eng, sceneRoot);
 
     HanoiGame game(sceneRoot);
-
 
     eng.setActiveCamera(returnFrontTableCamera(eng));
 
@@ -333,6 +324,9 @@ int main(const int argc, char** argv) {
     });
 
 
+    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" };
+
+
     // 5. Ciclo di Rendering
     while (eng.update()) {
         eng.clear();
@@ -343,9 +337,6 @@ int main(const int argc, char** argv) {
         eng.setWireframe(false);
         // Disabilita luci per vedere il colore piatto/linee (utile se l'oggetto è nero/buio)
         eng.setLighting(true);
-        // Disabilita culling per vedere anche l'interno o facce invertite
-        eng.setCulling(true);
-        // ----------------------
 
         // Carica matrice proiezione
         eng.begin3D(eng.getActiveCamera());

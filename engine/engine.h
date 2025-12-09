@@ -132,8 +132,8 @@ namespace Eng {
       ENG_API [[nodiscard]] int getHeight() const {return height_;};
       ENG_API [[nodiscard]] static float getFrames() {return frames_;};
       ENG_API [[nodiscard]] std::shared_ptr<Camera> getActiveCamera() const noexcept {return activeCamera_;};
-      
-      
+
+
       ENG_API static void useCustomKeyboardCallback(unsigned char key, int mouseX, int mouseY) noexcept;
 
 

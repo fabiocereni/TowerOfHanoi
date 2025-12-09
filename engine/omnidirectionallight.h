@@ -13,8 +13,6 @@ namespace Eng {
       static std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
 
 
-
-
    private:
 
       explicit OmnidirectionalLight(int index) noexcept;
