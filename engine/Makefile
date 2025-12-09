@@ -1,66 +1,51 @@
-# compilatore e linker
+# output: shared library (.so) and an executable to run tests
+
+
+BASE_NAME := engine
+TARGET_DIR := .
+# Name of shared library that will be build --> libengine.so
+TARGET := lib$(BASE_NAME).so
+# Set of all .cpp files in the current directory
+MAIN_SRC_FILES := $(wildcard *.cpp)
+# Set of all object (.o) correspondents to (.cpp) files
+MAIN_OBJ_FILES := $(MAIN_SRC_FILES:.cpp=.o)
+# Name of the executable file for the test runner --> engine-tests-runner
+TESTS_RUNNER := $(BASE_NAME)-tests-runner
+# Set of all test file in the tests directory
+TEST_SRC_FILES := $(wildcard tests/*_test.cpp)
+# Set of all object file (.o) for the test file
+TEST_OBJ_FILES := $(TEST_SRC_FILES:.cpp=.o)
+DEPENDENCIES_DIR := dependencies
+
+# Specifies the C++ compiler to use --> g++
 CXX := g++
-LD  := g++
+CXX_FLAGS := -c -fPIC -std=c++20 -O2
+# Flag for the linker to create a shared library
+LD_FLAGS := -shared
+# Libraries to link with the project (glut, GL, GLU, freeimage)
+LIBS := -lglut -lGL -lGLU -lfreeimage
 
-# cartella sorgenti e auto-raccolta di tutti i .cpp
-SRC_DIR := .
-SRCS    := $(wildcard $(SRC_DIR)/*.cpp)
+# Your default target (first in the makefile) run make without specifying a target (ex: make clean)
+install: $(TARGET)
+	@echo "all done!"
 
-# include locali (engine + dipendenze vendored)
-INCLUDES := -I. -I../dependencies/glm/include -I../dependencies/freeglut/include
+# Target for building the shared library
+# check if the test runner and object files are update
+$(TARGET): $(MAIN_OBJ_FILES)
+	# builds the shared library
+	$(CXX) $(LD_FLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LIBS)
+	@echo "$(TARGET) build done!"
 
-# flag comuni: warning, standard, PIC, depfile per header
-CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fPIC -m64 -fexceptions -MMD -MP $(INCLUDES)
-# link shared e librerie OpenGL/freeglut di sistema
-LDFLAGS_COMMON := -shared -m64 -Wl,-rpath,'$$ORIGIN/../../dependencies/lib'
-LIBS := -lglut -lGL -lGLU -lm
+# Generic rule to compile source file (.c++) into object file (.o)
+%.o: %.cpp
+	$(CXX) $(CXX_FLAGS) -o $@ $<
 
-# configurazione Debug
-OBJDIR_Debug   := obj/Debug
-BINDIR_Debug   := bin/Debug
-OBJS_Debug     := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Debug)/%.o)
-DEPS_Debug     := $(OBJS_Debug:.o=.d)
-TARGET_Debug   := $(BINDIR_Debug)/libengine.so
-CXXFLAGS_Debug := $(CXXFLAGS_COMMON) -g -D_DEBUG
-
-# configurazione Release
-OBJDIR_Release   := obj/Release
-BINDIR_Release   := bin/Release
-OBJS_Release     := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Release)/%.o)
-DEPS_Release     := $(OBJS_Release:.o=.d)
-TARGET_Release   := $(BINDIR_Release)/libengine.so
-CXXFLAGS_Release := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
-
-# target aggregati
-all: debug release
-
-# build Debug/Release
-debug: $(TARGET_Debug)
-release: $(TARGET_Release)
-
-# link libreria condivisa
-$(TARGET_Debug): $(OBJS_Debug) | $(BINDIR_Debug)
-	$(LD) $(LDFLAGS_COMMON) -o $@ $(OBJS_Debug) $(LIBS)
-
-$(TARGET_Release): $(OBJS_Release) | $(BINDIR_Release)
-	$(LD) $(LDFLAGS_COMMON) -s -o $@ $(OBJS_Release) $(LIBS)
-
-# compilazione singolo oggetto con dipendenze
-$(OBJDIR_Debug)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Debug)
-	$(CXX) $(CXXFLAGS_Debug) -c $< -o $@
-
-$(OBJDIR_Release)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Release)
-	$(CXX) $(CXXFLAGS_Release) -c $< -o $@
-
-# creazione cartelle obj/bin
-$(OBJDIR_Debug) $(BINDIR_Debug) $(OBJDIR_Release) $(BINDIR_Release):
-	mkdir -p $@
-
-# pulizia
+# Target to clean generated files (.o, executables)
+# Removes test runner, object files and shared library
 clean:
-	rm -rf $(OBJDIR_Debug) $(OBJDIR_Release) $(BINDIR_Debug) $(BINDIR_Release)
+	@rm -f $(TARGET)
+	@rm -f $(MAIN_OBJ_FILES)
 
-# include automatico dei depfile generati
--include $(DEPS_Debug) $(DEPS_Release)
-
-.PHONY: all debug release clean
+# Declaration that clean and install are not files
+# Always execute commands associated with that target, regardless of whether a file with the same name exists
+.PHONY: clean install
