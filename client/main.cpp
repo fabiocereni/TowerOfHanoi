@@ -12,30 +12,6 @@
 
 namespace fs = std::filesystem;
 
-<<<<<<< HEAD
-int main(const int argc, char** argv) {
-    // 1. Esegui i test
-    //TestSuite::runAllTests();
-
-    // 2. Inizializza l'Engine
-    Eng::Base& eng = Eng::Base::getInstance();
-    eng.overrideKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY){
-
-        std::cout << key << std::endl;
-
-        switch (key) {
-       // da implementare
-        }
-    });
-
-    eng.overrideUpArrowBehaviour([] {std::cout << "UP ARROW" << std::endl;});
-    eng.overrideDownArrowBehaviour([]{std::cout << "DOWN ARROW" << std::endl;});
-    eng.overrideRightArrowBehaviour([]{std::cout << "RIGHT ARROW" << std::endl;});
-    eng.overrideLeftArrowBehaviour([]{std::cout << "LEFT ARROW" << std::endl;});
-
-
-    eng.init(argc, argv, "Hanoi Tower Debug");
-=======
 fs::path sourceFile = __FILE__;
 fs::path projectDir = sourceFile.parent_path().parent_path();
 fs::path modelPath = projectDir / "ExportProgetto" / "ProvaTavoloovoNew.ovo";
@@ -44,14 +20,10 @@ auto dynamic_cam_pos = glm::vec3(0.0f, 800.0f, 1600.0f);
 float dynamic_cam_x_angle = 0.0f;
 float dynamic_cam_y_angle = 0.0f;
 float dynamic_cam_y = 800.0f;
->>>>>>> origin/dynamicCameraMerge
 
 float angle_speed_rotation = 2.0f;
 float dynamic_cam_speed = 60.0f;
 
-<<<<<<< HEAD
-    const std::string scenePath = "C:\\ProvaTavoloovoNew.ovo";
-=======
 // CAMERA LIMITS
 float minX = std::numeric_limits<float>::max();
 float maxX = std::numeric_limits<float>::lowest();
@@ -59,7 +31,6 @@ float minY = std::numeric_limits<float>::max();
 float maxY = std::numeric_limits<float>::lowest();
 float minZ = std::numeric_limits<float>::max();
 float maxZ = std::numeric_limits<float>::lowest();
->>>>>>> origin/dynamicCameraMerge
 
 
 std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {

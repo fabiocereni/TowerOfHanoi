@@ -209,10 +209,6 @@ std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRat
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
 
-<<<<<<< HEAD
-std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
-   return OvoReader::load(path);
-=======
 
 std::shared_ptr<Camera> Base::createOrthographicCamera(float left,
                                                        float right,
@@ -222,7 +218,6 @@ std::shared_ptr<Camera> Base::createOrthographicCamera(float left,
                                                        float farPlane) noexcept
 {
    return std::make_shared<Orthographic_Camera>(left, right, top, bottom, nearPlane, farPlane);
->>>>>>> origin/dynamicCameraMerge
 }
 
 
@@ -502,8 +497,6 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
    default: std::cout << "UNKNOWN" << std::endl ;
    }
 }
-<<<<<<< HEAD
-=======
 
 ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
@@ -578,7 +571,6 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
     }
 }
 
->>>>>>> origin/dynamicCameraMerge
 void Base::setWireframe(const bool enable) {
    if (enable)
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
