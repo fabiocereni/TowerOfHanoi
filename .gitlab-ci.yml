@@ -3,20 +3,41 @@ image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
 stages:
   - build
 
-build-project:
+# ---------------------------------------------------------
+# JOB 1: LINUX (Quello richiesto per la consegna)
+# Compila per Linux, esegue i test unitari e crea il tar.gz
+# ---------------------------------------------------------
+build-linux-release:
   stage: build
   script:
-    # 1. Installazione dipendenze (necessaria)
+    # 1. Installa le librerie grafiche per Linux (FreeGLUT, GLU, ecc.)
     - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6
     
-    # 2. Build completa (Compila, Testa, Pacchettizza)
+    # 2. Esegue il comando 'make' standard
+    # Questo lancia in cascata: build_engine -> build_client -> test -> package
     - make
     
-    # Nota: Non serve fare altro, il 'make' ha già creato hanoiTower.tar.gz nella root
-  
   artifacts:
     paths:
-      # Salviamo SOLO l'archivio finale richiesto
-      - hanoiTower.tar.gz
+      - hanoiTower_release.tar.gz
+    expire_in: 1 week
+    when: on_success
+
+# ---------------------------------------------------------
+# JOB 2: WINDOWS (Per te, così hai l'EXE funzionante)
+# Usa MinGW per creare l'eseguibile Windows e lo zippa
+# ---------------------------------------------------------
+build-windows-exe:
+  stage: build
+  script:
+    # 1. Installa MinGW (compilatore Windows), Zip e Wget
+    - apt-get update && apt-get install -y --no-install-recommends mingw-w64 make zip wget
+    
+    # 2. Esegue il target speciale per Windows che abbiamo aggiunto al Makefile
+    - make cross_win
+    
+  artifacts:
+    paths:
+      - hanoiTower_win.zip
     expire_in: 1 week
     when: on_success

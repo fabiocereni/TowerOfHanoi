@@ -1,4 +1,3 @@
-# --- ENGINE MAKEFILE (Universal v2) ---
 BASE_NAME := engine
 
 # Rilevamento OS
@@ -23,10 +22,9 @@ ifeq ($(detected_OS),Darwin)
 	LIBS := -L/opt/homebrew/lib -lglut -framework OpenGL -lfreeimage
 endif
 
-# --- Windows Settings (MinGW/Git Bash) ---
+# --- Windows Settings ---
 ifeq ($(detected_OS),Windows)
 	LIB_EXT := .dll
-	# Su Windows spesso servono librerie specifiche opengl32 e freeglut
 	LIBS := -lfreeglut -lopengl32 -lglu32
 	LD_FLAGS := -shared
 	EXE_EXT := .exe
@@ -54,12 +52,10 @@ $(TARGET): $(MAIN_OBJ_FILES)
 %.o: %.cpp
 	$(CXX) $(CXX_FLAGS) -o $@ $<
 
-# --- TEST SECTION ---
+# --- TEST SECTION (Importante: esegue i test) ---
 test: $(TESTS_RUNNER)
 	@echo "--- Executing Tests ---"
 ifeq ($(detected_OS),Windows)
-	# Su Windows la DLL deve essere nella stessa cartella o nel PATH
-	# Copiamo la DLL temporaneamente per eseguire i test
 	./$(TESTS_RUNNER)
 else ifeq ($(detected_OS),Darwin)
 	DYLD_LIBRARY_PATH=. ./$(TESTS_RUNNER)
