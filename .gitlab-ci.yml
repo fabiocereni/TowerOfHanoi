@@ -6,10 +6,9 @@ stages:
 build-all-in-one:
   stage: build
   script:
-    # CORRETTO: Tutto su una riga senza backslash (\)
-    - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip
+    # Non serve più wget o unzip, usiamo i file che hai caricato su Git
+    - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip
     
-    # Lancia la build universale (Linux + Windows)
     - make universal
     
   artifacts:
