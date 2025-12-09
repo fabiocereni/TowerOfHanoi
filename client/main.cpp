@@ -251,7 +251,7 @@ int main(const int argc, char** argv) {
     const std::string scenePath = modelPath.string();
     const auto sceneRoot = eng.load(scenePath);
 
-    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" };
+    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" ,"lampadario"};
 
     const std::vector<std::shared_ptr<Eng::Texture>> textures = loadAndReturnTextures(eng);
     eng.bindTexturesToMaterials(sceneRoot, textures);
