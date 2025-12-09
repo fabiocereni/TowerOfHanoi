@@ -3,15 +3,14 @@ image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
 stages:
   - build
 
-build-universal:
+build-all-in-one:
   stage: build
+  # AGGIUNGI QUESTA SEZIONE
+  tags:
+    - docker  # O il tag specifico richiesto dal tuo corso (es. "isin", "lab", ecc.)
   script:
-    # Installa sia i tool Linux (g++, freeglut) che Windows (mingw, zip)
     - apt-get update && apt-get install -y --no-install-recommends g++ freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip file
-    
-    # Esegue la build universale definita nel Makefile
     - make universal
-    
   artifacts:
     paths:
       - hanoiTower_COMPLETE.zip
