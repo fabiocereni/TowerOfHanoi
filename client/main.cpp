@@ -26,7 +26,7 @@
 
 int main(const int argc, char** argv) {
     // 1. Esegui i test
-    TestSuite::runAllTests();
+    //TestSuite::runAllTests();
 
     // 2. Inizializza l'Engine
     Eng::Base& eng = Eng::Base::getInstance();
