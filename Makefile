@@ -1,12 +1,11 @@
 MAKE = make
 ENGINE_DIR = engine
 CLIENT_DIR = client
-# Nome dell'archivio finale
 ARCHIVE_NAME = hanoiTower_release.tar.gz
 
 .PHONY: all build_engine build_client test package clean cross_win
 
-# Default: costruisce tutto per il sistema attuale (Linux/Mac)
+# Default (Linux/Mac)
 all: package
 
 build_engine:
@@ -24,31 +23,40 @@ test: build_engine
 package: test build_client
 	@echo "=== Packaging ==="
 	$(MAKE) -C $(CLIENT_DIR) package
-	# Sposta l'archivio nella root
 	mv $(CLIENT_DIR)/*.tar.gz . || mv $(CLIENT_DIR)/*.zip . 2>/dev/null || true
 
-# --- COMANDO SPECIALE PER GITLAB (Cross-Compile Windows) ---
+# --- CROSS-COMPILE WINDOWS (Con download automatico deps) ---
 cross_win:
 	@echo "=== Cross Compiling for Windows ==="
 	
-	# 1. Compila Engine per Windows
+	# 1. Scarica FreeGLUT per MinGW (Headers e Libs)
+	# Questo passaggio mancava nel tuo log precedente!
+	mkdir -p win_deps
+	wget -q -O win_deps/freeglut.zip https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MinGW-3.0.0-1.mp.zip
+	unzip -o -q win_deps/freeglut.zip -d win_deps
+	
+	# 2. Compila Engine
 	$(MAKE) -C $(ENGINE_DIR) clean
-	# FIX: Aggiunti i percorsi -I per GLM e FreeGLUT
-	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static -I../dependencies/glm/include -I../dependencies/freeglut/include" LIBS="-lfreeglut -lopengl32 -lglu32" all
+	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll \
+		CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static -I../dependencies/glm/include -I../win_deps/freeglut/include" \
+		LIBS="-L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32" all
 	
-	# 2. Compila Client per Windows
+	# 3. Compila Client
 	$(MAKE) -C $(CLIENT_DIR) clean
-	# FIX: Aggiunti i percorsi -I per GLM, FreeGLUT e Engine
-	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll CXX_FLAGS="-c -O2 -std=c++20 -I../engine -I../dependencies/glm/include -I../dependencies/freeglut/include" LDFLAGS="-L../engine -lengine -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
+	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll \
+		CXX_FLAGS="-c -O2 -std=c++20 -I../engine -I../dependencies/glm/include -I../win_deps/freeglut/include" \
+		LDFLAGS="-L../engine -lengine -L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
 	
-	# 3. Pacchettizza per Windows (Zip)
+	# 4. Crea ZIP
 	mkdir -p windows_dist
 	cp $(CLIENT_DIR)/hanoiTower.exe windows_dist/
 	cp $(ENGINE_DIR)/libengine.dll windows_dist/
-	# Scarica freeglut.dll necessaria
-	wget -q -O windows_dist/freeglut.dll https://github.com/transmission/transmission/raw/main/third-party/freeglut/freeglut.dll || echo "Warning: freeglut.dll download failed"
+	# Copia anche la DLL di freeglut scaricata
+	cp win_deps/freeglut/bin/x64/freeglut.dll windows_dist/
 	cd windows_dist && zip -r ../hanoiTower_win.zip .
-	rm -rf windows_dist
+	
+	# Pulizia
+	rm -rf windows_dist win_deps
 
 clean:
 	$(MAKE) -C $(ENGINE_DIR) clean
