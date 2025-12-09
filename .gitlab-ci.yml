@@ -3,13 +3,13 @@ image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
 stages:
   - build
 
-build-all-in-one:
+build-universal:
   stage: build
   script:
-    # CORRETTO: Tutto su una riga senza backslash (\)
-    - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip
+    # Installa sia i tool Linux (g++, freeglut) che Windows (mingw, zip)
+    - apt-get update && apt-get install -y --no-install-recommends g++ freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip file
     
-    # Lancia la build universale (Linux + Windows)
+    # Esegue la build universale definita nel Makefile
     - make universal
     
   artifacts:
