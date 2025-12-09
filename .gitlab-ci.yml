@@ -5,9 +5,7 @@ stages:
 
 build-all-in-one:
   stage: build
-  # AGGIUNGI QUESTA SEZIONE
-  tags:
-    - docker  # O il tag specifico richiesto dal tuo corso (es. "isin", "lab", ecc.)
+  # RIMOSSO i tags per usare qualsiasi runner disponibile (come nei tuoi primi tentativi)
   script:
     - apt-get update && apt-get install -y --no-install-recommends g++ freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip file
     - make universal
