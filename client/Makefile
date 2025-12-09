@@ -1,70 +1,64 @@
+# output: chessGame.tar.gz
+
+BASE_NAME := hanoiTower
+TARGET_DIR := .
+# Name of main executable -> chessGame
+TARGET := $(BASE_NAME)
+# Name of archive file -> chessGame.tar.gz
+TARGET_ARCHIVE := $(BASE_NAME).tar.gz
+MAIN_SRC_FILES := $(wildcard *.cpp)
+# List of .o object files corresponding to source files
+MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+# variables to manage the external shared library (engine)
+ENGINE_BASE_NAME := engine
+ENGINE_DIR := $(ENGINE_BASE_NAME)
+ENGINE_LIB_NAME := $(ENGINE_BASE_NAME)
+ENGINE_LIB_FILENAME := lib$(ENGINE_LIB_NAME).so
+
+# C++ compiler to use -> g++
 CXX := g++
-LD  := g++
+CXX_FLAGS := -std=c++20 -O2
+# Adds the directory ../$(ENGINE_DIR) to the list of directories from which the compiler should search for included header files
+CXX_FLAGS += -I../$(ENGINE_DIR)
+LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lglut -lGL -lGLU -lfreeimage
+# Command to create a tar.gz archive
+TAR_GZ := tar zcvf
 
-# cartella sorgenti client e auto-raccolta .cpp (anche sotto Test/)
-SRC_DIR := .
-SRCS    := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/Test/*.cpp)
+# OS uses LD_LIBRARY_PATH to determine where to look for shared libraries required by the program
+export LD_LIBRARY_PATH := ../$(ENGINE_DIR):$(LD_LIBRARY_PATH)
 
-# include di engine e dipendenze vendored
-INCLUDES := -I../engine -I../dependencies/glm/include -I../dependencies/freeglut/include
-# flag comuni con depfile
-CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fexceptions -MMD -MP $(INCLUDES)
+# package: Creates a tar.gz archive of the main executable
+# default target (first)
+package: $(TARGET_ARCHIVE)
+	@echo "all done!"
 
-# librerie da linkare
-ENGINE_LIB := -lengine
-GL_LIBS := -lglut -lGL -lGLU -lm
+# If $(TARGET) is update, it creates a tar.gz archive containing the main executable
+package: $(TARGET_ARCHIVE)
+	@echo "Package created: $(TARGET_ARCHIVE)"
 
-# configurazione Debug
-OBJDIR_Debug   := obj/Debug
-BINDIR_Debug   := bin/Debug
-OBJS_Debug     := $(SRCS:%.cpp=$(OBJDIR_Debug)/%.o)
-DEPS_Debug     := $(OBJS_Debug:.o=.d)
-TARGET_Debug   := $(BINDIR_Debug)/client
-CXXFLAGS_Debug := $(CXXFLAGS_COMMON) -g -D_DEBUG
-# path libreria engine e rpath relativo per trovare la .so a runtime (binario in client/bin/Debug)
-LDFLAGS_Debug  := -L../engine/bin/Debug -Wl,-rpath,'$$ORIGIN/../../../engine/bin/Debug:$$ORIGIN/../../../dependencies/lib'
+$(TARGET_ARCHIVE): $(TARGET)
+	# 1. Copia la libreria engine qui per includerla nell'archivio
+	cp ../$(ENGINE_DIR)/$(ENGINE_LIB_FILENAME) .
+	# 2. Crea l'archivio con Eseguibile + Libreria
+	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET) $(ENGINE_LIB_FILENAME)
+	# (Opzionale) Rimuovi la copia locale della lib dopo il tar
+	rm $(ENGINE_LIB_FILENAME)
 
-# configurazione Release
-OBJDIR_Release   := obj/Release
-BINDIR_Release   := bin/Release
-OBJS_Release     := $(SRCS:%.cpp=$(OBJDIR_Release)/%.o)
-DEPS_Release     := $(OBJS_Release:.o=.d)
-TARGET_Release   := $(BINDIR_Release)/client
-CXXFLAGS_Release := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
-LDFLAGS_Release  := -L../engine/bin/Release -Wl,-rpath,'$$ORIGIN/../../../engine/bin/Release:$$ORIGIN/../../../dependencies/lib' -s
+$(TARGET): $(MAIN_OBJ_FILES)
+	# build your client here
+	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
+	@echo "$(TARGET) compile done!"
 
-# target aggregati
-all: debug release
+# Compile .cpp source files into .o object files
+%.o: %.cpp
+	# eg: compile example.cpp and create example.o.
+	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
-# build Debug/Release
-debug: $(TARGET_Debug)
-release: $(TARGET_Release)
-
-# link eseguibile
-$(TARGET_Debug): $(OBJS_Debug) | $(BINDIR_Debug)
-	$(LD) -o $@ $(OBJS_Debug) $(LDFLAGS_Debug) $(ENGINE_LIB) $(GL_LIBS)
-
-$(TARGET_Release): $(OBJS_Release) | $(BINDIR_Release)
-	$(LD) -o $@ $(OBJS_Release) $(LDFLAGS_Release) $(ENGINE_LIB) $(GL_LIBS)
-
-# compilazione singolo oggetto
-$(OBJDIR_Debug)/%.o: %.cpp | $(OBJDIR_Debug)
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS_Debug) -c $< -o $@
-
-$(OBJDIR_Release)/%.o: %.cpp | $(OBJDIR_Release)
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS_Release) -c $< -o $@
-
-# creazione cartelle obj/bin
-$(OBJDIR_Debug) $(BINDIR_Debug) $(OBJDIR_Release) $(BINDIR_Release):
-	mkdir -p $@
-
-# pulizia
+# Used to remove files generated during the building process
 clean:
-	rm -rf $(OBJDIR_Debug) $(OBJDIR_Release) $(BINDIR_Debug) $(BINDIR_Release)
+	@rm -f $(TARGET)
+	@rm -f $(MAIN_OBJ_FILES)
 
-# include dei depfile generati
--include $(DEPS_Debug) $(DEPS_Release)
-
-.PHONY: all debug release clean
+# Declaration that clean and install are not files
+# Always execute commands associated with that target, regardless of whether a file with the same name exists
+.PHONY: clean package

@@ -1,5 +1,8 @@
 MAKE = make
 
+ENGINE_DIR = engine
+CLIENT_DIR = client
+
 all: build_engine build_client
 
 build_engine: 
