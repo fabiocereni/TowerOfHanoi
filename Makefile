@@ -2,7 +2,7 @@
 ENGINE_DIR = engine
 CLIENT_DIR = client
 
-.PHONY: all clean build_linux package_linux cross_win universal
+.PHONY: all clean clean_builds build_linux package_linux cross_win universal
 
 # Default
 all: build_linux
@@ -14,14 +14,14 @@ build_linux:
 	@echo "=== Building Client (Linux) ==="
 	$(MAKE) -C $(CLIENT_DIR) all
 
-# --- 2. PACKAGE LINUX (Corretto: paths fissati) ---
+# --- 2. PACKAGE LINUX ---
 package_linux: build_linux
 	@echo "=== Packaging Linux Bundle ==="
 	rm -rf linux_dist
 	mkdir -p linux_dist/libs
 	
 	# 1. Copia eseguibile e libreria engine
-	# I file vengono creati nella root delle rispettive cartelle, non in bin/Debug
+	# I file vengono creati nella root delle rispettive cartelle
 	cp $(CLIENT_DIR)/hanoiTower linux_dist/hanoiTower
 	cp $(ENGINE_DIR)/libengine.so linux_dist/libs/
 	
@@ -35,7 +35,7 @@ package_linux: build_linux
 		cp -L -n "$$lib_path" linux_dist/libs/ || true; \
 	done
 	
-	# Fix specifico per libglut (se non trovato da ldd)
+	# Fix specifico per libglut
 	if [ ! -f linux_dist/libs/libglut.so.3 ]; then \
 		GLUT_PATH=$$(find /usr/lib -name "libglut.so*" | head -n 1); \
 		if [ -n "$$GLUT_PATH" ]; then \
@@ -65,7 +65,7 @@ cross_win:
 	wget -q -O win_deps/freeglut.zip https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MinGW-3.0.0-1.mp.zip
 	unzip -o -q win_deps/freeglut.zip -d win_deps
 	
-	# Pulisce build precedenti
+	# Pulisce build precedenti (Solo Engine/Client, NON universal_bundle)
 	$(MAKE) -C $(ENGINE_DIR) clean
 	$(MAKE) -C $(CLIENT_DIR) clean
 	
@@ -91,29 +91,45 @@ cross_win:
 	cd windows_dist && zip -r ../hanoiTower_win.zip .
 	rm -rf win_deps windows_dist
 
+# --- Helper: Pulisce solo i file di build (non il bundle finale) ---
+clean_builds:
+	$(MAKE) -C $(ENGINE_DIR) clean
+	$(MAKE) -C $(CLIENT_DIR) clean
+	rm -rf linux_dist windows_dist win_deps
+
 # --- 4. UNIVERSAL (Orchestratore) ---
 universal:
 	@echo "=== Creating Universal Bundle ==="
-	rm -rf universal_bundle hanoiTower_COMPLETE.zip
+	# 1. Pulizia Totale Iniziale
+	$(MAKE) clean
+	
+	# 2. Crea cartelle di destinazione (DOPO clean!)
 	mkdir -p universal_bundle/linux
 	mkdir -p universal_bundle/windows
 	
+	# ----------------------------------------
 	# FASE 1: LINUX
-	$(MAKE) clean
+	# ----------------------------------------
 	$(MAKE) package_linux
 	mv hanoiTower_linux.tar.gz universal_bundle/linux/
-	rm -rf linux_dist
 	
+	# Pulizia intermedia (SOLO oggetti, NON universal_bundle)
+	$(MAKE) clean_builds
+	
+	# ----------------------------------------
 	# FASE 2: WINDOWS
-	$(MAKE) clean
+	# ----------------------------------------
 	$(MAKE) cross_win
 	mv hanoiTower_win.zip universal_bundle/windows/
 	
-	# ZIP FINALE
+	# ----------------------------------------
+	# PACKAGING FINALE
+	# ----------------------------------------
 	zip -r hanoiTower_COMPLETE.zip universal_bundle
 	rm -rf universal_bundle
 	@echo "SUCCESS: hanoiTower_COMPLETE.zip created!"
 
+# Clean Globale (Cancella tutto)
 clean:
 	$(MAKE) -C $(ENGINE_DIR) clean
 	$(MAKE) -C $(CLIENT_DIR) clean
