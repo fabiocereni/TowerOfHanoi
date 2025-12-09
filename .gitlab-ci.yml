@@ -1,18 +1,20 @@
-image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
-
-stages:
-  - build
-
 build-all-in-one:
   stage: build
   script:
-    # Non serve più wget o unzip, usiamo i file che hai caricato su Git
-    - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip
+    # 1. Installa TUTTE le dipendenze (Linux + Windows + Utilità)
+    - apt-get update && apt-get install -y --no-install-recommends \
+      freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 \
+      mingw-w64 make zip wget unzip
+    # CORRETTO: Tutto su una riga senza backslash (\)
+    - apt-get update && apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 mingw-w64 make zip wget unzip
     
+    # 2. Lancia la build universale
+    # Lancia la build universale (Linux + Windows)
     - make universal
     
   artifacts:
     paths:
+      # Unico file che contiene tutto
       - hanoiTower_COMPLETE.zip
     expire_in: 1 week
     when: on_success

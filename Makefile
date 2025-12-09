@@ -1,103 +1,79 @@
-# Makefile Root
+CLIENT_DIR = client
+ARCHIVE_NAME = hanoiTower_release.tar.gz
 
-# === CONFIGURAZIONE ===
-PKG_NAME       = hanoiTower.tar.gz
-FINAL_PKG_NAME = hanoiTower_linux_complete.tar.gz
-ARTIFACT_NAME  = hanoiTower_COMPLETE.zip
+.PHONY: all build_engine build_client test package clean cross_win
+.PHONY: all build_engine build_client test package clean cross_win universal
 
-# Cross-compiler per Windows
-WIN_CXX   = x86_64-w64-mingw32-g++
+# Default (Linux/Mac)
+# Default
+all: package
 
-# FIX CRITICO: Non usiamo -I/usr/include.
-# Usiamo una cartella locale 'win_deps/include' dove copieremo solo ciò che serve.
-WIN_FLAGS = -std=c++20 -O2 -D_WIN32 -I./win_deps/include
+build_engine:
+	$(MAKE) -C $(ENGINE_DIR) test
 
-.PHONY: all clean engine client package universal test windows_build linux_build
+package: test build_client
+	@echo "=== Packaging ==="
+	@echo "=== Packaging Linux ==="
+	$(MAKE) -C $(CLIENT_DIR) package
+	mv $(CLIENT_DIR)/*.tar.gz . || mv $(CLIENT_DIR)/*.zip . 2>/dev/null || true
+	mv $(CLIENT_DIR)/*.tar.gz . 2>/dev/null || true
 
-all: engine client
+# --- CROSS-COMPILE WINDOWS (Fixed: Static Linking) ---
+# --- CROSS-COMPILE WINDOWS ---
+cross_win:
+	@echo "=== Cross Compiling for Windows ==="
+	
+	# 1. Scarica FreeGLUT per MinGW
+	mkdir -p win_deps
+	wget -q -O win_deps/freeglut.zip https://www.transmissionzero.co.uk/files/software/development/GLUT/freeglut-MinGW-3.0.0-1.mp.zip
+	unzip -o -q win_deps/freeglut.zip -d win_deps
+	
+	# 2. Compila Engine (DLL) - ORA CON STATIC LINKING
+	$(MAKE) -C $(ENGINE_DIR) clean
+	$(MAKE) -C $(ENGINE_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=libengine.dll \
+		CXX_FLAGS="-c -O2 -std=c++20 -Dfreeglut_static -I../dependencies/glm/include -I../win_deps/freeglut/include" \
+		LIBS="-L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
+	
+	# 3. Compila Client (EXE) - CON STATIC LINKING
+	$(MAKE) -C $(CLIENT_DIR) clean
+	$(MAKE) -C $(CLIENT_DIR) CXX=x86_64-w64-mingw32-g++ TARGET=hanoiTower.exe ENGINE_LIB_FILENAME=libengine.dll \
+		CXX_FLAGS="-c -O2 -std=c++20 -I../engine -I../dependencies/glm/include -I../win_deps/freeglut/include" \
+		LDFLAGS="-L../engine -lengine -L../win_deps/freeglut/lib/x64 -lfreeglut -lopengl32 -lglu32 -static-libgcc -static-libstdc++" all
+	
+	# 4. Crea ZIP
+	mkdir -p windows_dist
+	cp $(CLIENT_DIR)/hanoiTower.exe windows_dist/
+	cp $(ENGINE_DIR)/libengine.dll windows_dist/
+	cp win_deps/freeglut/bin/x64/freeglut.dll windows_dist/
+	# Creiamo lo zip temporaneo per Windows
+	cd windows_dist && zip -r ../hanoiTower_win.zip .
+	
+	# Pulizia
+	rm -rf windows_dist win_deps
 
-# === TARGET STANDARD (Linux Locale) ===
-engine:
-	$(MAKE) -C engine all
-
-client: engine
-	$(MAKE) -C client all
-
-test: engine
-	$(MAKE) -C engine test
+# --- NUOVO COMANDO: BUILD UNIVERSALE (Linux + Windows) ---
+universal:
+	@echo "=== Creating Universal Bundle ==="
+	rm -rf universal_bundle
+	mkdir -p universal_bundle/linux
+	mkdir -p universal_bundle/windows
+	
+	# 1. Compila versione Linux
+	$(MAKE) clean
+	$(MAKE) package
+	# Sposta il tar.gz nella cartella linux
+	mv *.tar.gz universal_bundle/linux/
+	
+	# 2. Compila versione Windows
+	$(MAKE) cross_win
+	# Sposta lo zip windows nella cartella windows (e lo scompatta se preferisci, qui lo lascio zip)
+	mv *.zip universal_bundle/windows/
+	
+	# 3. Crea il pacchetto finale unico
+	zip -r hanoiTower_COMPLETE.zip universal_bundle
+	rm -rf universal_bundle
+	@echo "SUCCESS: hanoiTower_COMPLETE.zip created!"
 
 clean:
-	$(MAKE) -C engine clean
-	$(MAKE) -C client clean
-	rm -f *.so *.dylib *.dll *.exe *.o *.tar.gz *.zip
-	rm -rf temp_pkg universal_bundle release_temp build_artifacts win_deps
-	rm -f client/hanoiTower client/*.o engine/*.o engine/*.so
-
-# === BUILD LINUX (Helper) ===
-linux_build:
-	@echo "=== [LINUX] Building... ==="
-	$(MAKE) -C engine all
-	$(MAKE) -C client all
-	$(MAKE) -C client package
-	# Sposta e rinomina il pacchetto
-	mv client/$(PKG_NAME) . 2>/dev/null || true
-	rm -rf temp_pkg && mkdir -p temp_pkg
-	tar -xf $(PKG_NAME) -C temp_pkg
-	tar -C temp_pkg -zcvf $(FINAL_PKG_NAME) .
-	rm -rf temp_pkg
-	@echo "=== [LINUX] Done ==="
-
-# === BUILD WINDOWS (Helper) ===
-windows_build:
-	@echo "=== [WINDOWS] Preparing Headers... ==="
-	# 1. Crea una cartella temporanea per le dipendenze Windows
-	rm -rf win_deps
-	mkdir -p win_deps/include
-	
-	# 2. Copia GLM da sistema Linux a cartella locale per MinGW
-	# (GLM è header-only, quindi funziona ovunque se isolata)
-	cp -r /usr/include/glm win_deps/include/
-	
-	# (Opzionale) Se servono header di FreeImage/FreeGLUT e non li hai nel progetto:
-	# cp /usr/include/FreeImage.h win_deps/include/ 2>/dev/null || true
-	# cp -r /usr/include/GL win_deps/include/ 2>/dev/null || true
-
-	@echo "=== [WINDOWS] Cross-Compiling... ==="
-	# Nota: Se fallisce il LINKING ("cannot find -lfreeglut"), mancano le librerie .a/.lib per Windows.
-	# Ma questo risolve l'errore di compilazione degli header.
-	$(WIN_CXX) -shared -o libengine.dll engine/*.cpp $(WIN_FLAGS) -lfreeglut -lopengl32 -lglu32 -lfreeimage
-	$(WIN_CXX) -o hanoiTower.exe client/main.cpp -Iengine -L. -lengine $(WIN_FLAGS)
-	@echo "=== [WINDOWS] Done ==="
-
-# === TARGET UNIVERSALE (CI) ===
-universal:
-	@echo "=== Starting Universal Build ==="
-	
-	# 1. Prepara cartelle sicure
-	rm -rf build_artifacts
-	mkdir -p build_artifacts/linux
-	mkdir -p build_artifacts/windows
-
-	# 2. Build Windows
-	$(MAKE) clean
-	$(MAKE) windows_build
-	mv hanoiTower.exe build_artifacts/windows/
-	mv libengine.dll build_artifacts/windows/
-	echo "hanoiTower.exe" > build_artifacts/windows/run.bat
-
-	# 3. Build Linux
-	$(MAKE) clean
-	$(MAKE) linux_build
-	mv $(FINAL_PKG_NAME) build_artifacts/linux/
-
-	# 4. Crea ZIP finale
-	rm -rf release_temp
-	mkdir -p release_temp
-	cp -r build_artifacts/linux release_temp/
-	cp -r build_artifacts/windows release_temp/
-	cd release_temp && zip -r ../$(ARTIFACT_NAME) .
-	
-	@echo "Artifact creato: $(ARTIFACT_NAME)"
-	
-	# Pulizia finale
-	rm -rf release_temp build_artifacts win_deps
+	$(MAKE) -C $(ENGINE_DIR) clean
+	$(MAKE) -C $(CLIENT_DIR) clean
