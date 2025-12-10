@@ -22,6 +22,8 @@ public:
    void redoMove();
    void resetGame();
 
+   void initLampadario();
+
 private:
    std::shared_ptr<Eng::Node> root;
    std::shared_ptr<Eng::Node> selectedDisk;
@@ -46,6 +48,9 @@ private:
    bool isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr<Eng::Node> diskToMove);
    float getMeshHeight(const std::shared_ptr<Eng::Node>& node);
    bool checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor);
+
+   std::shared_ptr<Eng::OmnidirectionalLight> lampadarioLight;
+
 
    const int numberOfDisks_ = 7;
    std::string poleToMonitorName_ = "palo3";

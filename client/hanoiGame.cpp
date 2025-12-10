@@ -5,8 +5,54 @@
 #include <iostream>
 #include <algorithm>
 
+#include "omnidirectionallight.h"
+
 // hanoiGame.cpp
 
+// --- HELPER DI RICERCA RICORSIVA SICURA ---
+// Cerca un nodo per nome in tutto l'albero, non solo nel primo livello
+std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
+   if (!current) return nullptr;
+
+   // 1. Controlla se � questo
+   if (current->getName() == nameToFind) {
+      return current;
+   }
+
+   // 2. Cerca nei figli
+   for (auto& child : current->getChildren()) {
+      auto result = findRecursive(child, nameToFind);
+      if (result != nullptr) {
+         return result; // Trovato! Risaliamo la catena
+      }
+   }
+
+   // 3. Non trovato qui sotto
+   return nullptr;
+}
+
+void HanoiGame::initLampadario() {
+   std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(findRecursive(root, "lampadario"));
+   if (!lampadarioNode) {
+      std::cerr << ">> ATTENZIONE: Nodo '" << "nomeNodoLampadario" << "' non trovato. Luce non creata." << std::endl;
+      return;
+   }
+
+   lampadarioLight = Eng::OmnidirectionalLight::createOmnidirectionalLight();
+   lampadarioLight->setAmbient(glm::vec3(5.0f));
+   lampadarioLight->setDiffuse(glm::vec3(5.0f));
+   lampadarioLight->setSpecular(glm::vec3(5.0f));
+
+   lampadarioLight->setRadius(3000.0f);
+
+   // 5. Appendi la luce al nodo lampadario
+   lampadarioNode->addChildren(lampadarioLight);
+
+   std::cout << ">> Luce omnidirezionale creata e attaccata a: " << "nomeNodoLampadario" << std::endl;
+
+   lampadarioNode->getMaterial()->setEmission(glm::vec4(1.0f));
+
+}
 
 void HanoiGame::undoMove() {
    if (selectedDisk != nullptr) {
@@ -140,7 +186,7 @@ void HanoiGame::initLights() {
       light->setExponent(100.0f);
 
       glm::mat4 m = glm::mat4(1.0f);
-      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, -700.0f));
+      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, 0.0f));
       m = glm::rotate(m, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
       light->setMatrix(m);
 
@@ -220,27 +266,6 @@ bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) {
 }
 
 
-// --- HELPER DI RICERCA RICORSIVA SICURA ---
-// Cerca un nodo per nome in tutto l'albero, non solo nel primo livello
-std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
-   if (!current) return nullptr;
-
-   // 1. Controlla se � questo
-   if (current->getName() == nameToFind) {
-      return current;
-   }
-
-   // 2. Cerca nei figli
-   for (auto& child : current->getChildren()) {
-      auto result = findRecursive(child, nameToFind);
-      if (result != nullptr) {
-         return result; // Trovato! Risaliamo la catena
-      }
-   }
-
-   // 3. Non trovato qui sotto
-   return nullptr;
-}
 
 // --- COSTRUTTORE ---
 HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
@@ -287,6 +312,7 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    else std::cerr << ">> ERRORE: Palo 3 non trovato." << std::endl;
 
        initLights();
+       initLampadario();
 }
 
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
