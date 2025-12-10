@@ -289,18 +289,6 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    poles[3] = findRecursive(root, "palo3");
 
 
-
-   // // modifica per test vittoria
-   // std::vector<std::shared_ptr<Eng::Node>> tmp;
-   // tmp.push_back(poles[1]->getChildren().at(poles[1]->getChildren().size() - 1));
-   // tmp.push_back(poles[1]->getChildren().at(poles[1]->getChildren().size() - 2));
-   //
-   // std::vector<std::shared_ptr<Eng::Node>> tmpChildren;
-   // poles[1]->setChildren(tmpChildren);
-   // poles[1]->addChildren(tmp.at(0));
-   // poles[1]->addChildren(tmp.at(1));
-
-
    // Verifica
    if (poles[1]) std::cout << ">> Palo 1 TROVATO!" << std::endl;
    else std::cerr << ">> ERRORE: Palo 1 non trovato (neanche ricorsivamente)." << std::endl;

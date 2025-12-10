@@ -358,71 +358,41 @@ void Base::displayCallback() {
 }
 
 void Base::showFps() {
-   // disabilita luce, non altera il colore del testo
-   glDisable(GL_LIGHTING);
+    // 1. Disabilita luce, non altera il colore del testo
+    glDisable(GL_LIGHTING);
 
-   // salva proiezione
-   glMatrixMode(GL_PROJECTION);
-   glPushMatrix();
-   glLoadIdentity();
+    // Il contesto di proiezione (Ortho) e ModelView (Identità) è già impostato
+    char text[64]; sprintf(text, "FPS: %.1f", fps);
+    glColor3f(1.0f, 1.0f, 1.0f); // Colore bianco
 
+    glRasterPos2f(10.0f, (float)getHeight() - 20.0f);
 
-   // salva modelview
-   glMatrixMode(GL_MODELVIEW);
-   glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+    // display the string
+    glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<unsigned char*>(text));
 
-
-   char text[64]; sprintf(text, "FPS: %.1f", fps);
-   glColor3f(1, 1, 1);
-   // string position
-   glRasterPos2f(-0.95f, 0.85f);
-
-   // display the string
-   glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<unsigned char*>(text));
-   // ripristina
-   glPopMatrix();
-
-   // MODELVIEW
-   glMatrixMode(GL_PROJECTION);
-   glPopMatrix();
-   glEnable(GL_LIGHTING);
-
+    //Riabilita l'illuminazione
+    glEnable(GL_LIGHTING);
 }
+
 
 void Base::infoPrinter(const std::string& info) {
 
-   // disabilita luce, non altera il colore del testo
-   glDisable(GL_LIGHTING);
+    // 1. Disabilita luce, non altera il colore del testo
+    glDisable(GL_LIGHTING);
 
-   // salva proiezione
-   glMatrixMode(GL_PROJECTION);
-   glPushMatrix();
-   glLoadIdentity();
+    glColor3f(1.0f, 1.0f, 1.0f);
 
+    glRasterPos2f(10.0f, (float)getInstance().getHeight()-35.0f);
 
-   // salva modelview
-   glMatrixMode(GL_MODELVIEW);
-   glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+    Base::getInstance().setInfo(info);
 
+    // display the string
+    if (!info.empty()) {
+        glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(info.c_str()));
+    }
 
-   glColor3f(1, 1, 1);
-   // string position
-   glRasterPos2f(-0.95f, 0.80f);
-
-   Base::getInstance().setInfo(info);
-
-   // display the string
-   if (!info.empty()) {
-      glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(info.c_str()));
-   }   // ripristina
-
-   glPopMatrix();
-
-   // MODELVIEW
-   glMatrixMode(GL_PROJECTION);
-   glPopMatrix();
-   glEnable(GL_LIGHTING);
-
+    //Riabilita l'illuminazione
+    glEnable(GL_LIGHTING);
 }
 
 void Base::clearInfoPrinter() {

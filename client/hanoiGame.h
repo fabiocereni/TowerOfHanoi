@@ -57,6 +57,7 @@ private:
    std::string statusMessage_ = R"(--- ISTRUZIONI DI GIOCO ---
 1 - Seleziona da 1 a 3 il palo da cui vuoi prendere il disco
 2 - Seleziona da 1 a 3 il palo a cui vuoi aggiungere il disco
+3 - Seleziona da 1 a 3 il palo a cui vuoi aggiungere il disco
 (Per annullare la mossa richiama il tasto del palo selezionato)
 (x) -> undo
 (y) -> redo
