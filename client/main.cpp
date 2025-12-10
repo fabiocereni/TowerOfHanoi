@@ -211,17 +211,48 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
 }
 
 void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<Eng::Node>& sceneRoot) {
-    const std::shared_ptr<Eng::OmnidirectionalLight> my_omnilight = eng.createOmnidirectionalLight();
 
-    my_omnilight->setAmbient(glm::vec3(5.0f));
-    my_omnilight->setDiffuse(glm::vec3(5.0f));
+    auto lampadario = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "lampadario"));
+    auto soffitto = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "soffitto"));
+
+    if (!lampadario) {
+        std::cerr << "Lampadario non trovato!" << std::endl;
+        return;
+    }
+
+
+
+    lampadario->setParent(soffitto);
+    lampadario->setMatrix(lampadario->getMatrix() * glm::rotate(glm::mat4(1.0f),
+                                                             glm::radians(-180.0f),
+                                                                 glm::vec3(0, 0, 1)));
+
+    lampadario->setMatrix(lampadario->getMatrix() * glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 16.0f, 1.0f)));
+
+
+
+    glm::mat4 world =
+        lampadario->getParent()->getMatrix() *
+        lampadario->getMatrix();
+
+
+    // world[3] contiene la posizione
+    const auto lampadarioPos = glm::vec3(world[3]);
+
+
+    const auto my_omnilight = eng.createOmnidirectionalLight();
+
+    my_omnilight->setAmbient (glm::vec3(5.0f));
+    my_omnilight->setDiffuse (glm::vec3(5.0f));
     my_omnilight->setSpecular(glm::vec3(5.0f));
-    my_omnilight->setRadius(3000.0f);
+    my_omnilight->setRadius  (3000.0f);
 
-    constexpr glm::mat4 lightMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2000.0f, 0.0f));
+
+    glm::mat4 lightMatrix = glm::translate(glm::mat4(1.0f), lampadarioPos);
     my_omnilight->setMatrix(lightMatrix);
 
     my_omnilight->setName("luce1");
+
 
     sceneRoot->addChildren(my_omnilight);
 }
