@@ -30,19 +30,19 @@ namespace Eng {
       const GLenum id = GL_LIGHT0 + index_;
       glEnable(id);
 
-      const auto ambient = glm::vec4(ambient_, 1.0f);
-      const auto diffuse = glm::vec4(diffuse_, 1.0f);
-      const auto specular = glm::vec4(specular_, 1.0f);
+      const glm::vec4 ambient = glm::vec4(ambient_, 1.0f);
+      const glm::vec4 diffuse = glm::vec4(diffuse_, 1.0f);
+      const glm::vec4 specular = glm::vec4(specular_, 1.0f);
 
       const float linearAttenuation = 4.5f / (radius_ > 0.0f ? radius_ : 1.0f);
-
+      const glm::vec4 posEye = modelViewMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
       constexpr glm::vec4 lightPosition(0.0f, 0.0f, 0.0f, 1.0f);
 
       glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient));
       glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse));
       glLightfv(id, GL_SPECULAR, glm::value_ptr(specular));
-      glLightfv(id, GL_POSITION, glm::value_ptr(lightPosition));
+      glLightfv(id, GL_POSITION, glm::value_ptr(posEye));
       glLightf(id, GL_LINEAR_ATTENUATION, linearAttenuation);
    }
 }
