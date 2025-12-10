@@ -1,4 +1,3 @@
-# compilatore e linker
 CXX := g++
 LD  := g++
 
@@ -7,13 +6,13 @@ SRC_DIR := .
 SRCS    := $(wildcard $(SRC_DIR)/*.cpp)
 
 # include locali (engine + dipendenze vendored)
-INCLUDES := -I. -I../dependencies/glm/include -I../dependencies/freeglut/include
+INCLUDES := -I. -I../dependencies/glm/include -I../dependencies/freeglut/include -I../dependencies/freeimage/include
 
 # flag comuni: warning, standard, PIC, depfile per header
 CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fPIC -m64 -fexceptions -MMD -MP $(INCLUDES)
 # link shared e librerie OpenGL/freeglut di sistema
 LDFLAGS_COMMON := -shared -m64 -Wl,-rpath,'$$ORIGIN/../../dependencies/lib'
-LIBS := -lglut -lGL -lGLU -lm
+LIBS := -lglut -lGL -lGLU -lfreeimage -lm
 
 # configurazione Debug
 OBJDIR_Debug   := obj/Debug
@@ -64,4 +63,3 @@ clean:
 -include $(DEPS_Debug) $(DEPS_Release)
 
 .PHONY: all debug release clean
-
