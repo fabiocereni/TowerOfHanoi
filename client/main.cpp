@@ -228,8 +228,6 @@ void createAndReturnOmniDirectionalLight(Eng::Base& eng, const std::shared_ptr<E
 
 
 
-
-
 int main(const int argc, char** argv) {
 
 #ifdef DEBUG
@@ -296,6 +294,10 @@ int main(const int argc, char** argv) {
         case 'g':
             dynamic_cam_y_angle -= angle_speed_rotation;
             updateDynamicCamera(cam3, sceneRoot);
+            break;
+
+        case 'x':
+           game.undoMove();
             break;
 
         default:

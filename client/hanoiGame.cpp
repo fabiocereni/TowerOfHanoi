@@ -5,6 +5,53 @@
 #include <iostream>
 #include <algorithm>
 
+// hanoiGame.cpp
+
+void HanoiGame::undoMove() {
+   // 1. Se ho un disco in mano, 'x' lo rimette giù (annulla selezione)
+   if (selectedDisk != nullptr) {
+      processInput(sourcePoleIndex);
+      return;
+   }
+
+   // 2. Se non c'è una mossa valida da annullare
+   if (!hasLastMove_) {
+      std::cout << ">> Nessuna mossa da annullare!" << std::endl;
+      return;
+   }
+
+   // 3. Esegui l'Undo
+   int currentIdx = lastMove_.toPoleIndex;
+   int targetIdx = lastMove_.fromPoleIndex;
+
+   auto currentPole = poles[currentIdx];
+   auto targetPole = poles[targetIdx];
+   auto disk = getTopDisk(currentPole);
+
+   if (disk) {
+      std::cout << ">> UNDO: Torna indietro da " << currentIdx << " a " << targetIdx << std::endl;
+
+      currentPole->removeChildren(disk->getName());
+      targetPole->addChildren(disk);
+
+      // Ricalcola altezza (Y) sul vecchio palo
+      float h = 0.0f;
+      for (auto& child : targetPole->getChildren()) {
+         if (child != disk && std::dynamic_pointer_cast<Eng::Mesh>(child))
+            h += getMeshHeight(child);
+      }
+
+      glm::mat4 m = disk->getMatrix();
+      m[3][1] = h; // Imposta altezza corretta
+      disk->setMatrix(m);
+   }
+
+   // 4. DIMENTICA LA MOSSA (Così non puoi rifarlo due volte)
+   hasLastMove_ = false;
+
+   updateLightsColors(-1); // Spegni le luci
+}
+
 void HanoiGame::initLights() {
    poleLights.resize(4, nullptr);
 
@@ -224,6 +271,8 @@ void HanoiGame::processInput(const int poleIndex) {
             selectedDisk = disk;
             sourcePole = clickedPole;
 
+            sourcePoleIndex = poleIndex; // salvo da dove ho preso il disco per l'undo
+
             // --- NUOVO: ALZA IL DISCO ---
             glm::mat4 matrix = selectedDisk->getMatrix();
             matrix[3][1] += LIFT_HEIGHT; // Aggiunge altezza alla Y (colonna 3, riga 1)
@@ -258,6 +307,10 @@ void HanoiGame::processInput(const int poleIndex) {
 
          // Se clicco su un altro palo -> PROVA A SPOSTARE
          if (isValidMove(clickedPole, selectedDisk)) {
+            lastMove_.fromPoleIndex = sourcePoleIndex;
+            lastMove_.toPoleIndex = poleIndex;
+            hasLastMove_ = true;
+
             std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
 
             sourcePole->removeChildren(selectedDisk->getName());
@@ -287,8 +340,9 @@ void HanoiGame::processInput(const int poleIndex) {
 
             selectedDisk = nullptr;
             sourcePole = nullptr;
+            sourcePoleIndex = -1;
             updateLightsColors(-1);
-
+            checkVictory(findRecursive(root, poleToMonitorName_));
             // Debug print...
          }
          else {
