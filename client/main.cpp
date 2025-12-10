@@ -331,6 +331,14 @@ int main(const int argc, char** argv) {
            game.undoMove();
             break;
 
+        case 'y':
+           game.redoMove();
+           break;
+
+        case 'r':
+           game.resetGame();
+           break;
+
         default:
             // Ignora altri tasti
             break;

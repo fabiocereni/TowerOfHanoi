@@ -7,20 +7,20 @@
 
 // hanoiGame.cpp
 
+
 void HanoiGame::undoMove() {
-   // 1. Se ho un disco in mano, 'x' lo rimette giù (annulla selezione)
    if (selectedDisk != nullptr) {
       processInput(sourcePoleIndex);
       return;
    }
 
-   // 2. Se non c'è una mossa valida da annullare
-   if (!hasLastMove_) {
-      std::cout << ">> Nessuna mossa da annullare!" << std::endl;
+   // Se non c'è mossa o l'ho già annullata
+   if (!hasLastMove_ || isUndoPerformed_) {
+      std::cout << ">> Non puoi annullare oltre!" << std::endl;
       return;
    }
 
-   // 3. Esegui l'Undo
+   // Esegui UNDO: da TO a FROM
    int currentIdx = lastMove_.toPoleIndex;
    int targetIdx = lastMove_.fromPoleIndex;
 
@@ -29,27 +29,101 @@ void HanoiGame::undoMove() {
    auto disk = getTopDisk(currentPole);
 
    if (disk) {
-      std::cout << ">> UNDO: Torna indietro da " << currentIdx << " a " << targetIdx << std::endl;
-
+      std::cout << ">> UNDO: Torna indietro..." << std::endl;
       currentPole->removeChildren(disk->getName());
       targetPole->addChildren(disk);
 
-      // Ricalcola altezza (Y) sul vecchio palo
       float h = 0.0f;
       for (auto& child : targetPole->getChildren()) {
          if (child != disk && std::dynamic_pointer_cast<Eng::Mesh>(child))
             h += getMeshHeight(child);
       }
-
       glm::mat4 m = disk->getMatrix();
-      m[3][1] = h; // Imposta altezza corretta
+      m[3][1] = h;
       disk->setMatrix(m);
    }
 
-   // 4. DIMENTICA LA MOSSA (Così non puoi rifarlo due volte)
-   hasLastMove_ = false;
+   isUndoPerformed_ = true;
 
-   updateLightsColors(-1); // Spegni le luci
+   updateLightsColors(-1);
+}
+
+void HanoiGame::redoMove() {
+   // Posso fare Redo solo se ho appena fatto un Undo
+   if (!hasLastMove_ || !isUndoPerformed_) {
+      std::cout << ">> Nulla da ripristinare (Redo)!" << std::endl;
+      return;
+   }
+
+   int fromIdx = lastMove_.fromPoleIndex;
+   int toIdx = lastMove_.toPoleIndex;
+
+   auto sourcePole = poles[fromIdx];
+   auto destPole = poles[toIdx];
+   auto disk = getTopDisk(sourcePole);
+
+   if (disk) {
+      std::cout << ">> REDO: Ripristino mossa..." << std::endl;
+      sourcePole->removeChildren(disk->getName());
+      destPole->addChildren(disk);
+
+      float h = 0.0f;
+      for (auto& child : destPole->getChildren()) {
+         if (child != disk && std::dynamic_pointer_cast<Eng::Mesh>(child))
+            h += getMeshHeight(child);
+      }
+      glm::mat4 m = disk->getMatrix();
+      m[3][1] = h;
+      disk->setMatrix(m);
+   }
+
+   isUndoPerformed_ = false;
+
+   updateLightsColors(-1);
+}
+
+void HanoiGame::resetGame() {
+   std::cout << ">> RESET GAME: Riavvio partita..." << std::endl;
+
+   selectedDisk = nullptr;
+   sourcePole = nullptr;
+   sourcePoleIndex = -1;
+   hasLastMove_ = false;
+   isUndoPerformed_ = false;
+   updateLightsColors(-1);
+
+   std::vector<std::shared_ptr<Eng::Node>> allDisks;
+
+   for (int i = 1; i <= 3; i++) {
+      if (!poles[i]) continue;
+
+      auto children = poles[i]->getChildren();
+      for (auto& child : children) {
+         if (std::dynamic_pointer_cast<Eng::Mesh>(child)) {
+            allDisks.push_back(child);
+            poles[i]->removeChildren(child->getName());
+         }
+      }
+   }
+
+   std::sort(allDisks.begin(), allDisks.end(), [](const auto& a, const auto& b) {
+      return a->getName() < b->getName();
+      });
+
+   float currentHeight = 0.0f;
+   auto pole1 = poles[1];
+
+   for (auto& disk : allDisks) {
+      pole1->addChildren(disk);
+
+      glm::mat4 m = disk->getMatrix();
+      m[3] = glm::vec4(0.0f, currentHeight, 0.0f, 1.0f);
+      disk->setMatrix(m);
+
+      currentHeight += getMeshHeight(disk);
+   }
+
+   this->statusMessage_ = "Partita Resettata";
 }
 
 void HanoiGame::initLights() {
@@ -273,6 +347,7 @@ void HanoiGame::processInput(const int poleIndex) {
 
             sourcePoleIndex = poleIndex; // salvo da dove ho preso il disco per l'undo
 
+
             // --- NUOVO: ALZA IL DISCO ---
             glm::mat4 matrix = selectedDisk->getMatrix();
             matrix[3][1] += LIFT_HEIGHT; // Aggiunge altezza alla Y (colonna 3, riga 1)
@@ -310,6 +385,8 @@ void HanoiGame::processInput(const int poleIndex) {
             lastMove_.fromPoleIndex = sourcePoleIndex;
             lastMove_.toPoleIndex = poleIndex;
             hasLastMove_ = true;
+            //Se faccio una nuova mossa, non posso più fare Redo della vecchia << <
+            isUndoPerformed_ = false;
 
             std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
 

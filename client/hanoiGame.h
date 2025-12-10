@@ -19,6 +19,8 @@ public:
    [[nodiscard]] std::string getStatusMessage() const { return statusMessage_; }
 
    void undoMove();
+   void redoMove();
+   void resetGame();
 
 private:
    std::shared_ptr<Eng::Node> root;
@@ -28,6 +30,7 @@ private:
    MoveRecord lastMove_;
    bool hasLastMove_ = false; // ci dice se esiste una mossa da annullare
    int sourcePoleIndex = -1;
+   bool isUndoPerformed_ = false; // True se ho appena fatto un Undo e posso fare Redo
 
 
    std::vector<std::shared_ptr<Eng::Spotlight>> poleLights;
