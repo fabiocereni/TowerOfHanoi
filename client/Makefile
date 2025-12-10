@@ -6,7 +6,7 @@ SRC_DIR := .
 SRCS    := $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/Test/*.cpp)
 
 # include di engine e dipendenze vendored
-INCLUDES := -I../engine -I../dependencies/glm/include -I../dependencies/freeglut/include
+INCLUDES := -I../engine -I../dependencies/glm/include -I../dependencies/freeglut/include -I../dependencies/freeimage/include
 # flag comuni con depfile
 CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fexceptions -MMD -MP $(INCLUDES)
 
@@ -68,4 +68,3 @@ clean:
 -include $(DEPS_Debug) $(DEPS_Release)
 
 .PHONY: all debug release clean
-

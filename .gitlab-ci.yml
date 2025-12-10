@@ -7,7 +7,7 @@ build:
   stage: build
   script:
     - apt-get update
-    - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6
+    - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 libfreeimage-dev
     - make clean
     - make -j"$(nproc)"
     - mkdir -p dependencies/lib
@@ -42,6 +42,15 @@ build:
     - echo 'chmod +x "$DIR/client/bin/Debug/client"' >> run_client.sh
     - echo 'exec "$DIR/client/bin/Debug/client"' >> run_client.sh
     - chmod +x run_client.sh
+    - |
+      cat > README.txt <<'EOF'
+      # Avvio dell'artifact
+      Dopo aver scaricato l'artifact da GitLab, rendere eseguibile lo script di avvio con:
+        chmod +x run_client.sh
+        Copiare nella cartella artifacts la cartella ExportProgetto 
+      Poi lanciare:
+        ./run_client.sh
+      EOF
 
   artifacts:
     paths:
@@ -49,7 +58,7 @@ build:
       - client/bin
       - dependencies/lib
       - run_client.sh
+      - README.txt
     when: always
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
-

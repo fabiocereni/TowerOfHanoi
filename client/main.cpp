@@ -244,6 +244,7 @@ int main(const int argc, char** argv) {
     const std::string scenePath = modelPath.string();
     const auto sceneRoot = eng.load(scenePath);
 
+    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" ,"lampadario"};
 
     const std::vector<std::shared_ptr<Eng::Texture>> textures = loadAndReturnTextures(eng);
     eng.bindTexturesToMaterials(sceneRoot, textures);
@@ -322,9 +323,6 @@ int main(const int argc, char** argv) {
         dynamic_cam_y -= dynamic_cam_speed;
         updateDynamicCamera(cam3, sceneRoot);
     });
-
-
-    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" };
 
 
     // 5. Ciclo di Rendering
