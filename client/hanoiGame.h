@@ -4,17 +4,32 @@
 #include "engine.h"
 #include "spotlight.h"
 
+#include <stack>
+
+struct MoveRecord {
+   int fromPoleIndex;
+   int toPoleIndex;
+};
 
 class HanoiGame {
 public:
    HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot);
+
    void processInput(int poleIndex);
    [[nodiscard]] std::string getStatusMessage() const { return statusMessage_; }
+
+   void undoMove();
 
 private:
    std::shared_ptr<Eng::Node> root;
    std::shared_ptr<Eng::Node> selectedDisk;
    std::shared_ptr<Eng::Node> sourcePole;
+
+   MoveRecord lastMove_;
+   bool hasLastMove_ = false; // ci dice se esiste una mossa da annullare
+   int sourcePoleIndex = -1;
+
+
    std::vector<std::shared_ptr<Eng::Spotlight>> poleLights;
 
    // CACHE: Salviamo i pali qui per non cercarli sempre
