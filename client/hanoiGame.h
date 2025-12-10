@@ -53,5 +53,16 @@ private:
 1 - Seleziona da 1 a 3 il palo da cui vuoi prendere il disco
 2 - Seleziona da 1 a 3 il palo a cui vuoi aggiungere il disco
 (Per annullare la mossa richiama il tasto del palo selezionato)
+(x) -> undo
+(y) -> redo
+(r) -> reset game
+(fn + f1) -> cam principale
+(fn + f2) -> cam secondaria
+(fn + f3) -> cam mobile
+(wasd) -> per muoversi
+(u) -> alza visuale
+(g) -> abbassa visuale
+(freccia su) -> ti alzi
+(freccia giu) -> ti abbassi 
 )";
 };
