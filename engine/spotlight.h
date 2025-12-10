@@ -24,7 +24,6 @@ namespace Eng {
 
 
    private:
-
       explicit Spotlight(int index) noexcept;
 
 
