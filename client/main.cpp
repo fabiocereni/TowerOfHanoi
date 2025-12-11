@@ -18,7 +18,7 @@ int main(const int argc, char** argv) {
     Setup setup(eng, "ExportProgetto");
 
     // @brief Carica la scena
-    const auto sceneRoot = setup.loadScene("ProvaTavoloovoNew.ovo");
+    const auto sceneRoot = setup.loadScene("ExportFinalVersion.ovo");
 
     // @brief Setup texture
     setup.loadAndBindTextures();
@@ -105,8 +105,8 @@ int main(const int argc, char** argv) {
             case 'x': game.undoMove(); break;
             case 'y': game.redoMove(); break;
             case 'r': game.resetGame(); break;
-
-            case 'j':
+                
+            case 'l':
                 if(const auto dl = setup.getDynamicLight()) {
                     dl->toggleLight();
                     std::cout << "Dinamica: " << dl->isActive() << std::endl;
@@ -142,7 +142,8 @@ int main(const int argc, char** argv) {
         eng.end3D();
 
         eng.showFps();
-        Eng::Base::infoPrinter(game.getStatusMessage());
+        Eng::Base::infoPrinter(game.getCommandMessage());
+        Eng::Base::statusPrinter(game.getStatusMessage());
 
         eng.swap();
     }

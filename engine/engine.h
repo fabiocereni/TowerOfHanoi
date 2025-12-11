@@ -111,8 +111,6 @@ namespace Eng {
       ENG_API void setHeight(const int height) noexcept {height_ = height;};
       ENG_API static void setFrames(const float frames) noexcept {frames_ = frames;};
       ENG_API void setActiveCamera(const std::shared_ptr<Camera>& camera) noexcept {activeCamera_ = camera;};
-      ENG_API void setInfo(const std::string& info) noexcept { info_ = info; };
-
 
       ENG_API [[nodiscard]] int getWidth() const {return width_;};
       ENG_API [[nodiscard]] int getHeight() const {return height_;};
@@ -148,13 +146,7 @@ namespace Eng {
 
       /// @brief Stampa informazioni testuali a schermo
       ENG_API static void infoPrinter(const std::string& info);
-
-      /// @brief Pulisce la stringa delle informazioni
-      ENG_API void infoClear() { return info_.clear(); };
-
-      /// @brief Pulisce le informazioni visualizzate dall'infoPrinter
-      ENG_API static void clearInfoPrinter();
-
+      ENG_API static void statusPrinter(const std::string& info);
 
 
       /// @brief Cerca un nodo nel grafo della scena tramite il nome
@@ -181,8 +173,6 @@ namespace Eng {
       int height_ = 1000;
       /// @brief Contatore dei frame
       static float frames_;
-      /// @brief Stringa per info printer
-      std::string info_;
       /// @brief Camera attiva
       std::shared_ptr<Camera> activeCamera_;
 

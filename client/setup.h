@@ -82,9 +82,6 @@ public:
 
 
 private:
-    /// @brief Cerca ricorsivamente un nodo per nome
-    std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> start, const std::string& nameToFind) const;
-
     /// @brief Calcola i vertici orientati nello spazio mondo
     void computeWorldOrientedVertexes(const std::vector<glm::vec3>& vertexes,
                                       const std::shared_ptr<Eng::Node>& node,

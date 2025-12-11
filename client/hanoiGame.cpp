@@ -4,11 +4,8 @@
 #include <limits>
 #include <iostream>
 #include <algorithm>
-
-
-
-
-
+#include <chrono>
+#include <thread>
 
 
 void HanoiGame::undoMove() {
@@ -121,7 +118,8 @@ void HanoiGame::resetGame() {
       currentHeight += getMeshHeight(disk);
    }
 
-   this->statusMessage_ = "Partita Resettata";
+   this->statusMessage_ = "Partira riavviata";
+
 }
 
 // --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
@@ -154,8 +152,8 @@ bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) {
 
    if (diskCount == numberOfDisks_)
    {
-      this->statusMessage_ = "HAI VINTO!!!";
-      return true;
+       this->statusMessage_ = "HAI VINTO!!!";
+       return true;
    }
    return false;
 }
@@ -234,6 +232,7 @@ bool HanoiGame::isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr
 // In Gruppo_03/engine/hanoiGame.cpp
 
 void HanoiGame::processInput(const int poleIndex) {
+    this->statusMessage_ = "";
     if (poleIndex < 1 || poleIndex > 3) return;
 
     auto clickedPole = poles[poleIndex];

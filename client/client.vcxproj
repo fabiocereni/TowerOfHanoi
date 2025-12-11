@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="hanoiGame.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="setup.cpp" />
     <ClCompile Include="Test\test_suite.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hanoiGame.h" />
+    <ClInclude Include="setup.h" />
     <ClInclude Include="Test\test_suite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

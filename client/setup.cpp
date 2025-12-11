@@ -27,35 +27,12 @@ std::shared_ptr<Eng::Node> Setup::loadScene(const std::string& ovoFileName) {
     return sceneRoot_;
 }
 
-/**
- * @brief Funzione ricorsiva per trovare un nodo
- * @param start Nodo di partenza
- * @param nameToFind Nome da cercare
- */
-std::shared_ptr<Eng::Node> Setup::findRec(std::shared_ptr<Eng::Node> start, const std::string& nameToFind) const {
-    if (!start) return nullptr;
-
-    // @details Se il nodo corrente ha il nome cercato, lo restituiamo
-    if (start->getName() == nameToFind) {
-        return start;
-    }
-
-    // @brief Ricerca nei figli
-    for (const auto& child : start->getChildren()) {
-        auto result = findRec(child, nameToFind);
-        if (result != nullptr) {
-            return result;
-        }
-    }
-
-    return nullptr;
-}
 
 /**
  * @brief Inizializza la luce del lampadario
  */
 std::shared_ptr<Eng::Light> Setup::initLampadario() {
-    const std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot_, "lampadario"));
+    const std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "lampadario"));
 
     if (!lampadarioNode) {
         std::cerr << ">> ATTENZIONE: Nodo 'lampadario' non trovato." << std::endl;
@@ -134,7 +111,7 @@ void Setup::computeDynamicCameraLimits() {
     const std::vector<std::string> walls = {"pavimento", "muro1", "muro2", "muro3", "muro4"};
 
     for(const auto& name : walls) {
-        const auto node = findRec(sceneRoot_, name);
+        const auto node = Eng::Base::findByName(sceneRoot_, name);
         if(node) {
              // @details Cast a mesh per ottenere i vertici
              if(const auto mesh = std::dynamic_pointer_cast<Eng::Mesh>(node)) {
@@ -217,7 +194,7 @@ std::shared_ptr<Eng::Node> Setup::createDynamicLight() {
     dynamicLight_->setRadius(1000.0f);
     dynamicLight_->setActive(false);
 
-    const auto albero = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot_, "albero"));
+    const auto albero = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "albero"));
     lightPivotNode_ = std::make_shared<Eng::Node>();
     lightPivotNode_->setName("pivot");
 
@@ -242,10 +219,10 @@ std::shared_ptr<Eng::Node> Setup::createDynamicLight() {
  * @brief Calcola i limiti dell'albero
  */
 void Setup::computeTreeHeightLimits() {
-    const auto albero = findRec(sceneRoot_, "albero");
-    const auto cone0 = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot_, "Cone"));
-    const auto cone1 = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot_, "Cone_001")); // Non usato nel calcolo originale ma presente
-    const auto cone2 = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot_, "Cone_002"));
+    const auto albero = Eng::Base::findByName(sceneRoot_, "albero");
+    const auto cone0 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone"));
+    const auto cone1 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone_001")); // Non usato nel calcolo originale ma presente
+    const auto cone2 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone_002"));
 
     if (!albero || (!cone0 && !cone2)) {
         minTreeY_ = maxTreeY_ = pivotY_;

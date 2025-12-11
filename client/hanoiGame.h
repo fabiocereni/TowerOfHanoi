@@ -16,6 +16,7 @@ public:
    HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot);
 
    void processInput(int poleIndex);
+   [[nodiscard]] std::string getCommandMessage() const { return commandMessage_; }
    [[nodiscard]] std::string getStatusMessage() const { return statusMessage_; }
 
    void undoMove();
@@ -47,11 +48,10 @@ private:
    bool checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor);
 
 
-
-
    const int numberOfDisks_ = 7;
    std::string poleToMonitorName_ = "palo3";
-   std::string statusMessage_ = R"(--- ISTRUZIONI DI GIOCO ---
+   std::string statusMessage_ = "";
+   std::string commandMessage_ = R"(--- ISTRUZIONI DI GIOCO ---
 1 - Seleziona da 1 a 3 il palo da cui vuoi prendere il disco
 2 - Seleziona da 1 a 3 il palo a cui vuoi aggiungere il disco
 3 - Seleziona da 1 a 3 il palo a cui vuoi aggiungere il disco
@@ -67,6 +67,6 @@ private:
 (g) -> abbassa visuale
 (freccia su) -> ti alzi
 (freccia giu) -> ti abbassi
-(j) -> accendi/spegni lampadario/albero
+(l) -> accendi/spegni lampadario/albero
 )";
 };

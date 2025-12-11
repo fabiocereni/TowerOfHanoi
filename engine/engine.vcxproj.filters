@@ -119,6 +119,9 @@
     <ClInclude Include="ovoreader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="light_number_exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="engine.cbp" />

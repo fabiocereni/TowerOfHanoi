@@ -453,7 +453,7 @@ void Base::showFps() {
     glRasterPos2f(10.0f, static_cast<float>(getHeight()) - 20.0f);
 
     // display the string
-    glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<unsigned char*>(text));
+    glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<unsigned char*>(text));
 
     //Riabilita l'illuminazione
     glEnable(GL_LIGHTING);
@@ -471,13 +471,11 @@ void Base::infoPrinter(const std::string& info) {
 
     glColor3f(1.0f, 1.0f, 1.0f);
 
-    glRasterPos2f(10.0f, (float)getInstance().getHeight()-35.0f);
-
-    getInstance().setInfo(info);
+    glRasterPos2f(10.0f, (float)getInstance().getHeight()-45.0f);
 
     // display the string
     if (!info.empty()) {
-        glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(info.c_str()));
+        glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<const unsigned char*>(info.c_str()));
     }
 
     //Riabilita l'illuminazione
@@ -485,10 +483,25 @@ void Base::infoPrinter(const std::string& info) {
 }
 
 /**
- * @brief Pulisce le informazioni visualizzate dall'infoPrinter
+ * @brief Stampa informazioni testuali a schermo
+ * @param info Stringa contenente le informazioni da visualizzare
  */
-void Base::clearInfoPrinter() {
-   getInstance().infoClear();
+void Base::statusPrinter(const std::string& info) {
+
+    // 1. Disabilita luce, non altera il colore del testo
+    glDisable(GL_LIGHTING);
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glRasterPos2f(10.0f, 45.0f);
+
+    // display the string
+    if (!info.empty()) {
+        glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<const unsigned char*>(info.c_str()));
+    }
+
+    //Riabilita l'illuminazione
+    glEnable(GL_LIGHTING);
 }
 
 /**
