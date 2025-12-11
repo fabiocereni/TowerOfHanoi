@@ -158,7 +158,7 @@ namespace Eng {
 
 
       /// @brief Cerca un nodo nel grafo della scena tramite il nome
-      ENG_API std::shared_ptr<Node> findByName(const std::shared_ptr<Node>& node, const std::string& name) const;
+      ENG_API static std::shared_ptr<Node> findByName(const std::shared_ptr<Node>& node, const std::string& name);
 
 
 

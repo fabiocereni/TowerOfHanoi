@@ -22,7 +22,6 @@ public:
    void redoMove();
    void resetGame();
 
-   void initLampadario();
 
 private:
    std::shared_ptr<Eng::Node> root;
@@ -60,13 +59,14 @@ private:
 (x) -> undo
 (y) -> redo
 (r) -> reset game
-(fn + f1) -> cam principale
-(fn + f2) -> cam secondaria
-(fn + f3) -> cam mobile
+(f1) -> cam principale
+(f2) -> cam secondaria
+(f3) -> cam mobile
 (wasd) -> per muoversi
 (u) -> alza visuale
 (g) -> abbassa visuale
 (freccia su) -> ti alzi
-(freccia giu) -> ti abbassi 
+(freccia giu) -> ti abbassi
+(j) -> accendi/spegni lampadario/albero
 )";
 };

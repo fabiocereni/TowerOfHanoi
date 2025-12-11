@@ -5,31 +5,9 @@
 #include <iostream>
 #include <algorithm>
 
-#include "omnidirectionallight.h"
 
-// hanoiGame.cpp
 
-// --- HELPER DI RICERCA RICORSIVA SICURA ---
-// Cerca un nodo per nome in tutto l'albero, non solo nel primo livello
-std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
-   if (!current) return nullptr;
 
-   // 1. Controlla se � questo
-   if (current->getName() == nameToFind) {
-      return current;
-   }
-
-   // 2. Cerca nei figli
-   for (auto& child : current->getChildren()) {
-      auto result = findRecursive(child, nameToFind);
-      if (result != nullptr) {
-         return result; // Trovato! Risaliamo la catena
-      }
-   }
-
-   // 3. Non trovato qui sotto
-   return nullptr;
-}
 
 
 
@@ -200,9 +178,9 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    poles.resize(4, nullptr);
 
    // Usiamo la nostra ricerca ricorsiva
-   poles[1] = findRecursive(root, "palo1");
-   poles[2] = findRecursive(root, "palo2");
-   poles[3] = findRecursive(root, "palo3");
+   poles[1] = Eng::Base::findByName(root, "palo1");
+   poles[2] = Eng::Base::findByName(root, "palo2");
+   poles[3] = Eng::Base::findByName(root, "palo3");
 
 
    // Verifica
@@ -265,7 +243,7 @@ void HanoiGame::processInput(const int poleIndex) {
     // Parametro: quanto alzare il disco quando è selezionato
     const float LIFT_HEIGHT = 500.0f; // Regola questo valore in base alla scala della tua scena
 
-   if (!checkVictory(findRecursive(root, poleToMonitorName_)))
+   if (!checkVictory(Eng::Base::findByName(root, poleToMonitorName_)))
    {
       // STATO 1: PRENDI (PICK)
       if (selectedDisk == nullptr) {
@@ -318,7 +296,7 @@ void HanoiGame::processInput(const int poleIndex) {
 
             sourcePole->removeChild(selectedDisk->getName());
             clickedPole->addChildren(selectedDisk);
-            checkVictory(findRecursive(root, poleToMonitorName_));
+            checkVictory(Eng::Base::findByName(root, poleToMonitorName_));
 
             // --- CALCOLO NUOVA POSIZIONE (Codice precedente) ---
             // Nota: Qui non dobbiamo "abbassare" il disco sottraendo LIFT_HEIGHT,
@@ -344,7 +322,7 @@ void HanoiGame::processInput(const int poleIndex) {
             selectedDisk = nullptr;
             sourcePole = nullptr;
             sourcePoleIndex = -1;
-            checkVictory(findRecursive(root, poleToMonitorName_));
+            checkVictory(Eng::Base::findByName(root, poleToMonitorName_));
             // Debug print...
          }
          else {
