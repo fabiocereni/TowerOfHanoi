@@ -34,35 +34,36 @@ float maxZ = std::numeric_limits<float>::lowest();
 
 
 
-std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
-    if (!current) return nullptr;
+std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> start, const std::string& nameToFind) {
+    if (!start) return nullptr;
 
-    // 1. Controlla se e' questo
-    if (current->getName() == nameToFind) {
-        return current;
+
+    if (start->getName() == nameToFind) {
+        return start;
     }
 
-    // 2. Cerca nei figli
-    for (const auto& child : current->getChildren()) {
+
+    for (const auto& child : start->getChildren()) {
         auto result = findRec(child, nameToFind);
         if (result != nullptr) {
             return result; // Trovato! Risaliamo la catena
         }
     }
 
-    // 3. Non trovato qui sotto
     return nullptr;
 }
 
 
-void initLampadario(const std::shared_ptr<Eng::Node>& sceneRoot) {
-    std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "lampadario"));
+std::shared_ptr<Eng::Light> initLampadario(const std::shared_ptr<Eng::Node>& sceneRoot, Eng::Base& eng) {
+    const std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "lampadario"));
+
     if (!lampadarioNode) {
         std::cerr << ">> ATTENZIONE: Nodo '" << "nomeNodoLampadario" << "' non trovato. Luce non creata." << std::endl;
-        return;
+        return nullptr;
     }
 
-    const auto lampadarioLight = Eng::OmnidirectionalLight::createOmnidirectionalLight();
+
+    const auto lampadarioLight = eng.createOmnidirectionalLight();
     lampadarioLight->setAmbient(glm::vec3(4.5f));
     lampadarioLight->setDiffuse(glm::vec3(4.5f));
     lampadarioLight->setSpecular(glm::vec3(4.5f));
@@ -77,6 +78,7 @@ void initLampadario(const std::shared_ptr<Eng::Node>& sceneRoot) {
 
     lampadarioNode->getMaterial()->setEmission(glm::vec4(1.0f));
 
+    return lampadarioLight;
 }
 
 
@@ -267,11 +269,10 @@ std::shared_ptr<Eng::Node> createDynamicLight(const std::shared_ptr<Eng::Node>& 
     }
 
     dynamic_light = luce;
+    dynamic_light->setActive(false);
 
     return pivot;
 }
-
-
 
 
 void computeTreeHeighLimits(float& minY_tree,
@@ -327,8 +328,6 @@ void computeTreeHeighLimits(float& minY_tree,
 
 
 
-
-
 void updateDynamicLight(const std::shared_ptr<Eng::Node>& pivot,
                         const float minY_tree,
                         const float maxY_tree) {
@@ -336,7 +335,7 @@ void updateDynamicLight(const std::shared_ptr<Eng::Node>& pivot,
         return;
 
     static bool goingUp = true;
-    constexpr float intensity = 1.0f;
+    constexpr float intensity = 5.0f;
     const float bottom = minY_tree;
     const float top = maxY_tree;
     constexpr float speed = 4.0f;
@@ -373,9 +372,6 @@ void updateDynamicLight(const std::shared_ptr<Eng::Node>& pivot,
     pivot->setMatrix(m);
 }
 
-
-bool lampEnabled = true;
-bool treeEnabled = true;
 
 
 
@@ -418,65 +414,7 @@ int main(const int argc, char** argv) {
 
     auto cam3 = eng.createPerspectiveCamera(80, 1800.f / 1000.f, 10.0f, 20000.0f);
 
-    eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY){
 
-      // estraendo z dalla matrice possiamo capire dove stiamo guardando
-        const glm::mat4 orientation = glm::rotate(glm::mat4(1.0f), glm::radians(dynamic_cam_x_angle), glm::vec3(0, 1, 0)) *
-                                      glm::rotate(glm::mat4(1.0f), glm::radians(dynamic_cam_y_angle), glm::vec3(1, 0, 0));
-
-
-        const glm::vec3 forwardDir = -glm::vec3(orientation[2]);
-
-        switch (key) {
-        case '1':
-            game.processInput(1);
-            break;
-        case '2':
-            game.processInput(2);
-            break;
-        case '3':
-            game.processInput(3);
-            break;
-        case 'w':
-            dynamic_cam_pos += forwardDir * dynamic_cam_speed;
-            updateDynamicCamera(cam3, sceneRoot);
-            break;
-        case 's':
-            dynamic_cam_pos -= forwardDir * dynamic_cam_speed;
-            updateDynamicCamera(cam3, sceneRoot);
-            break;
-        case 'a':
-            dynamic_cam_x_angle += angle_speed_rotation;
-            updateDynamicCamera(cam3, sceneRoot);
-            break;
-        case 'd':
-            dynamic_cam_x_angle -= angle_speed_rotation;
-            updateDynamicCamera(cam3, sceneRoot);
-            break;
-
-        case 'u':
-            dynamic_cam_y_angle += angle_speed_rotation;
-            updateDynamicCamera(cam3, sceneRoot);
-            break;
-
-        case 'g':
-            dynamic_cam_y_angle -= angle_speed_rotation;
-            updateDynamicCamera(cam3, sceneRoot);
-            break;
-
-        case 'x':
-            game.undoMove();
-             break;
-         case 'y':
-            game.redoMove();
-            break;
-         case 'r':
-            game.resetGame();
-            break;
-         default:
-            break;
-        }
-    });
 
     auto cam1 = returnFrontTableCamera(eng);
     eng.overrideF1KeyBehaviour([&eng, &cam1] {eng.setActiveCamera(cam1);});
@@ -488,8 +426,7 @@ int main(const int argc, char** argv) {
 
     auto pivot = std::make_shared<Eng::Node>();
 
-    if (treeEnabled)
-        pivot = createDynamicLight(sceneRoot);
+
 
 
     eng.overrideF3KeyBehaviour([&cam3, &eng] {eng.setActiveCamera(cam3);});
@@ -510,10 +447,79 @@ int main(const int argc, char** argv) {
 
     computeTreeHeighLimits(minY_tree, maxY_tree, sceneRoot);
 
-    initLampadario(sceneRoot);
+
+    auto luce_lampadario = initLampadario(sceneRoot, eng);
+    pivot = createDynamicLight(sceneRoot);
 
 
 
+    eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY){
+
+          // estraendo z dalla matrice possiamo capire dove stiamo guardando
+            const glm::mat4 orientation = glm::rotate(glm::mat4(1.0f), glm::radians(dynamic_cam_x_angle), glm::vec3(0, 1, 0)) *
+                                          glm::rotate(glm::mat4(1.0f), glm::radians(dynamic_cam_y_angle), glm::vec3(1, 0, 0));
+
+
+            const glm::vec3 forwardDir = -glm::vec3(orientation[2]);
+
+            switch (key) {
+            case '1':
+                game.processInput(1);
+                break;
+            case '2':
+                game.processInput(2);
+                break;
+            case '3':
+                game.processInput(3);
+                break;
+            case 'w':
+                dynamic_cam_pos += forwardDir * dynamic_cam_speed;
+                updateDynamicCamera(cam3, sceneRoot);
+                break;
+            case 's':
+                dynamic_cam_pos -= forwardDir * dynamic_cam_speed;
+                updateDynamicCamera(cam3, sceneRoot);
+                break;
+            case 'a':
+                dynamic_cam_x_angle += angle_speed_rotation;
+                updateDynamicCamera(cam3, sceneRoot);
+                break;
+            case 'd':
+                dynamic_cam_x_angle -= angle_speed_rotation;
+                updateDynamicCamera(cam3, sceneRoot);
+                break;
+
+            case 'u':
+                dynamic_cam_y_angle += angle_speed_rotation;
+                updateDynamicCamera(cam3, sceneRoot);
+                break;
+
+            case 'g':
+                dynamic_cam_y_angle -= angle_speed_rotation;
+                updateDynamicCamera(cam3, sceneRoot);
+                break;
+
+            case 'x':
+                game.undoMove();
+                 break;
+
+             case 'y':
+                game.redoMove();
+                break;
+
+             case 'r':
+                game.resetGame();
+                break;
+
+            case 'j':
+                dynamic_light->toggleLight();
+                std::cout << "Dinamica: " << dynamic_light->isActive() << std::endl;
+                luce_lampadario->toggleLight();
+                std::cout << "Lampadario: " << luce_lampadario->isActive() << std::endl;
+             default:
+                break;
+            }
+        });
 
 
 
@@ -535,8 +541,8 @@ int main(const int argc, char** argv) {
 
         eng.render(eng.getActiveCamera(), renderList, excluded);
 
-        if (treeEnabled)
-            updateDynamicLight(pivot, minY_tree, maxY_tree);
+
+        updateDynamicLight(pivot, minY_tree, maxY_tree);
 
 
 
@@ -548,5 +554,7 @@ int main(const int argc, char** argv) {
 
         eng.swap();
     }
+
+    eng.free();
     return 0;
 }

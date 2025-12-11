@@ -34,7 +34,7 @@ void TestSuite::testNodeHierarchy() {
     assertCondition("Child has correct parent", child->getParent() == parent);
 
     // Verifica rimozione
-    auto removed = parent->removeChildren(child->getName());
+    auto removed = parent->removeChild(child->getName());
 }
 
 void TestSuite::testNodeTransformations() {

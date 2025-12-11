@@ -10,6 +10,7 @@ namespace Eng {
 
       void render(const glm::mat4& modelViewMatrix) override;
 
+
       void setCutoff   (const float c) noexcept { cutoff_ = c; }
       void setExponent (const float e) noexcept { exponent_ = e; }
       void setDirection(const glm::vec3& d) noexcept { direction_ = d; }

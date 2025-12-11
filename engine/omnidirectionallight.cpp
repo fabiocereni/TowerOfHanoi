@@ -7,7 +7,9 @@
 namespace Eng {
 
    OmnidirectionalLight::OmnidirectionalLight(const int index) noexcept
-   : Light(index) {}
+   : Light(index) {
+      setActive(true);
+   }
 
 
    std::shared_ptr<OmnidirectionalLight> OmnidirectionalLight::createOmnidirectionalLight() {
@@ -27,12 +29,19 @@ namespace Eng {
 
    void OmnidirectionalLight::render(const glm::mat4& modelViewMatrix) {
 
+
       const GLenum id = GL_LIGHT0 + index_;
+
+      if (!isActive()) {
+         glDisable(id);
+         return;
+      }
+
       glEnable(id);
 
-      const glm::vec4 ambient = glm::vec4(ambient_, 1.0f);
-      const glm::vec4 diffuse = glm::vec4(diffuse_, 1.0f);
-      const glm::vec4 specular = glm::vec4(specular_, 1.0f);
+      const auto ambient = glm::vec4(ambient_, 1.0f);
+      const auto diffuse = glm::vec4(diffuse_, 1.0f);
+      const auto specular = glm::vec4(specular_, 1.0f);
 
       const float linearAttenuation = 4.5f / (radius_ > 0.0f ? radius_ : 1.0f);
 
@@ -46,5 +55,6 @@ namespace Eng {
       glLightfv(id, GL_SPECULAR, glm::value_ptr(specular));
       glLightfv(id, GL_POSITION, glm::value_ptr(posEye));
       glLightf(id, GL_LINEAR_ATTENUATION, linearAttenuation);
+
    }
 }

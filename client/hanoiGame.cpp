@@ -55,7 +55,7 @@ void HanoiGame::undoMove() {
 
    if (disk) {
       std::cout << ">> UNDO: Torna indietro..." << std::endl;
-      currentPole->removeChildren(disk->getName());
+      currentPole->removeChild(disk->getName());
       targetPole->addChildren(disk);
 
       float h = 0.0f;
@@ -87,7 +87,7 @@ void HanoiGame::redoMove() {
 
    if (disk) {
       std::cout << ">> REDO: Ripristino mossa..." << std::endl;
-      sourcePole->removeChildren(disk->getName());
+      sourcePole->removeChild(disk->getName());
       destPole->addChildren(disk);
 
       float h = 0.0f;
@@ -121,7 +121,7 @@ void HanoiGame::resetGame() {
       for (auto& child : children) {
          if (std::dynamic_pointer_cast<Eng::Mesh>(child)) {
             allDisks.push_back(child);
-            poles[i]->removeChildren(child->getName());
+            poles[i]->removeChild(child->getName());
          }
       }
    }
@@ -316,7 +316,7 @@ void HanoiGame::processInput(const int poleIndex) {
 
             std::cout << ">> SPOSTATO su Palo " << poleIndex << std::endl;
 
-            sourcePole->removeChildren(selectedDisk->getName());
+            sourcePole->removeChild(selectedDisk->getName());
             clickedPole->addChildren(selectedDisk);
             checkVictory(findRecursive(root, poleToMonitorName_));
 

@@ -3,9 +3,9 @@
 #include "glm/glm.hpp"
 #include "engine_api.h"
 
-/*
+/**
  * @class Object
- * @brief classe astratta rappresentante un generico oggetto
+ * @brief Classe astratta rappresentante un generico oggetto
  */
 namespace Eng {
    class ENG_API Object {
@@ -22,14 +22,16 @@ namespace Eng {
       void setName(const std::string& name) noexcept {name_ = name;};
       [[nodiscard]] std::string getName() const noexcept {return name_;};
       [[nodiscard]] unsigned long getId() const noexcept {return id_;};
-      void setId(unsigned long id) noexcept {id_ = id;};
+      void setId(const unsigned long id) noexcept {id_ = id;};
 
 
       virtual void render(const glm::mat4& modelViewMatrix) = 0;
 
 
    protected:
+      /// @brief Id dell'oggetto
       unsigned long id_;
+      /// @brief Nome dell'oggetto
       std::string name_;
    };
 }

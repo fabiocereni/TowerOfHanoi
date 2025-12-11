@@ -5,14 +5,6 @@
 
 using namespace Eng;
 
-void List::addOnBottomToRenderList(const Instance &instance) noexcept {
-   instances_.push_back(instance);
-}
-
-void List::addOnTopToRenderList(const Instance &instance) noexcept {
-   instances_.push_front(instance);
-}
-
 bool List::removeFromRenderList(const Instance &instance) noexcept {
    const size_t oldSize = instances_.size();
    instances_.remove(instance);
@@ -21,7 +13,7 @@ bool List::removeFromRenderList(const Instance &instance) noexcept {
 
 void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatrix) {
 
-   // costruzione world matrix del nodo
+   /// costruzione world matrix del nodo
    parentWorldMatrix = parentWorldMatrix * node_ptr->getMatrix();
 
    const auto current = std::dynamic_pointer_cast<Light>(node_ptr);
@@ -29,7 +21,7 @@ void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatr
    instance.setNodePtr(node_ptr);
    instance.setNodeWorldMatrix(parentWorldMatrix);
 
-   // se è una luce
+   /// se è una luce
    if (current) {
       addOnTopToRenderList(instance);
    } else {
@@ -37,7 +29,7 @@ void List::pass(const std::shared_ptr<Node>& node_ptr, glm::mat4 parentWorldMatr
    }
 
 
-   // Recursively pass all child nodes:
+   /// Chiama ricorsivamente su tutti i nodi
    for (const auto& childNode : node_ptr.get()->getChildren()) {
       this->pass(childNode, parentWorldMatrix);
    }
@@ -51,13 +43,7 @@ void List::render(const glm::mat4& viewMatrix) {
 
       // costruzione della modelview
       glm::mat4 modelViewMatrix = viewMatrix * instance.getNodeWorldMatrix();
-
-      // il render del node riceve e carica direttamente la modelViewMatrix
       instance.getNodePtr()->render(modelViewMatrix);
    }
 }
 
-
-void List::clear() noexcept {
-   instances_.clear();
-}

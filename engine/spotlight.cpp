@@ -7,7 +7,10 @@
 namespace Eng {
 
    Spotlight::Spotlight(const int index) noexcept
-   : Light(index) {}
+   : Light(index) {
+
+      setActive(true);
+   }
 
 
    std::shared_ptr<Spotlight> Spotlight::createSpotLight() {
@@ -28,7 +31,13 @@ namespace Eng {
 
    void Spotlight::render(const glm::mat4& modelViewMatrix) {
 
-      const GLenum id = GL_LIGHT0 + index_;
+         const GLenum id = GL_LIGHT0 + index_;
+
+      if (!isActive()) {
+         glDisable(id);
+         return;
+      }
+
       glEnable(id);
 
       const auto ambient = glm::vec4(ambient_, 1.0f);
@@ -47,6 +56,7 @@ namespace Eng {
       glLightf(id, GL_SPOT_CUTOFF, cutoff_);
       glLightf(id, GL_SPOT_EXPONENT, exponent_);
       glLightf(id, GL_CONSTANT_ATTENUATION,  constantAttenuation);
+
    }
 
 }

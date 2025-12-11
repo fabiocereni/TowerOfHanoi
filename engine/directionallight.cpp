@@ -12,7 +12,10 @@ namespace Eng {
      * @return Crea e torna una luce direzionale
      */
     DirectionalLight::DirectionalLight(const int index) noexcept
-        : Light(index) {}
+        : Light(index) {
+
+        setActive(true);
+    }
 
 
     /**
@@ -30,6 +33,10 @@ namespace Eng {
     }
 
 
+    /**
+     * @brief Distruttore
+     * @details Libera lo slot occupato dalla luce
+     */
     DirectionalLight::~DirectionalLight() noexcept {
         const GLenum id = GL_LIGHT0 + index_;
         glDisable(id);
@@ -44,8 +51,14 @@ namespace Eng {
     void DirectionalLight::render(const glm::mat4& modelViewMatrix) {
 
         const GLenum id = GL_LIGHT0 + index_;
-        glEnable(id);
 
+
+        if (!isActive()) {
+            glDisable(id);
+            return;
+        }
+
+        glEnable(id);
 
         const auto ambient = glm::vec4(ambient_, 1.0f);
         const auto diffuse = glm::vec4(diffuse_, 1.0f);

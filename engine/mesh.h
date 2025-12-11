@@ -4,15 +4,15 @@
 #include "material.h"
 
 
-/*
+/**
  * @class Mesh
- * @brief rappresenta una generica mesh
+ * @brief Rappresenta una generica mesh
  */
 namespace Eng {
    class ENG_API Mesh final : public Node {
 
    public:
-      // @brief costruttori, distruttore, operatori di copia e spostamento
+      /// @brief Costruttori, distruttore, operatori di copia e spostamento
       Mesh(const std::vector<glm::vec3>& vertexes,
            const std::string& materialName,
            const std::shared_ptr<Material>& material = nullptr) noexcept;
@@ -24,7 +24,7 @@ namespace Eng {
 
       void render(const glm::mat4& modelViewMatrix) override;
 
-      // @brief getters e setters
+      /// @brief getters e setters
       [[nodiscard]] std::shared_ptr<Material> getMaterial() const noexcept {return material_;};
       [[nodiscard]] std::vector<glm::vec3> getVertexes() const noexcept {return vertexes_;};
       [[nodiscard]] std::vector<glm::vec3> getNormals() const noexcept {return normals_;};
@@ -44,18 +44,18 @@ namespace Eng {
 
 
    protected:
-      // @brief vertici della mesh
+      /// @brief Vertici della mesh
       std::vector<glm::vec3> vertexes_;
-      // @brief materiale mesh
+      /// @brief Materiale mesh
       std::shared_ptr<Material> material_;
-      // @brief normali della mesh
+      /// @brief Normali della mesh
       std::vector<glm::vec3> normals_;
-      // @brief coordinate uv la texture
+      /// @brief Coordinate uv la texture
       std::vector<glm::vec2> uv_coords_;
-      // @brief nome materiale della mesh
-      // @details usato per binding
+      /// @brief Nome materiale della mesh
+      /// @details Usato per binding
       std::string materialName_;
-
+      /// @brief Usata per capire se la mesh è un'ombra
       bool shadow_ = true;
    };
 }

@@ -10,6 +10,7 @@ namespace Eng {
 
       void render(const glm::mat4& modelViewMatrix) override;
 
+
       static std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
 
       glm::vec4 getPosition() { return lightPosition_; }

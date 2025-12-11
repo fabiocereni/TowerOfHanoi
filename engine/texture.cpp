@@ -34,6 +34,12 @@ Texture::Texture(const unsigned char* bitmap, const int width, const int height,
 
 }
 
+/// @brief distruttore
+/// @details elimina la texture associata
+Texture::~Texture() noexcept {
+    glDeleteTextures(1, &texId_);
+}
+
 /**
  * @brief Si occupa di eseguire il binding della texture
  */
@@ -42,11 +48,6 @@ void Texture::bind() const {
     glEnable(GL_TEXTURE_2D);
 }
 
-/// @brief distruttore
-/// @details elimina la texture associata
-Texture::~Texture() noexcept {
-    glDeleteTextures(1, &texId_);
-}
 
-/// @brief la texture non renderizza niente da sola
+/// @brief La texture non renderizza niente da sola
 void Texture::render(const glm::mat4&) {}
