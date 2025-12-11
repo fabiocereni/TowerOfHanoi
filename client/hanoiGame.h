@@ -40,8 +40,6 @@ private:
    // CACHE: Salviamo i pali qui per non cercarli sempre
    std::vector<std::shared_ptr<Eng::Node>> poles;
 
-   void initLights();
-   void updateLightsColors(int selectedIndex);
 
    // Helper interni 
    std::shared_ptr<Eng::Node> getTopDisk(std::shared_ptr<Eng::Node> pole);
@@ -49,7 +47,7 @@ private:
    float getMeshHeight(const std::shared_ptr<Eng::Node>& node);
    bool checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor);
 
-   std::shared_ptr<Eng::OmnidirectionalLight> lampadarioLight;
+
 
 
    const int numberOfDisks_ = 7;

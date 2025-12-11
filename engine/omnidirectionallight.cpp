@@ -35,9 +35,11 @@ namespace Eng {
       const glm::vec4 specular = glm::vec4(specular_, 1.0f);
 
       const float linearAttenuation = 4.5f / (radius_ > 0.0f ? radius_ : 1.0f);
-      const glm::vec4 posEye = modelViewMatrix * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-      constexpr glm::vec4 lightPosition(0.0f, 0.0f, 0.0f, 1.0f);
+
+      const glm::vec4 posEye = modelViewMatrix * lightPosition_;
+
+
 
       glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient));
       glLightfv(id, GL_DIFFUSE,  glm::value_ptr(diffuse));

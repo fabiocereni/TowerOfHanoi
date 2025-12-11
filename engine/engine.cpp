@@ -44,7 +44,8 @@ Base::SpecialKeyAction Base::F1_key = nullptr;
 Base::SpecialKeyAction Base::F2_key = nullptr;
 Base::SpecialKeyAction Base::F3_key = nullptr;
 Base::SpecialKeyAction Base::F4_key = nullptr;
-
+std::function<void()> Base::secondTimerCallback_ = nullptr;
+int Base::timerCallbackVectorIndex_ = 1;
 
 
 // serve per il calcolo del framerate
@@ -110,7 +111,8 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    glm::vec4 globalAmbient(0.1f, 0.1f, 0.1f, 1.0f);
    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, glm::value_ptr(globalAmbient));
 
-   // 5. Callbacks (CORRETTO)
+
+   // 5. Callbacks
    glutDisplayFunc(displayCallback);
    glutReshapeFunc(reshapeCallback);
    glutTimerFunc(1000, timerCallback, 0);
@@ -125,6 +127,7 @@ bool Base::init(int argc, char **argv, const std::string& title) {
    reserved_->initFlag = true;
    return true;
 }
+
 
 
 void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, const int mouseY) noexcept {
@@ -197,7 +200,7 @@ void Base::changeBackgroundColor(const float r, const float g, const float b) {
    glClearColor(r, g, b, 1.0f);
 }
 
-ENG_API std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
+std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
                                                const std::string& materialName,
                                                const std::shared_ptr<Material>& material) {
    return std::make_shared<Mesh>(vertexes, materialName, material);
@@ -365,7 +368,7 @@ void Base::showFps() {
     char text[64]; sprintf(text, "FPS: %.1f", fps);
     glColor3f(1.0f, 1.0f, 1.0f); // Colore bianco
 
-    glRasterPos2f(10.0f, (float)getHeight() - 20.0f);
+    glRasterPos2f(10.0f, static_cast<float>(getHeight()) - 20.0f);
 
     // display the string
     glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<unsigned char*>(text));
@@ -399,7 +402,7 @@ void Base::clearInfoPrinter() {
    Base::getInstance().infoClear();
 }
 
-void Base::timerCallback(int) {
+void Base::timerCallback(int value) {
    fps = getFrames();
    setFrames(0);
 
@@ -468,7 +471,7 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
    }
 }
 
-ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
+std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
 
     FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
     if (format == FIF_UNKNOWN)
@@ -505,6 +508,7 @@ ENG_API std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& pa
     FreeImage_Unload(bitmap);
     return texture;
 }
+
 void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept {
 
     if (!root || textures.empty()) {
