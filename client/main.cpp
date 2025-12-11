@@ -33,6 +33,53 @@ float minZ = std::numeric_limits<float>::max();
 float maxZ = std::numeric_limits<float>::lowest();
 
 
+
+std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
+    if (!current) return nullptr;
+
+    // 1. Controlla se e' questo
+    if (current->getName() == nameToFind) {
+        return current;
+    }
+
+    // 2. Cerca nei figli
+    for (const auto& child : current->getChildren()) {
+        auto result = findRec(child, nameToFind);
+        if (result != nullptr) {
+            return result; // Trovato! Risaliamo la catena
+        }
+    }
+
+    // 3. Non trovato qui sotto
+    return nullptr;
+}
+
+
+void initLampadario(const std::shared_ptr<Eng::Node>& sceneRoot) {
+    std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "lampadario"));
+    if (!lampadarioNode) {
+        std::cerr << ">> ATTENZIONE: Nodo '" << "nomeNodoLampadario" << "' non trovato. Luce non creata." << std::endl;
+        return;
+    }
+
+    const auto lampadarioLight = Eng::OmnidirectionalLight::createOmnidirectionalLight();
+    lampadarioLight->setAmbient(glm::vec3(4.5f));
+    lampadarioLight->setDiffuse(glm::vec3(4.5f));
+    lampadarioLight->setSpecular(glm::vec3(4.5f));
+
+    lampadarioLight->setRadius(3000.0f);
+
+    // 5. Appendi la luce al nodo lampadario
+    lampadarioNode->addChildren(lampadarioLight);
+    lampadarioLight->setName("lampadario_light");
+
+    std::cout << ">> Luce omnidirezionale creata e attaccata a: " << "nomeNodoLampadario" << std::endl;
+
+    lampadarioNode->getMaterial()->setEmission(glm::vec4(1.0f));
+
+}
+
+
 std::shared_ptr<Eng::Camera> returnFrontTableCamera(Eng::Base& eng) {
     const auto frontTableCam = eng.createPerspectiveCamera(40, 800.f / 600.f, 10.0f, 20000.0f);
 
@@ -61,25 +108,7 @@ std::shared_ptr<Eng::Camera> returnTopTableCamera(Eng::Base& eng) {
     return topTableCam;
 }
 
-std::shared_ptr<Eng::Node> findRec(std::shared_ptr<Eng::Node> current, const std::string& nameToFind) {
-    if (!current) return nullptr;
 
-    // 1. Controlla se e' questo
-    if (current->getName() == nameToFind) {
-        return current;
-    }
-
-    // 2. Cerca nei figli
-    for (const auto& child : current->getChildren()) {
-        auto result = findRec(child, nameToFind);
-        if (result != nullptr) {
-            return result; // Trovato! Risaliamo la catena
-        }
-    }
-
-    // 3. Non trovato qui sotto
-    return nullptr;
-}
 
 void computeWorldOrientedVertexes(const std::vector<glm::vec3>& vertexes,
                                   const std::shared_ptr<Eng::Node>& node,
@@ -133,26 +162,21 @@ void computeDynamicCameraLimits(const std::shared_ptr<Eng::Node>& sceneRoot) {
 
 
 void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::shared_ptr<Eng::Node>& sceneRoot) {
-    constexpr float limitation_bound = 100.0f;
-
+    constexpr float limitation_bound = 500.0f;
 
     computeDynamicCameraLimits(sceneRoot);
 
-    dynamic_cam_pos.y = dynamic_cam_y;
-
-
-    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minX+limitation_bound, maxX-limitation_bound);
-    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minY+limitation_bound, maxY-limitation_bound);
-    dynamic_cam_pos.z = glm::clamp(dynamic_cam_pos.z, minZ+limitation_bound, maxZ-limitation_bound);
-
+    dynamic_cam_pos.x = glm::clamp(dynamic_cam_pos.x, minX + limitation_bound, maxX - limitation_bound);
+    dynamic_cam_pos.y = glm::clamp(dynamic_cam_pos.y, minY + limitation_bound, maxY - limitation_bound);
+    dynamic_cam_pos.z = glm::clamp(dynamic_cam_pos.z, minZ + limitation_bound, maxZ - limitation_bound);
 
     const glm::mat4 x_rot = glm::rotate(glm::mat4(1.0f),
-                    glm::radians(dynamic_cam_x_angle),
-                        glm::vec3(0, 1, 0));
+        glm::radians(dynamic_cam_x_angle),
+        glm::vec3(0, 1, 0));
 
     const glm::mat4 y_rot = glm::rotate(glm::mat4(1.0f),
-                    glm::radians(dynamic_cam_y_angle),
-                        glm::vec3(1, 0, 0));
+        glm::radians(dynamic_cam_y_angle),
+        glm::vec3(1, 0, 0));
 
     const glm::mat4 trans = glm::translate(glm::mat4(1.0f), dynamic_cam_pos);
 
@@ -163,12 +187,9 @@ void updateDynamicCamera(const std::shared_ptr<Eng::Camera>& cam, const std::sha
 std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base& eng) {
     std::vector<std::shared_ptr<Eng::Texture>> textures;
 
-    // Definisci il percorso della cartella texture
-    // Nota: Basandomi sui tuoi file precedenti, le texture erano in "ExportProgetto".
-    // Se hai creato una cartella specifica chiamata "texture", cambia "ExportProgetto" in "texture".
-    fs::path textureDir = projectDir / "ExportProgetto";
 
-    // Verifica se la cartella esiste
+    const fs::path textureDir = projectDir / "ExportProgetto";
+
     if (!fs::exists(textureDir) || !fs::is_directory(textureDir)) {
         std::cerr << "ATTENZIONE: La cartella texture non esiste: " << textureDir << std::endl;
         return textures;
@@ -176,7 +197,6 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
 
     std::cout << "--- CARICAMENTO TEXTURE AUTOMATICO ---" << std::endl;
 
-    // Itera su tutti i file nella cartella
     for (const auto& entry : fs::directory_iterator(textureDir)) {
         if (entry.is_regular_file()) {
             // Ottieni l'estensione del file
@@ -210,21 +230,182 @@ std::vector<std::shared_ptr<Eng::Texture>> loadAndReturnTextures(const Eng::Base
     return textures;
 }
 
+auto colore_luce = glm::vec3(1.0f, 0.0f, 0.0f);
+glm::vec3 pivot_base_pos(0.0f);
+float pivot_y = 0.0f;
+float pivot_angle = 0.0f;
+std::shared_ptr<Eng::Light> dynamic_light;
+
+std::shared_ptr<Eng::Node> createDynamicLight(const std::shared_ptr<Eng::Node>& sceneRoot) {
+
+    const auto luce = Eng::OmnidirectionalLight::createOmnidirectionalLight();
+    luce->setName("dynamic_light");
+
+    luce->setAmbient(colore_luce);
+    luce->setDiffuse(colore_luce);
+    luce->setSpecular(colore_luce);
+    luce->setRadius(1000.0f);
+
+    const auto albero = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "albero"));
+
+    const auto pivot = std::make_shared<Eng::Node>();
+    pivot->setName("pivot");
+
+    if (albero) {
+        const auto posAlbero = glm::vec3(albero->getWorldMatrix()[3]);
+
+        pivot_base_pos = posAlbero;
+        pivot_y = posAlbero.y;
+        pivot_angle = 0.0f;
+
+        pivot->setMatrix(glm::mat4(1.0f));
+        sceneRoot->addChildren(pivot);
+
+        luce->setMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(230.0f, 0.0f, 0.0f)));
+        pivot->addChildren(luce);
+        luce->setParent(pivot);
+    }
+
+    dynamic_light = luce;
+
+    return pivot;
+}
+
+
+
+
+void computeTreeHeighLimits(float& minY_tree,
+                            float& maxY_tree,
+                            const std::shared_ptr<Eng::Node>& sceneRoot) {
+
+    minY_tree = std::numeric_limits<float>::max();
+    maxY_tree = std::numeric_limits<float>::lowest();
+
+    const auto albero = findRec(sceneRoot, "albero");
+    const auto cone0 = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "Cone"));
+    const auto cone1 = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "Cone_001"));
+    const auto cone2 = std::dynamic_pointer_cast<Eng::Mesh>(findRec(sceneRoot, "Cone_002"));
+
+
+    if (!albero || (!cone0 && !cone2)) {
+        std::cerr << "ERRORE: Nodo albero o coni non trovati per i limiti." << std::endl;
+        minY_tree = maxY_tree = pivot_y;
+        return;
+    }
+
+
+    auto processMesh = [&](const std::shared_ptr<Eng::Mesh>& mesh) {
+        const auto& verts = mesh->getVertexes();
+
+
+        glm::mat4 globalTransform = albero->getMatrix() * mesh->getMatrix();
+
+        for (const auto& v : verts) {
+            glm::vec4 worldV = globalTransform * glm::vec4(v, 1.0f);
+
+            if (worldV.y < minY_tree)
+                minY_tree = worldV.y;
+
+            if (worldV.y > maxY_tree)
+                maxY_tree = worldV.y;
+        }
+    };
+
+
+    if (cone0)
+        processMesh(cone0);
+
+    if (cone2)
+        processMesh(cone2);
+
+
+    if (minY_tree == std::numeric_limits<float>::max()) {
+         minY_tree = maxY_tree = pivot_y;
+    }
+
+}
+
+
+
+
+
+void updateDynamicLight(const std::shared_ptr<Eng::Node>& pivot,
+                        const float minY_tree,
+                        const float maxY_tree) {
+    if (!pivot)
+        return;
+
+    static bool goingUp = true;
+    constexpr float intensity = 1.0f;
+    const float bottom = minY_tree;
+    const float top = maxY_tree;
+    constexpr float speed = 4.0f;
+
+    if (goingUp) {
+        pivot_y += speed;
+        colore_luce = glm::vec3(0.0f, intensity, 0.0f);
+        dynamic_light->setAmbient(colore_luce);
+        dynamic_light->setDiffuse(colore_luce);
+        dynamic_light->setSpecular(colore_luce);
+    }
+    else {
+        pivot_y -= speed;
+        colore_luce = glm::vec3(intensity, 0.0f, 0.0f);
+        dynamic_light->setAmbient(colore_luce);
+        dynamic_light->setDiffuse(colore_luce);
+        dynamic_light->setSpecular(colore_luce);
+    }
+
+
+    if (pivot_y >= top) {
+        pivot_y = top;
+        goingUp = false;
+    } else if (pivot_y <= bottom) {
+        pivot_y = bottom;
+        goingUp = true;
+    }
+
+    pivot_angle += 5.0f;
+
+    glm::mat4 m(1.0f);
+    m = glm::translate(m, glm::vec3(pivot_base_pos.x, pivot_y, pivot_base_pos.z));
+    m = m * glm::rotate(glm::mat4(1.0f), glm::radians(pivot_angle), glm::vec3(0, 1, 0));
+    pivot->setMatrix(m);
+}
+
+
+bool lampEnabled = true;
+bool treeEnabled = true;
+
+
+
+
+
+
+
+
+
 int main(const int argc, char** argv) {
 
 #ifdef DEBUG
     TestSuite::runAllTests();
 #endif
 
-    // Inizializza l'Engine
+
     Eng::Base& eng = Eng::Base::getInstance();
     eng.init(argc, argv, "Hanoi Tower");
 
-    // Caricamento della Scena
+
     const std::string scenePath = modelPath.string();
     const auto sceneRoot = eng.load(scenePath);
 
-    std::list<std::string> excluded = { "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" ,"lampadario"};
+    const std::list<std::string> excluded = {
+        "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" ,"lampadario"
+    };
+
+
+
+
 
     const std::vector<std::shared_ptr<Eng::Texture>> textures = loadAndReturnTextures(eng);
     eng.bindTexturesToMaterials(sceneRoot, textures);
@@ -235,11 +416,18 @@ int main(const int argc, char** argv) {
 
     const auto renderList = std::make_shared<Eng::List>();
 
-    auto cam3 = eng.createPerspectiveCamera(40, 1800.f / 1000.f, 10.0f, 20000.0f);
+    auto cam3 = eng.createPerspectiveCamera(80, 1800.f / 1000.f, 10.0f, 20000.0f);
 
     eng.overrideKeyboardCallback([&](const unsigned char key, const int mouseX, const int mouseY){
-        switch (key)
-        {
+
+      // estraendo z dalla matrice possiamo capire dove stiamo guardando
+        const glm::mat4 orientation = glm::rotate(glm::mat4(1.0f), glm::radians(dynamic_cam_x_angle), glm::vec3(0, 1, 0)) *
+                                      glm::rotate(glm::mat4(1.0f), glm::radians(dynamic_cam_y_angle), glm::vec3(1, 0, 0));
+
+
+        const glm::vec3 forwardDir = -glm::vec3(orientation[2]);
+
+        switch (key) {
         case '1':
             game.processInput(1);
             break;
@@ -250,11 +438,11 @@ int main(const int argc, char** argv) {
             game.processInput(3);
             break;
         case 'w':
-            dynamic_cam_pos.z -= dynamic_cam_speed;
+            dynamic_cam_pos += forwardDir * dynamic_cam_speed;
             updateDynamicCamera(cam3, sceneRoot);
             break;
         case 's':
-            dynamic_cam_pos.z += dynamic_cam_speed;
+            dynamic_cam_pos -= forwardDir * dynamic_cam_speed;
             updateDynamicCamera(cam3, sceneRoot);
             break;
         case 'a':
@@ -277,19 +465,15 @@ int main(const int argc, char** argv) {
             break;
 
         case 'x':
-           game.undoMove();
+            game.undoMove();
+             break;
+         case 'y':
+            game.redoMove();
             break;
-
-        case 'y':
-           game.redoMove();
-           break;
-
-        case 'r':
-           game.resetGame();
-           break;
-
-        default:
-            // Ignora altri tasti
+         case 'r':
+            game.resetGame();
+            break;
+         default:
             break;
         }
     });
@@ -302,38 +486,60 @@ int main(const int argc, char** argv) {
 
     updateDynamicCamera(cam3, sceneRoot);
 
+    auto pivot = std::make_shared<Eng::Node>();
+
+    if (treeEnabled)
+        pivot = createDynamicLight(sceneRoot);
+
+
     eng.overrideF3KeyBehaviour([&cam3, &eng] {eng.setActiveCamera(cam3);});
 
     eng.overrideUpArrowBehaviour([&] {
-        dynamic_cam_y += dynamic_cam_speed;
-        updateDynamicCamera(cam3, sceneRoot);
-    });
+         dynamic_cam_pos.y += dynamic_cam_speed;
+         updateDynamicCamera(cam3, sceneRoot);
+     });
 
     eng.overrideDownArrowBehaviour([&]{
-        dynamic_cam_y -= dynamic_cam_speed;
+        dynamic_cam_pos.y -= dynamic_cam_speed;
         updateDynamicCamera(cam3, sceneRoot);
     });
 
+    float minY_tree = std::numeric_limits<float>::max();
+    float maxY_tree = std::numeric_limits<float>::lowest();
 
-    // 5. Ciclo di Rendering
+
+    computeTreeHeighLimits(minY_tree, maxY_tree, sceneRoot);
+
+    initLampadario(sceneRoot);
+
+
+
+
+
+
+
     while (eng.update()) {
         eng.clear();
         renderList->clear();
 
-        // --- DEBUG SETTINGS ---
-        // Attiva Wireframe per vedere la struttura dell'oggetto
+
         eng.setWireframe(false);
-        // Disabilita luci per vedere il colore piatto/linee (utile se l'oggetto è nero/buio)
         eng.setLighting(true);
 
-        // Carica matrice proiezione
+
         eng.begin3D(eng.getActiveCamera());
 
-        // Passa la radice della scena alla render list
+
         renderList->pass(sceneRoot);
 
-        // Esegui il render
+
         eng.render(eng.getActiveCamera(), renderList, excluded);
+
+        if (treeEnabled)
+            updateDynamicLight(pivot, minY_tree, maxY_tree);
+
+
+
 
         eng.end3D();
 

@@ -52,6 +52,7 @@ namespace Eng {
       using SpecialKeyAction = std::function<void()>;
 
 
+
       // Const/dest:
       ENG_API Base(Base const &) = delete;
       ENG_API ~Base();
@@ -128,6 +129,7 @@ namespace Eng {
 
 
 
+
       ENG_API [[nodiscard]] int getWidth() const {return width_;};
       ENG_API [[nodiscard]] int getHeight() const {return height_;};
       ENG_API [[nodiscard]] static float getFrames() {return frames_;};
@@ -163,6 +165,9 @@ namespace Eng {
       std::string info_;
       std::shared_ptr<Camera> activeCamera_;
 
+
+      static int timerCallbackVectorIndex_;
+      static std::function<void()> secondTimerCallback_;
 
       static KeyboardCallback customKeyboardCallbackVar_;
       static SpecialKeyAction up_arrow_key_;

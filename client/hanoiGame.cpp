@@ -31,28 +31,7 @@ std::shared_ptr<Eng::Node> findRecursive(std::shared_ptr<Eng::Node> current, con
    return nullptr;
 }
 
-void HanoiGame::initLampadario() {
-   std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(findRecursive(root, "lampadario"));
-   if (!lampadarioNode) {
-      std::cerr << ">> ATTENZIONE: Nodo '" << "nomeNodoLampadario" << "' non trovato. Luce non creata." << std::endl;
-      return;
-   }
 
-   lampadarioLight = Eng::OmnidirectionalLight::createOmnidirectionalLight();
-   lampadarioLight->setAmbient(glm::vec3(5.0f));
-   lampadarioLight->setDiffuse(glm::vec3(5.0f));
-   lampadarioLight->setSpecular(glm::vec3(5.0f));
-
-   lampadarioLight->setRadius(3000.0f);
-
-   // 5. Appendi la luce al nodo lampadario
-   lampadarioNode->addChildren(lampadarioLight);
-
-   std::cout << ">> Luce omnidirezionale creata e attaccata a: " << "nomeNodoLampadario" << std::endl;
-
-   lampadarioNode->getMaterial()->setEmission(glm::vec4(1.0f));
-
-}
 
 void HanoiGame::undoMove() {
    if (selectedDisk != nullptr) {
@@ -90,8 +69,6 @@ void HanoiGame::undoMove() {
    }
 
    isUndoPerformed_ = true;
-
-   updateLightsColors(-1);
 }
 
 void HanoiGame::redoMove() {
@@ -124,8 +101,6 @@ void HanoiGame::redoMove() {
    }
 
    isUndoPerformed_ = false;
-
-   updateLightsColors(-1);
 }
 
 void HanoiGame::resetGame() {
@@ -136,7 +111,6 @@ void HanoiGame::resetGame() {
    sourcePoleIndex = -1;
    hasLastMove_ = false;
    isUndoPerformed_ = false;
-   updateLightsColors(-1);
 
    std::vector<std::shared_ptr<Eng::Node>> allDisks;
 
@@ -170,63 +144,6 @@ void HanoiGame::resetGame() {
    }
 
    this->statusMessage_ = "Partita Resettata";
-}
-
-void HanoiGame::initLights() {
-   poleLights.resize(4, nullptr);
-
-   for (int i = 1; i <= 3; i++)
-   {
-      auto pole = poles[i];
-      if (!pole) continue;
-
-      auto light = Eng::Base::getInstance().createSpotlight();
-
-      light->setCutoff(10.0f);
-      light->setExponent(100.0f);
-
-      glm::mat4 m = glm::mat4(1.0f);
-      m = glm::translate(m, glm::vec3(0.0f, 1000.0f, 0.0f));
-      m = glm::rotate(m, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-      light->setMatrix(m);
-
-      light->setDiffuse(glm::vec3(0.0f));
-      light->setSpecular(glm::vec3(0.0f));
-      light->setAmbient(glm::vec3(0.0f));
-
-      pole->addChildren(light);
-      poleLights[i] = light;
-   }
-}
-
-void HanoiGame::updateLightsColors(int selectedIndex) {
-   glm::vec3 red = glm::vec3(100.0f, 0.0f, 0.0f);
-   glm::vec3 blue = glm::vec3(0.0f, 50.0f, 100.0f);
-   glm::vec3 black = glm::vec3(0.0f, 0.0f, 0.0f);
-
-   for (int i = 1; i <= 3; i++) {
-      auto light = poleLights[i];
-      if (!light) continue;
-
-      if (selectedIndex == -1) {
-         // Tutto spento
-         light->setDiffuse(black);
-         light->setSpecular(black);
-         light->setAmbient(black);
-      }
-      else if (i == selectedIndex) {
-         // Rosso
-         light->setDiffuse(red);
-         light->setSpecular(red);
-         light->setAmbient(glm::vec3(0.9f, 0.0f, 0.0f));
-      }
-      else {
-         // Blu
-         light->setDiffuse(blue);
-         light->setSpecular(blue);
-         light->setAmbient(glm::vec3(0.0f, 0.45f, 0.9f));
-      }
-   }
 }
 
 // --- HELPER DI DEBUG (Per vedere la struttura della scena) ---
@@ -266,7 +183,6 @@ bool HanoiGame::checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor) {
 }
 
 
-
 // --- COSTRUTTORE ---
 HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    : root(sceneRoot), selectedDisk(nullptr), sourcePole(nullptr)
@@ -299,8 +215,7 @@ HanoiGame::HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot)
    if (poles[3]) std::cout << ">> Palo 3 TROVATO!" << std::endl;
    else std::cerr << ">> ERRORE: Palo 3 non trovato." << std::endl;
 
-       initLights();
-       initLampadario();
+        // initLampadario();
 }
 
 std::shared_ptr<Eng::Node> HanoiGame::getTopDisk(std::shared_ptr<Eng::Node> pole) {
@@ -369,7 +284,6 @@ void HanoiGame::processInput(const int poleIndex) {
             // ----------------------------
 
             std::cout << ">> PRESO: " << disk->getName() << " (Alzato)" << std::endl;
-            updateLightsColors(poleIndex);
          }
          else {
             std::cout << ">> Palo vuoto." << std::endl;
@@ -389,8 +303,6 @@ void HanoiGame::processInput(const int poleIndex) {
 
             selectedDisk = nullptr;
             sourcePole = nullptr;
-            // spengo la luce
-            updateLightsColors(-1);
             return;
          }
 
@@ -432,7 +344,6 @@ void HanoiGame::processInput(const int poleIndex) {
             selectedDisk = nullptr;
             sourcePole = nullptr;
             sourcePoleIndex = -1;
-            updateLightsColors(-1);
             checkVictory(findRecursive(root, poleToMonitorName_));
             // Debug print...
          }
@@ -444,11 +355,6 @@ void HanoiGame::processInput(const int poleIndex) {
       }
    }
 }
-
-
-
-
-
 
 
 //DA CONTROLLARE SE DEVE STARE QUI
