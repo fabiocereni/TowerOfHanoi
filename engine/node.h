@@ -7,15 +7,15 @@
 #include "object.h"
 
 
-/*
+/**
  * @class Node
- * @brief rappresenta un generico nodo
+ * @brief Rappresenta un generico nodo
  */
 namespace Eng {
    class ENG_API Node : public Object {
 
    public:
-      // costruttori, distruttore, operatori di copia e spostamento
+      /// @brief Costruttori, distruttore, operatori di copia e spostamento
       Node() noexcept;
       ~Node() noexcept override = default;
       Node(const Node& other) = default;
@@ -27,9 +27,10 @@ namespace Eng {
       void render(const glm::mat4& modelViewMatrix) override;
 
 
-      // getters e setters
+      /// @brief getters e setters
       [[nodiscard]] glm::mat4 getMatrix() const noexcept {return matrix_;};
       void setMatrix(const glm::mat4& matrix) noexcept {matrix_ = matrix;};
+      [[nodiscard]] glm::mat4 getWorldMatrix() const noexcept;
 
       std::shared_ptr<Node>& getParent() noexcept {return parent_;};
       void setParent(const std::shared_ptr<Node>& parent) noexcept {parent_ = parent;};
@@ -37,16 +38,19 @@ namespace Eng {
       std::vector<std::shared_ptr<Node>>& getChildren() noexcept {return children_;};
       void addChildren(const std::shared_ptr<Node>& child) noexcept {children_.push_back(child);};
 
-      std::shared_ptr<Node> removeChildren(const std::string& name);
+      std::shared_ptr<Node> removeChild(const std::string& name);
       void setChildren(const std::vector<std::shared_ptr<Node>>& children) noexcept {children_ = children;};
       [[nodiscard]] std::shared_ptr<Node> returnChild(const std::string& name) const;
       [[nodiscard]] std::shared_ptr<Node> returnChild(const unsigned long& id) const;
-      [[nodiscard]] glm::mat4 getWorldMatrix() const noexcept;
+
 
 
    protected:
+      /// @brief Matrice locale del nodo
       glm::mat4 matrix_;
+      /// @brief Puntatore al padre
       std::shared_ptr<Node> parent_;
+      /// @brief Figli del node
       std::vector<std::shared_ptr<Node>> children_;
    };
 }

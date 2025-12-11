@@ -9,6 +9,4 @@ int Light::lightNumber_ = 0;
       : index_(index) {}
 
 
-
-
 }

@@ -2,7 +2,9 @@
 #include "light.h"
 
 namespace Eng {
-
+   /**
+    * @class DirectionalLight
+    */
    class ENG_API DirectionalLight final : public Light {
    public:
 
@@ -11,6 +13,7 @@ namespace Eng {
 
    /// @brief Render della luce direzionale
    void render(const glm::mat4& modelViewMatrix) override;
+
 
    /// @brief Factory method per crare una luce
    static std::shared_ptr<DirectionalLight> createDirectionalLight();
@@ -25,7 +28,7 @@ namespace Eng {
       /// @brief Costruttore privato per Factory Method
       explicit DirectionalLight(int index) noexcept;
 
-      /// @brief direzione della luce
+      /// @brief Direzione della luce
       glm::vec3 direction_{0,0,-1};
    };
 }

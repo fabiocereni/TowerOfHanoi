@@ -19,14 +19,13 @@ ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes,
 
 
 void Mesh::render(const glm::mat4& modelViewMatrix) {
-
-    // @brief carichiamo la matrice di modelView
+    /// @brief carichiamo la matrice di modelView
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(modelViewMatrix));
 
 
-    /* @details
-     * se le luci sono spente, stiamo renderizzando un'ombra
+    /**
+     * @details se le luci sono spente, stiamo renderizzando un'ombra
      * non serve quindi applicare materiali o texture
      * altrimenti stiamo renderizzando una mesh
      */
@@ -52,7 +51,7 @@ void Mesh::render(const glm::mat4& modelViewMatrix) {
         }
     }
     else {
-        /*
+        /**
          * @brief reset dello stato per la prossima mesh
          * @details se non c'è texture, ripuliamo
          * lo stato per non applicare texture di altri
@@ -64,11 +63,11 @@ void Mesh::render(const glm::mat4& modelViewMatrix) {
     glBegin(GL_TRIANGLES);
     for (size_t i = 0; i < vertexes_.size(); ++i) {
 
-        // @brief applicazione della normale
+        /// @brief applicazione della normale
         if (!normals_.empty() && i < normals_.size())
             glNormal3fv(glm::value_ptr(normals_[i]));
 
-        // @brief applica le coordinate uv se presenti
+        /// @brief applica le coordinate uv se presenti
         if (!uv_coords_.empty() && i < uv_coords_.size())
             glTexCoord2fv(glm::value_ptr(uv_coords_[i]));
 
@@ -77,7 +76,7 @@ void Mesh::render(const glm::mat4& modelViewMatrix) {
     glEnd();
 
 
-    /*
+    /**
      * @brief reset dello stato per la prossima mesh
      * @details se non c'è texture, ripuliamo
      * lo stato per non applicare texture di altri

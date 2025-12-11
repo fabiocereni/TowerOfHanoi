@@ -14,5 +14,6 @@ void Orthographic_Camera::render(const glm::mat4& modelViewMatrix) {}
 
 
 void Orthographic_Camera::onResize(const int width, const int height) noexcept {
-    // rimane uguale
+    projectionMatrix_ = glm::ortho(0.0f, static_cast<float>(width), 0.0f,
+                      static_cast<float>(height), -1.0f, 1.0f);
 }

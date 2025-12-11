@@ -18,9 +18,9 @@ Material::Material(const glm::vec4& emission,
 
 
 /**
- * @brief si occupera del render dei materiali
- * @param riceve la modelViewMatrix
- * @details applica le varie componenti per l'illuminazione
+ * @brief Si occupera del render dei materiali
+ * @param Riceve la modelViewMatrix
+ * @details Applica le varie componenti per l'illuminazione
  */
 void Material::render(const glm::mat4& modelViewMatrix) {
     glMaterialfv(GL_FRONT, GL_EMISSION, glm::value_ptr(emission_));
@@ -29,11 +29,11 @@ void Material::render(const glm::mat4& modelViewMatrix) {
     glMaterialfv(GL_FRONT, GL_SPECULAR, glm::value_ptr(specular_));
     glMaterialf (GL_FRONT, GL_SHININESS, shininess_);
 
-    // @brief se la texture è presente esegue il binding
+    /// @brief se la texture è presente esegue il binding
     if (texture_) {
         texture_->bind();
     } else {
-        /*
+        /**
          * @brief reset dello stato per la prossima mesh
          * @details se non c'è texture, ripuliamo
          * lo stato per non applicare texture di altri
