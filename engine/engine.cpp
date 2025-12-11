@@ -407,31 +407,27 @@ void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<L
  * @brief Cerca un nodo nel grafo della scena tramite il nome
  * @param node Nodo di partenza per la ricerca
  * @param name Nome del nodo da cercare
- * @return std::shared_ptr<Node> Il nodo trovato o nullptr se non esiste
+ * @return shared_ptr<Node> Il nodo trovato o nullptr se non esiste
  */
-std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& node, const std::string& name) const {
+std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& startingNode, const std::string& name) {
 
-    // @brief iterazione su tutti i figli diretti del nodo corrente
-    for (const auto& childNode : node->getChildren()) {
+   if (!startingNode)
+      return nullptr;
 
-        // @details caso base: se il figlio corrente ha il nome cercato, lo restituiamo subito
-        if (childNode->getName() == name)
-        {
-            return childNode;
-        }
 
-        // @brief chiamata ricorsiva per cercare nei discendenti del figlio corrente
-        // @details è fondamentale salvare il risultato: se non è nullo, abbiamo trovato il nodo in profondità
-        std::shared_ptr<Node> foundNode = this->findByName(childNode, name);
+   if (startingNode->getName() == name) {
+      return startingNode;
+   }
 
-        if (foundNode != nullptr) {
-            // @details propagazione del risultato verso l'alto nello stack delle chiamate
-            return foundNode;
-        }
-    }
+   for (const auto& childNode : startingNode->getChildren()) {
+      std::shared_ptr<Node> foundNode = findByName(childNode, name);
 
-    // @details se il ciclo termina senza ritorni, il nodo non esiste in questo ramo
-    return nullptr;
+      if (foundNode != nullptr) {
+         return foundNode;
+      }
+   }
+
+   return nullptr;
 }
 
 
