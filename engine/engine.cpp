@@ -627,6 +627,41 @@ std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) cons
 }
 
 /**
+ * @brief Carica e vincola le texture
+ */
+void Base::loadAndBindTextures(const std::filesystem::path& projectDir_, const std::shared_ptr<Eng::Node>& root) {
+    std::vector<std::shared_ptr<Eng::Texture>> textures;
+    const std::filesystem::path textureDir = projectDir_; // O sottocartella se necessario
+
+    if (!std::filesystem::exists(textureDir) || !std::filesystem::is_directory(textureDir)) {
+        std::cerr << "ATTENZIONE: Cartella texture non valida." << std::endl;
+        return;
+    }
+
+    std::cout << "--- CARICAMENTO TEXTURE ---" << std::endl;
+    for (const auto& entry : std::filesystem::directory_iterator(textureDir)) {
+        if (entry.is_regular_file()) {
+            std::string ext = entry.path().extension().string();
+            std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c) { return std::tolower(c); });
+
+            if (ext == ".dds" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp") {
+                std::cout << "Loading: " << entry.path().filename() << "... ";
+                auto tex = loadTextureFromFile(entry.path().string());
+                if (tex) {
+                    textures.push_back(tex);
+                    std::cout << "OK" << std::endl;
+                }
+                else {
+                    std::cout << "FALLITO" << std::endl;
+                }
+            }
+        }
+    }
+    std::cout << "Totale: " << textures.size() << std::endl;
+    bindTexturesToMaterials(root, textures);
+}
+
+/**
  * @brief Associa le texture caricate ai materiali delle mesh nel grafo della scena
  * @param root Nodo radice da cui iniziare la ricerca
  * @param textures Vettore di texture disponibili
@@ -661,6 +696,7 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
         this->bindTexturesToMaterials(childNode, textures);
     }
 }
+
 
 /**
  * @brief Abilita o disabilita la modalità wireframe

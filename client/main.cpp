@@ -21,7 +21,7 @@ int main(const int argc, char** argv) {
     const auto sceneRoot = setup.loadScene("ExportFinalVersion.ovo");
 
     // @brief Setup texture
-    setup.loadAndBindTextures();
+    eng.loadAndBindTextures(setup.getProjectExportDir(), sceneRoot);
 
     // @brief Inizializza il gioco
     HanoiGame game(sceneRoot);

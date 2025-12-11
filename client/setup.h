@@ -25,9 +25,6 @@ public:
     /// @brief Carica la scena dal file OVO
     std::shared_ptr<Eng::Node> loadScene(const std::string& ovoFileName);
 
-    /// @brief Carica le texture dalla cartella e le applica ai materiali
-    void loadAndBindTextures();
-
     /// @brief Inizializza la luce del lampadario
     std::shared_ptr<Eng::Light> initLampadario();
 
@@ -60,6 +57,9 @@ public:
 
     /// @brief Restituisce la root della scena
     std::shared_ptr<Eng::Node> getSceneRoot() const { return sceneRoot_; }
+
+    /// @brief Restituisce la directory dell'export del progetto
+    std::filesystem::path getProjectExportDir() const { return projectExportDir_; }
 
     // --- Metodi per interagire con lo stato interno dal Main (Input) ---
 
@@ -94,8 +94,8 @@ private:
     /// @brief Root della scena caricata
     std::shared_ptr<Eng::Node> sceneRoot_;
 
-    /// @brief Percorso base del progetto
-    std::filesystem::path projectDir_;
+    /// @brief Percorso base dell'export del progetto
+    std::filesystem::path projectExportDir_;
 
     /// @brief Lista nodi esclusi dal render pass principale
     std::list<std::string> excludedList_;

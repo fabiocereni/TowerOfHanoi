@@ -4,6 +4,7 @@
 
 
 #include <functional>
+#include <filesystem>
 
 #include "directionallight.h"
 #include "list.h"
@@ -73,6 +74,10 @@ namespace Eng {
 
       /// @brief Permette il binding delle texture a tutti i nodi della scena
       ENG_API [[nodiscard]] void bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept;
+
+      /// @brief Carica le texture dalla cartella e le applica ai materiali
+      ENG_API [[nodiscard]] void loadAndBindTextures(const std::filesystem::path &projectDir_, const std::shared_ptr<Eng::Node>& root);
+
 
 
 

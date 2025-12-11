@@ -9,7 +9,7 @@
  */
 Setup::Setup(Eng::Base& eng, const std::string& projectDirName) : eng_(eng) {
     const std::filesystem::path sourceFile = __FILE__;
-    projectDir_ = sourceFile.parent_path().parent_path() / projectDirName;
+    projectExportDir_ = sourceFile.parent_path().parent_path() / projectDirName;
 
     excludedList_ = {
         "muro1", "muro2", "muro3", "muro4", "soffitto", "pavimento" ,"lampadario"
@@ -22,7 +22,7 @@ Setup::Setup(Eng::Base& eng, const std::string& projectDirName) : eng_(eng) {
  * @return std::shared_ptr<Eng::Node> Nodo radice della scena
  */
 std::shared_ptr<Eng::Node> Setup::loadScene(const std::string& ovoFileName) {
-    const std::filesystem::path modelPath = projectDir_ / ovoFileName;
+    const std::filesystem::path modelPath = projectExportDir_ / ovoFileName;
     sceneRoot_ = eng_.load(modelPath.string());
     return sceneRoot_;
 }
@@ -148,39 +148,6 @@ void Setup::updateDynamicCameraMatrix(const std::shared_ptr<Eng::Camera>& cam) {
     cam->setMatrix(trans * x_rot * y_rot);
 }
 
-/**
- * @brief Carica e vincola le texture
- */
-void Setup::loadAndBindTextures() {
-    std::vector<std::shared_ptr<Eng::Texture>> textures;
-    const std::filesystem::path textureDir = projectDir_; // O sottocartella se necessario
-
-    if (!std::filesystem::exists(textureDir) || !std::filesystem::is_directory(textureDir)) {
-        std::cerr << "ATTENZIONE: Cartella texture non valida." << std::endl;
-        return;
-    }
-
-    std::cout << "--- CARICAMENTO TEXTURE ---" << std::endl;
-    for (const auto& entry : std::filesystem::directory_iterator(textureDir)) {
-        if (entry.is_regular_file()) {
-            std::string ext = entry.path().extension().string();
-            std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c) { return std::tolower(c); });
-
-            if (ext == ".dds" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp") {
-                std::cout << "Loading: " << entry.path().filename() << "... ";
-                auto tex = eng_.loadTextureFromFile(entry.path().string());
-                if (tex) {
-                    textures.push_back(tex);
-                    std::cout << "OK" << std::endl;
-                } else {
-                    std::cout << "FALLITO" << std::endl;
-                }
-            }
-        }
-    }
-    std::cout << "Totale: " << textures.size() << std::endl;
-    eng_.bindTexturesToMaterials(sceneRoot_, textures);
-}
 
 /**
  * @brief Crea la luce dinamica
