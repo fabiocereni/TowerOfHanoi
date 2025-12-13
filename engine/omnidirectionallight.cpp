@@ -11,9 +11,7 @@ namespace Eng {
     * @param index Indice assegnato alla luce
     */
    OmnidirectionalLight::OmnidirectionalLight(const int index) noexcept
-   : Light(index) {
-      setActive(true);
-   }
+   : Light(index) {}
 
 
    /**

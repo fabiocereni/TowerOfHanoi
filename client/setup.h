@@ -26,19 +26,19 @@ public:
     std::shared_ptr<Eng::Node> loadScene(const std::string& ovoFileName);
 
     /// @brief Inizializza la luce del lampadario
-    std::shared_ptr<Eng::Light> initLampadario();
+    std::shared_ptr<Eng::Light> initLampadario() const;
 
     /// @brief Crea la luce dinamica e il suo pivot
     std::shared_ptr<Eng::Node> createDynamicLight();
 
     /// @brief Crea e posiziona la camera frontale al tavolo
-    std::shared_ptr<Eng::Camera> createFrontTableCamera();
+    std::shared_ptr<Eng::Camera> createFrontTableCamera() const;
 
     /// @brief Crea e posiziona la camera sopra il tavolo
-    std::shared_ptr<Eng::Camera> createTopTableCamera();
+    std::shared_ptr<Eng::Camera> createTopTableCamera() const;
 
     /// @brief Crea la camera dinamica libera
-    std::shared_ptr<Eng::Camera> createDynamicCamera();
+    std::shared_ptr<Eng::Camera> createDynamicCamera() const;
 
     /// @brief Calcola i limiti di movimento per la camera dinamica basandosi sulle mura
     void computeDynamicCameraLimits();
@@ -51,6 +51,9 @@ public:
 
     /// @brief Aggiorna l'animazione della luce dinamica (su/giù e rotazione)
     void updateDynamicLightAnimation();
+
+
+   void updateLampadario() const noexcept;
 
     /// @brief Restituisce la lista dei nodi da escludere dal rendering (muri esterni per visuale interna, ecc.)
     const std::list<std::string>& getExcludedList() const { return excludedList_; }

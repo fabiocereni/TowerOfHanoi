@@ -134,9 +134,11 @@ int main(const int argc, char** argv) {
 
         renderList->pass(sceneRoot);
 
+
         eng.render(eng.getActiveCamera(), renderList, setup.getExcludedList());
 
 
+        setup.updateLampadario();
         setup.updateDynamicLightAnimation();
 
         eng.end3D();

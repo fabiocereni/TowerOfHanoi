@@ -629,7 +629,7 @@ std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) cons
 /**
  * @brief Carica e vincola le texture
  */
-void Base::loadAndBindTextures(const std::filesystem::path& projectDir_, const std::shared_ptr<Eng::Node>& root) {
+void Base::loadAndBindTextures(const std::filesystem::path& projectDir_, const std::shared_ptr<Node>& root) {
     std::vector<std::shared_ptr<Eng::Texture>> textures;
     const std::filesystem::path textureDir = projectDir_; // O sottocartella se necessario
 

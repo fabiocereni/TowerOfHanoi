@@ -12,10 +12,7 @@ namespace Eng {
      * @return Crea e torna una luce direzionale
      */
     DirectionalLight::DirectionalLight(const int index) noexcept
-        : Light(index) {
-
-        setActive(true);
-    }
+        : Light(index) {}
 
 
     /**

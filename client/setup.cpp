@@ -31,7 +31,7 @@ std::shared_ptr<Eng::Node> Setup::loadScene(const std::string& ovoFileName) {
 /**
  * @brief Inizializza la luce del lampadario
  */
-std::shared_ptr<Eng::Light> Setup::initLampadario() {
+std::shared_ptr<Eng::Light> Setup::initLampadario() const {
     const std::shared_ptr<Eng::Mesh> lampadarioNode = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "lampadario"));
 
     if (!lampadarioNode) {
@@ -40,17 +40,12 @@ std::shared_ptr<Eng::Light> Setup::initLampadario() {
     }
 
     const auto lampadarioLight = eng_.createOmnidirectionalLight();
-    lampadarioLight->setAmbient(glm::vec3(4.5f));
-    lampadarioLight->setDiffuse(glm::vec3(4.5f));
-    lampadarioLight->setSpecular(glm::vec3(4.5f));
-    lampadarioLight->setRadius(3000.0f);
+
     lampadarioLight->setName("lampadario_light");
+    lampadarioLight->setActive(true);
 
     // @brief Appendi la luce al nodo lampadario
     lampadarioNode->addChildren(lampadarioLight);
-    
-    // @brief Imposta l'emissione del materiale
-    lampadarioNode->getMaterial()->setEmission(glm::vec4(1.0f));
 
     return lampadarioLight;
 }
@@ -58,7 +53,7 @@ std::shared_ptr<Eng::Light> Setup::initLampadario() {
 /**
  * @brief Crea la camera frontale
  */
-std::shared_ptr<Eng::Camera> Setup::createFrontTableCamera() {
+std::shared_ptr<Eng::Camera> Setup::createFrontTableCamera() const {
     const auto frontTableCam = eng_.createPerspectiveCamera(40, 800.f / 600.f, 10.0f, 20000.0f);
     constexpr auto frontTablePosition = glm::vec3(0.0f, 2000.0f, 700.0f);
 
@@ -72,7 +67,7 @@ std::shared_ptr<Eng::Camera> Setup::createFrontTableCamera() {
 /**
  * @brief Crea la camera superiore
  */
-std::shared_ptr<Eng::Camera> Setup::createTopTableCamera() {
+std::shared_ptr<Eng::Camera> Setup::createTopTableCamera() const {
     const auto topTableCam = eng_.createPerspectiveCamera(40, 800.f / 600.f, 10.0f, 20000.0f);
     constexpr auto topTableCamPosition = glm::vec3(0.0f, 3000.0f, -700.0f);
 
@@ -87,7 +82,7 @@ std::shared_ptr<Eng::Camera> Setup::createTopTableCamera() {
 /**
  * @brief Crea la camera dinamica
  */
-std::shared_ptr<Eng::Camera> Setup::createDynamicCamera() {
+std::shared_ptr<Eng::Camera> Setup::createDynamicCamera() const {
     return eng_.createPerspectiveCamera(80, 1800.f / 1000.f, 10.0f, 20000.0f);
 }
 
@@ -108,7 +103,7 @@ void Setup::computeWorldOrientedVertexes(const std::vector<glm::vec3>& vertexes,
  */
 void Setup::computeDynamicCameraLimits() {
     std::vector<glm::vec3> room_vertexes;
-    const std::vector<std::string> walls = {"pavimento", "muro1", "muro2", "muro3", "muro4"};
+    const std::vector<std::string> walls = {"pavimento", "soffitto"};
 
     for(const auto& name : walls) {
         const auto node = Eng::Base::findByName(sceneRoot_, name);
@@ -162,6 +157,8 @@ std::shared_ptr<Eng::Node> Setup::createDynamicLight() {
     dynamicLight_->setActive(false);
 
     const auto albero = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "albero"));
+
+
     lightPivotNode_ = std::make_shared<Eng::Node>();
     lightPivotNode_->setName("pivot");
 
@@ -188,7 +185,7 @@ std::shared_ptr<Eng::Node> Setup::createDynamicLight() {
 void Setup::computeTreeHeightLimits() {
     const auto albero = Eng::Base::findByName(sceneRoot_, "albero");
     const auto cone0 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone"));
-    const auto cone1 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone_001")); // Non usato nel calcolo originale ma presente
+    const auto cone1 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone_001"));
     const auto cone2 = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_, "Cone_002"));
 
     if (!albero || (!cone0 && !cone2)) {
@@ -251,9 +248,29 @@ void Setup::updateDynamicLightAnimation() {
     lightPivotNode_->setMatrix(m);
 }
 
-// --- Implementazione controlli camera ---
+void Setup::updateLampadario() const noexcept {
+    const auto lamp = std::dynamic_pointer_cast<Eng::Mesh>(Eng::Base::findByName(sceneRoot_ ,"lampadario"));
+    const auto lamp_light = std::dynamic_pointer_cast<Eng::Light>(Eng::Base::findByName(sceneRoot_ ,"lampadario_light"));
 
-void Setup::moveDynamicCam(float delta) {
+    if (lamp && lamp_light) {
+
+        if (lamp_light->isActive()) {
+            lamp_light->setAmbient(glm::vec3(4.5f));
+            lamp_light->setDiffuse(glm::vec3(4.5f));
+            lamp_light->setSpecular(glm::vec3(4.5f));
+            lamp_light->setRadius(3000.0f);
+            lamp->getMaterial()->setEmission(glm::vec4(1.0f));
+        } else {
+            lamp->getMaterial()->setEmission(glm::vec4(0.0f));
+        }
+    }
+}
+
+
+
+
+
+void Setup::moveDynamicCam(const float delta) {
     // @details Calcola la direzione forward basata sugli angoli correnti
     const glm::mat4 orientation = glm::rotate(glm::mat4(1.0f), glm::radians(dynamicCamXAngle_), glm::vec3(0, 1, 0)) *
                                   glm::rotate(glm::mat4(1.0f), glm::radians(dynamicCamYAngle_), glm::vec3(1, 0, 0));
@@ -261,14 +278,14 @@ void Setup::moveDynamicCam(float delta) {
     dynamicCamPos_ += forwardDir * delta;
 }
 
-void Setup::rotateDynamicCamX(float delta) {
+void Setup::rotateDynamicCamX(const float delta) {
     dynamicCamXAngle_ += delta;
 }
 
-void Setup::rotateDynamicCamY(float delta) {
+void Setup::rotateDynamicCamY(const float delta) {
     dynamicCamYAngle_ += delta;
 }
 
-void Setup::liftDynamicCam(float delta) {
+void Setup::liftDynamicCam(const float delta) {
     dynamicCamPos_.y += delta;
 }

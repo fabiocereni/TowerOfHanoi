@@ -11,10 +11,7 @@ namespace Eng {
     * @param index Indice della luce OpenGL
     */
    Spotlight::Spotlight(const int index) noexcept
-   : Light(index) {
-
-      setActive(true);
-   }
+   : Light(index) {}
 
 
    /**
