@@ -31,6 +31,8 @@ namespace Eng {
    protected:
       /// @brief Id dell'oggetto
       unsigned long id_;
+      /// @brief Id globale
+      static unsigned long globalId_;
       /// @brief Nome dell'oggetto
       std::string name_;
    };
