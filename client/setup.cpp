@@ -103,9 +103,9 @@ void Setup::computeWorldOrientedVertexes(const std::vector<glm::vec3>& vertexes,
  */
 void Setup::computeDynamicCameraLimits() {
     std::vector<glm::vec3> room_vertexes;
-    const std::vector<std::string> walls = {"pavimento", "soffitto"};
+    const std::vector<std::string> limits = {"pavimento", "soffitto"};
 
-    for(const auto& name : walls) {
+    for(const auto& name : limits) {
         const auto node = Eng::Base::findByName(sceneRoot_, name);
         if(node) {
              // @details Cast a mesh per ottenere i vertici

@@ -2,7 +2,9 @@ image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
 
 stages:
   - build
+  - test
 
+# --- JOB DI BUILD (Compilazione Engine + Client) ---
 build:
   stage: build
   script:
@@ -10,7 +12,9 @@ build:
     - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 libfreeimage-dev
     - make clean
     - make -j"$(nproc)"
+    # Creazione cartella dipendenze
     - mkdir -p dependencies/lib
+    # Script per copiare le librerie dinamiche necessarie
     - |
       BINARIES="engine/bin/Debug/libengine.so engine/bin/Release/libengine.so client/bin/Debug/client client/bin/Release/client"
       for bin in $BINARIES; do
@@ -26,6 +30,7 @@ build:
           done
         fi
       done
+    # Fix specifico per libglut
     - |
       GLUT_REAL=$(ldd engine/bin/Debug/libengine.so | grep libglut | awk '{print $3}' | head -n 1)
       if [ -z "$GLUT_REAL" ]; then 
@@ -36,12 +41,14 @@ build:
         cp -L "$GLUT_REAL" dependencies/lib/libglut.so.3
         cp -L "$GLUT_REAL" dependencies/lib/libglut.so
       fi
+    # Creazione script di avvio
     - echo '#!/bin/bash' > run_client.sh
     - echo 'DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"' >> run_client.sh
     - echo 'export LD_LIBRARY_PATH="$DIR/dependencies/lib:$LD_LIBRARY_PATH"' >> run_client.sh
     - echo 'chmod +x "$DIR/client/bin/Debug/client"' >> run_client.sh
     - echo 'exec "$DIR/client/bin/Debug/client"' >> run_client.sh
     - chmod +x run_client.sh
+    # Creazione README
     - |
       cat > README.txt <<'EOF'
       # Avvio dell'artifact
@@ -60,5 +67,21 @@ build:
       - run_client.sh
       - README.txt
     when: always
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
+
+# --- JOB DI TEST (Esegue i test unitari dell'engine) ---
+unit_test:
+  stage: test
+  script:
+    # 1. Installiamo le dipendenze (necessario perché ogni job parte pulito)
+    - apt-get update
+    - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 libfreeimage-dev
+    
+    # 2. Entriamo nella cartella engine dove si trova il Makefile modificato
+    - cd engine
+    
+    # 3. Eseguiamo compilazione ed esecuzione dei test
+    - make run-tests
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'

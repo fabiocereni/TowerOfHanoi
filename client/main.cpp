@@ -1,15 +1,12 @@
 #include "engine.h"
 #include "list.h"
 #include "ovoreader.h"
-#include "Test/test_suite.h"
+#include <iostream>
 #include "hanoiGame.h"
 #include "setup.h"
 
 int main(const int argc, char** argv) {
 
-#ifdef DEBUG
-    TestSuite::runAllTests();
-#endif
 
     Eng::Base& eng = Eng::Base::getInstance();
     eng.init(argc, argv, "Hanoi Tower");
