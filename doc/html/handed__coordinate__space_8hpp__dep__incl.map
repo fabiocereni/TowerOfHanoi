@@ -1,7 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/handed_coordinate_space.hpp" name="dependencies/glm/include/glm/gtx/handed_coordinate_space.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,209,67"/>
-<area shape="rect" id="Node000002" href="$ext_8hpp.html" title=" " alt="" coords="11,115,203,160"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,80,110,115,104,114,106,85"/>
-<area shape="rect" id="Node000003" href="$glm_8cppm.html" title=" " alt="" coords="11,208,203,252"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,173,109,208,105,207,105,177"/>
-</map>

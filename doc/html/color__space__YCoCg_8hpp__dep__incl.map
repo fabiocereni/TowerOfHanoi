@@ -1,7 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/color_space_YCoCg.hpp" name="dependencies/glm/include/glm/gtx/color_space_YCoCg.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,239,50"/>
-<area shape="rect" id="Node000002" href="$ext_8hpp.html" title=" " alt="" coords="26,98,218,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,63,125,99,119,97,121,68"/>
-<area shape="rect" id="Node000003" href="$glm_8cppm.html" title=" " alt="" coords="26,191,218,235"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,156,124,192,120,189,120,160"/>
-</map>

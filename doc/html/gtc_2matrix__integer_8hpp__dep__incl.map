@@ -1,7 +1,0 @@
-<map id="dependencies/glm/include/glm/gtc/matrix_integer.hpp" name="dependencies/glm/include/glm/gtc/matrix_integer.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,208,50"/>
-<area shape="rect" id="Node000002" href="$ext_8hpp.html" title=" " alt="" coords="11,98,202,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,63,109,98,104,97,106,68"/>
-<area shape="rect" id="Node000003" href="$glm_8cppm.html" title=" " alt="" coords="11,191,202,235"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="108,156,109,191,104,190,105,160"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/polar_coordinates.hpp" name="dependencies/glm/include/glm/gtx/polar_coordinates.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,229,50"/>
-<area shape="rect" id="Node000002" href="$ext_8hpp.html" title=" " alt="" coords="21,98,213,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,63,120,98,114,97,116,68"/>
-<area shape="rect" id="Node000003" href="$glm_8cppm.html" title=" " alt="" coords="21,191,213,235"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,156,119,192,115,189,115,160"/>
-</map>

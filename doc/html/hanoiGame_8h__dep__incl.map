@@ -1,7 +1,0 @@
-<map id="client/hanoiGame.h" name="client/hanoiGame.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="96,5,244,33"/>
-<area shape="rect" id="Node000002" href="$hanoiGame_8cpp.html" title=" " alt="" coords="5,81,169,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,43,103,83,100,78,141,44"/>
-<area shape="rect" id="Node000003" href="$main_8cpp.html" title=" " alt="" coords="193,81,314,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,41,241,81,236,80,195,46"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/matrix_factorisation.inl" name="dependencies/glm/include/glm/gtx/matrix_factorisation.inl">
-<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,241,50"/>
-<area shape="rect" id="Node000002" href="$matrix__factorisation_8hpp.html" title=" " alt="" coords="5,98,245,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,63,128,98,122,97,124,68"/>
-<area shape="rect" id="Node000003" href="$ext_8hpp.html" title=" " alt="" coords="29,191,221,235"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,156,128,191,122,190,124,161"/>
-<area shape="rect" id="Node000004" href="$glm_8cppm.html" title=" " alt="" coords="29,283,221,328"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,249,127,284,123,282,123,253"/>
-</map>

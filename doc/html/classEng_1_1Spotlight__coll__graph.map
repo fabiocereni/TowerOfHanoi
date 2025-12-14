@@ -1,9 +1,0 @@
-<map id="Eng::Spotlight" name="Eng::Spotlight">
-<area shape="rect" id="Node000001" title="Rappresenta una luce di tipo faretto (spotlight)." alt="" coords="5,232,117,260"/>
-<area shape="rect" id="Node000002" href="$classEng_1_1Light.html" title=" " alt="" coords="18,157,104,184"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,198,64,233,58,231,59,202"/>
-<area shape="rect" id="Node000003" href="$classEng_1_1Node.html" title=" " alt="" coords="17,81,105,109"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="62,122,64,157,58,156,60,127"/>
-<area shape="rect" id="Node000004" href="$classEng_1_1Object.html" title=" " alt="" coords="13,5,109,33"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="61,46,64,81,58,80,61,51"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/associated_min_max.inl" name="dependencies/glm/include/glm/gtx/associated_min_max.inl">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,197,67"/>
-<area shape="rect" id="Node000002" href="$associated__min__max_8hpp.html" title=" " alt="" coords="5,115,197,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,80,104,115,98,114,100,85"/>
-<area shape="rect" id="Node000003" href="$ext_8hpp.html" title=" " alt="" coords="5,225,197,269"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,190,104,225,98,224,100,195"/>
-<area shape="rect" id="Node000004" href="$glm_8cppm.html" title=" " alt="" coords="5,317,197,362"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="103,283,103,318,99,316,99,287"/>
-</map>

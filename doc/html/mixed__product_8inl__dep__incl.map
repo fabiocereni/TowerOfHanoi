@@ -1,9 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/mixed_product.inl" name="dependencies/glm/include/glm/gtx/mixed_product.inl">
-<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,206,50"/>
-<area shape="rect" id="Node000002" href="$mixed__product_8hpp.html" title=" " alt="" coords="5,98,210,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,63,110,98,105,97,107,68"/>
-<area shape="rect" id="Node000003" href="$ext_8hpp.html" title=" " alt="" coords="12,191,203,235"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,156,110,191,105,190,106,161"/>
-<area shape="rect" id="Node000004" href="$glm_8cppm.html" title=" " alt="" coords="12,283,203,328"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="109,249,110,284,105,282,106,253"/>
-</map>

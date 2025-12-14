@@ -1,9 +1,0 @@
-<map id="client/Test/test_suite.h" name="client/Test/test_suite.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="55,5,222,33"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,85,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,33,75,74,72,69,119,34"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="109,81,168,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="140,32,141,66,136,64,137,36"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="192,81,260,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="155,31,202,71,197,71,153,36"/>
-</map>

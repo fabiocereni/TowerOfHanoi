@@ -1,9 +1,0 @@
-<map id="engine/light_number_exception.h" name="engine/light_number_exception.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="89,5,244,50"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,91,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,50,81,91,78,87,133,51"/>
-<area shape="rect" id="Node000003" href="$engine__api_8h.html" title=" " alt="" coords="114,98,219,126"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,48,169,84,164,81,165,52"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="243,98,301,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="195,48,246,88,241,88,193,53"/>
-</map>

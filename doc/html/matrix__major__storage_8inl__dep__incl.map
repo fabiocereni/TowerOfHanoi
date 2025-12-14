@@ -1,9 +1,0 @@
-<map id="dependencies/glm/include/glm/gtx/matrix_major_storage.inl" name="dependencies/glm/include/glm/gtx/matrix_major_storage.inl">
-<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,253,50"/>
-<area shape="rect" id="Node000002" href="$matrix__major__storage_8hpp.html" title=" " alt="" coords="5,98,257,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,63,134,98,128,97,130,68"/>
-<area shape="rect" id="Node000003" href="$ext_8hpp.html" title=" " alt="" coords="35,191,227,235"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="132,156,134,191,128,190,130,161"/>
-<area shape="rect" id="Node000004" href="$glm_8cppm.html" title=" " alt="" coords="35,283,227,328"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,249,133,284,129,282,129,253"/>
-</map>
