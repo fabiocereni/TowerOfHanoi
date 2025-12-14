@@ -21,23 +21,25 @@
  * separatore di percorsi in base al sistema operativo
  */
 constexpr char pathSeparator =
-                              #ifdef _WIN32
-                                 '\\';
-                              #else
-                                 '/';
-                              #endif
+#ifdef _WIN32
+   '\\';
+#else
+   '/';
+#endif
 
 
 using namespace Eng;
 
 
-struct Base::Reserved {
+struct Base::Reserved
+{
    // Flags:
    bool initFlag;
 
-   Reserved() : initFlag{ false } {}
+   Reserved() : initFlag{false}
+   {
+   }
 };
-
 
 
 /**
@@ -61,22 +63,22 @@ Base::SpecialKeyAction Base::F4_key = nullptr;
 float fps = 0.0f;
 
 
-
-
-
-Base::Base() : reserved_(std::make_unique<Reserved>()) {
+Base::Base() : reserved_(std::make_unique<Reserved>())
+{
 #ifdef _DEBUG
    std::cout << "[+] " << std::source_location::current().function_name() << " invoked" << std::endl;
 #endif
 }
 
-Base::~Base() {
+Base::~Base()
+{
 #ifdef _DEBUG
    std::cout << "[-] " << std::source_location::current().function_name() << " invoked" << std::endl;
 #endif
 }
 
-Base& Base::getInstance() {
+Base& Base::getInstance()
+{
    static Base instance;
    return instance;
 }
@@ -90,15 +92,14 @@ Base& Base::getInstance() {
  * @return Se riesce a inizializzare il motore
  * torna true
  */
-bool Base::init(int argc, char **argv, const std::string& title) {
+bool Base::init(int argc, char** argv, const std::string& title)
+{
    if (reserved_->initFlag)
       return false;
 
 
    /// @brief inizializzazione di FreeImage
    FreeImage_Initialise();
-
-
 
 
    ///@brief Inizializzazione di FreeGLUT e della finestra
@@ -139,7 +140,8 @@ bool Base::init(int argc, char **argv, const std::string& title) {
 
    /// @brief definizione color "ombra"
    auto black = glm::vec4(0.0f);
-   shadowMaterial_ = std::make_shared<Material>(black, black, black,black, 0.0f, "");
+   shadowMaterial_ = std::make_shared<Material>(black, black, black, black, 0.0f, "");
+
 
    /// @brief motore inizializzato
    reserved_->initFlag = true;
@@ -155,8 +157,10 @@ bool Base::init(int argc, char **argv, const std::string& title) {
  * @param mouseX
  * @param mouseY
  */
-void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, const int mouseY) noexcept {
-   if (customKeyboardCallbackVar_) {
+void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, const int mouseY) noexcept
+{
+   if (customKeyboardCallbackVar_)
+   {
       customKeyboardCallbackVar_(key, mouseX, mouseY);
    }
 }
@@ -167,7 +171,8 @@ void Base::useCustomKeyboardCallback(const unsigned char key, const int mouseX, 
  * @return Ritorna true se la finestra
  * non è stata chiusa
  */
-bool Base::update() const noexcept {
+bool Base::update() const noexcept
+{
    // Processa eventi GLUT
    glutMainLoopEvent();
 
@@ -182,7 +187,8 @@ bool Base::update() const noexcept {
 /**
  * @brief Eseguo lo swap dei buffer (front e back)
  */
-void Base::swap() noexcept {
+void Base::swap() noexcept
+{
    glutSwapBuffers();
 }
 
@@ -191,7 +197,8 @@ void Base::swap() noexcept {
  * @param camera La telecamera da cui prendere la matrice di proiezione
  */
 
-void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept {
+void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept
+{
    /// @brief attiva la modalità matrice di proiezione
    glMatrixMode(GL_PROJECTION);
    /// @brief attiva la modalità matrice di proiezione
@@ -205,7 +212,21 @@ void Base::begin3D(const std::shared_ptr<Camera>& camera) noexcept {
  * @brief De-inizializza il contesto di rendering 3D
  */
 
-void Base::end3D() noexcept {
+void Base::end3D() noexcept
+{
+   glMatrixMode(GL_MODELVIEW);
+   auto identity = glm::mat4(1.0f);
+   /// @details carica una matrice neutra
+   glLoadMatrixf(glm::value_ptr(identity));
+}
+
+void Base::begin2D(const std::shared_ptr<Camera>& camera) noexcept {
+
+   glMatrixMode(GL_PROJECTION);
+   glLoadMatrixf(glm::value_ptr(camera->getProjectionMatrix()));
+}
+
+void Base::end2D() noexcept {
    glMatrixMode(GL_MODELVIEW);
    auto identity = glm::mat4(1.0f);
    /// @details carica una matrice neutra
@@ -213,11 +234,13 @@ void Base::end3D() noexcept {
 }
 
 
+
 /**
  * @brief Pulisce i buffer per preparare il nuovo frame
  */
 
-void Base::clear() noexcept {
+void Base::clear() noexcept
+{
    /// @brief pulisce sia il buffer di colore che il depth buffer (z-buffer)
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -228,8 +251,10 @@ void Base::clear() noexcept {
  * @return Se il motore era stato inizializzato torna true
  */
 
-bool Base::free() const {
-   if (!reserved_->initFlag) {
+bool Base::free() const
+{
+   if (!reserved_->initFlag)
+   {
       std::cout << "ERROR: engine not initialized" << std::endl;
       return false;
    }
@@ -247,7 +272,8 @@ bool Base::free() const {
  * @param title
  */
 
-void Base::changeWindowTitle(const std::string &title) {
+void Base::changeWindowTitle(const std::string& title)
+{
    glutSetWindowTitle(title.c_str());
 }
 
@@ -261,11 +287,11 @@ void Base::changeWindowTitle(const std::string &title) {
  */
 
 std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
-                                               const std::string& materialName,
-                                               const std::shared_ptr<Material>& material) {
+                                       const std::string& materialName,
+                                       const std::shared_ptr<Material>& material)
+{
    return std::make_shared<Mesh>(vertexes, materialName, material);
 }
-
 
 
 /**
@@ -278,8 +304,8 @@ std::shared_ptr<Mesh> Base::createMesh(const std::vector<glm::vec3>& vertexes,
  */
 
 std::shared_ptr<Camera> Base::createPerspectiveCamera(float fov, float aspectRatio,
-                                                      float nearPlane, float farPlane) noexcept {
-
+                                                      float nearPlane, float farPlane) noexcept
+{
    return std::make_shared<Perspective_Camera>(fov, aspectRatio, nearPlane, farPlane);
 }
 
@@ -306,19 +332,21 @@ std::shared_ptr<Camera> Base::createOrthographicCamera(float left,
 }
 
 /// @brief Metodo statico per la creazione di una luce omnidirezionale
-std::shared_ptr<OmnidirectionalLight> Base::createOmnidirectionalLight() {
+std::shared_ptr<OmnidirectionalLight> Base::createOmnidirectionalLight()
+{
    return OmnidirectionalLight::createOmnidirectionalLight();
 }
 
 
-
 /// @brief Metodo statico per la creazione di una luce spotlight
-std::shared_ptr<Spotlight> Base::createSpotlight() {
+std::shared_ptr<Spotlight> Base::createSpotlight()
+{
    return Spotlight::createSpotLight();
 }
 
 /// @brief Metodo statico per la creazione di una luce direzionale
-std::shared_ptr<DirectionalLight> Base::createDirectionalLight() {
+std::shared_ptr<DirectionalLight> Base::createDirectionalLight()
+{
    return DirectionalLight::createDirectionalLight();
 }
 
@@ -328,7 +356,8 @@ std::shared_ptr<DirectionalLight> Base::createDirectionalLight() {
  * @param path Path al percorso del file OVO
  * @return Ritorna la root con la gerarchia completa
  */
-std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
+std::shared_ptr<Node> Base::load(const std::string& path) noexcept
+{
    return OvoReader::load(std::filesystem::absolute(path).string());
 }
 
@@ -339,90 +368,82 @@ std::shared_ptr<Node> Base::load(const std::string& path) const noexcept {
  * @param renderList
  * @param excludedList
  */
-void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList, const std::list<std::string>& excludedList) const {
-
-    for (const auto& instance : renderList->getRenderList()) {
-        glm::mat4 viewMatrix = camera->getViewMatrix();
-        // @brief carichiamo la matrice di modelView
-        glm::mat4 modelViewMatrix = viewMatrix * instance.getNodeWorldMatrix();
-        instance.getNodePtr()->render(modelViewMatrix);
-    }
-
-    glDepthFunc(GL_LEQUAL);
-
-    // Crea una matrice per ridurre l'altezza delle ombre (appiattimento sul piano, z' = 0.05 * z)
-    const glm::mat4 shadowModelScaleMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 0.05f, 1.0f));
-
-    for (const auto& instance : renderList->getRenderList())
-    {
-
-        // @brief Tenta il cast a Mesh
-        std::shared_ptr<Mesh> mesh = std::dynamic_pointer_cast<Mesh>(instance.getNodePtr());
+void Base::render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList,
+                  const std::list<std::string>& excludedList) const
+{
+   renderList->render(camera->getViewMatrix());
 
 
-        if(mesh)
-            for (const auto& name : excludedList)
-            {
-                if (mesh->getName() == name)
-                    mesh->setShadow(false);
-            }
+   // Crea una matrice per ridurre l'altezza delle ombre (appiattimento sul piano, z' = 0.05 * z)
+   const glm::mat4 shadowModelScaleMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 0.05f, 1.0f));
+
+   for (const auto& instance : renderList->getRenderList())
+   {
+      // @brief Tenta il cast a Mesh
+      std::shared_ptr<Mesh> mesh = std::dynamic_pointer_cast<Mesh>(instance.getNodePtr());
 
 
-        // @brief Se è un Mesh e può proiettare ombre
-        if (mesh && mesh->getShadow()) {
-            const std::shared_ptr<Material> originalMaterial = mesh->getMaterial();
-
-            mesh->setMaterial(shadowMaterial_);
-
-            const glm::mat4 shadow_matrix = shadowModelScaleMatrix * instance.getNodeWorldMatrix();
-
-            glm::mat4 shadowModelViewMatrix = camera->getViewMatrix() * shadow_matrix;
+      if (mesh)
+         for (const auto& name : excludedList)
+         {
+            if (mesh->getName() == name)
+               mesh->setShadow(false);
+         }
 
 
-           /// @details Renderizziamo l'ombra
-            mesh->render(shadowModelViewMatrix);
+      // @brief Se è un Mesh e può proiettare ombre
+      if (mesh && mesh->getShadow())
+      {
+         const std::shared_ptr<Material> originalMaterial = mesh->getMaterial();
 
-            /// @details rimettiamo il materiale originale
-            mesh->setMaterial(originalMaterial);
-        }
-    }
+         mesh->setMaterial(shadowMaterial_);
 
-    glDepthFunc(GL_LESS);
+         const glm::mat4 shadow_matrix = shadowModelScaleMatrix * instance.getNodeWorldMatrix();
 
-    glClear(GL_DEPTH_BUFFER_BIT);
+         glm::mat4 shadowModelViewMatrix = camera->getViewMatrix() * shadow_matrix;
 
 
-    // --- Switch a 2D (per FPS/InfoPrinter) ---
-    // Questo è il codice per l'Orthographic Projection che hai nella tua funzione Base::render
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(glm::value_ptr(glm::ortho(0.0f, static_cast<float>(getWidth()),
-                    0.0f, static_cast<float>(getHeight()), -1.0f, 1.0f)));
+         /// @details Renderizziamo l'ombra
+         mesh->render(shadowModelViewMatrix);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+         /// @details rimettiamo il materiale originale
+         mesh->setMaterial(originalMaterial);
+      }
+   }
+
+   glClear(GL_DEPTH_BUFFER_BIT);
+
+
+
 }
+
+
 
 
 /**
  * @brief Cerca un nodo nel grafo della scena tramite il nome
+ * @param startingNode
  * @param node Nodo di partenza per la ricerca
  * @param name Nome del nodo da cercare
  * @return shared_ptr<Node> Il nodo trovato o nullptr se non esiste
  */
-std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& startingNode, const std::string& name) {
-
+std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& startingNode, const std::string& name)
+{
    if (!startingNode)
       return nullptr;
 
 
-   if (startingNode->getName() == name) {
+   if (startingNode->getName() == name)
+   {
       return startingNode;
    }
 
-   for (const auto& childNode : startingNode->getChildren()) {
+   for (const auto& childNode : startingNode->getChildren())
+   {
       std::shared_ptr<Node> foundNode = findByName(childNode, name);
 
-      if (foundNode != nullptr) {
+      if (foundNode != nullptr)
+      {
          return foundNode;
       }
    }
@@ -434,7 +455,8 @@ std::shared_ptr<Node> Base::findByName(const std::shared_ptr<Node>& startingNode
 /**
  * @brief Callback per la gestione del rendering
  */
-void Base::displayCallback() {
+void Base::displayCallback()
+{
    frames_++;
    glutPostRedisplay();
 }
@@ -442,21 +464,23 @@ void Base::displayCallback() {
 /**
  * @brief Mostra il conteggio degli FPS a schermo
  */
-void Base::showFps() {
-    // 1. Disabilita luce, non altera il colore del testo
-    glDisable(GL_LIGHTING);
+void Base::showFps() const
+{
+   // 1. Disabilita luce, non altera il colore del testo
+   glDisable(GL_LIGHTING);
 
-    // Il contesto di proiezione (Ortho) e ModelView (Identità) è già impostato
-    char text[64]; sprintf(text, "FPS: %.1f", fps);
-    glColor3f(1.0f, 1.0f, 1.0f); // Colore bianco
+   // Il contesto di proiezione (Ortho) e ModelView (Identità) è già impostato
+   char text[64];
+   sprintf(text, "FPS: %.1f", fps);
+   glColor3f(1.0f, 1.0f, 1.0f); // Colore bianco
 
-    glRasterPos2f(10.0f, static_cast<float>(getHeight()) - 20.0f);
+   glRasterPos2f(10.0f, static_cast<float>(getHeight()) - 20.0f);
 
-    // display the string
-    glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<unsigned char*>(text));
+   // display the string
+   glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<unsigned char*>(text));
 
-    //Riabilita l'illuminazione
-    glEnable(GL_LIGHTING);
+   //Riabilita l'illuminazione
+   glEnable(GL_LIGHTING);
 }
 
 
@@ -464,51 +488,54 @@ void Base::showFps() {
  * @brief Stampa informazioni testuali a schermo
  * @param info Stringa contenente le informazioni da visualizzare
  */
-void Base::infoPrinter(const std::string& info) {
+void Base::infoPrinter(const std::string& info)
+{
+   // 1. Disabilita luce, non altera il colore del testo
+   glDisable(GL_LIGHTING);
 
-    // 1. Disabilita luce, non altera il colore del testo
-    glDisable(GL_LIGHTING);
+   glColor3f(1.0f, 1.0f, 1.0f);
 
-    glColor3f(1.0f, 1.0f, 1.0f);
+   glRasterPos2f(10.0f, static_cast<float>(getInstance().getHeight()) - 45.0f);
 
-    glRasterPos2f(10.0f, (float)getInstance().getHeight()-45.0f);
+   // display the string
+   if (!info.empty())
+   {
+      glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<const unsigned char*>(info.c_str()));
+   }
 
-    // display the string
-    if (!info.empty()) {
-        glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<const unsigned char*>(info.c_str()));
-    }
-
-    //Riabilita l'illuminazione
-    glEnable(GL_LIGHTING);
+   //Riabilita l'illuminazione
+   glEnable(GL_LIGHTING);
 }
 
 /**
  * @brief Stampa informazioni testuali a schermo
  * @param info Stringa contenente le informazioni da visualizzare
  */
-void Base::statusPrinter(const std::string& info) {
+void Base::statusPrinter(const std::string& info)
+{
+   // 1. Disabilita luce, non altera il colore del testo
+   glDisable(GL_LIGHTING);
 
-    // 1. Disabilita luce, non altera il colore del testo
-    glDisable(GL_LIGHTING);
+   glColor3f(1.0f, 1.0f, 1.0f);
 
-    glColor3f(1.0f, 1.0f, 1.0f);
+   glRasterPos2f(10.0f, 45.0f);
 
-    glRasterPos2f(10.0f, 45.0f);
+   // display the string
+   if (!info.empty())
+   {
+      glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<const unsigned char*>(info.c_str()));
+   }
 
-    // display the string
-    if (!info.empty()) {
-        glutBitmapString(GLUT_BITMAP_HELVETICA_18, reinterpret_cast<const unsigned char*>(info.c_str()));
-    }
-
-    //Riabilita l'illuminazione
-    glEnable(GL_LIGHTING);
+   //Riabilita l'illuminazione
+   glEnable(GL_LIGHTING);
 }
 
 /**
  * @brief Callback del timer per il calcolo degli FPS
  * @param value Valore intero passato dal timer (non utilizzato)
  */
-void Base::timerCallback(int value) {
+void Base::timerCallback(int value)
+{
    fps = getFrames();
    setFrames(0);
 
@@ -521,12 +548,13 @@ void Base::timerCallback(int value) {
  * @param width Nuova larghezza della finestra
  * @param height Nuova altezza della finestra
  */
-void Base::reshapeCallback(const int width, const int height) {
-
+void Base::reshapeCallback(const int width, const int height)
+{
    // aggiorno view port
    glViewport(0, 0, width, height);
 
-   if (const auto cam = getInstance().getActiveCamera()) {
+   if (const auto cam = getInstance().getActiveCamera())
+   {
       // aggiorno in base alla camera attiva
       cam->onResize(width, height);
    }
@@ -538,9 +566,10 @@ void Base::reshapeCallback(const int width, const int height) {
  * @param mouseX Posizione X del mouse
  * @param mouseY Posizione Y del mouse
  */
-void Base::specialCallback(int key, int mouseX, int mouseY) {
-
-   switch (key) {
+void Base::specialCallback(int key, int mouseX, int mouseY)
+{
+   switch (key)
+   {
    case GLUT_KEY_UP:
       if (up_arrow_key_)
          up_arrow_key_();
@@ -581,7 +610,7 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
          F4_key();
       break;
 
-   default: std::cout << "UNKNOWN" << std::endl ;
+   default: std::cout << "UNKNOWN" << std::endl;
    }
 }
 
@@ -590,75 +619,42 @@ void Base::specialCallback(int key, int mouseX, int mouseY) {
  * @param path Percorso del file immagine
  * @return std::shared_ptr<Texture> La texture caricata o nullptr in caso di errore
  */
-std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) const noexcept {
+std::shared_ptr<Texture> Base::loadTextureFromFile(const std::string& path) noexcept
+{
+   FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
+   if (format == FIF_UNKNOWN)
+      format = FreeImage_GetFIFFromFilename(path.c_str());
 
-    FREE_IMAGE_FORMAT format = FreeImage_GetFileType(path.c_str(), 0);
-    if (format == FIF_UNKNOWN)
-        format = FreeImage_GetFIFFromFilename(path.c_str());
+   if (format == FIF_UNKNOWN)
+   {
+      std::cout << "ERROR: Unknown image format " << path << '\n';
+      return nullptr;
+   }
 
-    if (format == FIF_UNKNOWN) {
-        std::cout << "ERROR: Unknown image format " << path << '\n';
-        return nullptr;
-    }
+   FIBITMAP* bitmap = FreeImage_Load(format, path.c_str());
+   if (!bitmap)
+   {
+      std::cout << "ERROR: Failed to load image " << path << '\n';
+      return nullptr;
+   }
 
-    FIBITMAP* bitmap = FreeImage_Load(format, path.c_str());
-    if (!bitmap) {
-        std::cout << "ERROR: Failed to load image " << path << '\n';
-        return nullptr;
-    }
+   FreeImage_FlipVertical(bitmap);
 
-    FreeImage_FlipVertical(bitmap);
+   unsigned int width = FreeImage_GetWidth(bitmap);
+   unsigned int height = FreeImage_GetHeight(bitmap);
+   BYTE* data = FreeImage_GetBits(bitmap);
 
-    int width = FreeImage_GetWidth(bitmap);
-    int height = FreeImage_GetHeight(bitmap);
-    BYTE* data = FreeImage_GetBits(bitmap);
+   /// @details dividendo per 8 ottengo il numero di canali
+   const unsigned int bpp = FreeImage_GetBPP(bitmap);
+   unsigned int channels = bpp / 8;
 
-    /// @details dividendo per 8 ottengo il numero di canali
-    int bpp = FreeImage_GetBPP(bitmap);
-    int channels = bpp / 8;
+   auto texture = std::make_shared<Texture>(data, width, height, channels);
 
-    auto texture = std::make_shared<Texture>(data, width, height, channels);
+   const size_t p = path.find_last_of(pathSeparator);
+   texture->setName(path.substr(p + 1));
 
-    size_t p = path.find_last_of(pathSeparator);
-    texture->setName(path.substr(p + 1));
-
-    FreeImage_Unload(bitmap);
-    return texture;
-}
-
-/**
- * @brief Carica e vincola le texture
- */
-void Base::loadAndBindTextures(const std::filesystem::path& projectDir_, const std::shared_ptr<Node>& root) {
-    std::vector<std::shared_ptr<Eng::Texture>> textures;
-    const std::filesystem::path textureDir = projectDir_; // O sottocartella se necessario
-
-    if (!std::filesystem::exists(textureDir) || !std::filesystem::is_directory(textureDir)) {
-        std::cerr << "ATTENZIONE: Cartella texture non valida." << std::endl;
-        return;
-    }
-
-    std::cout << "--- CARICAMENTO TEXTURE ---" << std::endl;
-    for (const auto& entry : std::filesystem::directory_iterator(textureDir)) {
-        if (entry.is_regular_file()) {
-            std::string ext = entry.path().extension().string();
-            std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c) { return std::tolower(c); });
-
-            if (ext == ".dds" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp") {
-                std::cout << "Loading: " << entry.path().filename() << "... ";
-                auto tex = loadTextureFromFile(entry.path().string());
-                if (tex) {
-                    textures.push_back(tex);
-                    std::cout << "OK" << std::endl;
-                }
-                else {
-                    std::cout << "FALLITO" << std::endl;
-                }
-            }
-        }
-    }
-    std::cout << "Totale: " << textures.size() << std::endl;
-    bindTexturesToMaterials(root, textures);
+   FreeImage_Unload(bitmap);
+   return texture;
 }
 
 /**
@@ -666,35 +662,79 @@ void Base::loadAndBindTextures(const std::filesystem::path& projectDir_, const s
  * @param root Nodo radice da cui iniziare la ricerca
  * @param textures Vettore di texture disponibili
  */
-void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept {
+void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root,
+                                   const std::vector<std::shared_ptr<Texture>>& textures) const noexcept
+{
+   if (!root || textures.empty())
+   {
+      return;
+   }
 
-    if (!root || textures.empty()) {
-        return;
-    }
+   for (const auto& childNode : root->getChildren())
+   {
+      auto mesh = std::dynamic_pointer_cast<Mesh>(childNode);
 
-    for (const auto& childNode : root->getChildren()) {
+      if (mesh)
+      {
+         auto material = mesh->getMaterial();
 
-        auto mesh = std::dynamic_pointer_cast<Mesh>(childNode);
-
-        if (mesh) {
-
-
-            auto material = mesh->getMaterial();
-
-            if (material && !material->getTextureName().empty()) {
-
-                for (const auto& texture : textures) {
-
-                    if (texture->getName() == material->getTextureName()) {
-                        material->setTexture(texture);
-                    }
-                }
+         if (material && !material->getTextureName().empty())
+         {
+            for (const auto& texture : textures)
+            {
+               if (texture->getName() == material->getTextureName())
+               {
+                  material->setTexture(texture);
+               }
             }
-        }
+         }
+      }
 
-        // Ricorsione
-        this->bindTexturesToMaterials(childNode, textures);
-    }
+      // Ricorsione
+      this->bindTexturesToMaterials(childNode, textures);
+   }
+}
+
+/**
+ * @brief Carica e vincola le texture
+ */
+void Base::loadAndBindTextures(const std::filesystem::path& projectDir_, const std::shared_ptr<Node>& root) const
+{
+   std::vector<std::shared_ptr<Texture>> textures;
+   const std::filesystem::path textureDir = projectDir_;
+
+   if (!std::filesystem::exists(textureDir) || !std::filesystem::is_directory(textureDir))
+   {
+      std::cerr << "ATTENZIONE: Cartella texture non valida." << std::endl;
+      return;
+   }
+
+   std::cout << "--- CARICAMENTO TEXTURE ---" << std::endl;
+   for (const auto& entry : std::filesystem::directory_iterator(textureDir))
+   {
+      if (entry.is_regular_file())
+      {
+         std::string ext = entry.path().extension().string();
+         std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c) { return std::tolower(c); });
+
+         if (ext == ".dds" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tga" || ext == ".bmp")
+         {
+            std::cout << "Loading: " << entry.path().filename() << "... ";
+            auto tex = loadTextureFromFile(entry.path().string());
+            if (tex)
+            {
+               textures.push_back(tex);
+               std::cout << "OK" << std::endl;
+            }
+            else
+            {
+               std::cout << "FALLITO" << std::endl;
+            }
+         }
+      }
+   }
+   std::cout << "Totale: " << textures.size() << std::endl;
+   bindTexturesToMaterials(root, textures);
 }
 
 
@@ -702,7 +742,8 @@ void Base::bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std:
  * @brief Abilita o disabilita la modalità wireframe
  * @param enable True per abilitare, False per disabilitare
  */
-void Base::setWireframe(const bool enable) {
+void Base::setWireframe(const bool enable)
+{
    if (enable)
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    else
@@ -713,10 +754,10 @@ void Base::setWireframe(const bool enable) {
  * @brief Abilita o disabilita l'illuminazione
  * @param enable True per abilitare, False per disabilitare
  */
-void Base::setLighting(const bool enable) {
+void Base::setLighting(const bool enable)
+{
    if (enable)
       glEnable(GL_LIGHTING);
    else
       glDisable(GL_LIGHTING);
 }
-

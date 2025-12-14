@@ -1,0 +1,24 @@
+<map id="dependencies/glm/include/glm/trigonometric.hpp" name="dependencies/glm/include/glm/trigonometric.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="122,5,314,50"/>
+<area shape="rect" id="Node000002" href="$setup_8hpp.html" title=" " alt="" coords="70,182,196,210"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,53,156,73,137,99,128,133,130,168,125,166,123,133,132,97,152,69,181,49"/>
+<area shape="rect" id="Node000006" href="$qualifier_8hpp.html" title=" " alt="" coords="146,98,290,126"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="219,48,221,83,216,82,217,53"/>
+<area shape="rect" id="Node000007" href="$func__trigonometric_8inl.html" title=" " alt="" coords="314,98,520,126"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="271,48,374,91,369,93,271,53"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,266,74,294"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,211,67,258,64,254,115,210"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="98,266,168,294"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="135,209,135,252,130,250,131,212"/>
+<area shape="rect" id="Node000005" href="$platform_8h.html" title=" " alt="" coords="192,266,330,294"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="154,208,230,257,225,258,153,213"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="206,125,159,174,155,170,202,128"/>
+<area shape="rect" id="Node000008" href="$__vectorize_8hpp.html" title=" " alt="" coords="232,182,348,210"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="399,125,324,176,322,171,394,127"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="372,182,435,210"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="417,124,410,169,406,166,413,128"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="458,182,517,210"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="429,124,469,171,464,170,427,129"/>
+<area shape="rect" id="Node000011" href="$func__trigonometric__simd_8inl.html" title=" " alt="" coords="541,174,685,218"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="449,124,550,167,544,167,448,129"/>
+</map>

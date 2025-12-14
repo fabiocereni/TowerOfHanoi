@@ -1,0 +1,27 @@
+<map id="Grafico della gerarchia delle classi" name="Grafico della gerarchia delle classi">
+<area shape="rect" id="Node000000" href="$classEng_1_1Object.html" title=" " alt="" coords="5,111,101,138"/>
+<area shape="rect" id="Node000001" href="$classEng_1_1List.html" title="Classe utilizzate per istanza da renderizzare." alt="" coords="164,32,240,60"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="92,101,147,70,175,58,171,62,150,75,95,105"/>
+<area shape="rect" id="Node000002" href="$classEng_1_1Material.html" title=" " alt="" coords="149,84,256,112"/>
+<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="115,111,150,106,146,109,117,116"/>
+<area shape="rect" id="Node000003" href="$classEng_1_1Node.html" title=" " alt="" coords="159,136,246,164"/>
+<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="116,133,161,141,156,144,116,138"/>
+<area shape="rect" id="Node000012" href="$classEng_1_1Texture.html" title=" " alt="" coords="152,188,253,216"/>
+<area shape="poly" id="edge12_Node000000_Node000012" title=" " alt="" coords="94,143,150,173,175,187,170,188,147,178,94,149"/>
+<area shape="rect" id="Node000004" href="$classEng_1_1Camera.html" title=" " alt="" coords="304,57,408,85"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="244,126,255,121,325,87,330,84,257,126,247,131"/>
+<area shape="rect" id="Node000007" href="$classEng_1_1Light.html" title=" " alt="" coords="314,136,399,164"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="261,147,315,149,310,150,262,152"/>
+<area shape="rect" id="Node000011" href="$classEng_1_1Mesh.html" title=" " alt="" coords="312,188,400,216"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="260,167,316,187,310,188,260,172"/>
+<area shape="rect" id="Node000005" href="$classEng_1_1Orthographic__Camera.html" title="Rappresenta una camera con proiezione ortografica." alt="" coords="456,5,652,33"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="423,51,501,33,496,35,424,56"/>
+<area shape="rect" id="Node000006" href="$classEng_1_1Perspective__Camera.html" title="Rappresenta una camera con proiezione prospettica." alt="" coords="460,57,648,85"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="424,69,462,71,457,72,424,74"/>
+<area shape="rect" id="Node000008" href="$classEng_1_1DirectionalLight.html" title=" " alt="" coords="476,109,632,137"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="414,139,478,133,473,134,415,145"/>
+<area shape="rect" id="Node000009" href="$classEng_1_1OmnidirectionalLight.html" title="Rappresenta una luce omnidirezionale." alt="" coords="459,161,649,189"/>
+<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="414,155,461,163,456,163,414,160"/>
+<area shape="rect" id="Node000010" href="$classEng_1_1Spotlight.html" title="Rappresenta una luce di tipo faretto (spotlight)." alt="" coords="498,213,610,241"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="399,169,457,198,501,214,495,214,455,203,398,174"/>
+</map>

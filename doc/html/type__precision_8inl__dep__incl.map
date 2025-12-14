@@ -1,0 +1,28 @@
+<map id="dependencies/glm/include/glm/gtc/type_precision.inl" name="dependencies/glm/include/glm/gtc/type_precision.inl">
+<area shape="rect" id="Node000001" title=" " alt="" coords="354,5,547,50"/>
+<area shape="rect" id="Node000002" href="$type__precision_8hpp.html" title=" " alt="" coords="350,98,551,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="452,63,453,99,448,97,449,68"/>
+<area shape="rect" id="Node000003" href="$ext_8hpp.html" title=" " alt="" coords="121,376,313,421"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,128,250,136,164,148,91,167,63,179,44,193,20,225,9,257,13,291,31,326,49,346,71,362,123,383,119,386,69,366,46,350,27,330,8,292,4,257,15,222,41,189,61,174,89,162,163,143,250,131,337,125"/>
+<area shape="rect" id="Node000005" href="$bitfield_8hpp.html" title=" " alt="" coords="55,191,246,235"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="362,149,223,192,221,188,366,146"/>
+<area shape="rect" id="Node000007" href="$gtc_2packing_8hpp.html" title=" " alt="" coords="288,191,479,235"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="427,153,401,192,397,189,424,157"/>
+<area shape="rect" id="Node000009" href="$number__precision_8hpp.html" title=" " alt="" coords="508,283,731,328"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="478,152,551,234,600,283,594,283,547,237,477,157"/>
+<area shape="rect" id="Node000010" href="$string__cast_8hpp.html" title=" " alt="" coords="756,283,947,328"/>
+<area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="496,149,550,189,571,213,580,223,594,233,623,245,663,258,759,284,753,284,661,263,621,250,592,238,577,227,567,216,546,193,495,154"/>
+<area shape="rect" id="Node000011" href="$gtx_2type__aligned_8hpp.html" title=" " alt="" coords="605,191,797,235"/>
+<area shape="poly" id="edge15_Node000002_Node000011" title=" " alt="" coords="525,146,644,190,638,191,525,151"/>
+<area shape="rect" id="Node000004" href="$glm_8cppm.html" title=" " alt="" coords="121,469,313,513"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="219,434,219,470,215,467,215,438"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="81,246,62,263,45,285,37,306,45,327,60,344,79,359,123,380,119,382,76,363,56,348,40,329,32,306,40,282,58,259,84,241"/>
+<area shape="rect" id="Node000006" href="$bit_8hpp.html" title=" " alt="" coords="55,283,246,328"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="151,248,153,284,148,283,150,253"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="176,338,204,376,199,376,175,343"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="350,244,311,285,235,378,231,374,307,282,346,248"/>
+<area shape="rect" id="Node000008" href="$ovoreader_8cpp.html" title="Implementazione del parser per file OVO." alt="" coords="321,292,484,320"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="392,248,402,292,397,290,390,253"/>
+<area shape="poly" id="edge12_Node000009_Node000003" title=" " alt="" coords="506,333,314,378,312,373,511,331"/>
+<area shape="poly" id="edge14_Node000010_Node000003" title=" " alt="" coords="738,329,507,365,313,389,312,384,506,360,744,328"/>
+</map>

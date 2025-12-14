@@ -23,9 +23,9 @@ namespace Eng {
         ~Perspective_Camera() noexcept = default;
 
         /// @brief Costruttori di copia e movimento e operatori di assegnamento
-        Perspective_Camera(const Perspective_Camera& other) = delete;
+        Perspective_Camera(const Perspective_Camera& other) = default;
         Perspective_Camera(Perspective_Camera&& other) noexcept = default;
-        Perspective_Camera& operator=(const Perspective_Camera& other) = delete;
+        Perspective_Camera& operator=(const Perspective_Camera& other) = default;
         Perspective_Camera& operator=(Perspective_Camera&& other) noexcept = default;
 
         /// @brief Imposta il FOV e aggiorna la matrice di proiezione
@@ -70,9 +70,7 @@ namespace Eng {
         float nearPlane_;
         /// @brief Distanza del piano lontano
         float farPlane_;
-
         /// @brief Matrice di proiezione
         glm::mat4 projectionMatrix_ = {1.0};
-
     };
 }

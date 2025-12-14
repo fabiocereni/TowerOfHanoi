@@ -32,9 +32,13 @@ void Orthographic_Camera::render(const glm::mat4& modelViewMatrix) {}
  * @brief Gestisce il ridimensionamento della finestra
  * @param width Nuova larghezza della viewport
  * @param height Nuova altezza della viewport
+ * @details Aggiorniamo le dimensioni interne della camera
+ *          per riflettere le nuove dimensioni della viewport
  */
 void Orthographic_Camera::onResize(const int width, const int height) noexcept {
-    // @brief Ricalcola la matrice di proiezione adattandola alle nuove dimensioni
-    projectionMatrix_ = glm::ortho(0.0f, static_cast<float>(width), 0.0f,
-                      static_cast<float>(height), -1.0f, 1.0f);
+    left_ = 0.0f;
+    bottom_ = 0.0f;
+    right_ = static_cast<float>(width);
+    top_ = static_cast<float>(height);
+    projectionMatrix_ = glm::ortho(left_, right_, bottom_, top_, nearPlane_, farPlane_);
 }

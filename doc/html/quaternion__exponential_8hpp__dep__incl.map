@@ -1,0 +1,20 @@
+<map id="dependencies/glm/include/glm/ext/quaternion_exponential.hpp" name="dependencies/glm/include/glm/ext/quaternion_exponential.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,267,50"/>
+<area shape="rect" id="Node000002" href="$ext_8hpp.html" title=" " alt="" coords="132,283,324,328"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,67,107,102,96,146,95,192,100,214,109,234,133,261,166,282,161,284,130,265,104,237,95,215,90,192,91,145,102,101,119,61"/>
+<area shape="rect" id="Node000004" href="$gtx_2quaternion_8hpp.html" title=" " alt="" coords="240,98,432,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="197,54,291,96,286,99,198,59"/>
+<area shape="rect" id="Node000003" href="$glm_8cppm.html" title=" " alt="" coords="132,376,324,421"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="230,342,230,377,226,374,226,346"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="223,132,196,141,168,154,143,170,122,192,116,203,115,212,122,234,145,261,176,282,170,284,141,265,118,237,109,213,111,201,118,189,139,166,166,149,195,136,227,129"/>
+<area shape="rect" id="Node000005" href="$io_8hpp.html" title=" " alt="" coords="132,191,324,235"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="297,154,256,192,252,188,301,151"/>
+<area shape="rect" id="Node000006" href="$norm_8hpp.html" title=" " alt="" coords="348,191,540,235"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="365,150,413,190,408,190,364,156"/>
+<area shape="rect" id="Node000007" href="$vector__angle_8hpp.html" title=" " alt="" coords="564,191,756,235"/>
+<area shape="poly" id="edge10_Node000004_Node000007" title=" " alt="" coords="428,145,585,189,580,191,428,150"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="229,249,230,284,226,282,227,253"/>
+<area shape="poly" id="edge8_Node000006_Node000002" title=" " alt="" coords="376,243,281,285,279,280,381,241"/>
+<area shape="poly" id="edge9_Node000006_Node000004" title=" " alt="" coords="412,180,369,146,370,140,418,180"/>
+<area shape="poly" id="edge11_Node000007_Node000002" title=" " alt="" coords="547,239,325,287,323,282,551,236"/>
+</map>

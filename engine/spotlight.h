@@ -46,7 +46,7 @@ namespace Eng {
       /// @brief Direzione della luce
       glm::vec3 direction_{0,0,-1};
       /// @brief Angolo di cutoff
-      float cutoff_   = 180.0f;
+      float cutoff_   = 45.0f;
       /// @brief Esponente di attenuazione
       float exponent_ = 0.0f;
    };

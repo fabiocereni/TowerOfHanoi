@@ -53,6 +53,9 @@ public:
     void updateDynamicLightAnimation();
 
 
+   std::shared_ptr<Eng::Camera> createAndReturnOrthoCamera(int height, int width);
+
+   /// @brief Aggiorna lo stato del lampadario
    void updateLampadario() const noexcept;
 
     /// @brief Restituisce la lista dei nodi da escludere dal rendering (muri esterni per visuale interna, ecc.)
@@ -67,13 +70,13 @@ public:
     // --- Metodi per interagire con lo stato interno dal Main (Input) ---
 
     /// @brief Muove la camera dinamica in avanti o indietro
-    void moveDynamicCam(float delta);
+    void moveDynamicCam(float dynamic_cam_speed);
     /// @brief Ruota la camera dinamica sull'asse X
-    void rotateDynamicCamX(float delta);
+    void rotateDynamicCamX(float dynamic_cam_speed);
     /// @brief Ruota la camera dinamica sull'asse Y
-    void rotateDynamicCamY(float delta);
+    void rotateDynamicCamY(float dynamic_cam_speed);
     /// @brief Muove la camera dinamica sull'asse Y (altezza)
-    void liftDynamicCam(float delta);
+    void liftDynamicCam(float dynamic_cam_speed);
 
     /// @brief Getter per la luce dinamica (per il toggle)
     std::shared_ptr<Eng::Light> getDynamicLight() const { return dynamicLight_; }

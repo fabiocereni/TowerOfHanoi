@@ -28,6 +28,8 @@ int main(const int argc, char** argv) {
     auto camTop = setup.createTopTableCamera();
     auto camDynamic = setup.createDynamicCamera();
 
+    const auto ortho = setup.createAndReturnOrthoCamera(eng.getHeight(), eng.getWidth());
+
     // @brief Imposta camera iniziale
     eng.setActiveCamera(camFront);
 
@@ -47,7 +49,6 @@ int main(const int argc, char** argv) {
 
 
     /// @brief registrazione callbacks
-
     eng.overrideF1KeyBehaviour([&eng, &camFront] { eng.setActiveCamera(camFront); });
     eng.overrideF2KeyBehaviour([&eng, &camTop] { eng.setActiveCamera(camTop); });
     eng.overrideF3KeyBehaviour([&eng, &camDynamic] { eng.setActiveCamera(camDynamic); });
@@ -119,7 +120,6 @@ int main(const int argc, char** argv) {
 
 
 
-
     while (eng.update()) {
         eng.clear();
         renderList->clear();
@@ -140,9 +140,11 @@ int main(const int argc, char** argv) {
 
         eng.end3D();
 
+        eng.begin2D(ortho);
         eng.showFps();
         Eng::Base::infoPrinter(game.getCommandMessage());
         Eng::Base::statusPrinter(game.getStatusMessage());
+        eng.end2D();
 
         eng.swap();
     }

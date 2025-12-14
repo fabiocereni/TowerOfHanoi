@@ -24,7 +24,7 @@ namespace Eng {
       glm::vec4 getPosition() { return lightPosition_; }
 
       /// @brief Imposta la posizione della luce
-      void setPosition(glm::vec4 position) { lightPosition_ = position; }
+      void setPosition(const glm::vec4 position) { lightPosition_ = position; }
 
 
    private:
@@ -33,7 +33,7 @@ namespace Eng {
       explicit OmnidirectionalLight(int index) noexcept;
 
       /// @brief Posizione della luce
-      glm::vec4 lightPosition_ = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+      glm::vec4 lightPosition_ = glm::vec4(1.0f);
    };
 
 }

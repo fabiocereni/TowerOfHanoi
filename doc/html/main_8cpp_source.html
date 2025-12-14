@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente client/main.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 202X</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_db3a54907829b36871118d03417739cd.html">client</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">main.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="main_8cpp.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="engine_8h.html">engine.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="list_8h.html">list.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="ovoreader_8h.html">ovoreader.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="hanoiGame_8h.html">hanoiGame.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="setup_8h.html">setup.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00008" data-start="{" data-end="}">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="main_8cpp.html#aa06f5fbe915d0bf149dcf793acea47a1">    8</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="engine__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_class" href="classEng_1_1Base.html">Eng::Base</a>&amp; eng = <a class="code hl_function" href="classEng_1_1Base.html#aefa4180d6fa68fa602e758abd7e9878d">Eng::Base::getInstance</a>();</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a8eba34955d27a2efde68fd8d030265f1">init</a>(argc, argv, <span class="stringliteral">&quot;Hanoi Tower&quot;</span>);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_class" href="classSetup.html">Setup</a> setup(eng, <span class="stringliteral">&quot;ExportProgetto&quot;</span>);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="comment">// @brief Carica la scena</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">const</span> <span class="keyword">auto</span> sceneRoot = setup.<a class="code hl_function" href="classSetup.html#ad596b3bddfd88645344dedd85f3c7a9b">loadScene</a>(<span class="stringliteral">&quot;ExportFinalVersion.ovo&quot;</span>);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="comment">// @brief Setup texture</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#aae185ce7b87ba9f7a8db564c89ea8e21">loadAndBindTextures</a>(setup.<a class="code hl_function" href="classSetup.html#afc34a6459b68f925fad6e4ea75a05ae8">getProjectExportDir</a>(), sceneRoot);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="comment">// @brief Inizializza il gioco</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_class" href="classHanoiGame.html">HanoiGame</a> game(sceneRoot);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// @brief Crea le camere</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">auto</span> camFront = setup.<a class="code hl_function" href="classSetup.html#a733c4ff14ceddbc3a88a3ee77a34d26b">createFrontTableCamera</a>();</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">auto</span> camTop = setup.<a class="code hl_function" href="classSetup.html#ac5e55f439d3d8f328ffd2ea034650e2c">createTopTableCamera</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">auto</span> camDynamic = setup.<a class="code hl_function" href="classSetup.html#a3faa6eafe6a078eb52df42113722f7ff">createDynamicCamera</a>();</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">const</span> <span class="keyword">auto</span> ortho = setup.<a class="code hl_function" href="classSetup.html#a2a550241ce2450d2ddc68763b3655bd1">createAndReturnOrthoCamera</a>(eng.<a class="code hl_function" href="classEng_1_1Base.html#a24fd8100c5a68d2369382946a330fc29">getHeight</a>(), eng.<a class="code hl_function" href="classEng_1_1Base.html#add98a62e068279cba5ae2c25def59ecf">getWidth</a>());</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// @brief Imposta camera iniziale</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a980a2f20236b528125cd12f4c2ac6587">setActiveCamera</a>(camFront);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="comment">// @brief Calcola limiti per camera e luce</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    setup.<a class="code hl_function" href="classSetup.html#aa81add6d31f8239aa936a2f7865e5f12">computeDynamicCameraLimits</a>();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    setup.<a class="code hl_function" href="classSetup.html#ae333270a65b81b0e8d445fbdd1f4747f">computeTreeHeightLimits</a>();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// @brief Posiziona inizialmente la camera dinamica</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// @brief Setup Luci</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> <span class="keyword">auto</span> luceLampadario = setup.<a class="code hl_function" href="classSetup.html#a4a5e792117e81ca79c63de91a429ec30">initLampadario</a>();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">auto</span> pivotLuce = setup.<a class="code hl_function" href="classSetup.html#a0b1351a0a68de02aa0a246cca890d580">createDynamicLight</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// @brief Render list</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">const</span> <span class="keyword">auto</span> renderList = std::make_shared&lt;Eng::List&gt;();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a2b72acd57fde62646e96b65fd6c7400f">overrideF1KeyBehaviour</a>([&amp;eng, &amp;camFront] { eng.<a class="code hl_function" href="classEng_1_1Base.html#a980a2f20236b528125cd12f4c2ac6587">setActiveCamera</a>(camFront); });</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#aea78e0ae38b6ce255f65599dcca035cc">overrideF2KeyBehaviour</a>([&amp;eng, &amp;camTop] { eng.<a class="code hl_function" href="classEng_1_1Base.html#a980a2f20236b528125cd12f4c2ac6587">setActiveCamera</a>(camTop); });</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a471a497842c04c4e7ba23d2f5a279369">overrideF3KeyBehaviour</a>([&amp;eng, &amp;camDynamic] { eng.<a class="code hl_function" href="classEng_1_1Base.html#a980a2f20236b528125cd12f4c2ac6587">setActiveCamera</a>(camDynamic); });</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> dynamic_cam_speed = 60.0f;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a1216fee7fd6cd6efda5a1da235a03755">overrideUpArrowBehaviour</a>([&amp;] {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>         setup.<a class="code hl_function" href="classSetup.html#ac1a465c4f011fe4087145f74ec12b1d7">liftDynamicCam</a>(dynamic_cam_speed);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>         setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>     });</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a8c800905943af0b360e38165c6574996">overrideDownArrowBehaviour</a>([&amp;]{</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        setup.<a class="code hl_function" href="classSetup.html#ac1a465c4f011fe4087145f74ec12b1d7">liftDynamicCam</a>(-dynamic_cam_speed);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    });</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a11bafab81566bb07781eeb279ff86bfa">overrideKeyboardCallback</a>([&amp;](<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> key, <span class="keyword">const</span> <span class="keywordtype">int</span> mouseX, <span class="keyword">const</span> <span class="keywordtype">int</span> mouseY){</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            <span class="keyword">constexpr</span> <span class="keywordtype">float</span> angle_speed = 2.0f;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            <span class="keywordflow">switch</span> (key) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;1&#39;</span>: game.<a class="code hl_function" href="classHanoiGame.html#a84d672670621590a67626fd88054f09c">processInput</a>(1); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;2&#39;</span>: game.<a class="code hl_function" href="classHanoiGame.html#a84d672670621590a67626fd88054f09c">processInput</a>(2); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;3&#39;</span>: game.<a class="code hl_function" href="classHanoiGame.html#a84d672670621590a67626fd88054f09c">processInput</a>(3); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;w&#39;</span>:</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                setup.<a class="code hl_function" href="classSetup.html#aec5511b92de223393aba5795a355b478">moveDynamicCam</a>(dynamic_cam_speed);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;s&#39;</span>:</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                setup.<a class="code hl_function" href="classSetup.html#aec5511b92de223393aba5795a355b478">moveDynamicCam</a>(-dynamic_cam_speed);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;a&#39;</span>:</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                setup.<a class="code hl_function" href="classSetup.html#ac39e8d8ea315e416e3549c2be2bba430">rotateDynamicCamX</a>(angle_speed);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;d&#39;</span>:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                setup.<a class="code hl_function" href="classSetup.html#ac39e8d8ea315e416e3549c2be2bba430">rotateDynamicCamX</a>(-angle_speed);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;u&#39;</span>:</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                setup.<a class="code hl_function" href="classSetup.html#a3384fcec62f4870b15c4c054dbcd3bf3">rotateDynamicCamY</a>(angle_speed);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;g&#39;</span>:</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                setup.<a class="code hl_function" href="classSetup.html#a3384fcec62f4870b15c4c054dbcd3bf3">rotateDynamicCamY</a>(-angle_speed);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                setup.<a class="code hl_function" href="classSetup.html#ac853c816524588e29550214b0dec9ff1">updateDynamicCameraMatrix</a>(camDynamic);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;x&#39;</span>: game.<a class="code hl_function" href="classHanoiGame.html#a7f8503d67a27957ad2e6ae1c1570b34b">undoMove</a>(); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;y&#39;</span>: game.<a class="code hl_function" href="classHanoiGame.html#a4bcb0535f0dc7642b7fa4f446719246d">redoMove</a>(); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;r&#39;</span>: game.<a class="code hl_function" href="classHanoiGame.html#a3df4d2a281f17d3e2c4e8492d4a74eb8">resetGame</a>(); <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="keywordflow">case</span> <span class="charliteral">&#39;l&#39;</span>:</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                <span class="keywordflow">if</span>(<span class="keyword">const</span> <span class="keyword">auto</span> dl = setup.<a class="code hl_function" href="classSetup.html#a0462b3f13b2338770aabea4d155d2ca9">getDynamicLight</a>()) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                    dl-&gt;toggleLight();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    std::cout &lt;&lt; <span class="stringliteral">&quot;Dinamica: &quot;</span> &lt;&lt; dl-&gt;isActive() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                <span class="keywordflow">if</span>(luceLampadario) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                    luceLampadario-&gt;toggleLight();</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                    std::cout &lt;&lt; <span class="stringliteral">&quot;Lampadario: &quot;</span> &lt;&lt; luceLampadario-&gt;isActive() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">default</span>: <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        });</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">while</span> (eng.<a class="code hl_function" href="classEng_1_1Base.html#a1efce98f50a86093cd75d6d5e1671bf2">update</a>()) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a977f26001eebe3fe44c16bc4380cd9d0">clear</a>();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        renderList-&gt;clear();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a981bc6e1a6efe330e180391c52e74831">setWireframe</a>(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a13bc6fadd1b6b853310119941c558c93">setLighting</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a591bcdf9bddc7ab472198ee077e65577">begin3D</a>(eng.<a class="code hl_function" href="classEng_1_1Base.html#a695dd5c48dd286544bc79f104ecfd96a">getActiveCamera</a>());</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        renderList-&gt;pass(sceneRoot);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a390788f64ecdde871be8553fce6bd49b">render</a>(eng.<a class="code hl_function" href="classEng_1_1Base.html#a695dd5c48dd286544bc79f104ecfd96a">getActiveCamera</a>(), renderList, setup.<a class="code hl_function" href="classSetup.html#aa9f3083414a5c7039ecf4bdb931c76ac">getExcludedList</a>());</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        setup.<a class="code hl_function" href="classSetup.html#ac7ff0ce73b3cf3399ea13bbdf2d4617c">updateLampadario</a>();</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        setup.<a class="code hl_function" href="classSetup.html#ae61ecc675b5cf6c3743d834c12dd5344">updateDynamicLightAnimation</a>();</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#abffc4cfc546dcaace63de16a86db11a7">end3D</a>();</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a9cfa76a495b345b5f68e66768f6e457c">begin2D</a>(ortho);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#ad87115c37ff560b14f055f6c6de158e6">showFps</a>();</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <a class="code hl_function" href="classEng_1_1Base.html#ae47ce45ae19a06c8cab9008defaff8af">Eng::Base::infoPrinter</a>(game.<a class="code hl_function" href="classHanoiGame.html#a906f6514718256f5ebda334ded06f02e">getCommandMessage</a>());</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <a class="code hl_function" href="classEng_1_1Base.html#a93efe2ec9265b8ca30970bbcac0f6a82">Eng::Base::statusPrinter</a>(game.<a class="code hl_function" href="classHanoiGame.html#ae1a67fd12d56a820653ab975fceec9a1">getStatusMessage</a>());</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a1d7753d7f80b7b9b1aeb1f7d11e6a52b">end2D</a>();</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        eng.<a class="code hl_function" href="classEng_1_1Base.html#a27cb763783df7095b8db005254c4a22e">swap</a>();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    }</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    eng.<a class="code hl_function" href="classEng_1_1Base.html#a1d726746e0426f569ea277ecc3f7390e">free</a>();</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>}</div>
+</div>
+<div class="ttc" id="aclassEng_1_1Base_html"><div class="ttname"><a href="classEng_1_1Base.html">Eng::Base</a></div><div class="ttdoc">Base engine main class. This class is a singleton.</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00010">base.h:10</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a11bafab81566bb07781eeb279ff86bfa"><div class="ttname"><a href="classEng_1_1Base.html#a11bafab81566bb07781eeb279ff86bfa">Eng::Base::overrideKeyboardCallback</a></div><div class="ttdeci">void overrideKeyboardCallback(const KeyboardCallback &amp;keyboardCallback) noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00143">engine.h:143</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a1216fee7fd6cd6efda5a1da235a03755"><div class="ttname"><a href="classEng_1_1Base.html#a1216fee7fd6cd6efda5a1da235a03755">Eng::Base::overrideUpArrowBehaviour</a></div><div class="ttdeci">void overrideUpArrowBehaviour(const SpecialKeyAction &amp;action) noexcept</div><div class="ttdoc">Metodi messi a disposizione per sovrascrivere il comportamento di stati &quot;speciali&quot;.</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00130">engine.h:130</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a13bc6fadd1b6b853310119941c558c93"><div class="ttname"><a href="classEng_1_1Base.html#a13bc6fadd1b6b853310119941c558c93">Eng::Base::setLighting</a></div><div class="ttdeci">void setLighting(bool enable)</div><div class="ttdoc">Abilita o disabilita l&#39;illuminazione.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00757">engine.cpp:757</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a1d726746e0426f569ea277ecc3f7390e"><div class="ttname"><a href="classEng_1_1Base.html#a1d726746e0426f569ea277ecc3f7390e">Eng::Base::free</a></div><div class="ttdeci">bool free() noexcept</div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a1d7753d7f80b7b9b1aeb1f7d11e6a52b"><div class="ttname"><a href="classEng_1_1Base.html#a1d7753d7f80b7b9b1aeb1f7d11e6a52b">Eng::Base::end2D</a></div><div class="ttdeci">void end2D() noexcept</div><div class="ttdoc">De-inizializza il contesto di rendering 2D.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00229">engine.cpp:229</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a1efce98f50a86093cd75d6d5e1671bf2"><div class="ttname"><a href="classEng_1_1Base.html#a1efce98f50a86093cd75d6d5e1671bf2">Eng::Base::update</a></div><div class="ttdeci">bool update() const noexcept</div><div class="ttdoc">Richiama il main loop.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00174">engine.cpp:174</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a24fd8100c5a68d2369382946a330fc29"><div class="ttname"><a href="classEng_1_1Base.html#a24fd8100c5a68d2369382946a330fc29">Eng::Base::getHeight</a></div><div class="ttdeci">int getHeight() const</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00124">engine.h:124</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a27cb763783df7095b8db005254c4a22e"><div class="ttname"><a href="classEng_1_1Base.html#a27cb763783df7095b8db005254c4a22e">Eng::Base::swap</a></div><div class="ttdeci">void swap() noexcept</div><div class="ttdoc">Eseguo lo swap dei buffer (front e back).</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00190">engine.cpp:190</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a2b72acd57fde62646e96b65fd6c7400f"><div class="ttname"><a href="classEng_1_1Base.html#a2b72acd57fde62646e96b65fd6c7400f">Eng::Base::overrideF1KeyBehaviour</a></div><div class="ttdeci">void overrideF1KeyBehaviour(const SpecialKeyAction &amp;action) noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00134">engine.h:134</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a390788f64ecdde871be8553fce6bd49b"><div class="ttname"><a href="classEng_1_1Base.html#a390788f64ecdde871be8553fce6bd49b">Eng::Base::render</a></div><div class="ttdeci">void render(const std::shared_ptr&lt; Camera &gt; &amp;camera, const std::shared_ptr&lt; List &gt; &amp;renderList, const std::list&lt; std::string &gt; &amp;excludedList) const</div><div class="ttdoc">Innesca la catena di rendering.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00371">engine.cpp:371</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a471a497842c04c4e7ba23d2f5a279369"><div class="ttname"><a href="classEng_1_1Base.html#a471a497842c04c4e7ba23d2f5a279369">Eng::Base::overrideF3KeyBehaviour</a></div><div class="ttdeci">void overrideF3KeyBehaviour(const SpecialKeyAction &amp;action) noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00136">engine.h:136</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a591bcdf9bddc7ab472198ee077e65577"><div class="ttname"><a href="classEng_1_1Base.html#a591bcdf9bddc7ab472198ee077e65577">Eng::Base::begin3D</a></div><div class="ttdeci">void begin3D(const std::shared_ptr&lt; Camera &gt; &amp;camera) noexcept</div><div class="ttdoc">Inizializza il contesto di rendering 3D.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00200">engine.cpp:200</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a695dd5c48dd286544bc79f104ecfd96a"><div class="ttname"><a href="classEng_1_1Base.html#a695dd5c48dd286544bc79f104ecfd96a">Eng::Base::getActiveCamera</a></div><div class="ttdeci">std::shared_ptr&lt; Camera &gt; getActiveCamera() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00126">engine.h:126</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a8c800905943af0b360e38165c6574996"><div class="ttname"><a href="classEng_1_1Base.html#a8c800905943af0b360e38165c6574996">Eng::Base::overrideDownArrowBehaviour</a></div><div class="ttdeci">void overrideDownArrowBehaviour(const SpecialKeyAction &amp;action) noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00131">engine.h:131</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a8eba34955d27a2efde68fd8d030265f1"><div class="ttname"><a href="classEng_1_1Base.html#a8eba34955d27a2efde68fd8d030265f1">Eng::Base::init</a></div><div class="ttdeci">bool init() noexcept</div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a93efe2ec9265b8ca30970bbcac0f6a82"><div class="ttname"><a href="classEng_1_1Base.html#a93efe2ec9265b8ca30970bbcac0f6a82">Eng::Base::statusPrinter</a></div><div class="ttdeci">static void statusPrinter(const std::string &amp;info)</div><div class="ttdoc">Stampa informazioni testuali a schermo.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00514">engine.cpp:514</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a977f26001eebe3fe44c16bc4380cd9d0"><div class="ttname"><a href="classEng_1_1Base.html#a977f26001eebe3fe44c16bc4380cd9d0">Eng::Base::clear</a></div><div class="ttdeci">void clear() noexcept</div><div class="ttdoc">Pulisce i buffer per preparare il nuovo frame.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00242">engine.cpp:242</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a980a2f20236b528125cd12f4c2ac6587"><div class="ttname"><a href="classEng_1_1Base.html#a980a2f20236b528125cd12f4c2ac6587">Eng::Base::setActiveCamera</a></div><div class="ttdeci">void setActiveCamera(const std::shared_ptr&lt; Camera &gt; &amp;camera) noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00121">engine.h:121</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a981bc6e1a6efe330e180391c52e74831"><div class="ttname"><a href="classEng_1_1Base.html#a981bc6e1a6efe330e180391c52e74831">Eng::Base::setWireframe</a></div><div class="ttdeci">void setWireframe(bool enable)</div><div class="ttdoc">Abilita o disabilita la modalità wireframe.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00745">engine.cpp:745</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_a9cfa76a495b345b5f68e66768f6e457c"><div class="ttname"><a href="classEng_1_1Base.html#a9cfa76a495b345b5f68e66768f6e457c">Eng::Base::begin2D</a></div><div class="ttdeci">void begin2D(const std::shared_ptr&lt; Camera &gt; &amp;camera) noexcept</div><div class="ttdoc">Inizializza il contesto di rendering 2D per stampare.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00223">engine.cpp:223</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_aae185ce7b87ba9f7a8db564c89ea8e21"><div class="ttname"><a href="classEng_1_1Base.html#aae185ce7b87ba9f7a8db564c89ea8e21">Eng::Base::loadAndBindTextures</a></div><div class="ttdeci">void loadAndBindTextures(const std::filesystem::path &amp;projectDir_, const std::shared_ptr&lt; Eng::Node &gt; &amp;root) const</div><div class="ttdoc">Carica le texture dalla cartella e le applica ai materiali.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00701">engine.cpp:701</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_abffc4cfc546dcaace63de16a86db11a7"><div class="ttname"><a href="classEng_1_1Base.html#abffc4cfc546dcaace63de16a86db11a7">Eng::Base::end3D</a></div><div class="ttdeci">void end3D() noexcept</div><div class="ttdoc">De-inizializza il contesto di rendering 3D.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00215">engine.cpp:215</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_ad87115c37ff560b14f055f6c6de158e6"><div class="ttname"><a href="classEng_1_1Base.html#ad87115c37ff560b14f055f6c6de158e6">Eng::Base::showFps</a></div><div class="ttdeci">void showFps() const</div><div class="ttdoc">Mostra il conteggio degli FPS a schermo.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00467">engine.cpp:467</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_add98a62e068279cba5ae2c25def59ecf"><div class="ttname"><a href="classEng_1_1Base.html#add98a62e068279cba5ae2c25def59ecf">Eng::Base::getWidth</a></div><div class="ttdeci">int getWidth() const</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00123">engine.h:123</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_ae47ce45ae19a06c8cab9008defaff8af"><div class="ttname"><a href="classEng_1_1Base.html#ae47ce45ae19a06c8cab9008defaff8af">Eng::Base::infoPrinter</a></div><div class="ttdeci">static void infoPrinter(const std::string &amp;info)</div><div class="ttdoc">Stampa informazioni testuali a schermo.</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00491">engine.cpp:491</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_aea78e0ae38b6ce255f65599dcca035cc"><div class="ttname"><a href="classEng_1_1Base.html#aea78e0ae38b6ce255f65599dcca035cc">Eng::Base::overrideF2KeyBehaviour</a></div><div class="ttdeci">void overrideF2KeyBehaviour(const SpecialKeyAction &amp;action) noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8h_source.html#l00135">engine.h:135</a></div></div>
+<div class="ttc" id="aclassEng_1_1Base_html_aefa4180d6fa68fa602e758abd7e9878d"><div class="ttname"><a href="classEng_1_1Base.html#aefa4180d6fa68fa602e758abd7e9878d">Eng::Base::getInstance</a></div><div class="ttdeci">static Base &amp; getInstance() noexcept</div><div class="ttdef"><b>Definition</b> <a href="engine_8cpp_source.html#l00080">engine.cpp:80</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html"><div class="ttname"><a href="classHanoiGame.html">HanoiGame</a></div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8h_source.html#l00014">hanoiGame.h:14</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html_a3df4d2a281f17d3e2c4e8492d4a74eb8"><div class="ttname"><a href="classHanoiGame.html#a3df4d2a281f17d3e2c4e8492d4a74eb8">HanoiGame::resetGame</a></div><div class="ttdeci">void resetGame()</div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8cpp_source.html#l00081">hanoiGame.cpp:81</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html_a4bcb0535f0dc7642b7fa4f446719246d"><div class="ttname"><a href="classHanoiGame.html#a4bcb0535f0dc7642b7fa4f446719246d">HanoiGame::redoMove</a></div><div class="ttdeci">void redoMove()</div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8cpp_source.html#l00049">hanoiGame.cpp:49</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html_a7f8503d67a27957ad2e6ae1c1570b34b"><div class="ttname"><a href="classHanoiGame.html#a7f8503d67a27957ad2e6ae1c1570b34b">HanoiGame::undoMove</a></div><div class="ttdeci">void undoMove()</div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8cpp_source.html#l00011">hanoiGame.cpp:11</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html_a84d672670621590a67626fd88054f09c"><div class="ttname"><a href="classHanoiGame.html#a84d672670621590a67626fd88054f09c">HanoiGame::processInput</a></div><div class="ttdeci">void processInput(int poleIndex)</div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8cpp_source.html#l00234">hanoiGame.cpp:234</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html_a906f6514718256f5ebda334ded06f02e"><div class="ttname"><a href="classHanoiGame.html#a906f6514718256f5ebda334ded06f02e">HanoiGame::getCommandMessage</a></div><div class="ttdeci">std::string getCommandMessage() const</div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8h_source.html#l00019">hanoiGame.h:19</a></div></div>
+<div class="ttc" id="aclassHanoiGame_html_ae1a67fd12d56a820653ab975fceec9a1"><div class="ttname"><a href="classHanoiGame.html#ae1a67fd12d56a820653ab975fceec9a1">HanoiGame::getStatusMessage</a></div><div class="ttdeci">std::string getStatusMessage() const</div><div class="ttdef"><b>Definition</b> <a href="hanoiGame_8h_source.html#l00020">hanoiGame.h:20</a></div></div>
+<div class="ttc" id="aclassSetup_html"><div class="ttname"><a href="classSetup.html">Setup</a></div><div class="ttdoc">Classe che gestisce l&#39;inizializzazione della scena, le luci e le camere.</div><div class="ttdef"><b>Definition</b> <a href="setup_8h_source.html#l00019">setup.h:19</a></div></div>
+<div class="ttc" id="aclassSetup_html_a0462b3f13b2338770aabea4d155d2ca9"><div class="ttname"><a href="classSetup.html#a0462b3f13b2338770aabea4d155d2ca9">Setup::getDynamicLight</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Light &gt; getDynamicLight() const</div><div class="ttdoc">Getter per la luce dinamica (per il toggle).</div><div class="ttdef"><b>Definition</b> <a href="setup_8h_source.html#l00082">setup.h:82</a></div></div>
+<div class="ttc" id="aclassSetup_html_a0b1351a0a68de02aa0a246cca890d580"><div class="ttname"><a href="classSetup.html#a0b1351a0a68de02aa0a246cca890d580">Setup::createDynamicLight</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Node &gt; createDynamicLight()</div><div class="ttdoc">Crea la luce dinamica e il suo pivot.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00150">setup.cpp:150</a></div></div>
+<div class="ttc" id="aclassSetup_html_a2a550241ce2450d2ddc68763b3655bd1"><div class="ttname"><a href="classSetup.html#a2a550241ce2450d2ddc68763b3655bd1">Setup::createAndReturnOrthoCamera</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Camera &gt; createAndReturnOrthoCamera(int height, int width)</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00269">setup.cpp:269</a></div></div>
+<div class="ttc" id="aclassSetup_html_a3384fcec62f4870b15c4c054dbcd3bf3"><div class="ttname"><a href="classSetup.html#a3384fcec62f4870b15c4c054dbcd3bf3">Setup::rotateDynamicCamY</a></div><div class="ttdeci">void rotateDynamicCamY(float dynamic_cam_speed)</div><div class="ttdoc">Ruota la camera dinamica sull&#39;asse Y.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00289">setup.cpp:289</a></div></div>
+<div class="ttc" id="aclassSetup_html_a3faa6eafe6a078eb52df42113722f7ff"><div class="ttname"><a href="classSetup.html#a3faa6eafe6a078eb52df42113722f7ff">Setup::createDynamicCamera</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Camera &gt; createDynamicCamera() const</div><div class="ttdoc">Crea la camera dinamica libera.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00085">setup.cpp:85</a></div></div>
+<div class="ttc" id="aclassSetup_html_a4a5e792117e81ca79c63de91a429ec30"><div class="ttname"><a href="classSetup.html#a4a5e792117e81ca79c63de91a429ec30">Setup::initLampadario</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Light &gt; initLampadario() const</div><div class="ttdoc">Inizializza la luce del lampadario.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00034">setup.cpp:34</a></div></div>
+<div class="ttc" id="aclassSetup_html_a733c4ff14ceddbc3a88a3ee77a34d26b"><div class="ttname"><a href="classSetup.html#a733c4ff14ceddbc3a88a3ee77a34d26b">Setup::createFrontTableCamera</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Camera &gt; createFrontTableCamera() const</div><div class="ttdoc">Crea e posiziona la camera frontale al tavolo.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00056">setup.cpp:56</a></div></div>
+<div class="ttc" id="aclassSetup_html_aa81add6d31f8239aa936a2f7865e5f12"><div class="ttname"><a href="classSetup.html#aa81add6d31f8239aa936a2f7865e5f12">Setup::computeDynamicCameraLimits</a></div><div class="ttdeci">void computeDynamicCameraLimits()</div><div class="ttdoc">Calcola i limiti di movimento per la camera dinamica basandosi sulle mura.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00104">setup.cpp:104</a></div></div>
+<div class="ttc" id="aclassSetup_html_aa9f3083414a5c7039ecf4bdb931c76ac"><div class="ttname"><a href="classSetup.html#aa9f3083414a5c7039ecf4bdb931c76ac">Setup::getExcludedList</a></div><div class="ttdeci">const std::list&lt; std::string &gt; &amp; getExcludedList() const</div><div class="ttdoc">Restituisce la lista dei nodi da escludere dal rendering (muri esterni per visuale interna,...</div><div class="ttdef"><b>Definition</b> <a href="setup_8h_source.html#l00062">setup.h:62</a></div></div>
+<div class="ttc" id="aclassSetup_html_ac1a465c4f011fe4087145f74ec12b1d7"><div class="ttname"><a href="classSetup.html#ac1a465c4f011fe4087145f74ec12b1d7">Setup::liftDynamicCam</a></div><div class="ttdeci">void liftDynamicCam(float dynamic_cam_speed)</div><div class="ttdoc">Muove la camera dinamica sull&#39;asse Y (altezza).</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00293">setup.cpp:293</a></div></div>
+<div class="ttc" id="aclassSetup_html_ac39e8d8ea315e416e3549c2be2bba430"><div class="ttname"><a href="classSetup.html#ac39e8d8ea315e416e3549c2be2bba430">Setup::rotateDynamicCamX</a></div><div class="ttdeci">void rotateDynamicCamX(float dynamic_cam_speed)</div><div class="ttdoc">Ruota la camera dinamica sull&#39;asse X.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00285">setup.cpp:285</a></div></div>
+<div class="ttc" id="aclassSetup_html_ac5e55f439d3d8f328ffd2ea034650e2c"><div class="ttname"><a href="classSetup.html#ac5e55f439d3d8f328ffd2ea034650e2c">Setup::createTopTableCamera</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Camera &gt; createTopTableCamera() const</div><div class="ttdoc">Crea e posiziona la camera sopra il tavolo.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00070">setup.cpp:70</a></div></div>
+<div class="ttc" id="aclassSetup_html_ac7ff0ce73b3cf3399ea13bbdf2d4617c"><div class="ttname"><a href="classSetup.html#ac7ff0ce73b3cf3399ea13bbdf2d4617c">Setup::updateLampadario</a></div><div class="ttdeci">void updateLampadario() const noexcept</div><div class="ttdoc">Aggiorna lo stato del lampadario.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00251">setup.cpp:251</a></div></div>
+<div class="ttc" id="aclassSetup_html_ac853c816524588e29550214b0dec9ff1"><div class="ttname"><a href="classSetup.html#ac853c816524588e29550214b0dec9ff1">Setup::updateDynamicCameraMatrix</a></div><div class="ttdeci">void updateDynamicCameraMatrix(const std::shared_ptr&lt; Eng::Camera &gt; &amp;cam)</div><div class="ttdoc">Aggiorna la posizione e rotazione della camera dinamica.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00131">setup.cpp:131</a></div></div>
+<div class="ttc" id="aclassSetup_html_ad596b3bddfd88645344dedd85f3c7a9b"><div class="ttname"><a href="classSetup.html#ad596b3bddfd88645344dedd85f3c7a9b">Setup::loadScene</a></div><div class="ttdeci">std::shared_ptr&lt; Eng::Node &gt; loadScene(const std::string &amp;ovoFileName)</div><div class="ttdoc">Carica la scena dal file OVO.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00024">setup.cpp:24</a></div></div>
+<div class="ttc" id="aclassSetup_html_ae333270a65b81b0e8d445fbdd1f4747f"><div class="ttname"><a href="classSetup.html#ae333270a65b81b0e8d445fbdd1f4747f">Setup::computeTreeHeightLimits</a></div><div class="ttdeci">void computeTreeHeightLimits()</div><div class="ttdoc">Calcola i limiti di altezza per l&#39;animazione della luce dinamica.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00185">setup.cpp:185</a></div></div>
+<div class="ttc" id="aclassSetup_html_ae61ecc675b5cf6c3743d834c12dd5344"><div class="ttname"><a href="classSetup.html#ae61ecc675b5cf6c3743d834c12dd5344">Setup::updateDynamicLightAnimation</a></div><div class="ttdeci">void updateDynamicLightAnimation()</div><div class="ttdoc">Aggiorna l&#39;animazione della luce dinamica (su/giù e rotazione).</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00217">setup.cpp:217</a></div></div>
+<div class="ttc" id="aclassSetup_html_aec5511b92de223393aba5795a355b478"><div class="ttname"><a href="classSetup.html#aec5511b92de223393aba5795a355b478">Setup::moveDynamicCam</a></div><div class="ttdeci">void moveDynamicCam(float dynamic_cam_speed)</div><div class="ttdoc">Muove la camera dinamica in avanti o indietro.</div><div class="ttdef"><b>Definition</b> <a href="setup_8cpp_source.html#l00277">setup.cpp:277</a></div></div>
+<div class="ttc" id="aclassSetup_html_afc34a6459b68f925fad6e4ea75a05ae8"><div class="ttname"><a href="classSetup.html#afc34a6459b68f925fad6e4ea75a05ae8">Setup::getProjectExportDir</a></div><div class="ttdeci">std::filesystem::path getProjectExportDir() const</div><div class="ttdoc">Restituisce la directory dell&#39;export del progetto.</div><div class="ttdef"><b>Definition</b> <a href="setup_8h_source.html#l00068">setup.h:68</a></div></div>
+<div class="ttc" id="aengine_8h_html"><div class="ttname"><a href="engine_8h.html">engine.h</a></div></div>
+<div class="ttc" id="aengine__test_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="engine__test_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="engine__test_8cpp_source.html#l00206">engine_test.cpp:206</a></div></div>
+<div class="ttc" id="ahanoiGame_8h_html"><div class="ttname"><a href="hanoiGame_8h.html">hanoiGame.h</a></div></div>
+<div class="ttc" id="alist_8h_html"><div class="ttname"><a href="list_8h.html">list.h</a></div></div>
+<div class="ttc" id="aovoreader_8h_html"><div class="ttname"><a href="ovoreader_8h.html">ovoreader.h</a></div></div>
+<div class="ttc" id="asetup_8h_html"><div class="ttname"><a href="setup_8h.html">setup.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

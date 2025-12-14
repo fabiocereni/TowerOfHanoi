@@ -266,26 +266,30 @@ void Setup::updateLampadario() const noexcept {
     }
 }
 
+std::shared_ptr<Eng::Camera> Setup::createAndReturnOrthoCamera(const int height, const int width) {
+    return std::make_shared<Eng::Orthographic_Camera>(0.0f, static_cast<float>(width),
+                                                                static_cast<float>(height),
+                                                                0.0f, -1.0f, 1.0f);
+}
 
 
 
-
-void Setup::moveDynamicCam(const float delta) {
+void Setup::moveDynamicCam(const float dynamic_cam_speed) {
     // @details Calcola la direzione forward basata sugli angoli correnti
     const glm::mat4 orientation = glm::rotate(glm::mat4(1.0f), glm::radians(dynamicCamXAngle_), glm::vec3(0, 1, 0)) *
                                   glm::rotate(glm::mat4(1.0f), glm::radians(dynamicCamYAngle_), glm::vec3(1, 0, 0));
     const glm::vec3 forwardDir = -glm::vec3(orientation[2]);
-    dynamicCamPos_ += forwardDir * delta;
+    dynamicCamPos_ += forwardDir * dynamic_cam_speed;
 }
 
-void Setup::rotateDynamicCamX(const float delta) {
-    dynamicCamXAngle_ += delta;
+void Setup::rotateDynamicCamX(const float dynamic_cam_speed) {
+    dynamicCamXAngle_ += dynamic_cam_speed;
 }
 
-void Setup::rotateDynamicCamY(const float delta) {
-    dynamicCamYAngle_ += delta;
+void Setup::rotateDynamicCamY(const float dynamic_cam_speed) {
+    dynamicCamYAngle_ += dynamic_cam_speed;
 }
 
-void Setup::liftDynamicCam(const float delta) {
-    dynamicCamPos_.y += delta;
+void Setup::liftDynamicCam(const float dynamic_cam_speed) {
+    dynamicCamPos_.y += dynamic_cam_speed;
 }

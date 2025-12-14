@@ -27,9 +27,7 @@ namespace Eng {
       void setDiffuse(const glm::vec3& c) noexcept { diffuse_ = c; }
       void setSpecular(const glm::vec3& c) noexcept { specular_ = c; }
       void setRadius(const float r) noexcept { radius_ = r; }
-      void setConstantAtt(const float c) noexcept { attConst_ = c; }
       void setLinearAtt(const float l) noexcept { attLinear_ = l; }
-      void setQuadraticAtt(const float q) noexcept { attQuad_ = q; }
       void setActive(const bool newState) noexcept { active_ = newState; }
 
 
@@ -40,9 +38,7 @@ namespace Eng {
       [[nodiscard]] glm::vec3 getDiffuse() const noexcept { return diffuse_; }
       [[nodiscard]] glm::vec3 getSpecular() const noexcept { return specular_; }
       [[nodiscard]] float getRadius() const noexcept { return radius_; }
-      [[nodiscard]] float getConstantAtt() const noexcept { return attConst_; }
       [[nodiscard]] float getLinearAtt() const noexcept { return attLinear_; }
-      [[nodiscard]] float getQuadraticAtt() const noexcept { return attQuad_; }
       [[nodiscard]] bool isActive() const noexcept { return active_; }
 
       void toggleLight() { active_ = !active_; }
@@ -67,11 +63,7 @@ namespace Eng {
       /// @brief Distanza di contribuzione
       float radius_ = 1.0f;
 
-      /// @brief Attenuazione costante
-      float attConst_ = 1.0f;
       /// @brief Attenuazione lineare
       float attLinear_ = 0.0f;
-      /// @brief Attenuazione quadratica
-      float attQuad_ = 0.0f;
    };
 }

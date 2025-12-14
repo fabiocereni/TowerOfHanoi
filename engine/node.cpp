@@ -10,7 +10,7 @@ Node::Node() noexcept
             : matrix_(1.0f), parent_(nullptr) {
 }
 
-ENG_API void Node::render(const glm::mat4& modelViewMatrix) {}
+void Node::render(const glm::mat4& modelViewMatrix) {}
 
 
 /**

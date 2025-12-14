@@ -65,7 +65,7 @@ namespace Eng {
       const float linearAttenuation = 4.5f / (radius_ > 0.0f ? radius_ : 1.0f);
 
 
-      // @brief Calcolo della posizione della luce nello spazio vista (Eye Space)
+      // @brief Calcolo della posizione della luce nello spazio vista
       const glm::vec4 posEye = modelViewMatrix * lightPosition_;
 
 

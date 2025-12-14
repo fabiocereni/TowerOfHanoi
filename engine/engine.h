@@ -15,165 +15,165 @@
 #include "orthographic_camera.h"
 #include "spotlight.h"
 
-namespace Eng {
-
-
+namespace Eng
+{
    /**
      * @class Base
      * @brief Base engine main class. This class is a singleton.
      */
-
-   class Base final {
+   class ENG_API Base final
+   {
    public:
-
-
-
       /// @brief Alias per definire le funzioni di callback
       using KeyboardCallback = std::function<void(unsigned char key, int mouseX, int mouseY)>;
       using SpecialKeyAction = std::function<void()>;
 
 
-
       /// @brief Costruttori, distruttori, operatore di copia
-      ENG_API Base(Base const &) = delete;
-      ENG_API ~Base();
+      Base(Base const&) = delete;
+      ~Base();
 
-      ENG_API void operator=(Base const &) = delete;
+      void operator=(Base const&) = delete;
 
       /// @brief Singleton
-      ENG_API static Base &getInstance();
+      static Base& getInstance();
 
       /// @brief Init e free del motore
-      ENG_API bool init(int argc, char **argv, const std::string& title = "Engine Window");
-      ENG_API bool free() const;
+      bool init(int argc, char** argv, const std::string& title = "Engine Window");
+      [[nodiscard]] bool free() const;
 
       /// @brief Getter e setter del WindowID
-      ENG_API void setWindowId(const int windowId) noexcept {windowId_ = windowId;};
-      ENG_API [[nodiscard]] int getWindowId() const noexcept {return windowId_;};
+      void setWindowId(const int windowId) noexcept { windowId_ = windowId; };
+      [[nodiscard]] int getWindowId() const noexcept { return windowId_; };
 
       /// @brief Richiama il main loop
-      ENG_API [[nodiscard]] bool update() const noexcept;
+      [[nodiscard]] bool update() const noexcept;
 
       /// @brief Pulisce i buffer per preparare il nuovo frame
-      ENG_API void clear() noexcept;
+      void clear() noexcept;
 
       /// @brief Inizializza il contesto di rendering 3D
-      ENG_API void begin3D(const std::shared_ptr<Camera>& camera) noexcept;
+      void begin3D(const std::shared_ptr<Camera>& camera) noexcept;
 
       /// @brief De-inizializza il contesto di rendering 3D
-      ENG_API void end3D() noexcept;
+      void end3D() noexcept;
+
+      /// @brief Inizializza il contesto di rendering 2D per stampare
+      void begin2D(const std::shared_ptr<Camera>& camera) noexcept;
+
+      /// @brief De-inizializza il contesto di rendering 2D
+      void end2D() noexcept;
+
 
       /// @brief Eseguo lo swap dei buffer (front e back)
-      ENG_API void swap() noexcept;
+      void swap() noexcept;
 
       /// @brief Permette il caricamento di una scena
-      ENG_API [[nodiscard]] std::shared_ptr<Node> load(const std::string &path) const noexcept;
+      [[nodiscard]] std::shared_ptr<Node> load(const std::string& path) noexcept;
 
       /// @brief Permette il caricamento di una texture
-      ENG_API [[nodiscard]] std::shared_ptr<Texture> loadTextureFromFile(const std::string& path) const noexcept;
+      [[nodiscard]] static std::shared_ptr<Texture> loadTextureFromFile(const std::string& path) noexcept;
 
       /// @brief Permette il binding delle texture a tutti i nodi della scena
-      ENG_API [[nodiscard]] void bindTexturesToMaterials(const std::shared_ptr<Node>& root, const std::vector<std::shared_ptr<Texture>>& textures) const noexcept;
+      void bindTexturesToMaterials(const std::shared_ptr<Node>& root,
+                                                 const std::vector<std::shared_ptr<Texture>>& textures) const noexcept;
 
       /// @brief Carica le texture dalla cartella e le applica ai materiali
-      ENG_API [[nodiscard]] void loadAndBindTextures(const std::filesystem::path &projectDir_, const std::shared_ptr<Eng::Node>& root);
-
-
+      void loadAndBindTextures(const std::filesystem::path& projectDir_,
+                                             const std::shared_ptr<Eng::Node>& root) const;
 
 
       /// @brief Callbacks
-      ENG_API static void displayCallback();
-      ENG_API static void timerCallback(int value);
-      ENG_API static void reshapeCallback(int width, int height);
-      ENG_API static void specialCallback(int key, int mouseX, int mouseY);
+      static void displayCallback();
+      static void timerCallback(int value);
+      static void reshapeCallback(int width, int height);
+      static void specialCallback(int key, int mouseX, int mouseY);
 
       /// @brief Si occupa di cambiare il nome della finestra
-      ENG_API void changeWindowTitle(const std::string &title);
+      void changeWindowTitle(const std::string& title);
 
       /// @brief Metodi statici per creazione delle telecamere
-      ENG_API std::shared_ptr<Camera> createPerspectiveCamera(float fov, float aspectRatio, float nearPlane, float farPlane) noexcept;
-      ENG_API std::shared_ptr<Camera> createOrthographicCamera(float left,
-                                                               float right,
-                                                               float top,
-                                                               float bottom,
-                                                               float nearPlane,
-                                                               float farPlane) noexcept;
+      std::shared_ptr<Camera> createPerspectiveCamera(float fov, float aspectRatio, float nearPlane,
+                                                      float farPlane) noexcept;
+      std::shared_ptr<Camera> createOrthographicCamera(float left,
+                                                       float right,
+                                                       float top,
+                                                       float bottom,
+                                                       float nearPlane,
+                                                       float farPlane) noexcept;
 
       /// @brief Metodi statici per creazione delle luci
-      ENG_API std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
-      ENG_API std::shared_ptr<DirectionalLight> createDirectionalLight();
-      ENG_API std::shared_ptr<Spotlight> createSpotlight();
+      std::shared_ptr<OmnidirectionalLight> createOmnidirectionalLight();
+      std::shared_ptr<DirectionalLight> createDirectionalLight();
+      std::shared_ptr<Spotlight> createSpotlight();
 
 
       /// @brief  Metodo statico per creazione di una mesh
-      ENG_API static std::shared_ptr<Mesh> createMesh(const std::vector<glm::vec3>& vertexes,
-                                                      const std::string& materialName,
-                                                      const std::shared_ptr<Material>& material);
+      std::shared_ptr<Mesh> createMesh(const std::vector<glm::vec3>& vertexes,
+                                              const std::string& materialName,
+                                              const std::shared_ptr<Material>& material);
 
 
       /// @brief Getters e setters
-      ENG_API void setWidth(const int width) noexcept {width_ = width;};
-      ENG_API void setHeight(const int height) noexcept {height_ = height;};
-      ENG_API static void setFrames(const float frames) noexcept {frames_ = frames;};
-      ENG_API void setActiveCamera(const std::shared_ptr<Camera>& camera) noexcept {activeCamera_ = camera;};
+      void setWidth(const int width) noexcept { width_ = width; };
+      void setHeight(const int height) noexcept { height_ = height; };
+      static void setFrames(const float frames) noexcept { frames_ = frames; };
+      void setActiveCamera(const std::shared_ptr<Camera>& camera) noexcept { activeCamera_ = camera; };
 
-      ENG_API [[nodiscard]] int getWidth() const {return width_;};
-      ENG_API [[nodiscard]] int getHeight() const {return height_;};
-      ENG_API [[nodiscard]] static float getFrames() {return frames_;};
-      ENG_API [[nodiscard]] std::shared_ptr<Camera> getActiveCamera() const noexcept {return activeCamera_;};
-
+      [[nodiscard]] int getWidth() const { return width_; };
+      [[nodiscard]] int getHeight() const { return height_; };
+      [[nodiscard]] static float getFrames() { return frames_; };
+      [[nodiscard]] std::shared_ptr<Camera> getActiveCamera() const noexcept { return activeCamera_; };
 
 
       /// @brief Metodi messi a disposizione per sovrascrivere il comportamento di stati "speciali"
-      ENG_API void overrideUpArrowBehaviour(const SpecialKeyAction& action)   noexcept { up_arrow_key_ = action; }
-      ENG_API void overrideDownArrowBehaviour(const SpecialKeyAction& action) noexcept { down_arrow_key_ = action; }
-      ENG_API void overrideLeftArrowBehaviour(const SpecialKeyAction& action) noexcept { left_arrow_key_ = action; }
-      ENG_API void overrideRightArrowBehaviour(const SpecialKeyAction& action) noexcept { right_arrow_key_ = action; }
-      ENG_API void overrideF1KeyBehaviour(const SpecialKeyAction& action) noexcept { F1_key = action; }
-      ENG_API void overrideF2KeyBehaviour(const SpecialKeyAction& action) noexcept { F2_key = action; }
-      ENG_API void overrideF3KeyBehaviour(const SpecialKeyAction& action) noexcept { F3_key = action; }
-      ENG_API void overrideF4KeyBehaviour(const SpecialKeyAction& action) noexcept { F4_key = action; }
-
-
+      void overrideUpArrowBehaviour(const SpecialKeyAction& action) noexcept { up_arrow_key_ = action; }
+      void overrideDownArrowBehaviour(const SpecialKeyAction& action) noexcept { down_arrow_key_ = action; }
+      void overrideLeftArrowBehaviour(const SpecialKeyAction& action) noexcept { left_arrow_key_ = action; }
+      void overrideRightArrowBehaviour(const SpecialKeyAction& action) noexcept { right_arrow_key_ = action; }
+      void overrideF1KeyBehaviour(const SpecialKeyAction& action) noexcept { F1_key = action; }
+      void overrideF2KeyBehaviour(const SpecialKeyAction& action) noexcept { F2_key = action; }
+      void overrideF3KeyBehaviour(const SpecialKeyAction& action) noexcept { F3_key = action; }
+      void overrideF4KeyBehaviour(const SpecialKeyAction& action) noexcept { F4_key = action; }
 
 
       /// @brief Registrazione callback di tasti "normali"
-      ENG_API static void useCustomKeyboardCallback(unsigned char key, int mouseX, int mouseY) noexcept;
-      ENG_API void overrideKeyboardCallback(const KeyboardCallback &keyboardCallback) noexcept {customKeyboardCallbackVar_ = keyboardCallback;};
+      static void useCustomKeyboardCallback(unsigned char key, int mouseX, int mouseY) noexcept;
 
+      void overrideKeyboardCallback(const KeyboardCallback& keyboardCallback) noexcept
+      {
+         customKeyboardCallbackVar_ = keyboardCallback;
+      };
 
 
       /// @brief Innesca la catena di rendering
-      ENG_API void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList, const std::list<std::string>& excludedList) const;
+      void render(const std::shared_ptr<Camera>& camera, const std::shared_ptr<List>& renderList,
+                  const std::list<std::string>& excludedList) const;
 
       /// @brief Mostra il conteggio degli FPS a schermo
-      ENG_API void showFps();
+      void showFps() const;
 
       /// @brief Stampa informazioni testuali a schermo
-      ENG_API static void infoPrinter(const std::string& info);
-      ENG_API static void statusPrinter(const std::string& info);
+      static void infoPrinter(const std::string& info);
+      static void statusPrinter(const std::string& info);
 
 
       /// @brief Cerca un nodo nel grafo della scena tramite il nome
-      ENG_API static std::shared_ptr<Node> findByName(const std::shared_ptr<Node>& node, const std::string& name);
-
+      static std::shared_ptr<Node> findByName(const std::shared_ptr<Node>& node, const std::string& name);
 
 
       /// @brief Abilita o disabilita la modalità wireframe
-      ENG_API void setWireframe(bool enable);
+      void setWireframe(bool enable);
 
       /// @brief Abilita o disabilita l'illuminazione
-      ENG_API void setLighting(bool enable);
-
-      /// @brief Abilita o disabilita il face culling
-      ENG_API void setCulling(bool enable);
+      void setLighting(bool enable);
 
 
    private:
       /// @brief ID della finestra
       int windowId_;
       /// @brief Larghezza della finestra
-      int width_ = 1800;
+      int width_ = 1200;
       /// @brief Altezza della finestra
       int height_ = 1000;
       /// @brief Contatore dei frame
@@ -217,5 +217,4 @@ namespace Eng {
       /// @brief Costruttore privato
       Base();
    };
-
 };

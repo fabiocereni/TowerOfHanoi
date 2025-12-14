@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente client/Test/test_suite.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 202X</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a href="dir_39dadf62d98122a9bdffdf3ea98a3ee1.html">Test</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">test_suite.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="test__suite_8h.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;cassert&gt;</span> <span class="comment">// &lt;--- Includi questo</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classTestSuite.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classTestSuite.html">TestSuite</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="comment">// Lancia tutti i test e stampa i risultati in console</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classTestSuite.html#a026fcd2910a668097f27be7a2b59c357">runAllTests</a>();</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="comment">// Singoli casi di test</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="engine__test_8cpp.html#ac916c5e1fa14452352e2f85888781e37">testNodeHierarchy</a>();</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="engine__test_8cpp.html#a2bf1f2766bfffd1cc935aac8f15241f2">testNodeTransformations</a>();</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="engine__test_8cpp.html#aa246fc2b322330f6f96402c28126c5f9">testListManagement</a>();</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> testCameraViewMatrix();</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="comment">// Helper per stampare successo/fallimento</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> assertCondition(<span class="keyword">const</span> std::string&amp; testName, <span class="keywordtype">bool</span> condition);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
+</div>
+<div class="ttc" id="aclassTestSuite_html"><div class="ttname"><a href="classTestSuite.html">TestSuite</a></div><div class="ttdef"><b>Definition</b> <a href="#l00006">test_suite.h:6</a></div></div>
+<div class="ttc" id="aclassTestSuite_html_a026fcd2910a668097f27be7a2b59c357"><div class="ttname"><a href="classTestSuite.html#a026fcd2910a668097f27be7a2b59c357">TestSuite::runAllTests</a></div><div class="ttdeci">static void runAllTests()</div><div class="ttdef"><b>Definition</b> <a href="test__suite_8cpp_source.html#l00008">test_suite.cpp:8</a></div></div>
+<div class="ttc" id="aengine__test_8cpp_html_a2bf1f2766bfffd1cc935aac8f15241f2"><div class="ttname"><a href="engine__test_8cpp.html#a2bf1f2766bfffd1cc935aac8f15241f2">testNodeTransformations</a></div><div class="ttdeci">void testNodeTransformations()</div><div class="ttdef"><b>Definition</b> <a href="engine__test_8cpp_source.html#l00062">engine_test.cpp:62</a></div></div>
+<div class="ttc" id="aengine__test_8cpp_html_aa246fc2b322330f6f96402c28126c5f9"><div class="ttname"><a href="engine__test_8cpp.html#aa246fc2b322330f6f96402c28126c5f9">testListManagement</a></div><div class="ttdeci">void testListManagement()</div><div class="ttdef"><b>Definition</b> <a href="engine__test_8cpp_source.html#l00090">engine_test.cpp:90</a></div></div>
+<div class="ttc" id="aengine__test_8cpp_html_ac916c5e1fa14452352e2f85888781e37"><div class="ttname"><a href="engine__test_8cpp.html#ac916c5e1fa14452352e2f85888781e37">testNodeHierarchy</a></div><div class="ttdeci">void testNodeHierarchy()</div><div class="ttdef"><b>Definition</b> <a href="engine__test_8cpp_source.html#l00026">engine_test.cpp:26</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

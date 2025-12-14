@@ -30,15 +30,7 @@ void Material::render(const glm::mat4& modelViewMatrix) {
     glMaterialf (GL_FRONT, GL_SHININESS, shininess_);
 
     /// @brief se la texture è presente esegue il binding
-    if (texture_) {
+    if (texture_)
         texture_->bind();
-    } else {
-        /**
-         * @brief reset dello stato per la prossima mesh
-         * @details se non c'è texture, ripuliamo
-         * lo stato per non applicare texture di altri
-         * oggetti a questo
-         */
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
+
 }

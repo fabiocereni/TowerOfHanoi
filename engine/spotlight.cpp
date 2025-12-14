@@ -62,7 +62,7 @@ namespace Eng {
       const auto direction = glm::vec4(direction_, 0.0f);
       const auto position = glm::vec4(direction_, 1.0f);
 
-      const float constantAttenuation = 1.0f / (radius_ / 100);
+      const float linearAttenuation = 4.5f / (radius_ > 0.0f ? radius_ : 1.0f);
 
       // @brief Impostazione dei parametri della luce
       glLightfv(id, GL_AMBIENT,  glm::value_ptr(ambient));
@@ -72,7 +72,7 @@ namespace Eng {
       glLightfv(id, GL_SPOT_DIRECTION, glm::value_ptr(direction));
       glLightf(id, GL_SPOT_CUTOFF, cutoff_);
       glLightf(id, GL_SPOT_EXPONENT, exponent_);
-      glLightf(id, GL_CONSTANT_ATTENUATION,  constantAttenuation);
+      glLightf(id, GL_LINEAR_ATTENUATION,  linearAttenuation);
 
    }
 

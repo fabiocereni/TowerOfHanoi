@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['j2k_5fdefault_0',['J2K_DEFAULT',['../FreeImage_8h.html#a4a741b2a15336eba69782e2045303237',1,'FreeImage.h']]],
+  ['jp2_5fdefault_1',['JP2_DEFAULT',['../FreeImage_8h.html#ab3ea8b0eb2b256c2309f5348a0cf6a2e',1,'FreeImage.h']]],
+  ['jpeg_5faccurate_2',['JPEG_ACCURATE',['../FreeImage_8h.html#a4618e47db88b90b52d5c869d3d688fc1',1,'FreeImage.h']]],
+  ['jpeg_5fbaseline_3',['JPEG_BASELINE',['../FreeImage_8h.html#ab3f0f2dfc14d7e5658b0b543cfade7b5',1,'FreeImage.h']]],
+  ['jpeg_5fcmyk_4',['JPEG_CMYK',['../FreeImage_8h.html#acf4843bf6a33f3500e12569ed1c0eb00',1,'FreeImage.h']]],
+  ['jpeg_5fdefault_5',['JPEG_DEFAULT',['../FreeImage_8h.html#a07b6cf222eeab1aac43f138388d5255e',1,'FreeImage.h']]],
+  ['jpeg_5fexifrotate_6',['JPEG_EXIFROTATE',['../FreeImage_8h.html#a4d6885e45e31d65e8d7cffd29d330a22',1,'FreeImage.h']]],
+  ['jpeg_5ffast_7',['JPEG_FAST',['../FreeImage_8h.html#a6363d0d0a42508a67c52ecb6bddc0a30',1,'FreeImage.h']]],
+  ['jpeg_5fgreyscale_8',['JPEG_GREYSCALE',['../FreeImage_8h.html#aed973dc3d237dcc4ba99513c26b0553a',1,'FreeImage.h']]],
+  ['jpeg_5foptimize_9',['JPEG_OPTIMIZE',['../FreeImage_8h.html#afeeb6e603b64d1415576581d5e39c6ae',1,'FreeImage.h']]],
+  ['jpeg_5fprogressive_10',['JPEG_PROGRESSIVE',['../FreeImage_8h.html#a9824cfe5a399c34a71df31182537d988',1,'FreeImage.h']]],
+  ['jpeg_5fqualityaverage_11',['JPEG_QUALITYAVERAGE',['../FreeImage_8h.html#aa55184b32d4c993a7dee724b738f4800',1,'FreeImage.h']]],
+  ['jpeg_5fqualitybad_12',['JPEG_QUALITYBAD',['../FreeImage_8h.html#a527a67f7ff95c56b9d06d594792e1fb7',1,'FreeImage.h']]],
+  ['jpeg_5fqualitygood_13',['JPEG_QUALITYGOOD',['../FreeImage_8h.html#ad4afe992dc9a7afa432b70a3068ba716',1,'FreeImage.h']]],
+  ['jpeg_5fqualitynormal_14',['JPEG_QUALITYNORMAL',['../FreeImage_8h.html#aaf9e77a32fcdc074b0b5bcf5604fdba0',1,'FreeImage.h']]],
+  ['jpeg_5fqualitysuperb_15',['JPEG_QUALITYSUPERB',['../FreeImage_8h.html#abccfe22effd33f14a06095b1646c891f',1,'FreeImage.h']]],
+  ['jpeg_5fsubsampling_5f411_16',['JPEG_SUBSAMPLING_411',['../FreeImage_8h.html#aa700fc32a9bec6d647aca1988e2efd1b',1,'FreeImage.h']]],
+  ['jpeg_5fsubsampling_5f420_17',['JPEG_SUBSAMPLING_420',['../FreeImage_8h.html#a7a850af14db4680f48887ee7799ecea0',1,'FreeImage.h']]],
+  ['jpeg_5fsubsampling_5f422_18',['JPEG_SUBSAMPLING_422',['../FreeImage_8h.html#a4f12118911b57971ae57dc3c66213a3d',1,'FreeImage.h']]],
+  ['jpeg_5fsubsampling_5f444_19',['JPEG_SUBSAMPLING_444',['../FreeImage_8h.html#ad0befb1b204d146085c9dd32a8b1361a',1,'FreeImage.h']]],
+  ['jxr_5fdefault_20',['JXR_DEFAULT',['../FreeImage_8h.html#a5d774c3f871d36a53568892cd8f3c34e',1,'FreeImage.h']]],
+  ['jxr_5flossless_21',['JXR_LOSSLESS',['../FreeImage_8h.html#a91a240abd88e0d9f270bdb57be4bf238',1,'FreeImage.h']]],
+  ['jxr_5fprogressive_22',['JXR_PROGRESSIVE',['../FreeImage_8h.html#a86fae343582cc0899392880d2da9f4ef',1,'FreeImage.h']]]
+];
