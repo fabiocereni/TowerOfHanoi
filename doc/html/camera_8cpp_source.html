@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente engine/camera.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_996f45160da62e1a3d7f6046fad68f51.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">camera.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="camera_8cpp.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="camera_8h.html">camera.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespace_eng.html">Eng</a>;</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span></div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="class_eng_1_1_camera.html#a9b4630bf3f45393ba9aea45a3bc0c580">   10</a></span><a class="code hl_typedef" href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a> <a class="code hl_function" href="class_eng_1_1_camera.html#a9b4630bf3f45393ba9aea45a3bc0c580">Camera::getViewMatrix</a>() const noexcept {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="group__core__func__matrix.html#gace61e11fc177491beeca0c6971e2f3fc">glm::inverse</a>(<a class="code hl_function" href="class_eng_1_1_node.html#a5190de2d7ec8fe1a14ecdee5584df997">getWorldMatrix</a>());</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>}</div>
+</div>
+<div class="ttc" id="acamera_8h_html"><div class="ttname"><a href="camera_8h.html">camera.h</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_camera_html_a9b4630bf3f45393ba9aea45a3bc0c580"><div class="ttname"><a href="class_eng_1_1_camera.html#a9b4630bf3f45393ba9aea45a3bc0c580">Eng::Camera::getViewMatrix</a></div><div class="ttdeci">glm::mat4 getViewMatrix() const noexcept</div><div class="ttdoc">torna la view matrix</div><div class="ttdef"><b>Definition</b> <a href="#l00010">camera.cpp:10</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_node_html_a5190de2d7ec8fe1a14ecdee5584df997"><div class="ttname"><a href="class_eng_1_1_node.html#a5190de2d7ec8fe1a14ecdee5584df997">Eng::Node::getWorldMatrix</a></div><div class="ttdeci">glm::mat4 getWorldMatrix() const noexcept</div><div class="ttdoc">calcola la worldMatrix del nodo</div><div class="ttdef"><b>Definition</b> <a href="node_8cpp_source.html#l00020">node.cpp:20</a></div></div>
+<div class="ttc" id="agroup__core__func__matrix_html_gace61e11fc177491beeca0c6971e2f3fc"><div class="ttname"><a href="group__core__func__matrix.html#gace61e11fc177491beeca0c6971e2f3fc">glm::inverse</a></div><div class="ttdeci">GLM_FUNC_QUALIFIER mat&lt; C, R, T, Q &gt; inverse(mat&lt; C, R, T, Q &gt; const &amp;m)</div><div class="ttdef"><b>Definition</b> <a href="func__matrix_8inl_source.html#l00433">func_matrix.inl:433</a></div></div>
+<div class="ttc" id="agroup__core__matrix_html_gac54cbc572f1349a255fe476ca6a42a7b"><div class="ttname"><a href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a></div><div class="ttdeci">mat&lt; 4, 4, float, defaultp &gt; mat4</div><div class="ttdef"><b>Definition</b> <a href="matrix__float4x4_8hpp_source.html#l00020">matrix_float4x4.hpp:20</a></div></div>
+<div class="ttc" id="anamespace_eng_html"><div class="ttname"><a href="namespace_eng.html">Eng</a></div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00009">base.h:9</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

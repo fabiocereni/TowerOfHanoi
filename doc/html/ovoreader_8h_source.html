@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente engine/ovoreader.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_996f45160da62e1a3d7f6046fad68f51.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">ovoreader.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="ovoreader_8h.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="engine__api_8h.html">engine_api.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="node_8h.html">node.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespace_eng.html">Eng</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <span class="keyword">class </span>OvObject {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="keyword">enum class</span> Type : <span class="keywordtype">int</span> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                OBJECT = 0, NODE, OBJECT2D, OBJECT3D, LIST, BUFFER, SHADER, TEXTURE, FILTER, MATERIAL,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                FBO, QUAD, BOX, SKYBOX, FONT, CAMERA, LIGHT, BONE, MESH, SKINNED, INSTANCED, PIPELINE,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                EMITTER, ANIM, PHYSICS, LAST,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            };</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        };</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keyword">class </span>OvLight {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <span class="keyword">enum class</span> Subtype : <span class="keywordtype">int</span> { OMNI = 0, DIRECTIONAL, SPOT, LAST };</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        };</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keyword">struct </span>NodeInfo {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            std::shared_ptr&lt;Node&gt; node;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> childrenCount;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> childrenAdded;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            NodeInfo(<span class="keyword">const</span> std::shared_ptr&lt;Node&gt;&amp; n, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                : node(n), childrenCount(count), childrenAdded(0) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            }</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        };</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span></div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="};">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="class_eng_1_1_ovo_reader.html">   66</a></span>    <span class="keyword">class </span><a class="code hl_define" href="engine__api_8h.html#a2ef14742296b6d1fdaf5e70dfdd60996">ENG_API</a> <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">OvoReader</a> {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">   69</a></span>        <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">OvoReader</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="class_eng_1_1_ovo_reader.html#a38975564d9dabb22dce516e4ea9a6932">   71</a></span>        <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#a38975564d9dabb22dce516e4ea9a6932">~OvoReader</a>() = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="class_eng_1_1_ovo_reader.html#ad84bd5b790a2ae5771d40fe3ef76b858">   73</a></span>        <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ad84bd5b790a2ae5771d40fe3ef76b858">OvoReader</a>(<span class="keyword">const</span> <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">OvoReader</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="class_eng_1_1_ovo_reader.html#ad281201615ed2017481c203687515547">   75</a></span>        <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">OvoReader</a>&amp; <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ad281201615ed2017481c203687515547">operator=</a>(<span class="keyword">const</span> <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">OvoReader</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        [[nodiscard]] <span class="keyword">static</span> std::shared_ptr&lt;Node&gt; <a class="code hl_function" href="class_eng_1_1_ovo_reader.html#a0adacf11d1abecc930eeb8d057b64723">load</a>(<span class="keyword">const</span> std::string&amp; path);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    };</div>
+</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
+<div class="ttc" id="aclass_eng_1_1_ovo_reader_html_a0adacf11d1abecc930eeb8d057b64723"><div class="ttname"><a href="class_eng_1_1_ovo_reader.html#a0adacf11d1abecc930eeb8d057b64723">Eng::OvoReader::load</a></div><div class="ttdeci">static std::shared_ptr&lt; Node &gt; load(const std::string &amp;path)</div><div class="ttdoc">Carica una scena completa da un file .ovo.</div><div class="ttdef"><b>Definition</b> <a href="ovoreader_8cpp_source.html#l00040">ovoreader.cpp:40</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_ovo_reader_html_a38975564d9dabb22dce516e4ea9a6932"><div class="ttname"><a href="class_eng_1_1_ovo_reader.html#a38975564d9dabb22dce516e4ea9a6932">Eng::OvoReader::~OvoReader</a></div><div class="ttdeci">~OvoReader()=delete</div><div class="ttdoc">distruttore eliminato</div></div>
+<div class="ttc" id="aclass_eng_1_1_ovo_reader_html_ad281201615ed2017481c203687515547"><div class="ttname"><a href="class_eng_1_1_ovo_reader.html#ad281201615ed2017481c203687515547">Eng::OvoReader::operator=</a></div><div class="ttdeci">OvoReader &amp; operator=(const OvoReader &amp;)=delete</div><div class="ttdoc">operatore di assegnazione eliminato</div></div>
+<div class="ttc" id="aclass_eng_1_1_ovo_reader_html_ad84bd5b790a2ae5771d40fe3ef76b858"><div class="ttname"><a href="class_eng_1_1_ovo_reader.html#ad84bd5b790a2ae5771d40fe3ef76b858">Eng::OvoReader::OvoReader</a></div><div class="ttdeci">OvoReader(const OvoReader &amp;)=delete</div><div class="ttdoc">costruttore di copia eliminato</div></div>
+<div class="ttc" id="aclass_eng_1_1_ovo_reader_html_ae9c1fd9ccea2013463511ef016ae6043"><div class="ttname"><a href="class_eng_1_1_ovo_reader.html#ae9c1fd9ccea2013463511ef016ae6043">Eng::OvoReader::OvoReader</a></div><div class="ttdeci">OvoReader()=delete</div><div class="ttdoc">costruttore di default eliminato</div></div>
+<div class="ttc" id="aengine__api_8h_html"><div class="ttname"><a href="engine__api_8h.html">engine_api.h</a></div></div>
+<div class="ttc" id="aengine__api_8h_html_a2ef14742296b6d1fdaf5e70dfdd60996"><div class="ttname"><a href="engine__api_8h.html#a2ef14742296b6d1fdaf5e70dfdd60996">ENG_API</a></div><div class="ttdeci">#define ENG_API</div><div class="ttdef"><b>Definition</b> <a href="engine__api_8h_source.html#l00025">engine_api.h:25</a></div></div>
+<div class="ttc" id="anamespace_eng_html"><div class="ttname"><a href="namespace_eng.html">Eng</a></div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00009">base.h:9</a></div></div>
+<div class="ttc" id="anode_8h_html"><div class="ttname"><a href="node_8h.html">node.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente engine/list.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_996f45160da62e1a3d7f6046fad68f51.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">list.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="list_8h.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;list&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="object_8h.html">object.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="instance_8h.html">instance.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespace_eng.html">Eng</a> {</div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="};">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html">   11</a></span>   <span class="keyword">class </span><a class="code hl_define" href="engine__api_8h.html#a2ef14742296b6d1fdaf5e70dfdd60996">ENG_API</a> <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a> final : <span class="keyword">public</span> <a class="code hl_function" href="class_eng_1_1_object.html#a9b15eb303598eede1b6ef4d2475b35bf">Object</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>   <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">   15</a></span>      <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>() noexcept = default;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a0db19fb3bd74c82124e2ecbc3c159f1d">   16</a></span>      <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>(const <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>&amp; other) = default;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a849db3d9e23eccc2ef1af73c9ee7b45e">   18</a></span>      ~<a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>() noexcept override = default;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a7f556d2dd688e42db1cd987d8d3de473">   20</a></span>      <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>(<a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>&amp;&amp; other) noexcept = default;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#af48f8243b8ab39c0907a9dc9e6840e09">   22</a></span>      <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>&amp; operator=(const <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>&amp; other) = default;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a6e60f5735d872f5721bd9e033d8fe872">   23</a></span>      <a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>&amp; operator=(<a class="code hl_function" href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">List</a>&amp;&amp; other) noexcept = default;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a7b264f2727cc25bdc9e4598534c89773">   27</a></span>      [[nodiscard]] <a class="code hl_namespace" href="namespacestd.html">std</a>::list&lt;<a class="code hl_class" href="class_eng_1_1_instance.html">Instance</a>&gt; <a class="code hl_function" href="class_eng_1_1_list.html#a7b264f2727cc25bdc9e4598534c89773">getRenderList</a>() const noexcept {<span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">instances_</a>;};</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a2e0ab859c54a6bcae02a3c55711591f7">   28</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_list.html#a2e0ab859c54a6bcae02a3c55711591f7">setRenderList</a>(<span class="keyword">const</span> std::list&lt;Instance&gt;&amp; renderList) <span class="keyword">noexcept</span> {<a class="code hl_variable" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">instances_</a> = renderList;};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a0fe1fba13d42c3a50ed3fa0dd5ce535d">   31</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_list.html#a0fe1fba13d42c3a50ed3fa0dd5ce535d">addOnTopToRenderList</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_eng_1_1_instance.html">Instance</a>&amp; instance) <span class="keyword">noexcept</span> {<a class="code hl_variable" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">instances_</a>.push_front(instance);};</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#af317b10691f44096be39bea2b0fbb491">   34</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_list.html#af317b10691f44096be39bea2b0fbb491">addOnBottomToRenderList</a>(<span class="keyword">const</span> <a class="code hl_class" href="class_eng_1_1_instance.html">Instance</a>&amp; instance) <span class="keyword">noexcept</span> {<a class="code hl_variable" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">instances_</a>.push_back(instance);};</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordtype">bool</span> removeFromRenderList(<span class="keyword">const</span> <a class="code hl_class" href="class_eng_1_1_instance.html">Instance</a> &amp;instance) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <span class="keywordtype">void</span> pass(<span class="keyword">const</span> std::shared_ptr&lt;Node&gt;&amp; node_ptr, <a class="code hl_typedef" href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a> parentWorldMatrix = <a class="code hl_typedef" href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a>(1.0f));</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      <span class="keywordtype">void</span> render(<span class="keyword">const</span> <a class="code hl_typedef" href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a>&amp; viewMatrix) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#a0d445c5b1cef6a2de3d61c391be254e3">   46</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_list.html#a0d445c5b1cef6a2de3d61c391be254e3">clear</a>() noexcept {<a class="code hl_variable" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">instances_</a>.clear();};</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">   50</a></span>      std::list&lt;Instance&gt; <a class="code hl_variable" href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">instances_</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   };</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+<div class="ttc" id="aclass_eng_1_1_instance_html"><div class="ttname"><a href="class_eng_1_1_instance.html">Eng::Instance</a></div><div class="ttdef"><b>Definition</b> <a href="instance_8h_source.html#l00009">instance.h:9</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_a0d445c5b1cef6a2de3d61c391be254e3"><div class="ttname"><a href="class_eng_1_1_list.html#a0d445c5b1cef6a2de3d61c391be254e3">Eng::List::clear</a></div><div class="ttdeci">void clear() noexcept</div><div class="ttdoc">Pulisce la render list.</div><div class="ttdef"><b>Definition</b> <a href="#l00046">list.h:46</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_a0fe1fba13d42c3a50ed3fa0dd5ce535d"><div class="ttname"><a href="class_eng_1_1_list.html#a0fe1fba13d42c3a50ed3fa0dd5ce535d">Eng::List::addOnTopToRenderList</a></div><div class="ttdeci">void addOnTopToRenderList(const Instance &amp;instance) noexcept</div><div class="ttdoc">Aggiunge un&#39;istanza in testa alla lista.</div><div class="ttdef"><b>Definition</b> <a href="#l00031">list.h:31</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_a2e0ab859c54a6bcae02a3c55711591f7"><div class="ttname"><a href="class_eng_1_1_list.html#a2e0ab859c54a6bcae02a3c55711591f7">Eng::List::setRenderList</a></div><div class="ttdeci">void setRenderList(const std::list&lt; Instance &gt; &amp;renderList) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00028">list.h:28</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_a7b264f2727cc25bdc9e4598534c89773"><div class="ttname"><a href="class_eng_1_1_list.html#a7b264f2727cc25bdc9e4598534c89773">Eng::List::getRenderList</a></div><div class="ttdeci">std::list&lt; Instance &gt; getRenderList() const noexcept</div><div class="ttdoc">getters e setters</div><div class="ttdef"><b>Definition</b> <a href="#l00027">list.h:27</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_ac48a4e44c06a9ef31e90e563b6dca227"><div class="ttname"><a href="class_eng_1_1_list.html#ac48a4e44c06a9ef31e90e563b6dca227">Eng::List::instances_</a></div><div class="ttdeci">std::list&lt; Instance &gt; instances_</div><div class="ttdoc">Lista di istanze da renderizzare.</div><div class="ttdef"><b>Definition</b> <a href="#l00050">list.h:50</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_ad60306773dd8a5ec6096d841572fc2d5"><div class="ttname"><a href="class_eng_1_1_list.html#ad60306773dd8a5ec6096d841572fc2d5">Eng::List::List</a></div><div class="ttdeci">List() noexcept=default</div><div class="ttdoc">Costruttori, distruttore, operatore di copia e spostamento.</div></div>
+<div class="ttc" id="aclass_eng_1_1_list_html_af317b10691f44096be39bea2b0fbb491"><div class="ttname"><a href="class_eng_1_1_list.html#af317b10691f44096be39bea2b0fbb491">Eng::List::addOnBottomToRenderList</a></div><div class="ttdeci">void addOnBottomToRenderList(const Instance &amp;instance) noexcept</div><div class="ttdoc">Aggiunge un&#39;istanza in coda alla lista.</div><div class="ttdef"><b>Definition</b> <a href="#l00034">list.h:34</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_object_html_a9b15eb303598eede1b6ef4d2475b35bf"><div class="ttname"><a href="class_eng_1_1_object.html#a9b15eb303598eede1b6ef4d2475b35bf">Eng::Object::Object</a></div><div class="ttdeci">Object() noexcept</div><div class="ttdef"><b>Definition</b> <a href="object_8cpp_source.html#l00010">object.cpp:10</a></div></div>
+<div class="ttc" id="aengine__api_8h_html_a2ef14742296b6d1fdaf5e70dfdd60996"><div class="ttname"><a href="engine__api_8h.html#a2ef14742296b6d1fdaf5e70dfdd60996">ENG_API</a></div><div class="ttdeci">#define ENG_API</div><div class="ttdef"><b>Definition</b> <a href="engine__api_8h_source.html#l00025">engine_api.h:25</a></div></div>
+<div class="ttc" id="agroup__core__matrix_html_gac54cbc572f1349a255fe476ca6a42a7b"><div class="ttname"><a href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a></div><div class="ttdeci">mat&lt; 4, 4, float, defaultp &gt; mat4</div><div class="ttdef"><b>Definition</b> <a href="matrix__float4x4_8hpp_source.html#l00020">matrix_float4x4.hpp:20</a></div></div>
+<div class="ttc" id="ainstance_8h_html"><div class="ttname"><a href="instance_8h.html">instance.h</a></div></div>
+<div class="ttc" id="anamespace_eng_html"><div class="ttname"><a href="namespace_eng.html">Eng</a></div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00009">base.h:9</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="hash_8inl_source.html#l00013">hash.inl:14</a></div></div>
+<div class="ttc" id="aobject_8h_html"><div class="ttname"><a href="object_8h.html">object.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

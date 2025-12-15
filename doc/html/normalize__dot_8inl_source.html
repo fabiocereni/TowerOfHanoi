@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente dependencies/glm/include/glm/gtx/normalize_dot.inl</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_ad0530cb1f8052897640e112eb83a9d7.html">dependencies</a></li><li class="navelem"><a href="dir_fa9ce664514f5d06307de03d983b2058.html">glm</a></li><li class="navelem"><a href="dir_289f17bf98dadd57856b911627c402b7.html">include</a></li><li class="navelem"><a href="dir_0f7b3f3b7b8ca5296994e8b1297d7391.html">glm</a></li><li class="navelem"><a href="dir_933b11230c47e1e0cd3a8d68e5134224.html">gtx</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">normalize_dot.inl</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="normalize__dot_8inl.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceglm.html">glm</a></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>{</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    <span class="keyword">template</span>&lt;length_t L, <span class="keyword">typename</span> T, qualifier Q&gt;</div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="group__gtx__normalize__dot.html#gacb140a2b903115d318c8b0a2fb5a5daa">    6</a></span>    <a class="code hl_define" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> T <a class="code hl_function" href="group__gtx__normalize__dot.html#gacb140a2b903115d318c8b0a2fb5a5daa">normalizeDot</a>(<a class="code hl_struct" href="structglm_1_1vec.html">vec&lt;L, T, Q&gt;</a> <span class="keyword">const</span>&amp; x, <a class="code hl_struct" href="structglm_1_1vec.html">vec&lt;L, T, Q&gt;</a> <span class="keyword">const</span>&amp; y)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a>(x, y) * <a class="code hl_function" href="namespaceglm.html#a5e3dd2bba414db15477d43ca9d71acf5">glm::inversesqrt</a>(<a class="code hl_function" href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a>(x, x) * <a class="code hl_function" href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a>(y, y));</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    }</div>
+</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">template</span>&lt;length_t L, <span class="keyword">typename</span> T, qualifier Q&gt;</div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="group__gtx__normalize__dot.html#ga2746fb9b5bd22b06b2f7c8babba5de9e">   12</a></span>    <a class="code hl_define" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> T <a class="code hl_function" href="group__gtx__normalize__dot.html#ga2746fb9b5bd22b06b2f7c8babba5de9e">fastNormalizeDot</a>(<a class="code hl_struct" href="structglm_1_1vec.html">vec&lt;L, T, Q&gt;</a> <span class="keyword">const</span>&amp; x, <a class="code hl_struct" href="structglm_1_1vec.html">vec&lt;L, T, Q&gt;</a> <span class="keyword">const</span>&amp; y)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a>(x, y) * <a class="code hl_function" href="group__gtx__fast__square__root.html#ga7f081b14d9c7035c8714eba5f7f75a8f">glm::fastInverseSqrt</a>(<a class="code hl_function" href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a>(x, x) * <a class="code hl_function" href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a>(y, y));</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    }</div>
+</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}<span class="comment">//namespace glm</span></div>
+<div class="ttc" id="agroup__gtx__fast__square__root_html_ga7f081b14d9c7035c8714eba5f7f75a8f"><div class="ttname"><a href="group__gtx__fast__square__root.html#ga7f081b14d9c7035c8714eba5f7f75a8f">glm::fastInverseSqrt</a></div><div class="ttdeci">GLM_FUNC_DECL genType fastInverseSqrt(genType x)</div><div class="ttdef"><b>Definition</b> <a href="fast__square__root_8inl_source.html#l00022">fast_square_root.inl:22</a></div></div>
+<div class="ttc" id="agroup__gtx__normalize__dot_html_ga2746fb9b5bd22b06b2f7c8babba5de9e"><div class="ttname"><a href="group__gtx__normalize__dot.html#ga2746fb9b5bd22b06b2f7c8babba5de9e">glm::fastNormalizeDot</a></div><div class="ttdeci">GLM_FUNC_DECL T fastNormalizeDot(vec&lt; L, T, Q &gt; const &amp;x, vec&lt; L, T, Q &gt; const &amp;y)</div><div class="ttdef"><b>Definition</b> <a href="#l00012">normalize_dot.inl:12</a></div></div>
+<div class="ttc" id="agroup__gtx__normalize__dot_html_gacb140a2b903115d318c8b0a2fb5a5daa"><div class="ttname"><a href="group__gtx__normalize__dot.html#gacb140a2b903115d318c8b0a2fb5a5daa">glm::normalizeDot</a></div><div class="ttdeci">GLM_FUNC_DECL T normalizeDot(vec&lt; L, T, Q &gt; const &amp;x, vec&lt; L, T, Q &gt; const &amp;y)</div><div class="ttdef"><b>Definition</b> <a href="#l00006">normalize_dot.inl:6</a></div></div>
+<div class="ttc" id="anamespaceglm_html"><div class="ttname"><a href="namespaceglm.html">glm</a></div><div class="ttdoc">Core features</div><div class="ttdef"><b>Definition</b> <a href="common_8hpp_source.html#l00020">common.hpp:21</a></div></div>
+<div class="ttc" id="anamespaceglm_html_a5e3dd2bba414db15477d43ca9d71acf5"><div class="ttname"><a href="namespaceglm.html#a5e3dd2bba414db15477d43ca9d71acf5">glm::inversesqrt</a></div><div class="ttdeci">GLM_FUNC_QUALIFIER genType inversesqrt(genType x)</div><div class="ttdef"><b>Definition</b> <a href="func__exponential_8inl_source.html#l00136">func_exponential.inl:136</a></div></div>
+<div class="ttc" id="anamespaceglm_html_aee4f67dd98afd5ecd486c06bbf72211d"><div class="ttname"><a href="namespaceglm.html#aee4f67dd98afd5ecd486c06bbf72211d">glm::dot</a></div><div class="ttdeci">GLM_FUNC_QUALIFIER GLM_CONSTEXPR T dot(T x, T y)</div><div class="ttdef"><b>Definition</b> <a href="func__geometric_8inl_source.html#l00160">func_geometric.inl:160</a></div></div>
+<div class="ttc" id="asetup_8hpp_html_a33fdea6f91c5f834105f7415e2a64407"><div class="ttname"><a href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a></div><div class="ttdeci">#define GLM_FUNC_QUALIFIER</div><div class="ttdef"><b>Definition</b> <a href="setup_8hpp_source.html#l00499">setup.hpp:499</a></div></div>
+<div class="ttc" id="astructglm_1_1vec_html"><div class="ttname"><a href="structglm_1_1vec.html">glm::vec</a></div><div class="ttdef"><b>Definition</b> <a href="qualifier_8hpp_source.html#l00035">qualifier.hpp:35</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
