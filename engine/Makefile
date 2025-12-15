@@ -1,82 +1,90 @@
-CXX = g++
-AR = ar
-LD = g++
-WINDRES = windres
+CXX := g++
+LD  := g++
 
-INC = 
-CFLAGS = -Wall -std=c++20 -fPIC -m64 -fexceptions
-RCFLAGS = 
-RESINC = 
-LIBDIR = 
-LIB = 
-LDFLAGS = -m64
+# --- CONFIGURAZIONE NOMI ---
+BASE_NAME := engine
+# Nome dell'eseguibile dei test
+TESTS_RUNNER := $(BASE_NAME)-tests-runner
+# File sorgente specifico dei test (nella root)
+TEST_SRC := engine_test.cpp
 
-INC_DEBUG = $(INC)
-CFLAGS_DEBUG = $(CFLAGS) -g -D_DEBUG
-RESINC_DEBUG = $(RESINC)
-RCFLAGS_DEBUG = $(RCFLAGS)
-LIBDIR_DEBUG = $(LIBDIR)
-LIB_DEBUG = $(LIB)
-LDFLAGS_DEBUG = $(LDFLAGS)
-OBJDIR_DEBUG = obj/Debug
-DEP_DEBUG = 
-OUT_DEBUG = bin/Debug/libengine.so
+# --- SORGENTI ENGINE ---
+SRC_DIR := .
+# Raccoglie tutti i .cpp MA esclude il file di test per non metterlo nella .so
+ALL_CPPS := $(wildcard $(SRC_DIR)/*.cpp)
+SRCS     := $(filter-out $(SRC_DIR)/$(TEST_SRC), $(ALL_CPPS))
 
-INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -O2
-RESINC_RELEASE = $(RESINC)
-RCFLAGS_RELEASE = $(RCFLAGS)
-LIBDIR_RELEASE = $(LIBDIR)
-LIB_RELEASE = $(LIB)
-LDFLAGS_RELEASE = $(LDFLAGS) -s
-OBJDIR_RELEASE = obj/Release
-DEP_RELEASE = 
-OUT_RELEASE = bin/Release/libengine.so
+# --- INCLUDE E FLAG ---
+# include locali (engine + dipendenze vendored)
+INCLUDES := -I. -I../dependencies/glm/include -I../dependencies/freeglut/include -I../dependencies/freeimage/include
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/engine.o
+# flag comuni: warning, standard, PIC, depfile per header
+CXXFLAGS_COMMON := -Wall -Wextra -std=c++20 -fPIC -m64 -fexceptions -MMD -MP $(INCLUDES)
+# link shared e librerie OpenGL/freeglut di sistema
+LDFLAGS_COMMON := -shared -m64 -Wl,-rpath,'$$ORIGIN/../../dependencies/lib'
+LIBS := -lglut -lGL -lGLU -lfreeimage -lm
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/engine.o
+# --- CONFIGURAZIONE DEBUG ---
+OBJDIR_Debug    := obj/Debug
+BINDIR_Debug    := bin/Debug
+OBJS_Debug      := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Debug)/%.o)
+DEPS_Debug      := $(OBJS_Debug:.o=.d)
+TARGET_Debug    := $(BINDIR_Debug)/lib$(BASE_NAME).so
+CXXFLAGS_Debug  := $(CXXFLAGS_COMMON) -g -D_DEBUG
 
+# --- CONFIGURAZIONE RELEASE ---
+OBJDIR_Release    := obj/Release
+BINDIR_Release    := bin/Release
+OBJS_Release      := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJDIR_Release)/%.o)
+DEPS_Release      := $(OBJS_Release:.o=.d)
+TARGET_Release    := $(BINDIR_Release)/lib$(BASE_NAME).so
+CXXFLAGS_Release  := $(CXXFLAGS_COMMON) -O2 -DNDEBUG
+
+# --- TARGETS ---
 all: debug release
 
-clean: clean_debug clean_release
+# build Debug/Release
+debug: $(TARGET_Debug)
+release: $(TARGET_Release)
 
-before_debug: 
-	test -d bin/Debug || mkdir -p bin/Debug
-	test -d $(OBJDIR_DEBUG) || mkdir -p $(OBJDIR_DEBUG)
+# --- LINKING LIBRERIA CONDIVISA ---
+$(TARGET_Debug): $(OBJS_Debug) | $(BINDIR_Debug)
+	$(LD) $(LDFLAGS_COMMON) -o $@ $(OBJS_Debug) $(LIBS)
 
-after_debug: 
+$(TARGET_Release): $(OBJS_Release) | $(BINDIR_Release)
+	$(LD) $(LDFLAGS_COMMON) -s -o $@ $(OBJS_Release) $(LIBS)
 
-debug: before_debug out_debug after_debug
+# --- COMPILAZIONE OGGETTI ---
+$(OBJDIR_Debug)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Debug)
+	$(CXX) $(CXXFLAGS_Debug) -c $< -o $@
 
-out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
-	$(LD) -shared $(LIBDIR_DEBUG) $(OBJ_DEBUG)  -o $(OUT_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+$(OBJDIR_Release)/%.o: $(SRC_DIR)/%.cpp | $(OBJDIR_Release)
+	$(CXX) $(CXXFLAGS_Release) -c $< -o $@
 
-$(OBJDIR_DEBUG)/engine.o: engine.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c engine.cpp -o $(OBJDIR_DEBUG)/engine.o
+# --- COMPILAZIONE ED ESECUZIONE TEST ---
+# Il test runner dipende dalla build Debug dell'engine
+tests: $(TESTS_RUNNER)
 
-clean_debug: 
-	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
-	rm -rf bin/Debug
-	rm -rf $(OBJDIR_DEBUG)
+# Compila l'eseguibile di test linkandolo alla libengine.so (Debug)
+$(TESTS_RUNNER): $(TEST_SRC) $(TARGET_Debug)
+	$(CXX) $(CXXFLAGS_Debug) $(TEST_SRC) -o $@ \
+		-L$(BINDIR_Debug) -l$(BASE_NAME) $(LIBS) \
+		-Wl,-rpath,'$$ORIGIN/$(BINDIR_Debug)'
 
-before_release: 
-	test -d bin/Release || mkdir -p bin/Release
-	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
+# Target per GitLab CI o per lanciare i test manualmente
+run-tests: tests
+	./$(TESTS_RUNNER)
 
-after_release: 
+# --- UTILS ---
+# creazione cartelle obj/bin
+$(OBJDIR_Debug) $(BINDIR_Debug) $(OBJDIR_Release) $(BINDIR_Release):
+	mkdir -p $@
 
-release: before_release out_release after_release
+# pulizia (rimuove anche il runner dei test)
+clean:
+	rm -rf $(OBJDIR_Debug) $(OBJDIR_Release) $(BINDIR_Debug) $(BINDIR_Release) $(TESTS_RUNNER)
 
-out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
-	$(LD) -shared $(LIBDIR_RELEASE) $(OBJ_RELEASE)  -o $(OUT_RELEASE) $(LDFLAGS_RELEASE) $(LIB_RELEASE)
+# include automatico dei depfile generati
+-include $(DEPS_Debug) $(DEPS_Release)
 
-$(OBJDIR_RELEASE)/engine.o: engine.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c engine.cpp -o $(OBJDIR_RELEASE)/engine.o
-
-clean_release: 
-	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
-	rm -rf bin/Release
-	rm -rf $(OBJDIR_RELEASE)
-
-.PHONY: before_debug after_debug clean_debug before_release after_release clean_release
+.PHONY: all debug release clean tests run-tests

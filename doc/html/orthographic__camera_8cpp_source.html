@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente engine/orthographic_camera.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_996f45160da62e1a3d7f6046fad68f51.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">orthographic_camera.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="orthographic__camera_8cpp.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="orthographic__camera_8h.html">orthographic_camera.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespace_eng.html">Eng</a>;</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span></div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="class_eng_1_1_orthographic___camera.html#a80cf2b3352db43cecb1201ee30518149">   14</a></span><a class="code hl_function" href="class_eng_1_1_orthographic___camera.html#a6633678b452a363c934bedf89d3f88fe">Orthographic_Camera::Orthographic_Camera</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> left, <span class="keyword">const</span> <span class="keywordtype">float</span> right,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                         <span class="keyword">const</span> <span class="keywordtype">float</span> top, <span class="keyword">const</span> <span class="keywordtype">float</span> bottom,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                         <span class="keyword">const</span> <span class="keywordtype">float</span> nearPlane, <span class="keyword">const</span> <span class="keywordtype">float</span> farPlane) noexcept</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    : <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#a9a5d79f477d8ad6bbc4c7240339ca809">left_</a>{left}, right_{right}, top_{top}, bottom_{bottom}, nearPlane_{nearPlane}, farPlane_{farPlane}</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>{</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="comment">// @brief Calcola la matrice di proiezione ortografica iniziale</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    projectionMatrix_ = <a class="code hl_function" href="group__ext__matrix__clip__space.html#gaa8568ef1d14d6654becb860ed6163817">glm::ortho</a>(left_, right_, bottom_, top_, nearPlane_, farPlane_);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_eng_1_1_orthographic___camera.html#a42fadc18e92c070e51f19f7e30d9c94c">   28</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_orthographic___camera.html#a42fadc18e92c070e51f19f7e30d9c94c">Orthographic_Camera::render</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a>&amp; modelViewMatrix) {}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span></div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_eng_1_1_orthographic___camera.html#a54e6c088a83d14e4b3e8a2fc755d4222">   38</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_orthographic___camera.html#a54e6c088a83d14e4b3e8a2fc755d4222">Orthographic_Camera::onResize</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#a9a5d79f477d8ad6bbc4c7240339ca809">left_</a> = 0.0f;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#ad3adc659f5df7e7406bd0bc9998d66d8">bottom_</a> = 0.0f;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#ab4d9326a480b0c7a29d1e33e080baea4">right_</a> = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(width);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#aba2b9eed7293de531e3ba13466fce5d7">top_</a> = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(height);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#aabc20175dedc37a0398749eacd79c475">projectionMatrix_</a> = <a class="code hl_function" href="group__ext__matrix__clip__space.html#gaa8568ef1d14d6654becb860ed6163817">glm::ortho</a>(<a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#a9a5d79f477d8ad6bbc4c7240339ca809">left_</a>, <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#ab4d9326a480b0c7a29d1e33e080baea4">right_</a>, <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#ad3adc659f5df7e7406bd0bc9998d66d8">bottom_</a>, <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#aba2b9eed7293de531e3ba13466fce5d7">top_</a>, <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#a4d975fe3ef1181e8298030fcdf9cfa34">nearPlane_</a>, <a class="code hl_variable" href="class_eng_1_1_orthographic___camera.html#a7231761d7573148f6d0b98185bc0f89f">farPlane_</a>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+</div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_a42fadc18e92c070e51f19f7e30d9c94c"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#a42fadc18e92c070e51f19f7e30d9c94c">Eng::Orthographic_Camera::render</a></div><div class="ttdeci">void render(const glm::mat4 &amp;modelViewMatrix) override</div><div class="ttdoc">Renderizza la camera (override).</div><div class="ttdef"><b>Definition</b> <a href="#l00028">orthographic_camera.cpp:28</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_a4d975fe3ef1181e8298030fcdf9cfa34"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#a4d975fe3ef1181e8298030fcdf9cfa34">Eng::Orthographic_Camera::nearPlane_</a></div><div class="ttdeci">float nearPlane_</div><div class="ttdoc">Distanza del piano vicino.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00084">orthographic_camera.h:84</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_a54e6c088a83d14e4b3e8a2fc755d4222"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#a54e6c088a83d14e4b3e8a2fc755d4222">Eng::Orthographic_Camera::onResize</a></div><div class="ttdeci">void onResize(int width, int height) noexcept override</div><div class="ttdoc">Gestisce il ridimensionamento della finestra ricalcolando la proiezione.</div><div class="ttdef"><b>Definition</b> <a href="#l00038">orthographic_camera.cpp:38</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_a6633678b452a363c934bedf89d3f88fe"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#a6633678b452a363c934bedf89d3f88fe">Eng::Orthographic_Camera::Orthographic_Camera</a></div><div class="ttdeci">Orthographic_Camera() noexcept=default</div><div class="ttdoc">Costruttore di default.</div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_a7231761d7573148f6d0b98185bc0f89f"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#a7231761d7573148f6d0b98185bc0f89f">Eng::Orthographic_Camera::farPlane_</a></div><div class="ttdeci">float farPlane_</div><div class="ttdoc">Distanza del piano lontano.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00086">orthographic_camera.h:86</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_a9a5d79f477d8ad6bbc4c7240339ca809"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#a9a5d79f477d8ad6bbc4c7240339ca809">Eng::Orthographic_Camera::left_</a></div><div class="ttdeci">float left_</div><div class="ttdoc">Coordinata sinistra del frustum.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00076">orthographic_camera.h:76</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_aabc20175dedc37a0398749eacd79c475"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#aabc20175dedc37a0398749eacd79c475">Eng::Orthographic_Camera::projectionMatrix_</a></div><div class="ttdeci">glm::mat4 projectionMatrix_</div><div class="ttdoc">Matrice di proiezione.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00089">orthographic_camera.h:89</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_ab4d9326a480b0c7a29d1e33e080baea4"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#ab4d9326a480b0c7a29d1e33e080baea4">Eng::Orthographic_Camera::right_</a></div><div class="ttdeci">float right_</div><div class="ttdoc">Coordinata destra del frustum.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00078">orthographic_camera.h:78</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_aba2b9eed7293de531e3ba13466fce5d7"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#aba2b9eed7293de531e3ba13466fce5d7">Eng::Orthographic_Camera::top_</a></div><div class="ttdeci">float top_</div><div class="ttdoc">Coordinata superiore del frustum.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00080">orthographic_camera.h:80</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_orthographic___camera_html_ad3adc659f5df7e7406bd0bc9998d66d8"><div class="ttname"><a href="class_eng_1_1_orthographic___camera.html#ad3adc659f5df7e7406bd0bc9998d66d8">Eng::Orthographic_Camera::bottom_</a></div><div class="ttdeci">float bottom_</div><div class="ttdoc">Coordinata inferiore del frustum.</div><div class="ttdef"><b>Definition</b> <a href="orthographic__camera_8h_source.html#l00082">orthographic_camera.h:82</a></div></div>
+<div class="ttc" id="agroup__core__matrix_html_gac54cbc572f1349a255fe476ca6a42a7b"><div class="ttname"><a href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a></div><div class="ttdeci">mat&lt; 4, 4, float, defaultp &gt; mat4</div><div class="ttdef"><b>Definition</b> <a href="matrix__float4x4_8hpp_source.html#l00020">matrix_float4x4.hpp:20</a></div></div>
+<div class="ttc" id="agroup__ext__matrix__clip__space_html_gaa8568ef1d14d6654becb860ed6163817"><div class="ttname"><a href="group__ext__matrix__clip__space.html#gaa8568ef1d14d6654becb860ed6163817">glm::ortho</a></div><div class="ttdeci">GLM_FUNC_DECL mat&lt; 4, 4, T, defaultp &gt; ortho(T left, T right, T bottom, T top)</div><div class="ttdef"><b>Definition</b> <a href="matrix__clip__space_8inl_source.html#l00004">matrix_clip_space.inl:4</a></div></div>
+<div class="ttc" id="anamespace_eng_html"><div class="ttname"><a href="namespace_eng.html">Eng</a></div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00009">base.h:9</a></div></div>
+<div class="ttc" id="aorthographic__camera_8h_html"><div class="ttname"><a href="orthographic__camera_8h.html">orthographic_camera.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

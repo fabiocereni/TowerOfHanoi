@@ -1,0 +1,9 @@
+<map id="Eng::Orthographic_Camera" name="Eng::Orthographic_Camera">
+<area shape="rect" id="Node000001" title="Rappresenta una camera con proiezione ortografica." alt="" coords="5,226,185,252"/>
+<area shape="rect" id="Node000002" href="$class_eng_1_1_camera.html" title=" " alt="" coords="46,153,144,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,192,97,227,93,225,93,196"/>
+<area shape="rect" id="Node000003" href="$class_eng_1_1_node.html" title=" " alt="" coords="53,79,137,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="96,118,98,153,92,152,94,123"/>
+<area shape="rect" id="Node000004" href="$class_eng_1_1_object.html" title=" " alt="" coords="50,5,140,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="96,44,98,79,92,78,94,49"/>
+</map>

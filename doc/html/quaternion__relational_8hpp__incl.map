@@ -1,0 +1,22 @@
+<map id="dependencies/glm/include/glm/ext/quaternion_relational.hpp" name="dependencies/glm/include/glm/ext/quaternion_relational.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="175,5,391,46"/>
+<area shape="rect" id="Node000002" href="$vector__relational_8hpp.html" title=" " alt="" coords="117,94,270,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,48,220,85,217,82,263,44"/>
+<area shape="rect" id="Node000010" href="$quaternion__relational_8inl.html" title=" " alt="" coords="295,94,452,120"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="305,44,351,83,346,84,305,49"/>
+<area shape="rect" id="Node000003" href="$qualifier_8hpp.html" title=" " alt="" coords="31,175,156,201"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="177,122,123,167,119,163,180,118"/>
+<area shape="rect" id="Node000004" href="$setup_8hpp.html" title=" " alt="" coords="86,264,165,290"/>
+<area shape="poly" id="edge7_Node000002_Node000004" title=" " alt="" coords="193,118,186,161,171,209,146,253,141,250,166,207,181,159,190,123"/>
+<area shape="rect" id="Node000008" href="$func__vector__relational_8inl.html" title=" " alt="" coords="231,168,356,208"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="209,117,260,158,255,159,209,123"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="99,199,118,249,113,249,97,204"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,345,70,371"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="115,290,64,336,61,332,109,290"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="93,345,158,371"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="127,288,128,330,123,328,124,292"/>
+<area shape="rect" id="Node000007" href="$platform_8h.html" title=" " alt="" coords="181,345,304,371"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="144,287,215,335,210,337,142,292"/>
+<area shape="rect" id="Node000009" href="$func__vector__relational__simd_8inl.html" title=" " alt="" coords="219,256,368,297"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="295,207,296,242,291,240,292,211"/>
+</map>

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente engine/light.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_996f45160da62e1a3d7f6046fad68f51.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">light.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="light_8h.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="engine__api_8h.html">engine_api.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="glm_8hpp.html">glm/glm.hpp</a>&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="gtc_2matrix__transform_8hpp.html">glm/gtc/matrix_transform.hpp</a>&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="node_8h.html">node.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespace_eng.html">Eng</a> {</div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="};">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html">   13</a></span>   <span class="keyword">class </span><a class="code hl_define" href="engine__api_8h.html#a2ef14742296b6d1fdaf5e70dfdd60996">ENG_API</a> <a class="code hl_function" href="class_eng_1_1_light.html#a9fb224db58ccef2dfae2173f03a961dd">Light</a> : <span class="keyword">public</span> <a class="code hl_function" href="class_eng_1_1_node.html#aa61d025d65a8b40be59110988469760d">Node</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <span class="keyword">explicit</span> <a class="code hl_function" href="class_eng_1_1_light.html#a9fb224db58ccef2dfae2173f03a961dd">Light</a>(<span class="keywordtype">int</span> index) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a9349cbbc01d711434cd0dd921903262a">   18</a></span>      <span class="keyword">virtual</span> <a class="code hl_function" href="class_eng_1_1_light.html#a9349cbbc01d711434cd0dd921903262a">~Light</a>() noexcept = default;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#aaa230ca60aa5b8a25b573c0169646048">   21</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#aaa230ca60aa5b8a25b573c0169646048">render</a>(const <a class="code hl_namespace" href="namespaceglm.html">glm</a>::mat4&amp; modelViewMatrix) override = 0;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a9c26b363033cde47ab70555c708a3a2a">   26</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#a9c26b363033cde47ab70555c708a3a2a">setAmbient</a>(const <a class="code hl_namespace" href="namespaceglm.html">glm</a>::vec3&amp; c) noexcept { <a class="code hl_variable" href="class_eng_1_1_light.html#a2435c27931900733144448079e5a7a5f">ambient_</a> = c; }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#ae028657e7cb52e3f7554c802afb15dfa">   27</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#ae028657e7cb52e3f7554c802afb15dfa">setDiffuse</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a>&amp; c) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="class_eng_1_1_light.html#afe3adc77a8197381a2abc1690dba6d71">diffuse_</a> = c; }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#ad6ac1350b2d900322540f2543a122cfe">   28</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#ad6ac1350b2d900322540f2543a122cfe">setSpecular</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a>&amp; c) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="class_eng_1_1_light.html#a66e3c9673378d276942bb68ce69901f9">specular_</a> = c; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a9ff1dd3712a1b3cf169c14cf310096b7">   29</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#a9ff1dd3712a1b3cf169c14cf310096b7">setRadius</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> r) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="class_eng_1_1_light.html#a9bef0631eb615a728c5465bbead986e4">radius_</a> = r; }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a25e5b70815541828c389020c7f13daf8">   30</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#a25e5b70815541828c389020c7f13daf8">setLinearAtt</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> l) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="class_eng_1_1_light.html#af9179ce64fee818289a91a747ebb40ee">attLinear_</a> = l; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#ab39b932733205df19edaaf867b7f9d57">   31</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#ab39b932733205df19edaaf867b7f9d57">setActive</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> newState) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">active_</a> = newState; }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a3fdeec00f2988e140a420e76230ef996">   34</a></span>      [[nodiscard]] <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="class_eng_1_1_light.html#a3fdeec00f2988e140a420e76230ef996">getLightNumber</a>() noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a1fc64aef1f098357b0eeeae0a0cd273d">lightNumber_</a>; }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#ae94eef76a00c09cafe174aff39e1b0a9">   37</a></span>      [[nodiscard]] <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a> <a class="code hl_function" href="class_eng_1_1_light.html#ae94eef76a00c09cafe174aff39e1b0a9">getAmbient</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a2435c27931900733144448079e5a7a5f">ambient_</a>; }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a94102ecc71a293ed6e14c8eabf22f70c">   38</a></span>      [[nodiscard]] <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a> <a class="code hl_function" href="class_eng_1_1_light.html#a94102ecc71a293ed6e14c8eabf22f70c">getDiffuse</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#afe3adc77a8197381a2abc1690dba6d71">diffuse_</a>; }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a270501433e396a523c97f5757edf8098">   39</a></span>      [[nodiscard]] <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a> <a class="code hl_function" href="class_eng_1_1_light.html#a270501433e396a523c97f5757edf8098">getSpecular</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a66e3c9673378d276942bb68ce69901f9">specular_</a>; }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a0f9619437dd7311ff45829bdb902cc87">   40</a></span>      [[nodiscard]] <span class="keywordtype">float</span> <a class="code hl_function" href="class_eng_1_1_light.html#a0f9619437dd7311ff45829bdb902cc87">getRadius</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a9bef0631eb615a728c5465bbead986e4">radius_</a>; }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a960ff07d67346f0c61af66370f857f94">   41</a></span>      [[nodiscard]] <span class="keywordtype">float</span> <a class="code hl_function" href="class_eng_1_1_light.html#a960ff07d67346f0c61af66370f857f94">getLinearAtt</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#af9179ce64fee818289a91a747ebb40ee">attLinear_</a>; }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a11e5b513ab256902a7b802f8f77cddac">   42</a></span>      [[nodiscard]] <span class="keywordtype">bool</span> <a class="code hl_function" href="class_eng_1_1_light.html#a11e5b513ab256902a7b802f8f77cddac">isActive</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">active_</a>; }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a1ce8073ea66f84fae814999d2dfface0">   44</a></span>      <span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_light.html#a1ce8073ea66f84fae814999d2dfface0">toggleLight</a>() { <a class="code hl_variable" href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">active_</a> = !<a class="code hl_variable" href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">active_</a>; }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">   49</a></span>      <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">active_</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a1fc64aef1f098357b0eeeae0a0cd273d">   52</a></span>      <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a1fc64aef1f098357b0eeeae0a0cd273d">lightNumber_</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a75c677ccc3a3ef163c4ad169d4281011">   54</a></span>      <span class="keywordtype">int</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a75c677ccc3a3ef163c4ad169d4281011">index_</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a2435c27931900733144448079e5a7a5f">   57</a></span>      <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a> <a class="code hl_variable" href="class_eng_1_1_light.html#a2435c27931900733144448079e5a7a5f">ambient_</a>{0.0f};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#afe3adc77a8197381a2abc1690dba6d71">   59</a></span>      <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a> <a class="code hl_variable" href="class_eng_1_1_light.html#afe3adc77a8197381a2abc1690dba6d71">diffuse_</a>{1.0f};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a66e3c9673378d276942bb68ce69901f9">   61</a></span>      <a class="code hl_typedef" href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a> <a class="code hl_variable" href="class_eng_1_1_light.html#a66e3c9673378d276942bb68ce69901f9">specular_</a>{1.0f};</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#a9bef0631eb615a728c5465bbead986e4">   64</a></span>      <span class="keywordtype">float</span> <a class="code hl_variable" href="class_eng_1_1_light.html#a9bef0631eb615a728c5465bbead986e4">radius_</a> = 1.0f;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="class_eng_1_1_light.html#af9179ce64fee818289a91a747ebb40ee">   67</a></span>      <span class="keywordtype">float</span> <a class="code hl_variable" href="class_eng_1_1_light.html#af9179ce64fee818289a91a747ebb40ee">attLinear_</a> = 0.0f;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>   };</div>
+</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a0f9619437dd7311ff45829bdb902cc87"><div class="ttname"><a href="class_eng_1_1_light.html#a0f9619437dd7311ff45829bdb902cc87">Eng::Light::getRadius</a></div><div class="ttdeci">float getRadius() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00040">light.h:40</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a11e5b513ab256902a7b802f8f77cddac"><div class="ttname"><a href="class_eng_1_1_light.html#a11e5b513ab256902a7b802f8f77cddac">Eng::Light::isActive</a></div><div class="ttdeci">bool isActive() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00042">light.h:42</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a1ce8073ea66f84fae814999d2dfface0"><div class="ttname"><a href="class_eng_1_1_light.html#a1ce8073ea66f84fae814999d2dfface0">Eng::Light::toggleLight</a></div><div class="ttdeci">void toggleLight()</div><div class="ttdef"><b>Definition</b> <a href="#l00044">light.h:44</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a1fc64aef1f098357b0eeeae0a0cd273d"><div class="ttname"><a href="class_eng_1_1_light.html#a1fc64aef1f098357b0eeeae0a0cd273d">Eng::Light::lightNumber_</a></div><div class="ttdeci">static int lightNumber_</div><div class="ttdoc">Numero globale di luci.</div><div class="ttdef"><b>Definition</b> <a href="#l00052">light.h:52</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a2435c27931900733144448079e5a7a5f"><div class="ttname"><a href="class_eng_1_1_light.html#a2435c27931900733144448079e5a7a5f">Eng::Light::ambient_</a></div><div class="ttdeci">glm::vec3 ambient_</div><div class="ttdoc">Componente ambient.</div><div class="ttdef"><b>Definition</b> <a href="#l00057">light.h:57</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a25e5b70815541828c389020c7f13daf8"><div class="ttname"><a href="class_eng_1_1_light.html#a25e5b70815541828c389020c7f13daf8">Eng::Light::setLinearAtt</a></div><div class="ttdeci">void setLinearAtt(const float l) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00030">light.h:30</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a270501433e396a523c97f5757edf8098"><div class="ttname"><a href="class_eng_1_1_light.html#a270501433e396a523c97f5757edf8098">Eng::Light::getSpecular</a></div><div class="ttdeci">glm::vec3 getSpecular() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00039">light.h:39</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a3fdeec00f2988e140a420e76230ef996"><div class="ttname"><a href="class_eng_1_1_light.html#a3fdeec00f2988e140a420e76230ef996">Eng::Light::getLightNumber</a></div><div class="ttdeci">static int getLightNumber() noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00034">light.h:34</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a66e3c9673378d276942bb68ce69901f9"><div class="ttname"><a href="class_eng_1_1_light.html#a66e3c9673378d276942bb68ce69901f9">Eng::Light::specular_</a></div><div class="ttdeci">glm::vec3 specular_</div><div class="ttdoc">Componente speculare.</div><div class="ttdef"><b>Definition</b> <a href="#l00061">light.h:61</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a75c677ccc3a3ef163c4ad169d4281011"><div class="ttname"><a href="class_eng_1_1_light.html#a75c677ccc3a3ef163c4ad169d4281011">Eng::Light::index_</a></div><div class="ttdeci">int index_</div><div class="ttdoc">Numero di ogni luce.</div><div class="ttdef"><b>Definition</b> <a href="#l00054">light.h:54</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a9349cbbc01d711434cd0dd921903262a"><div class="ttname"><a href="class_eng_1_1_light.html#a9349cbbc01d711434cd0dd921903262a">Eng::Light::~Light</a></div><div class="ttdeci">virtual ~Light() noexcept=default</div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a94102ecc71a293ed6e14c8eabf22f70c"><div class="ttname"><a href="class_eng_1_1_light.html#a94102ecc71a293ed6e14c8eabf22f70c">Eng::Light::getDiffuse</a></div><div class="ttdeci">glm::vec3 getDiffuse() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00038">light.h:38</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a960ff07d67346f0c61af66370f857f94"><div class="ttname"><a href="class_eng_1_1_light.html#a960ff07d67346f0c61af66370f857f94">Eng::Light::getLinearAtt</a></div><div class="ttdeci">float getLinearAtt() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00041">light.h:41</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a9bef0631eb615a728c5465bbead986e4"><div class="ttname"><a href="class_eng_1_1_light.html#a9bef0631eb615a728c5465bbead986e4">Eng::Light::radius_</a></div><div class="ttdeci">float radius_</div><div class="ttdoc">Distanza di contribuzione.</div><div class="ttdef"><b>Definition</b> <a href="#l00064">light.h:64</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a9c26b363033cde47ab70555c708a3a2a"><div class="ttname"><a href="class_eng_1_1_light.html#a9c26b363033cde47ab70555c708a3a2a">Eng::Light::setAmbient</a></div><div class="ttdeci">void setAmbient(const glm::vec3 &amp;c) noexcept</div><div class="ttdoc">getter e setter</div><div class="ttdef"><b>Definition</b> <a href="#l00026">light.h:26</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a9fb224db58ccef2dfae2173f03a961dd"><div class="ttname"><a href="class_eng_1_1_light.html#a9fb224db58ccef2dfae2173f03a961dd">Eng::Light::Light</a></div><div class="ttdeci">Light(int index) noexcept</div><div class="ttdoc">Costruttore e distruttore.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00007">light.cpp:7</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_a9ff1dd3712a1b3cf169c14cf310096b7"><div class="ttname"><a href="class_eng_1_1_light.html#a9ff1dd3712a1b3cf169c14cf310096b7">Eng::Light::setRadius</a></div><div class="ttdeci">void setRadius(const float r) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00029">light.h:29</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_aaa230ca60aa5b8a25b573c0169646048"><div class="ttname"><a href="class_eng_1_1_light.html#aaa230ca60aa5b8a25b573c0169646048">Eng::Light::render</a></div><div class="ttdeci">void render(const glm::mat4 &amp;modelViewMatrix) override=0</div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_ab39b932733205df19edaaf867b7f9d57"><div class="ttname"><a href="class_eng_1_1_light.html#ab39b932733205df19edaaf867b7f9d57">Eng::Light::setActive</a></div><div class="ttdeci">void setActive(const bool newState) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00031">light.h:31</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_aca2f37affc313d6109c6ebb24462265e"><div class="ttname"><a href="class_eng_1_1_light.html#aca2f37affc313d6109c6ebb24462265e">Eng::Light::active_</a></div><div class="ttdeci">bool active_</div><div class="ttdoc">Stato attuale.</div><div class="ttdef"><b>Definition</b> <a href="#l00049">light.h:49</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_ad6ac1350b2d900322540f2543a122cfe"><div class="ttname"><a href="class_eng_1_1_light.html#ad6ac1350b2d900322540f2543a122cfe">Eng::Light::setSpecular</a></div><div class="ttdeci">void setSpecular(const glm::vec3 &amp;c) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00028">light.h:28</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_ae028657e7cb52e3f7554c802afb15dfa"><div class="ttname"><a href="class_eng_1_1_light.html#ae028657e7cb52e3f7554c802afb15dfa">Eng::Light::setDiffuse</a></div><div class="ttdeci">void setDiffuse(const glm::vec3 &amp;c) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00027">light.h:27</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_ae94eef76a00c09cafe174aff39e1b0a9"><div class="ttname"><a href="class_eng_1_1_light.html#ae94eef76a00c09cafe174aff39e1b0a9">Eng::Light::getAmbient</a></div><div class="ttdeci">glm::vec3 getAmbient() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00037">light.h:37</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_af9179ce64fee818289a91a747ebb40ee"><div class="ttname"><a href="class_eng_1_1_light.html#af9179ce64fee818289a91a747ebb40ee">Eng::Light::attLinear_</a></div><div class="ttdeci">float attLinear_</div><div class="ttdoc">Attenuazione lineare.</div><div class="ttdef"><b>Definition</b> <a href="#l00067">light.h:67</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_light_html_afe3adc77a8197381a2abc1690dba6d71"><div class="ttname"><a href="class_eng_1_1_light.html#afe3adc77a8197381a2abc1690dba6d71">Eng::Light::diffuse_</a></div><div class="ttdeci">glm::vec3 diffuse_</div><div class="ttdoc">Componente diffuse.</div><div class="ttdef"><b>Definition</b> <a href="#l00059">light.h:59</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_node_html_aa61d025d65a8b40be59110988469760d"><div class="ttname"><a href="class_eng_1_1_node.html#aa61d025d65a8b40be59110988469760d">Eng::Node::Node</a></div><div class="ttdeci">Node() noexcept</div><div class="ttdoc">Costruttori, distruttore, operatori di copia e spostamento.</div><div class="ttdef"><b>Definition</b> <a href="node_8cpp_source.html#l00009">node.cpp:9</a></div></div>
+<div class="ttc" id="aengine__api_8h_html"><div class="ttname"><a href="engine__api_8h.html">engine_api.h</a></div></div>
+<div class="ttc" id="aengine__api_8h_html_a2ef14742296b6d1fdaf5e70dfdd60996"><div class="ttname"><a href="engine__api_8h.html#a2ef14742296b6d1fdaf5e70dfdd60996">ENG_API</a></div><div class="ttdeci">#define ENG_API</div><div class="ttdef"><b>Definition</b> <a href="engine__api_8h_source.html#l00025">engine_api.h:25</a></div></div>
+<div class="ttc" id="aglm_8hpp_html"><div class="ttname"><a href="glm_8hpp.html">glm.hpp</a></div></div>
+<div class="ttc" id="agroup__core__vector_html_ga4320b87e41013b7e875f845f439fc498"><div class="ttname"><a href="group__core__vector.html#ga4320b87e41013b7e875f845f439fc498">glm::vec3</a></div><div class="ttdeci">vec&lt; 3, float, defaultp &gt; vec3</div><div class="ttdef"><b>Definition</b> <a href="vector__float3_8hpp_source.html#l00015">vector_float3.hpp:15</a></div></div>
+<div class="ttc" id="agtc_2matrix__transform_8hpp_html"><div class="ttname"><a href="gtc_2matrix__transform_8hpp.html">matrix_transform.hpp</a></div></div>
+<div class="ttc" id="anamespace_eng_html"><div class="ttname"><a href="namespace_eng.html">Eng</a></div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00009">base.h:9</a></div></div>
+<div class="ttc" id="anamespaceglm_html"><div class="ttname"><a href="namespaceglm.html">glm</a></div><div class="ttdoc">Core features</div><div class="ttdef"><b>Definition</b> <a href="common_8hpp_source.html#l00020">common.hpp:21</a></div></div>
+<div class="ttc" id="anode_8h_html"><div class="ttname"><a href="node_8h.html">node.h</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

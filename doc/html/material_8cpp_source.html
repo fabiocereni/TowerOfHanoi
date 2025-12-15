@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03:  File sorgente engine/material.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="dir_996f45160da62e1a3d7f6046fad68f51.html">engine</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="headertitle"><div class="title">material.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="material_8cpp.html">Vai alla documentazione di questo file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="material_8h.html">material.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="freeglut_8h.html">GL/freeglut.h</a>&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="type__ptr_8hpp.html">glm/gtc/type_ptr.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespace_eng.html">Eng</a>;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="class_eng_1_1_material.html#abc2febc698263b94c11ef69b4650ae06">   10</a></span><a class="code hl_function" href="class_eng_1_1_material.html#abc2febc698263b94c11ef69b4650ae06">Material::Material</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="group__core__vector.html#ga233f0e8f1aecf686e67c5c39316c4da8">glm::vec4</a>&amp; emission,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                   <span class="keyword">const</span> <a class="code hl_typedef" href="group__core__vector.html#ga233f0e8f1aecf686e67c5c39316c4da8">glm::vec4</a>&amp; ambient,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                   <span class="keyword">const</span> <a class="code hl_typedef" href="group__core__vector.html#ga233f0e8f1aecf686e67c5c39316c4da8">glm::vec4</a>&amp; diffuse,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                   <span class="keyword">const</span> <a class="code hl_typedef" href="group__core__vector.html#ga233f0e8f1aecf686e67c5c39316c4da8">glm::vec4</a>&amp; specular,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                   <span class="keyword">const</span> <span class="keywordtype">float</span> shininess,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                   std::string textureName)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>   : <a class="code hl_variable" href="class_eng_1_1_material.html#ad43f7d55f959e45bfc5f429e2b0da303">emission_</a>{emission}, <a class="code hl_variable" href="class_eng_1_1_material.html#a7cf80b75b52df047b5a60dac16c67f7e">ambient_</a>{ambient}, <a class="code hl_variable" href="class_eng_1_1_material.html#ad1dbdd01fc184a8fb59e435f3b5e4f63">diffuse_</a>{diffuse}, <a class="code hl_variable" href="class_eng_1_1_material.html#afe9cdc60f2514490001e2b57c8f86098">specular_</a>{specular}, <a class="code hl_variable" href="class_eng_1_1_material.html#aa1844f43de6d303cd83e18e3cc3cb6d6">shininess_</a>{shininess},</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>     <a class="code hl_variable" href="class_eng_1_1_material.html#af09b57f51751abff1df8c71610df81d5">textureName_</a> {<a class="code hl_namespace" href="namespacestd.html">std</a>::move(textureName)} {}</div>
+</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span></div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_eng_1_1_material.html#a95105be3857c86ca3bfdfa407be98dd7">   25</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_eng_1_1_material.html#a95105be3857c86ca3bfdfa407be98dd7">Material::render</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a>&amp; modelViewMatrix) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    glMaterialfv(GL_FRONT, GL_EMISSION, <a class="code hl_function" href="group__gtc__type__ptr.html#gaada83809aefafd7c3264772e6b24b685">glm::value_ptr</a>(<a class="code hl_variable" href="class_eng_1_1_material.html#ad43f7d55f959e45bfc5f429e2b0da303">emission_</a>));</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    glMaterialfv(GL_FRONT, GL_AMBIENT,  <a class="code hl_function" href="group__gtc__type__ptr.html#gaada83809aefafd7c3264772e6b24b685">glm::value_ptr</a>(<a class="code hl_variable" href="class_eng_1_1_material.html#a7cf80b75b52df047b5a60dac16c67f7e">ambient_</a>));</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    glMaterialfv(GL_FRONT, GL_DIFFUSE,  <a class="code hl_function" href="group__gtc__type__ptr.html#gaada83809aefafd7c3264772e6b24b685">glm::value_ptr</a>(<a class="code hl_variable" href="class_eng_1_1_material.html#ad1dbdd01fc184a8fb59e435f3b5e4f63">diffuse_</a>));</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    glMaterialfv(GL_FRONT, GL_SPECULAR, <a class="code hl_function" href="group__gtc__type__ptr.html#gaada83809aefafd7c3264772e6b24b685">glm::value_ptr</a>(<a class="code hl_variable" href="class_eng_1_1_material.html#afe9cdc60f2514490001e2b57c8f86098">specular_</a>));</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    glMaterialf (GL_FRONT, GL_SHININESS, <a class="code hl_variable" href="class_eng_1_1_material.html#aa1844f43de6d303cd83e18e3cc3cb6d6">shininess_</a>);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_eng_1_1_material.html#adc7a7a8b1df83b4e237529de3b0fd715">texture_</a>)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <a class="code hl_variable" href="class_eng_1_1_material.html#adc7a7a8b1df83b4e237529de3b0fd715">texture_</a>-&gt;bind();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+</div>
+<div class="ttc" id="aclass_eng_1_1_material_html_a7cf80b75b52df047b5a60dac16c67f7e"><div class="ttname"><a href="class_eng_1_1_material.html#a7cf80b75b52df047b5a60dac16c67f7e">Eng::Material::ambient_</a></div><div class="ttdeci">glm::vec4 ambient_</div><div class="ttdoc">Componente ambient del materiale.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00055">material.h:55</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_a95105be3857c86ca3bfdfa407be98dd7"><div class="ttname"><a href="class_eng_1_1_material.html#a95105be3857c86ca3bfdfa407be98dd7">Eng::Material::render</a></div><div class="ttdeci">void render(const glm::mat4 &amp;modelViewMatrix) override</div><div class="ttdoc">Si occupera del render dei materiali.</div><div class="ttdef"><b>Definition</b> <a href="#l00025">material.cpp:25</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_aa1844f43de6d303cd83e18e3cc3cb6d6"><div class="ttname"><a href="class_eng_1_1_material.html#aa1844f43de6d303cd83e18e3cc3cb6d6">Eng::Material::shininess_</a></div><div class="ttdeci">float shininess_</div><div class="ttdoc">Lucentezza del materiale.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00061">material.h:61</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_abc2febc698263b94c11ef69b4650ae06"><div class="ttname"><a href="class_eng_1_1_material.html#abc2febc698263b94c11ef69b4650ae06">Eng::Material::Material</a></div><div class="ttdeci">Material(const glm::vec4 &amp;emission, const glm::vec4 &amp;ambient, const glm::vec4 &amp;diffuse, const glm::vec4 &amp;specular, float shininess, std::string textureName)</div><div class="ttdoc">Costruttori, distruttore, operatori di copia e spostamento.</div><div class="ttdef"><b>Definition</b> <a href="#l00010">material.cpp:10</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_ad1dbdd01fc184a8fb59e435f3b5e4f63"><div class="ttname"><a href="class_eng_1_1_material.html#ad1dbdd01fc184a8fb59e435f3b5e4f63">Eng::Material::diffuse_</a></div><div class="ttdeci">glm::vec4 diffuse_</div><div class="ttdoc">Componente diffusiva del materiale.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00057">material.h:57</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_ad43f7d55f959e45bfc5f429e2b0da303"><div class="ttname"><a href="class_eng_1_1_material.html#ad43f7d55f959e45bfc5f429e2b0da303">Eng::Material::emission_</a></div><div class="ttdeci">glm::vec4 emission_</div><div class="ttdoc">Componente emissiva del materiale.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00053">material.h:53</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_adc7a7a8b1df83b4e237529de3b0fd715"><div class="ttname"><a href="class_eng_1_1_material.html#adc7a7a8b1df83b4e237529de3b0fd715">Eng::Material::texture_</a></div><div class="ttdeci">std::shared_ptr&lt; Texture &gt; texture_</div><div class="ttdoc">Texture associata al materiale.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00063">material.h:63</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_af09b57f51751abff1df8c71610df81d5"><div class="ttname"><a href="class_eng_1_1_material.html#af09b57f51751abff1df8c71610df81d5">Eng::Material::textureName_</a></div><div class="ttdeci">std::string textureName_</div><div class="ttdoc">Nome della texture.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00066">material.h:66</a></div></div>
+<div class="ttc" id="aclass_eng_1_1_material_html_afe9cdc60f2514490001e2b57c8f86098"><div class="ttname"><a href="class_eng_1_1_material.html#afe9cdc60f2514490001e2b57c8f86098">Eng::Material::specular_</a></div><div class="ttdeci">glm::vec4 specular_</div><div class="ttdoc">Componente speculare del materiale.</div><div class="ttdef"><b>Definition</b> <a href="material_8h_source.html#l00059">material.h:59</a></div></div>
+<div class="ttc" id="afreeglut_8h_html"><div class="ttname"><a href="freeglut_8h.html">freeglut.h</a></div></div>
+<div class="ttc" id="agroup__core__matrix_html_gac54cbc572f1349a255fe476ca6a42a7b"><div class="ttname"><a href="group__core__matrix.html#gac54cbc572f1349a255fe476ca6a42a7b">glm::mat4</a></div><div class="ttdeci">mat&lt; 4, 4, float, defaultp &gt; mat4</div><div class="ttdef"><b>Definition</b> <a href="matrix__float4x4_8hpp_source.html#l00020">matrix_float4x4.hpp:20</a></div></div>
+<div class="ttc" id="agroup__core__vector_html_ga233f0e8f1aecf686e67c5c39316c4da8"><div class="ttname"><a href="group__core__vector.html#ga233f0e8f1aecf686e67c5c39316c4da8">glm::vec4</a></div><div class="ttdeci">vec&lt; 4, float, defaultp &gt; vec4</div><div class="ttdef"><b>Definition</b> <a href="vector__float4_8hpp_source.html#l00015">vector_float4.hpp:15</a></div></div>
+<div class="ttc" id="agroup__gtc__type__ptr_html_gaada83809aefafd7c3264772e6b24b685"><div class="ttname"><a href="group__gtc__type__ptr.html#gaada83809aefafd7c3264772e6b24b685">glm::value_ptr</a></div><div class="ttdeci">GLM_FUNC_DECL genType::value_type const * value_ptr(genType const &amp;v)</div></div>
+<div class="ttc" id="amaterial_8h_html"><div class="ttname"><a href="material_8h.html">material.h</a></div></div>
+<div class="ttc" id="anamespace_eng_html"><div class="ttname"><a href="namespace_eng.html">Eng</a></div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00009">base.h:9</a></div></div>
+<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="hash_8inl_source.html#l00013">hash.inl:14</a></div></div>
+<div class="ttc" id="atype__ptr_8hpp_html"><div class="ttname"><a href="type__ptr_8hpp.html">type_ptr.hpp</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

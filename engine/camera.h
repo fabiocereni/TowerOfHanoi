@@ -1,26 +1,31 @@
 #pragma once
-#include <glm/mat4x4.hpp>
 #include "node.h"
+#include <glm/glm.hpp>
 
+
+/**
+ * @class Camera
+ * @brief Rappresenta una generica camera
+ */
 namespace Eng {
-
    class ENG_API Camera : public Node {
-   protected:
-      glm::mat4 projectionMatrix;
-
    public:
-      Camera();
-      virtual ~Camera();
-      Camera(const Camera& other);
-      Camera(Camera&& other) noexcept;
-      Camera& operator=(const Camera& other);
-      Camera& operator=(Camera&& other) noexcept;
+      /// @brief Costruttori, distruttori, operatori di copia e spostamento
+      Camera() noexcept = default;
+      ~Camera() noexcept override = default;
+      Camera(const Camera&) = default;
+      Camera& operator=(const Camera&) = default;
+      Camera(Camera&&) noexcept = default;
+      Camera& operator=(Camera&&) noexcept = default;
 
-      virtual void render() override;
+      /// @brief torna la view matrix
+      [[nodiscard]] glm::mat4 getViewMatrix() const noexcept;
 
-      void setProjectionMatrix(const glm::mat4& matrix);
-      glm::mat4 getProjectionMatrix() const;
-      glm::mat4 computeCameraInverse() const;
+      /// @brief varia in base al tipo di camera
+      [[nodiscard]] virtual glm::mat4 getProjectionMatrix() const noexcept = 0;
+
+      /// @brief adattare le cam in base al resize della finestra
+      virtual void onResize(int width, int height) noexcept = 0;
+
    };
-
 }

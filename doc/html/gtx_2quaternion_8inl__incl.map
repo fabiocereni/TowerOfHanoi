@@ -1,0 +1,22 @@
+<map id="dependencies/glm/include/glm/gtx/quaternion.inl" name="dependencies/glm/include/glm/gtx/quaternion.inl">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,177,46"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="49,315,101,341"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,49,70,101,56,168,54,213,58,267,67,300,62,300,52,267,49,213,51,167,65,100,85,44"/>
+<area shape="rect" id="Node000003" href="$constants_8hpp.html" title=" " alt="" coords="86,94,224,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,44,138,81,133,82,107,49"/>
+<area shape="rect" id="Node000004" href="$scalar__constants_8hpp.html" title=" " alt="" coords="65,168,245,193"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="156,117,158,153,152,151,154,122"/>
+<area shape="rect" id="Node000010" href="$constants_8inl.html" title=" " alt="" coords="269,168,364,193"/>
+<area shape="poly" id="edge10_Node000003_Node000010" title=" " alt="" coords="182,118,277,160,273,162,182,123"/>
+<area shape="rect" id="Node000005" href="$setup_8hpp.html" title=" " alt="" coords="228,241,354,267"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="178,191,257,233,252,235,178,197"/>
+<area shape="rect" id="Node000009" href="$scalar__constants_8inl.html" title=" " alt="" coords="66,241,204,267"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="153,191,145,228,140,225,150,196"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="171,315,235,341"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="279,267,231,307,228,303,274,268"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="259,315,323,341"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="293,265,293,301,289,298,289,269"/>
+<area shape="rect" id="Node000008" href="$platform_8h.html" title=" " alt="" coords="347,315,470,341"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="312,265,378,307,373,307,310,270"/>
+<area shape="poly" id="edge9_Node000009_Node000002" title=" " alt="" coords="127,266,97,305,93,301,123,268"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="Eng::Light" name="Eng::Light">
+<area shape="rect" id="Node000001" title=" " alt="" coords="216,153,297,178"/>
+<area shape="rect" id="Node000004" href="$class_eng_1_1_directional_light.html" title=" " alt="" coords="5,226,148,252"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="214,186,108,228,106,223,210,183"/>
+<area shape="rect" id="Node000005" href="$class_eng_1_1_omnidirectional_light.html" title="Rappresenta una luce omnidirezionale." alt="" coords="171,226,342,252"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="258,192,259,227,254,224,255,196"/>
+<area shape="rect" id="Node000006" href="$class_eng_1_1_spotlight.html" title="Rappresenta una luce di tipo faretto (spotlight)." alt="" coords="366,226,470,252"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="298,182,393,226,388,226,297,188"/>
+<area shape="rect" id="Node000002" href="$class_eng_1_1_node.html" title=" " alt="" coords="215,79,298,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,118,259,153,254,151,255,122"/>
+<area shape="rect" id="Node000003" href="$class_eng_1_1_object.html" title=" " alt="" coords="211,5,302,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,44,259,80,254,77,255,49"/>
+</map>

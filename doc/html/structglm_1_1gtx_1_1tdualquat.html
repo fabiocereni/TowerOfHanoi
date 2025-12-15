@@ -1,0 +1,724 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Motore Grafico Gruppo 03: Template per la struct glm::gtx::tdualquat&lt; T, Q &gt;</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Motore Grafico Gruppo 03<span id="projectnumber">&#160;Year 2025</span>
+   </div>
+   <div id="projectbrief">A graphics engine developed for the computer graphics course at SUPSI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generato da Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Cerca',false);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Caricamento in corso...</div>
+<div class="SRStatus" id="Searching">Ricerca in corso...</div>
+<div class="SRStatus" id="NoMatches">Nessun risultato</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a href="namespaceglm.html">glm</a></li><li class="navelem"><a href="namespaceglm_1_1gtx.html">gtx</a></li><li class="navelem"><a href="structglm_1_1gtx_1_1tdualquat.html">tdualquat</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Tipi pubblici</a> &#124;
+<a href="#pub-methods">Membri pubblici</a> &#124;
+<a href="#pub-static-methods">Membri pubblici statici</a> &#124;
+<a href="#pub-attribs">Attributi pubblici</a> &#124;
+<a href="structglm_1_1gtx_1_1tdualquat-members.html">Elenco di tutti i membri</a>  </div>
+  <div class="headertitle"><div class="title">Template per la struct glm::gtx::tdualquat&lt; T, Q &gt;<div class="ingroups">modulo <a class="el" href="module__glm.html">glm</a></div></div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Diagramma di collaborazione per glm::gtx::tdualquat&lt; T, Q &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="structglm_1_1gtx_1_1tdualquat__coll__graph.png" border="0" usemap="#aglm_1_1gtx_1_1tdualquat_3_01_t_00_01_q_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<map name="aglm_1_1gtx_1_1tdualquat_3_01_t_00_01_q_01_4_coll__map" id="aglm_1_1gtx_1_1tdualquat_3_01_t_00_01_q_01_4_coll__map">
+<area shape="rect" title=" " alt="" coords="18,122,148,163"/>
+<area shape="rect" href="structglm_1_1qua.html" title=" " alt="" coords="5,5,161,31"/>
+<area shape="poly" title=" " alt="" coords="85,45,86,123,80,122,81,48"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legenda</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Tipi pubblici</h2></td></tr>
+<tr class="memitem:ab9028885c8de069ef8a61ebab77f7ccc" id="r_ab9028885c8de069ef8a61ebab77f7ccc"><td class="memItemLeft" align="right" valign="top">typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9028885c8de069ef8a61ebab77f7ccc">value_type</a></td></tr>
+<tr class="memitem:a89c28385b7088792d4d975098ae972b5" id="r_a89c28385b7088792d4d975098ae972b5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89c28385b7088792d4d975098ae972b5">part_type</a></td></tr>
+<tr class="memitem:ad9fa4fd7f84d17bebd3efed6b5455d80" id="r_ad9fa4fd7f84d17bebd3efed6b5455d80"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="namespaceglm.html#a090a0de2260835bee80e71a702492ed9">length_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Membri pubblici</h2></td></tr>
+<tr class="memitem:a3ee9d16c280994cbf002e91a72985100" id="r_a3ee9d16c280994cbf002e91a72985100"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#ab2d052de21a70539923e9bcbf6e83a51">GLM_FUNC_DECL</a> <a class="el" href="#a89c28385b7088792d4d975098ae972b5">part_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ee9d16c280994cbf002e91a72985100">operator[]</a> (<a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a> i)</td></tr>
+<tr class="memitem:a96757fe178e80b5549ea737d669e107e" id="r_a96757fe178e80b5549ea737d669e107e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#ab2d052de21a70539923e9bcbf6e83a51">GLM_FUNC_DECL</a> <a class="el" href="#a89c28385b7088792d4d975098ae972b5">part_type</a> const &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96757fe178e80b5549ea737d669e107e">operator[]</a> (<a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a> i) const</td></tr>
+<tr class="memitem:adecfa4721943c9ee05005cfb1c31534f" id="r_adecfa4721943c9ee05005cfb1c31534f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#afc675a7e8d7ea50a9aa0e477c1864912">GLM_DEFAULTED_FUNC_DECL</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a> () <a class="el" href="setup_8hpp.html#aefce7051c376a64ba89fa93a9f63bc2c">GLM_DEFAULT</a></td></tr>
+<tr class="memitem:a979eb056f9f5502f837b2d5c1d0139fe" id="r_a979eb056f9f5502f837b2d5c1d0139fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#afc675a7e8d7ea50a9aa0e477c1864912">GLM_DEFAULTED_FUNC_DECL</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a979eb056f9f5502f837b2d5c1d0139fe">tdualquat</a> (tdualquat&lt; T, Q &gt; const &amp;d) <a class="el" href="setup_8hpp.html#aefce7051c376a64ba89fa93a9f63bc2c">GLM_DEFAULT</a></td></tr>
+<tr class="memitem:ab92967787a6f5ff49e4048b227612d1f" id="r_ab92967787a6f5ff49e4048b227612d1f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </td></tr>
+<tr class="memitem:ab92967787a6f5ff49e4048b227612d1f template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab92967787a6f5ff49e4048b227612d1f">tdualquat</a> (tdualquat&lt; T, P &gt; const &amp;d)</td></tr>
+<tr class="memitem:ae28e1738cccb33abd969f010d565a015" id="r_ae28e1738cccb33abd969f010d565a015"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae28e1738cccb33abd969f010d565a015">tdualquat</a> (<a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;<a class="el" href="#a0ff8a104f6134db7fcd6765d6db31a50">real</a>)</td></tr>
+<tr class="memitem:af948cc33935613be6f020e60899fd0f0" id="r_af948cc33935613be6f020e60899fd0f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af948cc33935613be6f020e60899fd0f0">tdualquat</a> (<a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;<a class="el" href="namespaceglm_1_1gtx.html#a83099d005b4af6a7a0d882ff6eb1a536">orientation</a>, <a class="el" href="structglm_1_1vec.html">vec</a>&lt; 3, T, Q &gt; const &amp;translation)</td></tr>
+<tr class="memitem:a4bedb9eb56d590e3cae67db9912dc1b4" id="r_a4bedb9eb56d590e3cae67db9912dc1b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bedb9eb56d590e3cae67db9912dc1b4">tdualquat</a> (<a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;<a class="el" href="#a0ff8a104f6134db7fcd6765d6db31a50">real</a>, <a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;<a class="el" href="#a575a0e3f07a666b7b59d956eb49b4efe">dual</a>)</td></tr>
+<tr class="memitem:a59f21c225aae5ff96473371618ef8369" id="r_a59f21c225aae5ff96473371618ef8369"><td class="memTemplParams" colspan="2">template&lt;typename U, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </td></tr>
+<tr class="memitem:a59f21c225aae5ff96473371618ef8369 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a> <a class="el" href="setup_8hpp.html#a6c74f5a5e7b134ab69023ff9a30d4d5d">GLM_EXPLICIT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59f21c225aae5ff96473371618ef8369">tdualquat</a> (tdualquat&lt; U, P &gt; const &amp;q)</td></tr>
+<tr class="memitem:a778d8e41f36aab01c85b6bcdbfb1ce85" id="r_a778d8e41f36aab01c85b6bcdbfb1ce85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a> <a class="el" href="setup_8hpp.html#a6c74f5a5e7b134ab69023ff9a30d4d5d">GLM_EXPLICIT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a778d8e41f36aab01c85b6bcdbfb1ce85">tdualquat</a> (<a class="el" href="structglm_1_1mat.html">mat</a>&lt; 2, 4, T, Q &gt; const &amp;holder_mat)</td></tr>
+<tr class="memitem:aa884d0292d286e7cac54809c19c12a5f" id="r_aa884d0292d286e7cac54809c19c12a5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a> <a class="el" href="setup_8hpp.html#a6c74f5a5e7b134ab69023ff9a30d4d5d">GLM_EXPLICIT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa884d0292d286e7cac54809c19c12a5f">tdualquat</a> (<a class="el" href="structglm_1_1mat.html">mat</a>&lt; 3, 4, T, Q &gt; const &amp;aug_mat)</td></tr>
+<tr class="memitem:a9dbf71289809c7b43527c0e881601fbb" id="r_a9dbf71289809c7b43527c0e881601fbb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </td></tr>
+<tr class="memitem:a9dbf71289809c7b43527c0e881601fbb template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dbf71289809c7b43527c0e881601fbb">tdualquat</a> (tdualquat&lt; T, P &gt; const &amp;d)</td></tr>
+<tr class="memitem:a00f0899c1213aa991a65dfaf8d15fba5" id="r_a00f0899c1213aa991a65dfaf8d15fba5"><td class="memTemplParams" colspan="2">template&lt;typename U, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </td></tr>
+<tr class="memitem:a00f0899c1213aa991a65dfaf8d15fba5 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00f0899c1213aa991a65dfaf8d15fba5">tdualquat</a> (tdualquat&lt; U, P &gt; const &amp;q)</td></tr>
+<tr class="memitem:ad99fa9a81828db1a9bc04702a2c1209c" id="r_ad99fa9a81828db1a9bc04702a2c1209c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#afc675a7e8d7ea50a9aa0e477c1864912">GLM_DEFAULTED_FUNC_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad99fa9a81828db1a9bc04702a2c1209c">operator=</a> (<a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; const &amp;m) <a class="el" href="setup_8hpp.html#aefce7051c376a64ba89fa93a9f63bc2c">GLM_DEFAULT</a></td></tr>
+<tr class="memitem:a481964270a4c505b61a1d114d938b7c7" id="r_a481964270a4c505b61a1d114d938b7c7"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a481964270a4c505b61a1d114d938b7c7 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a364212a7fa4148cd960bd919442c4fc8">GLM_FUNC_DISCARD_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a481964270a4c505b61a1d114d938b7c7">operator=</a> (<a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; U, Q &gt; const &amp;m)</td></tr>
+<tr class="memitem:a62dc40b258f3bffcf8c183a64e1ed56a" id="r_a62dc40b258f3bffcf8c183a64e1ed56a"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a62dc40b258f3bffcf8c183a64e1ed56a template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62dc40b258f3bffcf8c183a64e1ed56a">operator=</a> (<a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; U, Q &gt; const &amp;q)</td></tr>
+<tr class="memitem:a45843faf481a26194383d771e3becd8d" id="r_a45843faf481a26194383d771e3becd8d"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a45843faf481a26194383d771e3becd8d template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a364212a7fa4148cd960bd919442c4fc8">GLM_FUNC_DISCARD_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45843faf481a26194383d771e3becd8d">operator*=</a> (U s)</td></tr>
+<tr class="memitem:aece3d7993a997f0c063a410cc46de7e3" id="r_aece3d7993a997f0c063a410cc46de7e3"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:aece3d7993a997f0c063a410cc46de7e3 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aece3d7993a997f0c063a410cc46de7e3">operator*=</a> (U s)</td></tr>
+<tr class="memitem:aad7d359430e9aaaa67fb221ee48f9194" id="r_aad7d359430e9aaaa67fb221ee48f9194"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:aad7d359430e9aaaa67fb221ee48f9194 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a364212a7fa4148cd960bd919442c4fc8">GLM_FUNC_DISCARD_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad7d359430e9aaaa67fb221ee48f9194">operator/=</a> (U s)</td></tr>
+<tr class="memitem:a72dbb0cbc46b5cc4c5d8824e14916eb8" id="r_a72dbb0cbc46b5cc4c5d8824e14916eb8"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a72dbb0cbc46b5cc4c5d8824e14916eb8 template"><td class="memItemLeft" align="right" valign="top"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72dbb0cbc46b5cc4c5d8824e14916eb8">operator/=</a> (U s)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Membri pubblici statici</h2></td></tr>
+<tr class="memitem:a79fe24c72a3f26d906b080de34b92b4e" id="r_a79fe24c72a3f26d906b080de34b92b4e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="setup_8hpp.html#ab2d052de21a70539923e9bcbf6e83a51">GLM_FUNC_DECL</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79fe24c72a3f26d906b080de34b92b4e">length</a> ()</td></tr>
+<tr class="memdesc:a79fe24c72a3f26d906b080de34b92b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the count of components of a dual quaternion.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Attributi pubblici</h2></td></tr>
+<tr class="memitem:a0ff8a104f6134db7fcd6765d6db31a50" id="r_a0ff8a104f6134db7fcd6765d6db31a50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ff8a104f6134db7fcd6765d6db31a50">real</a></td></tr>
+<tr class="memitem:a575a0e3f07a666b7b59d956eb49b4efe" id="r_a575a0e3f07a666b7b59d956eb49b4efe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a575a0e3f07a666b7b59d956eb49b4efe">dual</a></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Descrizione dettagliata</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt;<br />
+struct glm::gtx::tdualquat&lt; T, Q &gt;</div>
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00035">35</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+</div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Documentazione delle ridefinizioni dei tipi (typedef)</h2>
+<a id="ad9fa4fd7f84d17bebd3efed6b5455d80" name="ad9fa4fd7f84d17bebd3efed6b5455d80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9fa4fd7f84d17bebd3efed6b5455d80">&#9670;&#160;</a></span>length_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="namespaceglm.html#a090a0de2260835bee80e71a702492ed9">length_t</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::length_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00048">48</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a89c28385b7088792d4d975098ae972b5" name="a89c28385b7088792d4d975098ae972b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89c28385b7088792d4d975098ae972b5">&#9670;&#160;</a></span>part_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="structglm_1_1qua.html">qua</a>&lt;T, Q&gt; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::part_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00040">40</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab9028885c8de069ef8a61ebab77f7ccc" name="ab9028885c8de069ef8a61ebab77f7ccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9028885c8de069ef8a61ebab77f7ccc">&#9670;&#160;</a></span>value_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef T <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::value_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00039">39</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentazione dei costruttori e dei distruttori</h2>
+<a id="adecfa4721943c9ee05005cfb1c31534f" name="adecfa4721943c9ee05005cfb1c31534f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adecfa4721943c9ee05005cfb1c31534f">&#9670;&#160;</a></span>tdualquat() <span class="overload">[1/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a8d46131aebdec5adbbb66521c86d3afe">GLM_DEFAULTED_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00028">28</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a979eb056f9f5502f837b2d5c1d0139fe" name="a979eb056f9f5502f837b2d5c1d0139fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a979eb056f9f5502f837b2d5c1d0139fe">&#9670;&#160;</a></span>tdualquat() <span class="overload">[2/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a8d46131aebdec5adbbb66521c86d3afe">GLM_DEFAULTED_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype">tdualquat&lt; T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00036">36</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="ab92967787a6f5ff49e4048b227612d1f" name="ab92967787a6f5ff49e4048b227612d1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab92967787a6f5ff49e4048b227612d1f">&#9670;&#160;</a></span>tdualquat() <span class="overload">[3/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype">tdualquat&lt; T, P &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae28e1738cccb33abd969f010d565a015" name="ae28e1738cccb33abd969f010d565a015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae28e1738cccb33abd969f010d565a015">&#9670;&#160;</a></span>tdualquat() <span class="overload">[4/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>real</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00052">52</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="af948cc33935613be6f020e60899fd0f0" name="af948cc33935613be6f020e60899fd0f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af948cc33935613be6f020e60899fd0f0">&#9670;&#160;</a></span>tdualquat() <span class="overload">[5/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>orientation</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structglm_1_1vec.html">vec</a>&lt; 3, T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>translation</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00057">57</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a4bedb9eb56d590e3cae67db9912dc1b4" name="a4bedb9eb56d590e3cae67db9912dc1b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bedb9eb56d590e3cae67db9912dc1b4">&#9670;&#160;</a></span>tdualquat() <span class="overload">[6/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>real</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structglm_1_1qua.html">qua</a>&lt; T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>dual</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00066">66</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a59f21c225aae5ff96473371618ef8369" name="a59f21c225aae5ff96473371618ef8369"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59f21c225aae5ff96473371618ef8369">&#9670;&#160;</a></span>tdualquat() <span class="overload">[7/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a3d5a4b47b91cfcc0790ba25ce7447ac0">GLM_CTOR_DECL</a> <a class="el" href="setup_8hpp.html#a6c74f5a5e7b134ab69023ff9a30d4d5d">GLM_EXPLICIT</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype">tdualquat&lt; U, P &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>q</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a778d8e41f36aab01c85b6bcdbfb1ce85" name="a778d8e41f36aab01c85b6bcdbfb1ce85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a778d8e41f36aab01c85b6bcdbfb1ce85">&#9670;&#160;</a></span>tdualquat() <span class="overload">[8/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structglm_1_1mat.html">mat</a>&lt; 2, 4, T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>holder_mat</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00080">80</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="aa884d0292d286e7cac54809c19c12a5f" name="aa884d0292d286e7cac54809c19c12a5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa884d0292d286e7cac54809c19c12a5f">&#9670;&#160;</a></span>tdualquat() <span class="overload">[9/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structglm_1_1mat.html">mat</a>&lt; 3, 4, T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>aug_mat</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00086">86</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a9dbf71289809c7b43527c0e881601fbb" name="a9dbf71289809c7b43527c0e881601fbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dbf71289809c7b43527c0e881601fbb">&#9670;&#160;</a></span>tdualquat() <span class="overload">[10/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype">tdualquat&lt; T, P &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00044">44</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a00f0899c1213aa991a65dfaf8d15fba5" name="a00f0899c1213aa991a65dfaf8d15fba5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00f0899c1213aa991a65dfaf8d15fba5">&#9670;&#160;</a></span>tdualquat() <span class="overload">[11/11]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> P&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::tdualquat </td>
+          <td>(</td>
+          <td class="paramtype">tdualquat&lt; U, P &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>q</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00074">74</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentazione delle funzioni membro</h2>
+<a id="a79fe24c72a3f26d906b080de34b92b4e" name="a79fe24c72a3f26d906b080de34b92b4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79fe24c72a3f26d906b080de34b92b4e">&#9670;&#160;</a></span>length()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#ab2d052de21a70539923e9bcbf6e83a51">GLM_FUNC_DECL</a> <a class="el" href="setup_8hpp.html#a08b807947b47031d3a511f03f89645ad">GLM_CONSTEXPR</a> <a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a> <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::length </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the count of components of a dual quaternion. </p>
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00050">50</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a45843faf481a26194383d771e3becd8d" name="a45843faf481a26194383d771e3becd8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45843faf481a26194383d771e3becd8d">&#9670;&#160;</a></span>operator*=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a364212a7fa4148cd960bd919442c4fc8">GLM_FUNC_DISCARD_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">U</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aece3d7993a997f0c063a410cc46de7e3" name="aece3d7993a997f0c063a410cc46de7e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aece3d7993a997f0c063a410cc46de7e3">&#9670;&#160;</a></span>operator*=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">U</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00114">114</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="aad7d359430e9aaaa67fb221ee48f9194" name="aad7d359430e9aaaa67fb221ee48f9194"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad7d359430e9aaaa67fb221ee48f9194">&#9670;&#160;</a></span>operator/=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a364212a7fa4148cd960bd919442c4fc8">GLM_FUNC_DISCARD_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">U</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a72dbb0cbc46b5cc4c5d8824e14916eb8" name="a72dbb0cbc46b5cc4c5d8824e14916eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72dbb0cbc46b5cc4c5d8824e14916eb8">&#9670;&#160;</a></span>operator/=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">U</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00123">123</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="ad99fa9a81828db1a9bc04702a2c1209c" name="ad99fa9a81828db1a9bc04702a2c1209c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad99fa9a81828db1a9bc04702a2c1209c">&#9670;&#160;</a></span>operator=() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a8d46131aebdec5adbbb66521c86d3afe">GLM_DEFAULTED_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00095">95</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a481964270a4c505b61a1d114d938b7c7" name="a481964270a4c505b61a1d114d938b7c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a481964270a4c505b61a1d114d938b7c7">&#9670;&#160;</a></span>operator=() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a364212a7fa4148cd960bd919442c4fc8">GLM_FUNC_DISCARD_DECL</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; U, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62dc40b258f3bffcf8c183a64e1ed56a" name="a62dc40b258f3bffcf8c183a64e1ed56a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62dc40b258f3bffcf8c183a64e1ed56a">&#9670;&#160;</a></span>operator=() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#a33fdea6f91c5f834105f7415e2a64407">GLM_FUNC_QUALIFIER</a> <a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; T, Q &gt; &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#adecfa4721943c9ee05005cfb1c31534f">tdualquat</a>&lt; U, Q &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>q</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8inl_source.html#l00105">105</a> del file <a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a>.</p>
+
+</div>
+</div>
+<a id="a3ee9d16c280994cbf002e91a72985100" name="a3ee9d16c280994cbf002e91a72985100"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ee9d16c280994cbf002e91a72985100">&#9670;&#160;</a></span>operator[]() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#ab2d052de21a70539923e9bcbf6e83a51">GLM_FUNC_DECL</a> <a class="el" href="#a89c28385b7088792d4d975098ae972b5">part_type</a> &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a></td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96757fe178e80b5549ea737d669e107e" name="a96757fe178e80b5549ea737d669e107e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96757fe178e80b5549ea737d669e107e">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="setup_8hpp.html#ab2d052de21a70539923e9bcbf6e83a51">GLM_FUNC_DECL</a> <a class="el" href="#a89c28385b7088792d4d975098ae972b5">part_type</a> const  &amp; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#ad9fa4fd7f84d17bebd3efed6b5455d80">length_type</a></td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Documentazione dei membri dato</h2>
+<a id="a575a0e3f07a666b7b59d956eb49b4efe" name="a575a0e3f07a666b7b59d956eb49b4efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a575a0e3f07a666b7b59d956eb49b4efe">&#9670;&#160;</a></span>dual</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structglm_1_1qua.html">qua</a>&lt;T, Q&gt; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::dual</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00044">44</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a0ff8a104f6134db7fcd6765d6db31a50" name="a0ff8a104f6134db7fcd6765d6db31a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ff8a104f6134db7fcd6765d6db31a50">&#9670;&#160;</a></span>real</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, <a class="el" href="namespaceglm.html#a36ed105b07c7746804d7fdc7cc90ff25">qualifier</a> Q = defaultp&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structglm_1_1qua.html">qua</a>&lt;T, Q&gt; <a class="el" href="structglm_1_1tdualquat.html">glm::tdualquat</a>&lt; T, Q &gt;::real</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definizione alla linea <a class="el" href="dual__quaternion_8hpp_source.html#l00044">44</a> del file <a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a>.</p>
+
+</div>
+</div>
+<hr/>La documentazione per questa struct è stata generata a partire dai seguenti file:<ul>
+<li>dependencies/glm/include/glm/gtx/<a class="el" href="dual__quaternion_8hpp_source.html">dual_quaternion.hpp</a></li>
+<li>dependencies/glm/include/glm/gtx/<a class="el" href="dual__quaternion_8inl_source.html">dual_quaternion.inl</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generato da&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
