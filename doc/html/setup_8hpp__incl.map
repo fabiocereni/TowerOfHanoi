@@ -1,0 +1,9 @@
+<map id="dependencies/glm/include/glm/detail/setup.hpp" name="dependencies/glm/include/glm/detail/setup.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="40,5,211,46"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,94,70,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,45,64,85,61,81,101,47"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="93,94,158,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="127,44,128,80,123,77,124,48"/>
+<area shape="rect" id="Node000004" href="$platform_8h.html" title=" " alt="" coords="181,94,304,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="155,44,215,85,210,85,154,49"/>
+</map>

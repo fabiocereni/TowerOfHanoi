@@ -1,0 +1,21 @@
+<map id="Eng::Node" name="Eng::Node">
+<area shape="rect" id="Node000001" title=" " alt="" coords="144,128,227,154"/>
+<area shape="rect" id="Node000003" href="$class_eng_1_1_camera.html" title=" " alt="" coords="275,55,373,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,118,296,82,300,80,226,123"/>
+<area shape="rect" id="Node000006" href="$class_eng_1_1_light.html" title=" " alt="" coords="284,128,364,154"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="242,138,286,140,281,141,243,143"/>
+<area shape="rect" id="Node000010" href="$class_eng_1_1_mesh.html" title=" " alt="" coords="282,177,366,203"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="238,157,288,177,283,177,238,162"/>
+<area shape="rect" id="Node000002" href="$class_eng_1_1_object.html" title=" " alt="" coords="5,128,96,154"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,138,146,140,141,142,112,143"/>
+<area shape="rect" id="Node000004" href="$class_eng_1_1_orthographic___camera.html" title="Rappresenta una camera con proiezione ortografica." alt="" coords="421,5,601,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="388,48,462,31,457,33,390,53"/>
+<area shape="rect" id="Node000005" href="$class_eng_1_1_perspective___camera.html" title="Rappresenta una camera con proiezione prospettica." alt="" coords="424,55,598,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="389,65,426,67,421,68,390,70"/>
+<area shape="rect" id="Node000007" href="$class_eng_1_1_directional_light.html" title=" " alt="" coords="440,104,582,130"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="379,131,442,125,437,127,380,136"/>
+<area shape="rect" id="Node000008" href="$class_eng_1_1_omnidirectional_light.html" title="Rappresenta una luce omnidirezionale." alt="" coords="426,153,596,179"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="379,146,428,154,423,155,379,151"/>
+<area shape="rect" id="Node000009" href="$class_eng_1_1_spotlight.html" title="Rappresenta una luce di tipo faretto (spotlight)." alt="" coords="459,203,563,228"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="366,158,375,163,398,177,422,189,462,204,456,204,420,194,396,181,372,167,365,163"/>
+</map>

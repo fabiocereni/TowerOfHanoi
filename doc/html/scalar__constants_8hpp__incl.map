@@ -1,0 +1,15 @@
+<map id="dependencies/glm/include/glm/ext/scalar_constants.hpp" name="dependencies/glm/include/glm/ext/scalar_constants.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="141,5,337,46"/>
+<area shape="rect" id="Node000002" href="$setup_8hpp.html" title=" " alt="" coords="99,94,224,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,45,186,84,182,80,218,48"/>
+<area shape="rect" id="Node000006" href="$scalar__constants_8inl.html" title=" " alt="" coords="268,94,405,120"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="264,44,312,84,307,84,262,49"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,168,70,193"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="142,122,73,162,70,157,139,118"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="93,168,158,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="158,118,140,156,136,152,153,121"/>
+<area shape="rect" id="Node000005" href="$platform_8h.html" title=" " alt="" coords="181,168,304,193"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="176,118,221,157,215,157,174,123"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="329,168,381,193"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="341,118,350,154,346,151,338,122"/>
+</map>

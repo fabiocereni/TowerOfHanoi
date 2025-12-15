@@ -1,0 +1,22 @@
+<map id="dependencies/glm/include/glm/ext/quaternion_exponential.inl" name="dependencies/glm/include/glm/ext/quaternion_exponential.inl">
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,232,46"/>
+<area shape="rect" id="Node000002" href="$quaternion__exponential_8hpp.html" title=" " alt="" coords="5,94,236,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,59,123,94,118,93,120,64"/>
+<area shape="rect" id="Node000003" href="$ext_8hpp.html" title=" " alt="" coords="122,360,293,401"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,151,96,185,87,227,87,270,92,291,100,311,124,338,156,359,151,360,120,342,96,313,87,293,82,271,82,226,91,184,106,146"/>
+<area shape="rect" id="Node000005" href="$gtx_2quaternion_8hpp.html" title=" " alt="" coords="219,183,390,223"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="176,139,265,181,261,183,176,144"/>
+<area shape="rect" id="Node000004" href="$glm_8cppm.html" title=" " alt="" coords="122,449,293,489"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="209,414,209,450,205,447,205,418"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="202,217,153,237,130,253,112,273,105,291,112,311,134,337,164,359,158,360,130,341,108,313,100,291,108,270,127,249,150,233,206,213"/>
+<area shape="rect" id="Node000006" href="$io_8hpp.html" title=" " alt="" coords="122,271,293,312"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="269,236,231,273,227,269,273,232"/>
+<area shape="rect" id="Node000007" href="$norm_8hpp.html" title=" " alt="" coords="318,271,489,312"/>
+<area shape="poly" id="edge8_Node000005_Node000007" title=" " alt="" coords="330,231,376,271,371,271,330,237"/>
+<area shape="rect" id="Node000008" href="$vector__angle_8hpp.html" title=" " alt="" coords="514,271,685,312"/>
+<area shape="poly" id="edge11_Node000005_Node000008" title=" " alt="" coords="386,226,535,270,530,272,386,231"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="209,325,210,361,205,359,206,330"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="343,320,253,362,251,357,347,317"/>
+<area shape="poly" id="edge10_Node000007_Node000005" title=" " alt="" coords="375,261,334,226,335,221,380,261"/>
+<area shape="poly" id="edge12_Node000008_Node000003" title=" " alt="" coords="496,316,294,363,293,358,501,314"/>
+</map>

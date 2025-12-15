@@ -1,0 +1,88 @@
+image: gitlab-edu.supsi.ch:5050/dti-isin/labingsw/common:ubuntu2404-cg
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 libfreeimage-dev
+    - make clean
+    - make -j"$(nproc)"
+    # Creazione cartella dipendenze
+    - mkdir -p dependencies/lib
+    # Script per copiare le librerie dinamiche necessarie
+    - |
+      BINARIES="engine/bin/Debug/libengine.so engine/bin/Release/libengine.so client/bin/Debug/client client/bin/Release/client"
+      for bin in $BINARIES; do
+        if [ -f "$bin" ]; then
+          ldd "$bin" | grep "=> /" | while read -r line; do
+            lib_soname=$(echo "$line" | awk '{print $1}')
+            lib_path=$(echo "$line" | awk '{print $3}')
+            if echo "$lib_soname" | grep -Eq "^(libc\.so|libstdc\+\+|libm\.so|libpthread|libdl|librt|ld-linux|libgcc_s)"; then
+              continue
+            fi
+            if echo "$lib_path" | grep -q "dependencies/lib"; then continue; fi
+            cp -L --no-clobber "$lib_path" "dependencies/lib/$lib_soname" || true
+          done
+        fi
+      done
+    # Libglut
+    - |
+      GLUT_REAL=$(ldd engine/bin/Debug/libengine.so | grep libglut | awk '{print $3}' | head -n 1)
+      if [ -z "$GLUT_REAL" ]; then 
+        GLUT_REAL=$(find /usr/lib -name "libglut.so*" | head -n 1)
+      fi
+      if [ ! -z "$GLUT_REAL" ]; then
+        cp -L "$GLUT_REAL" dependencies/lib/libglut.so.3.12
+        cp -L "$GLUT_REAL" dependencies/lib/libglut.so.3
+        cp -L "$GLUT_REAL" dependencies/lib/libglut.so
+      fi
+    # Creazione script di avvio
+    - echo '#!/bin/bash' > run_client.sh
+    - echo 'DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"' >> run_client.sh
+    - echo 'export LD_LIBRARY_PATH="$DIR/dependencies/lib:$LD_LIBRARY_PATH"' >> run_client.sh
+    - echo 'chmod +x "$DIR/client/bin/Debug/client"' >> run_client.sh
+    - echo 'exec "$DIR/client/bin/Debug/client"' >> run_client.sh
+    - chmod +x run_client.sh
+    # Creazione README
+    - |
+      cat > README.txt <<'EOF'
+      # Avvio dell'artifact
+      Dopo aver scaricato l'artifact da GitLab, rendere eseguibile lo script di avvio con:
+        chmod +x run_client.sh
+      
+      Assicurarsi che la cartella ExportProgetto sia presente (è inclusa nell'archivio).
+      Poi lanciare:
+        ./run_client.sh
+      EOF
+
+  artifacts:
+    paths:
+      - engine/bin
+      - client/bin
+      - dependencies/lib
+      - run_client.sh
+      - README.txt
+      - ExportProgetto
+    when: always
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'
+
+# --- TEST ---
+unit_test:
+  stage: test
+  script:
+    # Dipendenze
+    - apt-get update
+    - apt-get install -y --no-install-recommends freeglut3-dev libglu1-mesa libgl1 libxi6 libxmu6 libfreeimage-dev
+    
+    
+    - cd engine
+    
+    # Compilazione e test
+    - make run-tests
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"'

@@ -1,0 +1,66 @@
+#pragma once
+#include <memory>
+#include <vector>
+#include "engine.h"
+#include "spotlight.h"
+
+#include <stack>
+
+struct MoveRecord {
+   int fromPoleIndex;
+   int toPoleIndex;
+};
+
+class HanoiGame {
+public:
+   HanoiGame(const std::shared_ptr<Eng::Node>& sceneRoot);
+
+   void processInput(int poleIndex);
+   [[nodiscard]] std::string getCommandMessage() const { return commandMessage_; }
+   [[nodiscard]] std::string getStatusMessage() const { return statusMessage_; }
+
+   void undoMove();
+   void redoMove();
+   void resetGame();
+
+
+private:
+   std::shared_ptr<Eng::Node> root;
+   std::shared_ptr<Eng::Node> selectedDisk;
+   std::shared_ptr<Eng::Node> sourcePole;
+
+   std::stack<MoveRecord> undoStack_;
+   std::stack<MoveRecord> redoStack_;
+   int sourcePoleIndex = -1;
+
+   std::vector<std::shared_ptr<Eng::Spotlight>> poleLights;
+   std::vector<std::shared_ptr<Eng::Node>> poles;
+
+
+   std::shared_ptr<Eng::Node> getTopDisk(std::shared_ptr<Eng::Node> pole);
+   bool isValidMove(std::shared_ptr<Eng::Node> destPole, std::shared_ptr<Eng::Node> diskToMove);
+   float getMeshHeight(const std::shared_ptr<Eng::Node>& node);
+   bool checkVictory(const std::shared_ptr<Eng::Node>& poleToMonitor);
+
+
+   const int numberOfDisks_ = 7;
+   std::string poleToMonitorName_ = "palo3";
+   std::string statusMessage_ = "";
+   std::string commandMessage_ = R"(--- ISTRUZIONI DI GIOCO ---
+1 - Seleziona da 1 a 3 il palo da cui vuoi prendere il disco
+2 - Seleziona da 1 a 3 il palo a cui vuoi aggiungere il disco
+(Per annullare la mossa richiama il tasto del palo selezionato)
+(x) -> undo
+(y) -> redo
+(r) -> reset game
+(f1) -> cam principale
+(f2) -> cam secondaria
+(f3) -> cam mobile
+(wasd) -> per muoversi
+(u) -> alza visuale
+(g) -> abbassa visuale
+(freccia su) -> ti alzi
+(freccia giu) -> ti abbassi
+(l) -> accendi/spegni lampadario/albero
+)";
+};

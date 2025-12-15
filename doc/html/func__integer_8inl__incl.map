@@ -1,0 +1,11 @@
+<map id="dependencies/glm/include/glm/detail/func_integer.inl" name="dependencies/glm/include/glm/detail/func_integer.inl">
+<area shape="rect" id="Node000001" title=" " alt="" coords="76,5,249,46"/>
+<area shape="rect" id="Node000002" href="$__vectorize_8hpp.html" title=" " alt="" coords="5,94,112,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,48,88,86,85,82,138,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="136,94,189,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,44,165,79,160,77,161,49"/>
+<area shape="rect" id="Node000004" href="$func__integer__simd_8inl.html" title=" " alt="" coords="213,94,357,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,44,256,85,251,86,192,49"/>
+<area shape="rect" id="Node000005" href="$integer_8h.html" title=" " alt="" coords="228,168,342,193"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="287,118,287,153,283,150,283,122"/>
+</map>
