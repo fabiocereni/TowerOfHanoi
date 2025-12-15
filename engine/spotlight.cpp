@@ -26,7 +26,6 @@ namespace Eng {
       throw LightNumberExceededException("Maximum number of lights exceeded: (8)");
    }
 
-
    /**
     * @brief Distruttore
     * @details Disabilita la luce OpenGL e decrementa il contatore globale
@@ -36,8 +35,6 @@ namespace Eng {
       glDisable(id);
       lightNumber_--;
    }
-
-
 
    /**
     * @brief Renderizza la luce spotlight nella scena

@@ -12,7 +12,6 @@ Node::Node() noexcept
 
 void Node::render(const glm::mat4& modelViewMatrix) {}
 
-
 /**
  * @brief calcola la worldMatrix del nodo
  * @details moltiplica la worldMatrix del parent per la sua locale
@@ -23,7 +22,6 @@ glm::mat4 Node::getWorldMatrix() const noexcept {
       return parent_->getWorldMatrix() * matrix_;
    return matrix_;
 }
-
 
 /**
  * @brief rimuove un nodo
@@ -43,7 +41,6 @@ std::shared_ptr<Node> Node::removeChild(const std::string& name) {
    return nullptr;
 }
 
-
 /**
  * @brief cerca un nodo
  * @param name nome di un nodo da cercare
@@ -59,10 +56,6 @@ std::shared_ptr<Node> Node::returnChild(const std::string& name) const {
    }
    return nullptr;
 }
-
-
-
-
 
 /**
  * @brief cerca un nodo

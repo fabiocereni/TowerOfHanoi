@@ -15,7 +15,6 @@ void HanoiGame::undoMove() {
    }
 
    if (undoStack_.empty()) {
-      this->statusMessage_ = "Nessuna mossa da annullare";
       return;
    }
 
@@ -41,13 +40,11 @@ void HanoiGame::undoMove() {
       m[3][1] = h;
       disk->setMatrix(m);
       redoStack_.push(lastMove);
-      this->statusMessage_ = "Mossa annullata";
    }
 }
 
 void HanoiGame::redoMove() {
    if (redoStack_.empty()) {
-      this->statusMessage_ = "Nessuna mossa da ripristinare";
       return;
    }
 
@@ -73,7 +70,6 @@ void HanoiGame::redoMove() {
       m[3][1] = h;
       disk->setMatrix(m);
       undoStack_.push(move);
-      this->statusMessage_ = "Mossa ripristinata";
    }
 }
 

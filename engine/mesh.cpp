@@ -19,8 +19,6 @@ ENG_API Mesh::Mesh(const std::vector<glm::vec3>& vertexes,
 
 }
 
-
-
 void Mesh::render(const glm::mat4& modelViewMatrix) {
     /// @brief carichiamo la matrice di modelView
     glMatrixMode(GL_MODELVIEW);
@@ -54,9 +52,6 @@ void Mesh::render(const glm::mat4& modelViewMatrix) {
         glVertex3fv(glm::value_ptr(vertexes_[i]));
     }
     glEnd();
-
-
-
 
     /**
      * @brief reset dello stato per la prossima mesh
