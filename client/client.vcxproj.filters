@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Test\test_suite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hanoiGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -32,9 +29,6 @@
     <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Test\test_suite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="hanoiGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
