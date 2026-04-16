@@ -124,7 +124,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <None Include="engine.cbp" />
+=======
+>>>>>>> main
     <None Include="Makefile" />
   </ItemGroup>
 </Project>

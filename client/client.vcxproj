@@ -82,14 +82,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+<<<<<<< HEAD
       <AdditionalDependencies>engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+=======
+      <AdditionalDependencies>..\x64\Release\engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+>>>>>>> main
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="hanoiGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="setup.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Test\test_suite.cpp" />
+=======
+>>>>>>> main
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
@@ -97,7 +104,10 @@
   <ItemGroup>
     <ClInclude Include="hanoiGame.h" />
     <ClInclude Include="setup.h" />
+<<<<<<< HEAD
     <ClInclude Include="Test\test_suite.h" />
+=======
+>>>>>>> main
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,6 +11,7 @@ engine/bin/
 engine/obj/
 engine/x64/
 
+<<<<<<< HEAD
 # Cartella di output principale (Debug/Release)
 x64/
 
@@ -22,3 +23,7 @@ x64/
 x64/
 Debug/
 Release/
+=======
+.DS_Store
+
+>>>>>>> main

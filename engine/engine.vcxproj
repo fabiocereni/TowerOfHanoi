@@ -71,7 +71,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_STATIC;NDEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL</PreprocessorDefinitions>
+=======
+      <PreprocessorDefinitions>FREEGLUT_STATIC;FREEIMAGE_STATIC;NDEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+>>>>>>> main
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -127,7 +131,10 @@
     <ClInclude Include="texture.h" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <None Include="engine.cbp" />
+=======
+>>>>>>> main
     <None Include="Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
