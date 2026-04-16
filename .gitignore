@@ -16,3 +16,9 @@ x64/
 
 .DS_Store
 
+.vs/
+*.ipch
+*.zip
+x64/
+Debug/
+Release/
